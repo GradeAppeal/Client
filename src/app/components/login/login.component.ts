@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { SupabaseService } from '../../supabase.service'
 import { Router } from '@angular/router'
+
 @Component({
   selector: 'app-auth',
   templateUrl: './login.component.html',

@@ -9,7 +9,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { LoginComponent } from './components/login/login.component';
 import { StudentDashboardComponent } from './components/home/student-dashboard/student-dashboard.component';
 import { ProfessorDashboardComponent } from './components/home/professor-dashboard/professor-dashboard.component';
+
 import { AccountComponent } from './components/account/account.component';
+// import { AuthComponent } from './auth/auth.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { AccountComponent } from './components/account/account.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
