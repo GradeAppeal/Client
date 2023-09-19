@@ -5,5 +5,20 @@
   <div class="form">
     <!-- need to code the reactive form -->
     <p class="welcome">Welcome to <b>GradeBoost!</b></p>
+    <form #f="ngForm" (ngSubmit)="onLoginSubmit()" class="login-form">
+      <p>
+        <label><b> Username: </b></label>
+        <input type="text" [(ngModel)]="currentUser.username" name="un" required>
+      </p>
+      <p>
+        <label><b> Password: </b></label>
+        <input type="text" [(ngModel)]="currentUser.password" name="pw" required>
+      </p>
+      <p>
+        <button class="btn btn-blue login-button" type="submit" [disabled]="!f.valid">
+          Login
+        </button>
+      </p>
+    </form>
   </div>
 </div>
