@@ -40,4 +40,9 @@ export class LoginComponent {
    onSkip() {
     this.router.navigateByUrl('/professor');
   }
+
+  onStudent(){
+    this.router.navigateByUrl('/student')
+  }
+
 }
