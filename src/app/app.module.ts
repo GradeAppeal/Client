@@ -12,11 +12,20 @@ import { ProfessorDashboardComponent } from './components/home/professor-dashboa
 import { AccountComponent } from './components/account/account.component';
 
 /* Material Design Imports  */
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
+import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
+import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +33,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     LoginComponent,
     StudentDashboardComponent,
     ProfessorDashboardComponent,
-    AccountComponent
+    AccountComponent,
+    ProfessorNavigationComponent,
+    ClosedAppealsComponent,
+    ProfileComponent,
+    ChatComponent,
+    EditTemplatesComponent,
+    ProfessorAppealInboxComponent
   ],
   imports: [
     BrowserModule,
@@ -35,10 +50,19 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+<<<<<<< HEAD
     MatSidenavModule,
     MatButtonModule,
     MatSelectModule,
     MatFormFieldModule,
+=======
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatTabsModule,
+    MatSidenavModule,
+
+>>>>>>> 6d815586f94fe0a6e3b7fde63dcb608ac11b1d0b
   ],
   providers: [],
   bootstrap: [AppComponent]
