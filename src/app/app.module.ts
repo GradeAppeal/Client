@@ -13,14 +13,30 @@ import { ProfessorDashboardComponent } from './components/home/professor-dashboa
 import { AccountComponent } from './components/account/account.component';
 // import { AuthComponent } from './auth/auth.component';
 import {MatCardModule} from '@angular/material/card';
-
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
+import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
+import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     StudentDashboardComponent,
     ProfessorDashboardComponent,
-    AccountComponent
+    AccountComponent,
+    ProfessorNavigationComponent,
+    ClosedAppealsComponent,
+    ProfileComponent,
+    ChatComponent,
+    EditTemplatesComponent,
+    ProfessorAppealInboxComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +47,12 @@ import {MatCardModule} from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatTabsModule,
+    MatSidenavModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
