@@ -9,9 +9,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { LoginComponent } from './components/login/login.component';
 import { StudentDashboardComponent } from './components/home/student-dashboard/student-dashboard.component';
 import { ProfessorDashboardComponent } from './components/home/professor-dashboard/professor-dashboard.component';
-
 import { AccountComponent } from './components/account/account.component';
-// import { AuthComponent } from './auth/auth.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
@@ -24,6 +22,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
 import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
+
 @NgModule({
   declarations: [
     AppComponent,
