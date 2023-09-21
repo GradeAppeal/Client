@@ -1,0 +1,39 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened>
+      <mat-action-list class="tab-list">
+        <button mat-list-item (click)="selectTab('inbox')" [class.selected]="selectedTab === 'inbox'">Appeal Inbox</button>
+        <button mat-list-item (click)="selectTab('chat')" [class.selected]="selectedTab === 'chat'">Chat</button>
+        <button mat-list-item (click)="selectTab('closed')" [class.selected]="selectedTab === 'closed'">Closed Appeals</button>
+        <button mat-list-item (click)="selectTab('profile')" [class.selected]="selectedTab === 'profile'">Profile</button>
+        <button mat-list-item (click)="selectTab('templates')" [class.selected]="selectedTab === 'templates'">Edit Templates</button>
+      </mat-action-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+<div *ngIf="selectedTab === 'inbox'">
+    <h2>Appeal Inbox</h2>
+    <app-professor-appeal-inbox></app-professor-appeal-inbox>
+  </div>
+
+  <div *ngIf="selectedTab === 'chat'">
+    <h2>Chat</h2>
+    <app-chat></app-chat>
+  </div>
+
+<div *ngIf="selectedTab === 'closed'">
+    <h2>Closed Appeals</h2>
+    <app-closed-appeals></app-closed-appeals>
+  </div>
+  
+  <div *ngIf="selectedTab === 'profile'">
+    <h2>Profile</h2>
+    <app-profile></app-profile>
+  </div>
+  
+  <div *ngIf="selectedTab === 'templates'">
+    <h2>Edit Templates</h2>
+    <app-edit-templates></app-edit-templates>
+  </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./professor-dashboard.component.scss']
 })
 export class ProfessorDashboardComponent {
-
+  selectedTab = "";
+  selectTab(tab: string){
+    
+  }
 }
