@@ -38,11 +38,6 @@ export class SupabaseService {
   private supabase: SupabaseClient;
   _session: AuthSession | null = null;
 
-  state = new BehaviorSubject<CourseState>({ courses: [] });
-  Courses$: Observable<Course[]> = this.state
-    .asObservable()
-    .pipe(map((state) => state.courses));
-
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
@@ -94,15 +89,14 @@ export class SupabaseService {
    * @returns
    */
   async fetchStudentCourses(sid: number) {
-    try {
-      const data = await this.supabase.rpc('get_student_courses', {
-        sid,
-      });
-      return data;
-    } catch (err) {
-      console.log(err);
-      throw new Error('Error fetching student courses');
+    const { data, error } = await this.supabase.rpc('get_student_courses', {
+      sid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentCourses');
     }
+    return data;
   }
 
   async fetchAllCourses() {
