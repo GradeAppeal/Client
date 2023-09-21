@@ -16,6 +16,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -51,6 +52,7 @@ import { ProfessorAppealInboxComponent } from './components/professor-appeal-inb
     MatIconModule,
     MatTabsModule,
     MatSidenavModule,
+    MatToolbarModule
 
   ],
   providers: [],
