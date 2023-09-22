@@ -4,6 +4,45 @@
   </div>
   <div class="form">
     <!-- need to code the reactive form -->
-    <p class="welcome">Welcome to <b>GradeBoost!</b></p>
+    <p class="welcome">Welcome to</p>
+    <p class="gradeboost"> <b>GradeBoost!</b></p>
+
+    <div class="row flex-center flex">
+      <div class="container" aria-live="polite">
+        <p class="description">Sign in using your Calvin email</p>
+        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="form-widget">
+          <div>
+            <label for="email">Email</label> <br>
+            <input
+              id="email"
+              formControlName="email"
+              class="inputField"
+              type="email"
+              placeholder="Your email"
+            /> <br>
+            <input
+              id="password"
+              formControlName="password"
+              class="inputField"
+              type="email"
+              placeholder="Password"
+            />
+          </div>
+          <div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" [disabled]="loading">
+              {{ loading ? 'Loading' : 'Submit' }}
+            </button>
+            <br><br>
+            <button (click)="onSkip()" type="submit" class="skip bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" [disabled]="loading">
+              {{ loading ? 'Loading' : 'Professor' }}
+            </button>
+
+            <button (click)="onStudent()" type="submit" class="skip bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" [disabled]="loading">
+              {{ loading ? 'Loading' : 'Student' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

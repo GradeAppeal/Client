@@ -1,1 +1,15 @@
 <p>student-dashboard works!</p>
+<!-- Use mat-tab-group -->
+<div class="top-bar"></div>
+<mat-drawer-container class="example-container">
+    <mat-drawer #drawer mode="side" opened>
+        <mat-card class="course-dashboard"> <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /><p>Course Dashboard</p></mat-card>
+        <mat-card><p>Grader Dashboard</p></mat-card>
+        <mat-card><p>Interaction History</p></mat-card>
+
+    </mat-drawer>
+    
+    <mat-drawer-content>
+        <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+    </mat-drawer-content>
+  </mat-drawer-container>
