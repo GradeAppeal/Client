@@ -1,13 +1,22 @@
+@import '/src/styles';
+
 /* CSS for the List of Appeals */
 .appeal-container {
     width: 200px; /* Adjust the width as needed */
     background-color: #f5f5f5; /* Background color for the appeal list */
 
   }
-
   .inbox-item{
-     padding-top: 60px;
+    //  padding-top: 60px;
      border: solid gray 1px;
+     float: left;
+     padding-bottom: 50px;
+     padding-top: 50px;
+     p{
+       font-size: 10px;
+       padding: 0px;
+       margin-right: 10px;
+     }
   }
   
   .inbox{
@@ -20,6 +29,11 @@
   .appeal{
     padding: 20px;
     height: 700px;
+    .appeal-header{
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
   }
   .message{
     position: absolute;
@@ -30,6 +44,10 @@
   }
   .buttons{
     margin-top: 450px;
+    button {
+      color: white;
+      background-color: blue;
+    }
   }
   .chat{
     float: left;
@@ -38,5 +56,9 @@
     float: right;
   }
 
+  .inbox-avatar{
+    display: inline;
+    margin-right: 10px;
+  }
 
   
