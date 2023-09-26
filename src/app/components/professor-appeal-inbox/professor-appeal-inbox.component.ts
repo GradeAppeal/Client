@@ -8,7 +8,7 @@ import { ProfessorAppeal } from 'src/app/shared/professor.interface';
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
 export class ProfessorAppealInboxComponent {
-  inboxAppeals: AppealInbox[];
+  //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
   selectedAppeal: any;
@@ -49,10 +49,6 @@ export class ProfessorAppealInboxComponent {
       assignment_id: null,
       grade_received: null,
     };
-  }
-  async ngOnInit(): Promise<void> {
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-    console.log(this.professorAppeals);
   }
   async ngOnInit(): Promise<void> {
     //WAITING to add this until supabase is set up
