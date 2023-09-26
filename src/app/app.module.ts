@@ -47,6 +47,7 @@ import { NewAppealComponent } from './new-appeal/new-appeal.component';
     StudentNavigationComponent,
     InteractionHistoryComponent,
     NewAppealComponent
+
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,21 @@
-<p>profile works!</p>
+<div *ngIf="currentPage == 'view'" class="course-wrapper">
+  <mat-card class="courses" *ngFor="let course of courses">
+    <mat-card-title class="course-wording">{{ course.courseNumber }}</mat-card-title>
+    <mat-card-subtitle class="course-wording">{{ course.courseName }}</mat-card-subtitle>
+    <button type="submit" (click)="swapView('editAssignments')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full assignments-button">View Assignments</button>
+    <button type="submit" (click)="swapView('editRoster')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Edit Roster</button>
+  </mat-card>
+</div>
+
+<div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
+  <p>editing assignments</p>
+  <button type="submit" (click)="swapView('view')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
+</div>
+
+<div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
+  <div class="roster-wrapper" *ngFor="let student of students">
+    <p>{{student.name}}</p>
+    <p *ngIf="student.isGrader == true">: Grader</p>
+  </div>
+  <button type="submit" (click)="swapView('view')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
+</div>
