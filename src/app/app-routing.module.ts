@@ -8,6 +8,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
+import { StudentNavigationComponent } from './student-navigation/student-navigation.component';
+import { NewAppealComponent } from './new-appeal/new-appeal.component';
 const routes: Routes = [
   {
     path: "",
@@ -15,11 +17,15 @@ const routes: Routes = [
   },
   {
     path: "student",
-    component: StudentDashboardComponent,
+    component: StudentNavigationComponent,
   },
   {
     path: "student/:id",
     component: StudentDashboardComponent,
+  },
+  {
+    path: "new-appeal",
+    component: NewAppealComponent,
   },
   {
     path: "professor",
