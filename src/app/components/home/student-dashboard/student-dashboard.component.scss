@@ -1,0 +1,68 @@
+@import "/src/styles.scss";
+main {
+    background-color: #3A62D7;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.courses-container {
+
+    height: 100%;
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: auto;
+}
+
+.course {
+    padding: 10px;
+    margin: 10px;
+    height: 20vw;
+    width: calc(33.33% - 20px);
+    background-color: white;
+    text-align: center;
+    font-size: clamp(12px, 2vw, 20px);
+}
+
+.course-name {
+
+    flex-direction: row;
+    padding: 1vw;
+    font-weight: bold;
+}
+
+.course-description {
+    flex-direction: row;
+    padding: 1vw;
+}
+
+.course-professor {
+    flex-direction: row;
+    padding: 1vw;
+    margin-bottom: 1em;
+}
+
+.footer {
+    background-color: #3A62D7;
+    width: 100%
+}
+
+.material-symbols-outlined {
+    color: primary-blue;
+    font-size: 50px !important;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.top-bar {
+    padding: 20px;
+}
+
+

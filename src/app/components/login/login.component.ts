@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
-import { FormBuilder } from '@angular/forms'
-import { SupabaseService } from '../../supabase.service'
-import { Router } from '@angular/router'
+import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -9,11 +9,11 @@ import { Router } from '@angular/router'
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  loading = false
+  loading = false;
 
   signInForm = this.formBuilder.group({
     email: '',
-  })
+  });
 
   constructor(
     private readonly supabase: SupabaseService,
@@ -23,21 +23,25 @@ export class LoginComponent {
 
   async onSubmit(): Promise<void> {
     try {
-      this.loading = true
-      const email = this.signInForm.value.email as string
-      const { error } = await this.supabase.signIn(email)
-      if (error) throw error
-      alert('Check your email for the login link!')
+      this.loading = true;
+      const email = this.signInForm.value.email as string;
+      const { error } = await this.supabase.signIn(email);
+      if (error) throw error;
+      alert('Check your email for the login link!');
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message)
+        alert(error.message);
       }
     } finally {
-      this.signInForm.reset()
-      this.loading = false
+      this.signInForm.reset();
+      this.loading = false;
     }
   }
-   onSkip() {
+  onSkip() {
     this.router.navigateByUrl('/professor');
+  }
+
+  onStudent() {
+    this.router.navigateByUrl('/student');
   }
 }

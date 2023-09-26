@@ -6,11 +6,9 @@
 <div class="inbox">
         <mat-nav-list>
           <mat-list-item class="inbox-item" *ngFor="let appeal of appeals" (click)="selectAppeal(appeal)">
-            <mat-icon mat-list-icon>mail_outline</mat-icon>
-            <p matLine>{{ appeal.name }}</p>
+            <p matLine>{{ appeal.name }} &nbsp;&nbsp;&nbsp;&nbsp;<span>{{date}}</span></p>
             <p matLine>{{ appeal.course_name }}</p>
             <p matLine>{{ appeal.assignment_id }}</p>
-            <p matLine>{{ appeal.grade_received }}</p>
           </mat-list-item>
         </mat-nav-list>
   </div>
@@ -22,19 +20,20 @@
   <ng-template #elseBlock>
     <div>
       <mat-card class="appeal">
-      <h2>Selected Appeal</h2>
-        <p><strong>Name:</strong> {{ selectedAppeal.name }}</p>
-        <p><strong>Course Name:</strong> {{ selectedAppeal.course_name }}</p>
-        <p><strong>Assignment ID:</strong> {{ selectedAppeal.assignment_id }}</p>
+        <h2 class="appeal-header"><img class="inbox-avatar" ngxGravatar [email]="selectedAppeal.email"/>
+          {{ selectedAppeal.name }}</h2>
+        <p><strong>Course:</strong> {{ selectedAppeal.course_name }}</p>
+        <p><strong>Section:</strong> {{ selectedAppeal.section }}</p>
+        <p><strong>Assignment:</strong> {{ selectedAppeal.assignment_id }}</p>
         <p><strong>Grade Received:</strong> {{ selectedAppeal.grade_received }}</p>
 
         <mat-card class="message">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat ac felis donec et odio pellentesque diam volutpat. At lectus urna duis convallis convallis. Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Et netus et malesuada fames ac turpis. Egestas pretium aenean pharetra magna ac placerat vestibulum. Pharetra convallis posuere morbi leo urna molestie at elementum. Pretium quam vulputate dignissim suspendisse. Adipiscing diam donec adipiscing tristique risus nec feugiat in fermentum. Convallis convallis tellus id interdum velit laoreet. Natoque penatibus et magnis dis parturient montes.
+            {{selectedAppeal.message_text}}       
           </p>
         </mat-card>
         <div class="buttons">
-          <button class="chat" mat-stroked-button primary>Close Appeal</button>
+          <button class="chat" mat-stroked-button>Close Appeal</button>
           <button class="close-appeal" mat-stroked-button accent>Chat</button>
         </div>
       </mat-card>

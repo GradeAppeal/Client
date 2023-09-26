@@ -1,39 +1,51 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<div >
+  <mat-toolbar class="top-bar">
+    <mat-toolbar-row>
+    <span class="left-content">
+    <span (click)="navigateToHome()"class="material-symbols-outlined">
+    rocket_launch
+    </span>
+    <span>{{selectedTab}}</span>
+  </span>
+  <div class="right-content"><img class="header-avatar" ngxGravatar [email]="email"/></div>
+</mat-toolbar-row>
+</mat-toolbar>
+    
+</div>
+
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened>
       <mat-action-list class="tab-list">
-        <button mat-list-item (click)="selectTab('inbox')" [class.selected]="selectedTab === 'inbox'">Appeal Inbox</button>
-        <button mat-list-item (click)="selectTab('chat')" [class.selected]="selectedTab === 'chat'">Chat</button>
-        <button mat-list-item (click)="selectTab('closed')" [class.selected]="selectedTab === 'closed'">Closed Appeals</button>
-        <button mat-list-item (click)="selectTab('profile')" [class.selected]="selectedTab === 'profile'">My Courses</button>
-        <button mat-list-item (click)="selectTab('templates')" [class.selected]="selectedTab === 'templates'">Edit Templates</button>
+        <button mat-list-item (click)="selectTab('Appeal Inbox')" [class.selected]="selectedTab === 'Appeal Inbox'">Appeal Inbox</button>
+        <button mat-list-item (click)="selectTab('Chat')" [class.selected]="selectedTab === 'Chat'">Chat</button>
+        <button mat-list-item (click)="selectTab('Closed Appeals')" [class.selected]="selectedTab === 'Closed Appeals'">Closed Appeals</button>
+        <button mat-list-item (click)="selectTab('Profile')" [class.selected]="selectedTab === 'Profile'">Profile</button>
+        <button mat-list-item (click)="selectTab('Edit Templates')" [class.selected]="selectedTab === 'Edit Templates'">Edit Templates</button>
       </mat-action-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
-<div *ngIf="selectedTab === 'inbox'">
-    <h2>Appeal Inbox</h2>
-    <app-professor-appeal-inbox></app-professor-appeal-inbox>
-  </div>
+      <div *ngIf="selectedTab === 'Appeal Inbox'">
+      <app-professor-appeal-inbox></app-professor-appeal-inbox>
+      </div>
 
-  <div *ngIf="selectedTab === 'chat'">
-    <h2>Chat</h2>
-    <app-chat></app-chat>
-  </div>
+      <div *ngIf="selectedTab === 'Chat'">
+      <app-chat></app-chat>
+      </div>
 
-<div *ngIf="selectedTab === 'closed'">
-    <h2>Closed Appeals</h2>
-    <app-closed-appeals></app-closed-appeals>
-  </div>
+      <div *ngIf="selectedTab === 'Closed Appeals'">
+      <app-closed-appeals></app-closed-appeals>
+      </div>
 
-  <div *ngIf="selectedTab === 'profile'">
-    <h2>Profile</h2>
-    <app-profile></app-profile>
-  </div>
+      <div *ngIf="selectedTab === 'Profile'">
+      <app-profile></app-profile>
+      </div>
 
-  <div *ngIf="selectedTab === 'templates'">
-    <h2>Edit Templates</h2>
-    <app-edit-templates></app-edit-templates>
-  </div>
-    </mat-sidenav-content>
+      <div *ngIf="selectedTab === 'Edit Templates'">
+      <app-edit-templates></app-edit-templates>
+      </div>
+      </mat-sidenav-content>
   </mat-sidenav-container>
 

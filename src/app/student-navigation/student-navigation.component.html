@@ -1,0 +1,47 @@
+<div class="top-section">
+<div *ngIf="selectedTab === 'course-dashboard'">
+    <mat-toolbar class="top-bar">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <span class="material-symbols-outlined">
+            rocket_launch
+            </span>
+        <span> Student Dashboard</span>
+    </mat-toolbar>
+</div>
+
+<div *ngIf="selectedTab === 'grader-dashboard'">
+    <mat-toolbar class="top-bar"><span> Grader Dashboard</span>
+    </mat-toolbar>
+  </div>
+
+  <div *ngIf="selectedTab === 'interaction-history'">
+    <mat-toolbar class="top-bar"><span> Interaction History</span>
+    </mat-toolbar>
+  </div>
+</div>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened>
+      <mat-action-list class="tab-list">
+        <button mat-list-item (click)="selectTab('course-dashboard')" [class.selected]="selectedTab === 'course-dashboard'">Course Dashboard</button>
+        <button mat-list-item (click)="selectTab('grader-dashboard')" [class.selected]="selectedTab === 'grader-dashboard'" *ngIf="grader">Grader Dashboard</button>
+        <button mat-list-item (click)="selectTab('interaction-history')" [class.selected]="selectedTab === 'interaction-history'">Interaction History</button>
+      </mat-action-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+<div *ngIf="selectedTab === 'course-dashboard'">
+    <app-student-dashboard></app-student-dashboard>
+  </div>
+<div *ngIf="selectedTab === 'grader-dashboard'">
+    <app-closed-appeals></app-closed-appeals>
+  </div>
+  
+  <div *ngIf="selectedTab === 'interaction-history'">
+    <mat-toolbar class="top-bar"><span> Interaction History</span>
+    </mat-toolbar>
+    <app-interaction-history></app-interaction-history>
+  </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
