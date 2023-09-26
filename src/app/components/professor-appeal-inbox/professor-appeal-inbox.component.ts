@@ -1,3 +1,4 @@
+import { ViewEncapsulation } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { ProfessorAppeal } from 'src/app/shared/professor.interface';
@@ -7,25 +8,29 @@ import { ProfessorAppeal } from 'src/app/shared/professor.interface';
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
 export class ProfessorAppealInboxComponent {
+  //inboxAppeals: AppealInbox[];
   appeals: any[];
-
   appeal: any;
   selectedAppeal: any;
+  date = new Date();
   appeal1 = {
-    name: 'Bob',
+    name: 'Bob Bubby',
     course_name: 'Math',
+    section: 'B',
     assignment_id: 'Test1',
     grade_received: 'F',
   };
   appeal2 = {
-    name: 'Sam',
+    name: 'Sam Hoogewind',
     course_name: 'Stats',
+    section: 'A',
     assignment_id: 'Quiz1',
     grade_received: 'F',
   };
   appeal3 = {
-    name: 'Justin',
+    name: 'Justin Voss',
     course_name: 'CS112',
+    section: 'C',
     assignment_id: 'Test4',
     grade_received: 'F',
   };
@@ -46,10 +51,12 @@ export class ProfessorAppealInboxComponent {
     };
   }
   async ngOnInit(): Promise<void> {
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-    console.log(this.professorAppeals);
+    //WAITING to add this until supabase is set up
+    // this.inboxAppeals = await this.supabase.fetchInboxAppeals(1);
+    // console.log(this.inboxAppeals);
+    // encapsulation: ViewEncapsulation.None;
   }
-  // Function to select an appeal for editing
+  // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.selectedAppeal = appeal;

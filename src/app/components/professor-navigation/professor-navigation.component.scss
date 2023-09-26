@@ -14,3 +14,30 @@
   mat-sidenav-content {
     padding: 16px; /* Add padding to content area */
   }
+
+.material-symbols-outlined {
+  cursor: pointer;
+  color: blue;
+  font-size: 50px;
+  padding-right: 10px;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+.top-bar{
+  font-size: 40px;
+  color: blue;
+}
+
+.left-content{
+  margin-right: auto;
+  align-items: center; 
+  display: flex;
+}
+.right-content {
+  margin-left: auto; 
+  display: flex;
+  align-items: center; 
+}

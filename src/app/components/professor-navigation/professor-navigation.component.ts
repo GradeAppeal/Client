@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -6,8 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./professor-navigation.component.scss']
 })
 export class ProfessorNavigationComponent {
-  selectedTab: string = "inbox";
+  constructor(private router: Router) { }
+
+  email = "victor.norman@calvin.edu";
+  selectedTab: string = "Appeal Inbox";
   selectTab(tabName: string): void {
     this.selectedTab = tabName;
+  }
+  navigateToHome(){
+    this.router.navigate(['/'])
   }
 }
