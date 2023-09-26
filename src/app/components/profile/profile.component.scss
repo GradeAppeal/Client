@@ -1,0 +1,25 @@
+.courses {
+  margin: 2%;
+  width: 22vw;
+  height: 35vh;
+  text-align: center;
+  align-items: center;
+}
+
+.course-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.course-wording {
+  margin-top: 25px;
+}
+
+.edit-button, .assignments-button {
+  margin: 10px;
+  width: 15vw;
+}
+
+.roster-wrapper {
+  display: flex;
+}

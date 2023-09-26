@@ -36,7 +36,7 @@ import { ProfessorAppealInboxComponent } from './components/professor-appeal-inb
     ProfileComponent,
     ChatComponent,
     EditTemplatesComponent,
-    ProfessorAppealInboxComponent
+    ProfessorAppealInboxComponent,
   ],
   imports: [
     BrowserModule,
