@@ -1,7 +1,11 @@
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { ProfessorAppeal } from 'src/app/shared/professor.interface';
+import {
+  ProfessorAppeal,
+  ProfessorCourse,
+} from 'src/app/shared/professor.interface';
+
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -35,6 +39,7 @@ export class ProfessorAppealInboxComponent {
     grade_received: 'F',
   };
   professorAppeals!: ProfessorAppeal[];
+  professorCourse!: ProfessorCourse[];
   constructor(private supabase: SupabaseService) {
     this.appeals = [this.appeal1, this.appeal2, this.appeal3];
     this.appeal = {
@@ -51,11 +56,37 @@ export class ProfessorAppealInboxComponent {
     };
   }
   async ngOnInit(): Promise<void> {
-    //WAITING to add this until supabase is set up
-    // this.inboxAppeals = await this.supabase.fetchInboxAppeals(1);
-    // console.log(this.inboxAppeals);
-    // encapsulation: ViewEncapsulation.None;
+    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+    this.professorCourse = await this.supabase.fetchProfessorCourses(1);
+    console.log(this.professorAppeals);
+    console.log(this.professorCourse);
+    console.log(this.professorCourse[0].name);
+    console.log(this.professorCourse[0].prefix);
+    console.log(this.professorCourse[0].year);
+    console.log(this.professorCourse[1].name);
   }
+  // ProfessorCourse {
+  //   code: number;
+  //   id: number;
+  //   name: string;
+  //   prefix: string;
+  //   section: string;
+  //   semester: 'FA' | 'SP' | 'SU';
+  //   year: number;
+  // }
+
+  // ProfessorAppeal {
+  //   appeal_id: number;
+  //   appeal_text: string;
+  //   assignment_id: number;
+  //   code: number;
+  //   created_at: Date;
+  //   is_open: boolean;
+  //   prefix: string;
+  //   student_id: number;
+  //   student_name: string;
+  // }
+
   // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
