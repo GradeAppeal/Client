@@ -2,20 +2,35 @@
   <mat-card class="courses" *ngFor="let course of courses">
     <mat-card-title class="course-wording">{{ course.courseNumber }}</mat-card-title>
     <mat-card-subtitle class="course-wording">{{ course.courseName }}</mat-card-subtitle>
-    <button type="submit" (click)="swapView('editAssignments')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full assignments-button">View Assignments</button>
-    <button type="submit" (click)="swapView('editRoster')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Edit Roster</button>
+    <button type="submit" (click)="swapView('editAssignments', currentCourse)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full assignments-button">View Assignments</button>
+    <button type="submit" (click)="swapView('editRoster', course)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Edit Roster</button>
   </mat-card>
 </div>
 
 <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
   <p>editing assignments</p>
-  <button type="submit" (click)="swapView('view')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
+  <button type="submit" (click)="swapView('view', currentCourse)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
 </div>
 
 <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
-  <div class="roster-wrapper" *ngFor="let student of students">
-    <p>{{student.name}}</p>
-    <p *ngIf="student.isGrader == true">: Grader</p>
+  <div class="roster-wrapper">
+    <table class="roster-table" *ngIf="currentCourse.students.length != 0">
+      <tr>
+        <th>Name</th>
+        <th>Role</th>
+      </tr>
+      <tr *ngFor="let student of currentCourse.students">
+        <td (click)="editStudent(student)">{{student.studentName}}</td>
+        <td *ngIf="student.isGrader == false">Student</td>
+        <td *ngIf="student.isGrader == true">Grader</td>
+      </tr>
+    </table>
+    <p *ngIf="currentCourse.students.length == 0"> There are no students in this class.</p>
   </div>
-  <button type="submit" (click)="swapView('view')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
+  <button type="submit" (click)="addStudents()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Add Students</button>
+  <button type="submit" (click)="swapView('view', currentCourse)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button">Back</button>
+  <mat-form-field class="example-full-width">
+    <mat-label>Students to add</mat-label>
+    <textarea matInput [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
+  </mat-form-field>
 </div>

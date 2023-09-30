@@ -21,6 +21,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
@@ -31,6 +33,7 @@ import { ProfessorAppealInboxComponent } from './components/professor-appeal-inb
 import { StudentNavigationComponent } from './student-navigation/student-navigation.component';
 import { InteractionHistoryComponent } from './interaction-history/interaction-history.component';
 import { NewAppealComponent } from './new-appeal/new-appeal.component';
+import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,8 @@ import { NewAppealComponent } from './new-appeal/new-appeal.component';
     ProfessorAppealInboxComponent,
     StudentNavigationComponent,
     InteractionHistoryComponent,
-    NewAppealComponent
+    NewAppealComponent,
+    EditStudentsPopUpComponent
 
   ],
   imports: [
@@ -66,6 +70,8 @@ import { NewAppealComponent } from './new-appeal/new-appeal.component';
     MatTabsModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatInputModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
