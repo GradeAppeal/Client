@@ -24,6 +24,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 
+
 import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/profile/profile.component';

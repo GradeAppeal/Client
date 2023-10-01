@@ -1,4 +1,3 @@
-<main>
 <div class="courses-container">
     <div class="course" *ngFor="let course of studentCourses">
             <div class="course-name">
@@ -6,9 +5,9 @@
             </div>
             <div class="course-description">{{course.course_name}}</div>
             <div class="course-professor">{{course.professor_name}}</div>
-            <!-- <button mat-button class="view-appeal-button" *ngIf="grader">View Appeals</button> -->
-            <button class="appeal-button" (click)="onNewAppeal()" mat-button>New Appeal</button>
+            <div class="buttons">
+                <button class="white-button blue-button" mat-button>View Appeals</button>      <!--*ngIf="course.is_grader" -->
+                <button class="blue-button" (click)="onNewAppeal(course)" mat-button>New Appeal</button>
+            </div>
     </div>
-    <div class="footer"></div>
 </div>
-</main>

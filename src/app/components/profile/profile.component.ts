@@ -97,4 +97,8 @@ export class ProfileComponent {
     this.studentsToAdd = this.addedStudents.split("\n");
     this.studentsToAdd.forEach( (student) => {this.currentCourse.students.push({studentName: student, isGrader: false});});
   }
+
+  getCourses () {
+    return this.courses;
+  }
 }
