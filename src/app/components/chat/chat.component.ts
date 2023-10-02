@@ -6,14 +6,12 @@ import {Component, ElementRef, Input, Output, ViewChild, EventEmitter} from '@an
 })
 export class ChatComponent {
   @Output() customTitleChange: EventEmitter<string> = new EventEmitter<string>();
-
-@Input() customTitle: string;
+  @Input() appeal_id: string;
 
  title = 'chat-ui';
  email = 'abc123@gmail.com'
  @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
  chatInputMessage: string = "";
- 
  professor = {
    id: 1,
    email: '1234@gmail.com'
@@ -34,6 +32,9 @@ export class ChatComponent {
    },
  ];
 
+ constructor(){
+
+ }
  ngAfterViewChecked() {
    this.scrollToBottom()
  }
@@ -46,6 +47,7 @@ export class ChatComponent {
 
    this.chatInputMessage = ""
    this.scrollToBottom()
+
  }
 
  scrollToBottom() {

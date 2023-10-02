@@ -100,16 +100,8 @@ export class ProfessorAppealInboxComponent {
     this.selectedAppeal = appeal;
     console.log(this.selectedAppeal);
   }
-  toggleChat() {
-    this.chat();
-    this.showChat = !this.showChat;
-    console.log(this.showChat)
-  }
-  
-  composeMessage() {}
-  chat() {
-    const changeToChat = "true";
-    this.isChat.emit(changeToChat);
+  chat(appealID: number) {
+    this.isChat.emit(appealID.toString());
    }
   
 }

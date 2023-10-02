@@ -11,6 +11,7 @@ export class ProfessorNavigationComponent {
     customTitle: string;
   constructor(private router: Router) { }
   showChat: boolean = false;
+  appeal_id = "";
 
   email = "victor.norman@calvin.edu";
   selectedTab: string = "Appeal Inbox";
@@ -24,14 +25,11 @@ export class ProfessorNavigationComponent {
   ngOnInit() {
   }
 
-  onIsChat(customTitle: string) {
-    // Do something with the customTitle received from app-chat
-    if (customTitle == "true"){
-      console.log('Received customTitle:', customTitle);
+  onIsChat(appeal_id: string) {
+    if (appeal_id){
+      console.log('Received assignment:', appeal_id);
+      this.appeal_id = appeal_id;
       this.selectedTab = "Chat";
-    }
-    else{
-      this.selectedTab = "Appeals Inbox";
     }
   }
   
