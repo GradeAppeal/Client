@@ -1,4 +1,4 @@
-.logo,
+@import "src/styles.scss";
 
 .card {
   width: 80%;
@@ -40,7 +40,7 @@
 }
 
 .welcome {
-  color: #3A62D7;
+  color: $primary-blue;
   font-size: 3vw;
   width: 20vw;
   margin-left: 7vh;
@@ -81,7 +81,7 @@
 }
 
 .welcome {
-  color: #3962D7;
+  color: $primary-blue;
   font-size: 3vw;
   width: 20vw;
   margin-left: 7vh;
@@ -91,7 +91,7 @@
 
 .gradeboost {
   margin-bottom: 10vh;
-  color: #3962D7;
+  color: $primary-blue;
   font-size: 3vw;
   margin-left: 7vh;
   text-align: left;

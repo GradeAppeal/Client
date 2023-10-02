@@ -13,15 +13,17 @@ import { Router } from '@angular/router';
 
 export class StudentDashboardComponent {
   studentCourses!: StudentCourse[];
-
+  course_string: string;
   constructor(private readonly supabase: SupabaseService, private router: Router) {}
   async ngOnInit(): Promise<void> {
     this.studentCourses = await this.supabase.fetchStudentCourses(1);
     console.log(this.studentCourses);
   }
-  onNewAppeal(){
-    this.router.navigateByUrl('new-appeal')
+  onNewAppeal(course: StudentCourse){
+    this.course_string  = course.course_prefix + course.course_code + "-" + course.course_section + " - " + course.professor_name; 
+    this.router.navigateByUrl(`/new-appeal?course_name=${this.course_string}`)
   }
+
 }
 
 

@@ -1,3 +1,5 @@
+@import "src/styles.scss";
+
 .sidenav-container {
     height: 100%;
   }
@@ -11,26 +13,23 @@
     padding-bottom: 16px;
   }
 
+  .tab-list {
+    background-color: $secondary-blue;
+    height: 100%;
+    }
+
+
   mat-sidenav-content {
     padding: 16px; /* Add padding to content area */
   }
 
-.material-symbols-outlined {
-  cursor: pointer;
-  color: blue;
-  font-size: 50px;
-  padding-right: 10px;
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
 .top-bar{
-  font-size: 40px;
-  color: blue;
-}
-
+    font-size: 40px;
+    background-color: $primary-blue;
+    color: white;
+    height: 80px;
+    padding-top: 8px;
+  }
 .left-content{
   margin-right: auto;
   align-items: center; 
@@ -40,4 +39,8 @@
   margin-left: auto; 
   display: flex;
   align-items: center; 
+}
+
+.material-symbols-outlined {
+  color: white;
 }

@@ -18,11 +18,11 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened>
       <mat-action-list class="tab-list">
-        <button mat-list-item (click)="selectTab('Appeal Inbox')" [class.selected]="selectedTab === 'Appeal Inbox'">Appeal Inbox</button>
-        <button mat-list-item (click)="selectTab('Chat')" [class.selected]="selectedTab === 'Chat'">Chat</button>
-        <button mat-list-item (click)="selectTab('Closed Appeals')" [class.selected]="selectedTab === 'Closed Appeals'">Closed Appeals</button>
-        <button mat-list-item (click)="selectTab('Profile')" [class.selected]="selectedTab === 'Profile'">Profile</button>
-        <button mat-list-item (click)="selectTab('Edit Templates')" [class.selected]="selectedTab === 'Edit Templates'">Edit Templates</button>
+        <button mat-list-item (click)="selectTab('Appeal Inbox')" [class.selected]="selectedTab === 'Appeal Inbox'">&ensp;Appeal Inbox</button>
+        <button mat-list-item (click)="selectTab('Chat')" [class.selected]="selectedTab === 'Chat'">&ensp;Chat</button>
+        <button mat-list-item (click)="selectTab('Closed Appeals')" [class.selected]="selectedTab === 'Closed Appeals'">&ensp;Closed Appeals</button>
+        <button mat-list-item (click)="selectTab('Profile')" [class.selected]="selectedTab === 'Profile'">&ensp;Profile</button>
+        <button mat-list-item (click)="selectTab('Edit Templates')" [class.selected]="selectedTab === 'Edit Templates'">&ensp;Edit Templates</button>
       </mat-action-list>
     </mat-sidenav>
 
