@@ -1,11 +1,8 @@
-// .sidenav-container {
-//     position: fixed; /* Fixed position to keep it in place while scrolling */
-//     top: 10; /* Position from the top of the viewport */
-//     left: 10; /* Position from the left side */
-//     width: 250px; /* Adjust the width as needed */
-//     height: 100%; /* Make it full height of the viewport */
-//     margin-right: 200px;
-//   }
+@import "src/styles.scss";
+
+.sidenav-container {
+    height: 100%;
+  }
   
   mat-sidenav {
     width: 200px;
@@ -17,26 +14,23 @@
     padding-bottom: 16px;
   }
 
+  .tab-list {
+    background-color: $secondary-blue;
+    height: 100%;
+    }
+
+
   mat-sidenav-content {
     padding: 16px; /* Add padding to content area */
   }
 
-.material-symbols-outlined {
-  cursor: pointer;
-  color: blue;
-  font-size: 50px;
-  padding-right: 10px;
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
 .top-bar{
-  font-size: 40px;
-  color: blue;
-}
-
+    font-size: 40px;
+    background-color: $primary-blue;
+    color: white;
+    height: 80px;
+    padding-top: 8px;
+  }
 .left-content{
   margin-right: auto;
   align-items: center; 
@@ -47,6 +41,15 @@
   display: flex;
   align-items: center; 
 }
+
+.material-symbols-outlined {
+  color: white;
+}
+
+.material-symbols-outlined {
+  color: white;
+}
+
 
 .content{
   height: 100vh;

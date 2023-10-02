@@ -23,3 +23,32 @@
 .roster-wrapper {
   display: flex;
 }
+
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.roster-table tr:nth-child(even){background-color: #f2f2f2;}
+.roster-table tr:hover {background-color: #ddd;}
+
+.roster-table, .roster-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.roster-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2196f3;
+  color: white;
+}
+
+.roster-table td {
+  padding: 5px;
+}
+
+.blue-button {
+  margin-bottom: 5px;
+}

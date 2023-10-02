@@ -7,4 +7,5 @@ export interface StudentCourse {
   course_semester: 'FA' | 'SP' | 'SU';
   course_year: number;
   professor_name: string;
+  is_grader: boolean;
 }
