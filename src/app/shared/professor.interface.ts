@@ -9,13 +9,16 @@ export interface ProfessorCourse {
 }
 
 export interface ProfessorAppeal {
-  appeal_id: number;
-  appeal_text: string;
-  assignment_id: number;
   code: number;
-  created_at: Date;
-  is_open: boolean;
-  prefix: string;
+  course_name: string;
+  course_section: string;
+  course_semester: string;
+  course_year: number;
   student_id: number;
   student_name: string;
+  assignment_id: number;
+  appeal_id: number;
+  created_at: Date;
+  appeal_text: string;
+  is_open: boolean;
 }
