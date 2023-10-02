@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./edit-templates.component.scss']
 })
 export class EditTemplatesComponent {
+  templates = [];
 
+  editTemplate(template: string){
+
+  }
 }

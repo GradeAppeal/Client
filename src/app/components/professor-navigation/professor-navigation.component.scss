@@ -1,9 +1,15 @@
-.sidenav-container {
-    height: 100%;
-  }
+// .sidenav-container {
+//     position: fixed; /* Fixed position to keep it in place while scrolling */
+//     top: 10; /* Position from the top of the viewport */
+//     left: 10; /* Position from the left side */
+//     width: 250px; /* Adjust the width as needed */
+//     height: 100%; /* Make it full height of the viewport */
+//     margin-right: 200px;
+//   }
   
   mat-sidenav {
     width: 200px;
+    height: 100%;
   }
   
   .tab-list {
@@ -40,4 +46,8 @@
   margin-left: auto; 
   display: flex;
   align-items: center; 
+}
+
+.content{
+  height: 100vh;
 }

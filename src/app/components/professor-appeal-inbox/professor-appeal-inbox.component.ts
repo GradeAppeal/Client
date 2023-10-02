@@ -1,10 +1,28 @@
 import { ViewEncapsulation } from '@angular/compiler';
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import {
   ProfessorAppeal,
   ProfessorCourse,
 } from 'src/app/shared/professor.interface';
+
+interface CombinedData {
+  code: number;
+  id: number;
+  name: string;
+  prefix: string;
+  section: string;
+  semester: 'FA' | 'SP' | 'SU';
+  year: number;
+  appeal_id: number;
+  appeal_text: string;
+  assignment_id: number;
+  created_at: Date;
+  is_open: boolean;
+  student_id: number;
+  student_name: string;
+}
+
 
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -12,10 +30,12 @@ import {
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
 export class ProfessorAppealInboxComponent {
+  @Output() isChat: EventEmitter<string> = new EventEmitter<string>();
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
-  selectedAppeal: any;
+  email = "abc123@gmail.com"
+  showChat: boolean = false;
   date = new Date();
   appeal1 = {
     name: 'Bob Bubby',
@@ -40,37 +60,24 @@ export class ProfessorAppealInboxComponent {
   };
   professorAppeals!: ProfessorAppeal[];
   professorCourse!: ProfessorCourse[];
+  selectedAppeal : ProfessorAppeal;
   constructor(private supabase: SupabaseService) {
-    this.appeals = [this.appeal1, this.appeal2, this.appeal3];
-    this.appeal = {
-      name: '',
-      course_name: '',
-      assignment_id: '',
-      grade_received: '',
-    };
-    this.selectedAppeal = {
-      name: null,
-      course_name: null,
-      assignment_id: null,
-      grade_received: null,
-    };
   }
   async ngOnInit(): Promise<void> {
     this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
     this.professorCourse = await this.supabase.fetchProfessorCourses(1);
     console.log(this.professorAppeals);
-    console.log(this.professorCourse);
-    console.log(this.professorCourse[0].name);
-    console.log(this.professorCourse[0].prefix);
-    console.log(this.professorCourse[0].year);
-    console.log(this.professorCourse[1].name);
+    this.selectedAppeal = this.professorAppeals[0];
+    this.fixDate();
+  }
+  fixDate(){
   }
   // ProfessorCourse {
-  //   code: number;
+  //   code: number;  
   //   id: number;
-  //   name: string;
+  //   name: string;          // 
   //   prefix: string;
-  //   section: string;
+  //   section: string;          //
   //   semester: 'FA' | 'SP' | 'SU';
   //   year: number;
   // }
@@ -78,19 +85,31 @@ export class ProfessorAppealInboxComponent {
   // ProfessorAppeal {
   //   appeal_id: number;
   //   appeal_text: string;
-  //   assignment_id: number;
+  //   assignment_id: number;     //
   //   code: number;
   //   created_at: Date;
   //   is_open: boolean;
   //   prefix: string;
   //   student_id: number;
-  //   student_name: string;
+  //   student_name: string;    //
   // }
 
   // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.selectedAppeal = appeal;
+    console.log(this.selectedAppeal);
   }
+  toggleChat() {
+    this.chat();
+    this.showChat = !this.showChat;
+    console.log(this.showChat)
+  }
+  
   composeMessage() {}
+  chat() {
+    const changeToChat = "true";
+    this.isChat.emit(changeToChat);
+   }
+  
 }

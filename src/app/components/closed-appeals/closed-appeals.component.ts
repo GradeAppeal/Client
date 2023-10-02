@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./closed-appeals.component.scss']
 })
 export class ClosedAppealsComponent {
-
+closedAppeals = [];
 }
