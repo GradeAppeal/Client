@@ -1,15 +1,13 @@
-<p>student-dashboard works!</p>
-<!-- Use mat-tab-group -->
-<div class="top-bar"></div>
-<mat-drawer-container class="example-container">
-    <mat-drawer #drawer mode="side" opened>
-        <mat-card class="course-dashboard"> <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /><p>Course Dashboard</p></mat-card>
-        <mat-card><p>Grader Dashboard</p></mat-card>
-        <mat-card><p>Interaction History</p></mat-card>
-
-    </mat-drawer>
-    
-    <mat-drawer-content>
-        <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-    </mat-drawer-content>
-  </mat-drawer-container>
+<div class="courses-container">
+    <div class="course" *ngFor="let course of studentCourses">
+            <div class="course-name">
+                {{course.course_prefix}}-{{course.course_code}}-{{course.course_section}}-{{course.course_year}}{{course.course_semester}}
+            </div>
+            <div class="course-description">{{course.course_name}}</div>
+            <div class="course-professor">{{course.professor_name}}</div>
+            <div class="buttons">
+                <button class="white-button blue-button" mat-button>View Appeals</button>      <!--*ngIf="course.is_grader" -->
+                <button class="blue-button" (click)="onNewAppeal(course)" mat-button>New Appeal</button>
+            </div>
+    </div>
+</div>

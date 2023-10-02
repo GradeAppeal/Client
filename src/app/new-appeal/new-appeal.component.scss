@@ -1,0 +1,60 @@
+@import "src/styles.scss";
+.main {
+    background-color: $primary-blue;
+    min-height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+.card-container {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+}
+
+.appeal-card {
+    // min-height: 350px;
+    height: 100%;
+    width: 70%;
+}
+
+mat-card-title {
+    text-align: center;
+    font-size: 40px;
+    padding-top: 2%;
+}
+
+.top-bar{
+    font-size: 40px;
+    color: $primary-blue;
+    height: 80px;
+    padding-top: 8px;
+  }
+
+  .left-content{
+    margin-right: auto;
+    align-items: center; 
+    display: flex;
+  }
+
+.right-content {
+    margin-left: auto; 
+    display: flex;
+    align-items: center; 
+}
+
+.input-area {
+    padding-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+mat-form-field {
+    width: 70%;
+}
+
+.mat-raised-button.mat-primary .mat-button-focus-overlay {
+    // background-color: blue;
+}

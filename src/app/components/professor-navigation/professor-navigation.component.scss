@@ -1,3 +1,5 @@
+@import "src/styles.scss";
+
 .sidenav-container {
     height: 100%;
   }
@@ -11,6 +13,34 @@
     padding-bottom: 16px;
   }
 
+  .tab-list {
+    background-color: $secondary-blue;
+    height: 100%;
+    }
+
+
   mat-sidenav-content {
     padding: 16px; /* Add padding to content area */
   }
+
+.top-bar{
+    font-size: 40px;
+    background-color: $primary-blue;
+    color: white;
+    height: 80px;
+    padding-top: 8px;
+  }
+.left-content{
+  margin-right: auto;
+  align-items: center; 
+  display: flex;
+}
+.right-content {
+  margin-left: auto; 
+  display: flex;
+  align-items: center; 
+}
+
+.material-symbols-outlined {
+  color: white;
+}

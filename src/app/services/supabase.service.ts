@@ -7,8 +7,12 @@ import {
   SupabaseClient,
   User,
 } from '@supabase/supabase-js';
-import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { StudentCourse } from '../shared/student.interface';
+import {
+  ProfessorCourse,
+  ProfessorAppeal,
+} from '../shared/professor.interface';
 
 export interface Profile {
   id?: string;
@@ -88,7 +92,7 @@ export class SupabaseService {
    * @param sid student id
    * @returns
    */
-  async fetchStudentCourses(sid: number) {
+  async fetchStudentCourses(sid: number): Promise<StudentCourse[]> {
     const { data, error } = await this.supabase.rpc('get_student_courses', {
       sid,
     });
@@ -99,10 +103,52 @@ export class SupabaseService {
     return data;
   }
 
-  async fetchAllCourses() {
-    let { data, error } = await this.supabase.rpc('get_all_courses');
+  /**
+   * fetch from supabase: professor courses
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchProfessorCourses(pid: number): Promise<ProfessorCourse[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_courses', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorCourses');
+    }
+    return data;
+  }
 
-    if (error) console.error(error);
-    else return data;
+  /**
+   * fetch from supabase: professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchProfessorAppeals(pid: number): Promise<ProfessorAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_appeals', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorAppeals');
+    }
+    return data;
+  }
+  /**
+   * fetch from supabase: student grade for an assignment they made an appeal for
+   * @param aid assignment id
+   * @param sid student_id
+   * @returns student's grade
+   */
+  async fetchStudentGrade(aid: number, sid: number): Promise<number> {
+    const { data, error } = await this.supabase.rpc('get_student_grade', {
+      aid,
+      sid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentGrade');
+    }
+    return data;
   }
 }
