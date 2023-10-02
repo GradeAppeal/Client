@@ -13,22 +13,13 @@ import {
   ProfessorCourse,
   ProfessorAppeal,
 } from '../shared/professor.interface';
+import { Course, Assignment } from '../shared/psql.interface';
 
 export interface Profile {
   id?: string;
   username: string;
   website: string;
   avatar_url: string;
-}
-
-export interface Course {
-  id: number;
-  prefix: string;
-  code: number;
-  name: string;
-  section: string;
-  semester: string;
-  year: number;
 }
 
 export interface CourseState {
@@ -148,6 +139,28 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchStudentGrade');
+    }
+    return data;
+  }
+
+  async fetchCourseForNewAppeal(cid: number): Promise<Course> {
+    const { data, error } = await this.supabase.rpc('get_course', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchCourseForNewAppeal');
+    }
+    return data[0];
+  }
+
+  async fetchAssignmentsForNewAppeal(cid: number): Promise<Assignment[]> {
+    const { data, error } = await this.supabase.rpc('get_assignments', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchAssignmentsForNewAppeal');
     }
     return data;
   }
