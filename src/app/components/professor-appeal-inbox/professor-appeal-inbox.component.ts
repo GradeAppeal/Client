@@ -33,7 +33,7 @@ export class ProfessorAppealInboxComponent {
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
-  email = "abc123@gmail.com"
+  email = 'abc123@gmail.com';
   showChat: boolean = false;
   date = new Date();
   appeal1 = {
@@ -59,39 +59,23 @@ export class ProfessorAppealInboxComponent {
   };
   professorAppeals!: ProfessorAppeal[];
   professorCourse!: ProfessorCourse[];
-  selectedAppeal : ProfessorAppeal;
-  constructor(private supabase: SupabaseService) {
-  }
+  selectedAppeal: ProfessorAppeal;
+  gradesFetched = false;
+  grade: number;
+  constructor(private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
     this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
     this.professorCourse = await this.supabase.fetchProfessorCourses(1);
     console.log(this.professorAppeals);
     this.selectedAppeal = this.professorAppeals[0];
+    this.grade = await this.supabase.fetchStudentGrade(
+      this.selectedAppeal.assignment_id,
+      this.selectedAppeal.student_id
+    );
+    this.gradesFetched = true;
     this.fixDate();
   }
-  fixDate(){
-  }
-  // ProfessorCourse {
-  //   code: number;  
-  //   id: number;
-  //   name: string;          // 
-  //   prefix: string;
-  //   section: string;          //
-  //   semester: 'FA' | 'SP' | 'SU';
-  //   year: number;
-  // }
-
-  // ProfessorAppeal {
-  //   appeal_id: number;
-  //   appeal_text: string;
-  //   assignment_id: number;     //
-  //   code: number;
-  //   created_at: Date;
-  //   is_open: boolean;
-  //   prefix: string;
-  //   student_id: number;
-  //   student_name: string;    //
-  // }
+  fixDate() {}
 
   // Function to select an appeal
   selectAppeal(appeal: any) {
@@ -102,13 +86,12 @@ export class ProfessorAppealInboxComponent {
   toggleChat() {
     this.chat();
     this.showChat = !this.showChat;
-    console.log(this.showChat)
+    console.log(this.showChat);
   }
-  
+
   composeMessage() {}
   chat() {
-    const changeToChat = "true";
+    const changeToChat = 'true';
     this.isChat.emit(changeToChat);
-   }
-  
+  }
 }

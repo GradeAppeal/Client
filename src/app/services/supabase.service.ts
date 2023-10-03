@@ -198,6 +198,11 @@ export class SupabaseService {
     console.log({ data });
   }
 
+  /**
+   * Get all appeals for interaction history
+   * @param aid Appeal Id
+   * @returns a list of all the messages for the appeal
+   */
   async fetchMessages(aid: number): Promise<Message[]> {
     const { data, error } = await this.supabase.rpc('get_messages', {
       aid,
