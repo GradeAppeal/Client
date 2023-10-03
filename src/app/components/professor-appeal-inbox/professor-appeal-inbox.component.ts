@@ -1,7 +1,7 @@
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { ProfessorAppeal } from 'src/app/shared/professor.interface';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StudentNavigationComponent } from './student-navigation.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 describe('StudentNavigationComponent', () => {
   let component: StudentNavigationComponent;
@@ -8,7 +10,8 @@ describe('StudentNavigationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [StudentNavigationComponent]
+      declarations: [StudentNavigationComponent],
+      imports: [MatToolbarModule, MatSidenavModule],
     });
     fixture = TestBed.createComponent(StudentNavigationComponent);
     component = fixture.componentInstance;

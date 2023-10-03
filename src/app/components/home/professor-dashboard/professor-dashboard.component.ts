@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { ProfessorCourse } from 'src/app/shared/professor.interface';
+import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
 
 @Component({
   selector: 'app-professor-dashboard',
@@ -14,7 +14,5 @@ export class ProfessorDashboardComponent {
   constructor(private readonly supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
     this.professorCourses = await this.supabase.fetchProfessorCourses(1);
-
-    console.log(this.professorCourses);
   }
 }
