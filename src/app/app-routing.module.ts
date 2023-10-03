@@ -12,19 +12,19 @@ import { NewAppealComponent } from './new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: LoginComponent,
   },
   {
-    path: "student",
+    path: 'student',
     component: StudentNavigationComponent,
   },
   {
-    path: "student/:id",
+    path: 'student/:id',
     component: StudentDashboardComponent,
   },
   {
-    path: "new-appeal",
+    path: 'new-appeal/:courseId',
     component: NewAppealComponent,
   },
   {
@@ -32,30 +32,29 @@ const routes: Routes = [
     component: ProfessorNavigationComponent,
   },
   {
-    path: "professor/chat",
+    path: 'professor/chat',
     component: ChatComponent,
   },
   {
-    path: "professor/closed-appeals",
+    path: 'professor/closed-appeals',
     component: ClosedAppealsComponent,
   },
   {
-    path: "professor/profile",
+    path: 'professor/profile',
     component: ProfileComponent,
   },
   {
-    path: "professor/edit-templates",
+    path: 'professor/edit-templates',
     component: EditTemplatesComponent,
   },
   {
-    path: "**",
-    redirectTo: "/",
-  }
-
+    path: '**',
+    redirectTo: '/',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
