@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../services/supabase.service';
-import { Course, Assignment } from 'src/app/shared/psql.interface';
+import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
+import { getTimestampTz } from '../shared/functions/time.util';
 
 @Component({
   selector: 'app-new-appeal',
@@ -16,7 +17,7 @@ export class NewAppealComponent implements OnInit {
   course: Course;
   isAssignmentsFetched = false;
   assignments: Assignment[];
-  selected_assignment: string;
+  selectedAssignmentId: number;
   appeal: string;
 
   constructor(
@@ -24,12 +25,15 @@ export class NewAppealComponent implements OnInit {
     private route: ActivatedRoute,
     private supabase: SupabaseService
   ) {}
+
   navigateToHome() {
     this.router.navigate(['/']);
   }
+
   async ngOnInit() {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
+      // don't render form until course and assignment information has been fetched
       this.course = await this.supabase.fetchCourseForNewAppeal(this.courseId);
       this.isCourseFetched = true;
       this.assignments = await this.supabase.fetchAssignmentsForNewAppeal(
@@ -42,14 +46,11 @@ export class NewAppealComponent implements OnInit {
     }
   }
 
-  getSelectedAssignment() {
-    return this.selected_assignment;
-  }
-
-  getAppeal() {
-    return this.appeal;
-  }
-
+  /**
+   * Formats course name information like shown in Moodle
+   * @param course Course object containing course information
+   * @returns formatted string of course (moodle format)
+   */
   formatCourse(course: Course): string {
     return course.section
       ? `${course.year - 2000}${course.semester} ${course.prefix}-${
@@ -58,5 +59,24 @@ export class NewAppealComponent implements OnInit {
       : `${course.year - 2000}${course.semester} ${course.prefix}-${
           course.code
         } - ${course.name}`;
+  }
+
+  /**
+   * Submit student appeal to database
+   */
+  async onSubmitAppeal(): Promise<void> {
+    const now = getTimestampTz(new Date());
+    try {
+      await this.supabase.insertNewAppeal(
+        this.selectedAssignmentId,
+        1,
+        this.courseId,
+        now,
+        this.appeal
+      );
+    } catch (err) {
+      console.log(err);
+      throw new Error('onSubmitAppeal');
+    }
   }
 }

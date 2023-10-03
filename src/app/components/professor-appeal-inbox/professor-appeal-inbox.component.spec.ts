@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfessorAppealInboxComponent } from './professor-appeal-inbox.component';
+import { MatListModule } from '@angular/material/list';
 
 describe('ProfessorAppealInboxComponent', () => {
   let component: ProfessorAppealInboxComponent;
@@ -8,7 +9,8 @@ describe('ProfessorAppealInboxComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ProfessorAppealInboxComponent]
+      declarations: [ProfessorAppealInboxComponent],
+      imports: [MatListModule],
     });
     fixture = TestBed.createComponent(ProfessorAppealInboxComponent);
     component = fixture.componentInstance;

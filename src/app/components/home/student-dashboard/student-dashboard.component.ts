@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { StudentCourse } from 'src/app/shared/student.interface';
+import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 
 @Component({

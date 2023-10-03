@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewAppealComponent } from './new-appeal.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('NewAppealComponent', () => {
   let component: NewAppealComponent;
@@ -8,7 +9,8 @@ describe('NewAppealComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NewAppealComponent]
+      declarations: [NewAppealComponent],
+      imports: [ActivatedRoute],
     });
     fixture = TestBed.createComponent(NewAppealComponent);
     component = fixture.componentInstance;
