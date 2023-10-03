@@ -13,7 +13,11 @@ import {
   ProfessorCourse,
   ProfessorAppeal,
 } from '../shared/interfaces/professor.interface';
-import { Course, Assignment } from '../shared/interfaces/psql.interface';
+import {
+  Course,
+  Assignment,
+  Message,
+} from '../shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -192,5 +196,16 @@ export class SupabaseService {
       throw new Error('insertNewAppeal');
     }
     console.log({ data });
+  }
+
+  async fetchMessages(aid: number): Promise<Message[]> {
+    const { data, error } = await this.supabase.rpc('get_messages', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchMessages');
+    }
+    return data;
   }
 }
