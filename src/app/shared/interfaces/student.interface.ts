@@ -9,3 +9,12 @@ export interface StudentCourse {
   professor_name: string;
   is_grader: boolean;
 }
+
+export interface NewAppeal {
+  student_name : string;
+  student_email : string;
+  selected_assignment : string;  
+  grade : string;
+  reason: string;
+  created_at : string;
+}
