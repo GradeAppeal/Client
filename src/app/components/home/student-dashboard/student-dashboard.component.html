@@ -1,13 +1,14 @@
 <div class="courses-container">
-    <div class="course" *ngFor="let course of studentCourses">
-            <div class="course-name">
+    <mat-card class="course" *ngFor="let course of studentCourses">
+            <mat-card-title class="course-name">
                 {{course.course_prefix}}-{{course.course_code}}-{{course.course_section}}-{{course.course_year}}{{course.course_semester}}
-            </div>
-            <div class="course-description">{{course.course_name}}</div>
-            <div class="course-professor">{{course.professor_name}}</div>
+            </mat-card-title>
+            <mat-card-subtitle class="course-description">{{course.course_name}}</mat-card-subtitle>
+            <mat-card-subtitle class="course-professor">{{course.professor_name}}</mat-card-subtitle>
             <div class="buttons">
-                <button class="white-button blue-button" mat-button>View Appeals</button>      <!--*ngIf="course.is_grader" -->
-                <button class="blue-button" (click)="onNewAppeal(course)" mat-button>New Appeal</button>
+                <button class="blue-button" style="color: white" mat-button>View Appeals</button>      <!--*ngIf="course.is_grader" -->
+                <button class="blue-button" style="color: white" (click)="onNewAppeal(course)" mat-button>New Appeal</button>
             </div>
-    </div>
+            <p style="color: white">FallGuys2Memfis</p>
+        </mat-card>
 </div>
