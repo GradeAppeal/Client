@@ -17,8 +17,8 @@
   <div class="roster-wrapper">
     <table class="roster-table" *ngIf="currentCourse.students.length != 0">
       <tr>
-        <th>Name</th>
-        <th>Role</th>
+        <th class="global-th">Name</th>
+        <th class="global-th">Role</th>
       </tr>
       <tr *ngFor="let student of currentCourse.students">
         <td (click)="editStudent(student)">{{student.studentName}}</td>
