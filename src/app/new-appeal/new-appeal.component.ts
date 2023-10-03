@@ -1,35 +1,82 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StudentCourse } from '../shared/student.interface';
 import { ActivatedRoute } from '@angular/router';
-
+import { SupabaseService } from '../services/supabase.service';
+import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
+import { getTimestampTz } from '../shared/functions/time.util';
 
 @Component({
   selector: 'app-new-appeal',
   templateUrl: './new-appeal.component.html',
-  styleUrls: ['./new-appeal.component.scss']
+  styleUrls: ['./new-appeal.component.scss'],
 })
 export class NewAppealComponent implements OnInit {
-  email = "sth6@calvin.edu";
-  course_name : string = "";
-  selected_assignment : string;
-  appeal : string;
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  email = 'sth6@calvin.edu';
+  isCourseFetched = false;
+  courseId: number;
+  course: Course;
+  isAssignmentsFetched = false;
+  assignments: Assignment[];
+  selectedAssignmentId: number;
+  appeal: string;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private supabase: SupabaseService
+  ) {}
 
   navigateToHome() {
-    this.router.navigate(['/'])
-  }
-  ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.course_name = params['course_name'];
-    });
+    this.router.navigate(['/']);
   }
 
-  getSelectedAssignment () {
-    return this.selected_assignment;
+  async ngOnInit() {
+    this.courseId = this.route.snapshot.params['courseId'];
+    try {
+      // don't render form until course and assignment information has been fetched
+      this.course = await this.supabase.fetchCourseForNewAppeal(this.courseId);
+      this.isCourseFetched = true;
+      this.assignments = await this.supabase.fetchAssignmentsForNewAppeal(
+        this.courseId
+      );
+      this.isAssignmentsFetched = true;
+    } catch (err) {
+      console.log(err);
+      throw new Error('Error while fetching course information for new appeal');
+    }
   }
 
-  getAppeal () {
-    return this.appeal;
+  /**
+   * Formats course name information like shown in Moodle
+   * @param course Course object containing course information
+   * @returns formatted string of course (moodle format)
+   */
+  formatCourse(course: Course): string {
+    return course.section
+      ? `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        }-${course.section} - ${course.name}`
+      : `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        } - ${course.name}`;
+  }
+
+  /**
+   * Submit student appeal to database
+   */
+  async onSubmitAppeal(): Promise<void> {
+    const now = getTimestampTz(new Date());
+    try {
+      await this.supabase.insertNewAppeal(
+        this.selectedAssignmentId,
+        1,
+        this.courseId,
+        now,
+        this.appeal
+      );
+    } catch (err) {
+      console.log(err);
+      throw new Error('onSubmitAppeal');
+    }
   }
 }

@@ -1,65 +1,72 @@
-import {Component, ElementRef, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  Output,
+  ViewChild,
+  EventEmitter,
+} from '@angular/core';
+import { SupabaseService } from 'src/app/services/supabase.service';
 @Component({
- selector: 'app-chat',
- templateUrl: './chat.component.html',
- styleUrls: ['./chat.component.scss']
+  selector: 'app-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent {
-  @Output() customTitleChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() customTitleChange: EventEmitter<string> =
+    new EventEmitter<string>();
   @Input() appeal_id: string;
 
- title = 'chat-ui';
- email = 'abc123@gmail.com'
- @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
- chatInputMessage: string = "";
- professor = {
-   id: 1,
-   email: '1234@gmail.com'
- }
+  title = 'chat-ui';
+  email = 'abc123@gmail.com';
+  @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
+  chatInputMessage: string = '';
+  professor = {
+    id: 1,
+    email: '1234@gmail.com',
+  };
 
- student = {
-   id: 2,
-   email: 'abc@gmail.com'
- }
+  student = {
+    id: 2,
+    email: 'abc@gmail.com',
+  };
 
- chats: {
-   user: any,
-   message: string
- }[] = [
-   {
-     user: this.student,
-     message: "Hello professor. Please fix my grade. Thanks"
-   },
- ];
+  chats: {
+    user: any;
+    message: string;
+  }[] = [
+    {
+      user: this.student,
+      message: 'Hello professor. Please fix my grade. Thanks',
+    },
+  ];
+  constructor(private supabase: SupabaseService) {}
+  async ngOnInit() {
+    const messageData = await this.supabase.fetchMessages(29);
+  }
 
- constructor(){
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
 
- }
- ngAfterViewChecked() {
-   this.scrollToBottom()
- }
+  send() {
+    this.chats.push({
+      message: this.chatInputMessage,
+      user: this.professor,
+    });
 
- send() {
-   this.chats.push({
-     message: this.chatInputMessage,
-     user: this.professor
-   });
+    this.chatInputMessage = '';
+    this.scrollToBottom();
+  }
 
-   this.chatInputMessage = ""
-   this.scrollToBottom()
+  scrollToBottom() {
+    const maxScroll = this.list?.nativeElement.scrollHeight;
+    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
+  }
 
- }
-
- scrollToBottom() {
-   const maxScroll = this.list?.nativeElement.scrollHeight;
-   this.list?.nativeElement.scrollTo({top: maxScroll, behavior: 'smooth'});
- }
-
- generateFakeId(): string {
-   const current = new Date();
-   const timestamp = current.getTime();
-   return timestamp.toString()
- }
-
-
+  generateFakeId(): string {
+    const current = new Date();
+    const timestamp = current.getTime();
+    return timestamp.toString();
+  }
 }

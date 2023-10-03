@@ -8,32 +8,16 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
-import { StudentCourse } from '../shared/student.interface';
+import { StudentCourse } from '../shared/interfaces/student.interface';
 import {
   ProfessorCourse,
   ProfessorAppeal,
-} from '../shared/professor.interface';
-
-export interface Profile {
-  id?: string;
-  username: string;
-  website: string;
-  avatar_url: string;
-}
-
-export interface Course {
-  id: number;
-  prefix: string;
-  code: number;
-  name: string;
-  section: string;
-  semester: string;
-  year: number;
-}
-
-export interface CourseState {
-  courses: Course[];
-}
+} from '../shared/interfaces/professor.interface';
+import {
+  Course,
+  Assignment,
+  Message,
+} from '../shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -78,14 +62,14 @@ export class SupabaseService {
     return this.supabase.auth.signOut();
   }
 
-  updateProfile(profile: Profile) {
-    const update = {
-      ...profile,
-      updated_at: new Date(),
-    };
+  // updateProfile(profile: Profile) {
+  //   const update = {
+  //     ...profile,
+  //     updated_at: new Date(),
+  //   };
 
-    return this.supabase.from('profiles').upsert(update);
-  }
+  //   return this.supabase.from('profiles').upsert(update);
+  // }
 
   /**
    * Fetches the student's courses (both enrolled and grading)
@@ -148,6 +132,79 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchStudentGrade');
+    }
+    return data;
+  }
+
+  /**
+   * Fetch course information for new appeal
+   * @param cid course id for appeal
+   * @returns The course of the assignment the student is making an appeal for
+   */
+  async fetchCourseForNewAppeal(cid: number): Promise<Course> {
+    const { data, error } = await this.supabase.rpc('get_course', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchCourseForNewAppeal');
+    }
+    return data[0];
+  }
+
+  /**
+   * Fetch assignments for a particular course
+   * @param cid course id for appeal
+   * @returns List of assignments for a course
+   */
+  async fetchAssignmentsForNewAppeal(cid: number): Promise<Assignment[]> {
+    const { data, error } = await this.supabase.rpc('get_assignments', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchAssignmentsForNewAppeal');
+    }
+    return data;
+  }
+
+  /**
+   * Writes student appeal to database
+   * @param aid assignment id from UI
+   * @param sid student id from auth
+   * @param cid course id from UI
+   * @param created_at date & time of appeal submission
+   * @param appeal_text student appeal
+   */
+  async insertNewAppeal(
+    aid: number,
+    sid: number,
+    cid: number,
+    created_at: Date,
+    appeal_text: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_new_appeal', {
+      aid,
+      appeal_text,
+      cid,
+      created_at,
+      sid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insertNewAppeal');
+    }
+    console.log({ data });
+  }
+
+  async fetchMessages(aid: number): Promise<Message[]> {
+    const { data, error } = await this.supabase.rpc('get_messages', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchMessages');
     }
     return data;
   }

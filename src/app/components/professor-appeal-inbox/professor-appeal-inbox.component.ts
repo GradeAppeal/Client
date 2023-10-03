@@ -4,7 +4,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import {
   ProfessorAppeal,
   ProfessorCourse,
-} from 'src/app/shared/professor.interface';
+} from 'src/app/shared/interfaces/professor.interface';
 
 interface CombinedData {
   code: number;
@@ -22,7 +22,6 @@ interface CombinedData {
   student_id: number;
   student_name: string;
 }
-
 
 @Component({
   selector: 'app-professor-appeal-inbox',
