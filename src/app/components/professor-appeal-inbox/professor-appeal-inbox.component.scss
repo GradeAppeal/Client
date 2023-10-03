@@ -49,10 +49,10 @@
       background-color: blue;
     }
   }
-  .chat{
+  .close-appeal{
     float: left;
   }
-  .close-appeal{
+  .chat{
     float: right;
   }
 
@@ -61,4 +61,11 @@
     margin-right: 10px;
   }
 
-  
+  .content{
+    position: relative;
+    z-index: 1;
+  }
+  .navigation{
+    position: relative;
+    z-index: 5;
+  }

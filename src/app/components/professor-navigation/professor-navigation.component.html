@@ -4,7 +4,7 @@
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
     <span class="left-content">
-    <span (click)="navigateToHome()"class="material-symbols-outlined">
+    <span (click)="navigateToPage('/')"class="material-symbols-outlined">
     rocket_launch
     </span>
     <span>{{selectedTab}}</span>
@@ -12,7 +12,6 @@
   <div class="right-content"><img class="header-avatar" ngxGravatar [email]="email"/></div>
 </mat-toolbar-row>
 </mat-toolbar>
-    
 </div>
 
 <mat-sidenav-container class="sidenav-container">
@@ -26,13 +25,13 @@
       </mat-action-list>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content class="content">
       <div *ngIf="selectedTab === 'Appeal Inbox'">
-      <app-professor-appeal-inbox></app-professor-appeal-inbox>
+      <app-professor-appeal-inbox (isChat)="onIsChat($event)"></app-professor-appeal-inbox>
       </div>
 
       <div *ngIf="selectedTab === 'Chat'">
-      <app-chat></app-chat>
+      <app-chat ></app-chat>
       </div>
 
       <div *ngIf="selectedTab === 'Closed Appeals'">

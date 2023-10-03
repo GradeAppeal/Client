@@ -104,7 +104,7 @@ export class SupabaseService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorAppeals(pid: number): Promise<ProfessorAppeal[]> {
+  async fetchProfessorAppeals(pid: number): Promise<any> {
     const { data, error } = await this.supabase.rpc('get_professor_appeals', {
       pid,
     });
