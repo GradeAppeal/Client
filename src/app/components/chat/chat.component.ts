@@ -7,6 +7,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -21,6 +22,11 @@ export class ChatComponent {
   email = 'abc123@gmail.com';
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
   chatInputMessage: string = '';
+  messages!: Message[];
+  user = {
+    id: 1,
+    email: 'abcd@gmail.com',
+  };
   professor = {
     id: 1,
     email: '1234@gmail.com',
@@ -40,9 +46,20 @@ export class ChatComponent {
       message: 'Hello professor. Please fix my grade. Thanks',
     },
   ];
+  // export interface Message {
+  //   id: number;
+  //   created_at: Date;
+  //   sender_id: number;
+  //   recipient_id: number;
+  //   appeal_id: number;
+  //   message_text: string;
+  //   from_grader: boolean;
+  // }
+
   constructor(private supabase: SupabaseService) {}
   async ngOnInit() {
-    const messageData = await this.supabase.fetchMessages(29);
+    this.messages = await this.supabase.fetchMessages(29);
+    console.log(this.messages);
   }
 
   ngAfterViewChecked() {

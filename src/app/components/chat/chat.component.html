@@ -1,27 +1,53 @@
-
 <div class="card">
-    <mat-toolbar class="top-bar">
-        <mat-toolbar-row>
-            <img class="header-avatar" ngxGravatar [email]="email"/>
-            <h1>Sam Hoogewind</h1>
-            </mat-toolbar-row>
-    </mat-toolbar>
-    <div class="chat-list" #chatListContainer>
-    <ng-container *ngFor="let item of chats">
-        <div class="chat-item"
-            [ngClass]="{'right' : item?.user?.id == professor.id, 'left': item?.user?.id != professor.id}">
-            <img id="avatar" ngxGravatar [email]="item?.user?.email"/>
-        <!-- <img id="avatar" [src]="item?.user?.profileImageUrl"> -->
-        <p id="message-body">{{item?.message}}</p>
-        </div>
+  <mat-toolbar class="top-bar">
+    <mat-toolbar-row>
+      <img class="header-avatar" ngxGravatar [email]="email" />
+      <h1>Sam Hoogewind</h1>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="chat-list" #chatListContainer>
+    <ng-container *ngFor="let chat of chats">
+      <div
+        class="chat-item"
+        [ngClass]="{
+          right: chat?.user?.id == professor.id,
+          left: chat?.user?.id != professor.id
+        }"
+      >
+        <img id="avatar" ngxGravatar [email]="chat?.user?.email" />
+        <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl"> -->
+        <p id="message-body">{{ chat?.message }}</p>
+      </div>
     </ng-container>
-    </div>
-    <div class="chat-footer">
-    <input matInput id="chat-textarea" [(ngModel)]="chatInputMessage" required>
-    <button mat-stroked-button id="send-button" (click)="send()" [disabled]="chatInputMessage === ''">
-        Send
-    </button>
-    </div>
-</div>
 
-  
+    <ng-container *ngFor="let chat of this.messages">
+      <div
+        class="chat-item"
+        [ngClass]="{
+          right: chat?.recipient_id == user.id,
+          left: chat?.sender_id != user.id
+        }"
+      >
+        <!-- <img id="avatar" ngxGravatar [email]="chat?.user?.email" /> -->
+        <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl"> -->
+        <p id="message-body">{{ chat?.message_text }}</p>
+      </div>
+    </ng-container>
+  </div>
+  <div class="chat-footer">
+    <input
+      matInput
+      id="chat-textarea"
+      [(ngModel)]="chatInputMessage"
+      required
+    />
+    <button
+      mat-stroked-button
+      id="send-button"
+      (click)="send()"
+      [disabled]="chatInputMessage === ''"
+    >
+      Send
+    </button>
+  </div>
+</div>
