@@ -1,6 +1,5 @@
-
-  <!-- Main Content Section -->
-  <div class="content">
+<!-- Main Content Section -->
+<div class="content">
   <div *ngIf="!showChat" class="content-container">
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox">
@@ -11,15 +10,13 @@
           (click)="selectAppeal(appeal)"
         >
           <p matLine>
-            {{appeal.student_name}}
+            {{ appeal.student_name }}
           </p>
-          
 
           <p matLine>{{ appeal.created_at }}</p>
         </mat-list-item>
       </mat-nav-list>
     </div>
-
 
     <!-- Right Pane (Selected Appeal Details) -->
     <div class="right-pane">
@@ -33,16 +30,16 @@
         <div>
           <mat-card class="appeal">
             <h2 class="appeal-header">
-              <img
-                class="inbox-avatar"
-                ngxGravatar
-                [email]="email"
-              />
-              <p>Assignment {{ selectedAppeal?.appeal_id }}: &nbsp;{{ selectedAppeal?.student_name }}</p>
+              <img class="inbox-avatar" ngxGravatar [email]="email" />
+              <p>
+                Assignment {{ selectedAppeal.appeal_id }}: &nbsp;{{
+                  selectedAppeal.student_name
+                }}
+              </p>
             </h2>
-            <p><strong>Student ID:</strong> {{ selectedAppeal?.student_id }}</p>
+            <p><strong>Student ID:</strong> {{ selectedAppeal.student_id }}</p>
             <p>
-              <strong>Assignment:</strong> {{ selectedAppeal?.assignment_id }}
+              <strong>Assignment:</strong> {{ selectedAppeal.assignment_id }}
             </p>
             <p>
               <strong>Grade Received:</strong>
@@ -50,13 +47,20 @@
             </p>
 
             <mat-card class="message">
-              <p>{{selectedAppeal?.appeal_text}}</p>
+              <p>{{ selectedAppeal.appeal_text }}</p>
             </mat-card>
             <div class="buttons">
-              <button class="chat" (click)="toggleChat()" mat-stroked-button accent>
+              <button
+                class="chat"
+                (click)="toggleChat()"
+                mat-stroked-button
+                accent
+              >
                 Chat
               </button>
-              <button class="close-appeal" mat-stroked-button>Close Appeal</button>
+              <button class="close-appeal" mat-stroked-button>
+                Close Appeal
+              </button>
             </div>
           </mat-card>
         </div>
