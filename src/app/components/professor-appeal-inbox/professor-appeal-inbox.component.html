@@ -6,14 +6,14 @@
       <mat-nav-list>
         <mat-list-item
           class="inbox-item"
-          *ngFor="let appeal of this.professorAppeals"
+          *ngFor="let appeal of professorAppeals"
           (click)="selectAppeal(appeal)"
         >
           <p matLine>
-            {{ appeal.student_name }}
+            {{ appeal?.student_name }}
           </p>
 
-          <p matLine>{{ appeal.created_at }}</p>
+          <p matLine>{{ appeal?.created_at }}</p>
         </mat-list-item>
       </mat-nav-list>
     </div>
@@ -32,22 +32,24 @@
             <h2 class="appeal-header">
               <img class="inbox-avatar" ngxGravatar [email]="email" />
               <p>
-                Assignment {{ selectedAppeal.appeal_id }}: &nbsp;{{
-                  selectedAppeal.student_name
+                Appeal {{ selectedAppeal?.appeal_id }}: &nbsp;{{
+                  selectedAppeal?.student_name
                 }}
               </p>
             </h2>
-            <p><strong>Student ID:</strong> {{ selectedAppeal.student_id }}</p>
             <p>
-              <strong>Assignment:</strong> {{ selectedAppeal.assignment_id }}
+              <strong>Student Name:</strong> {{ selectedAppeal?.student_name }}
+            </p>
+            <p>
+              <strong>Assignment:</strong> {{ selectedAppeal?.assignment_name }}
             </p>
             <p>
               <strong>Grade Received:</strong>
-              F
+              {{ selectedAppeal?.appeal_grade }}
             </p>
 
             <mat-card class="message">
-              <p>{{ selectedAppeal.appeal_text }}</p>
+              <p>{{ selectedAppeal?.appeal_text }}</p>
             </mat-card>
             <div class="buttons">
               <button

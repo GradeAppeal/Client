@@ -33,7 +33,7 @@ export class ProfessorAppealInboxComponent {
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
-  email = "abc123@gmail.com"
+  email = 'abc123@gmail.com';
   showChat: boolean = false;
   date = new Date();
   appeal1 = {
@@ -59,22 +59,24 @@ export class ProfessorAppealInboxComponent {
   };
   professorAppeals!: ProfessorAppeal[];
   professorCourse!: ProfessorCourse[];
-  selectedAppeal : ProfessorAppeal;
-  constructor(private supabase: SupabaseService) {
-  }
+  selectedAppeal: ProfessorAppeal;
+
+  constructor(private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-    this.professorCourse = await this.supabase.fetchProfessorCourses(1);
-    console.log(this.professorAppeals);
-    this.selectedAppeal = this.professorAppeals[0];
-    this.fixDate();
+    try {
+      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+      this.professorCourse = await this.supabase.fetchProfessorCourses(1);
+      this.selectedAppeal = this.professorAppeals[0];
+      this.fixDate();
+    } catch (err) {
+      console.log(err);
+    }
   }
-  fixDate(){
-  }
+  fixDate() {}
   // ProfessorCourse {
-  //   code: number;  
+  //   code: number;
   //   id: number;
-  //   name: string;          // 
+  //   name: string;          //
   //   prefix: string;
   //   section: string;          //
   //   semester: 'FA' | 'SP' | 'SU';
@@ -102,13 +104,12 @@ export class ProfessorAppealInboxComponent {
   toggleChat() {
     this.chat();
     this.showChat = !this.showChat;
-    console.log(this.showChat)
+    console.log(this.showChat);
   }
-  
+
   composeMessage() {}
   chat() {
-    const changeToChat = "true";
+    const changeToChat = 'true';
     this.isChat.emit(changeToChat);
-   }
-  
+  }
 }

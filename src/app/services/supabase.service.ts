@@ -108,30 +108,16 @@ export class SupabaseService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorAppeals(pid: number): Promise<any> {
-    const { data, error } = await this.supabase.rpc('get_professor_appeals', {
-      pid,
-    });
+  async fetchProfessorAppeals(pid: number): Promise<ProfessorAppeal[]> {
+    const { data, error } = await this.supabase.rpc(
+      'get_professor_appeals_with_grade',
+      {
+        pid,
+      }
+    );
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorAppeals');
-    }
-    return data;
-  }
-  /**
-   * fetch from supabase: student grade for an assignment they made an appeal for
-   * @param aid assignment id
-   * @param sid student_id
-   * @returns student's grade
-   */
-  async fetchStudentGrade(aid: number, sid: number): Promise<number> {
-    const { data, error } = await this.supabase.rpc('get_student_grade', {
-      aid,
-      sid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('Error in fetchStudentGrade');
     }
     return data;
   }
