@@ -175,13 +175,15 @@ export class SupabaseService {
    * @param cid course id from UI
    * @param created_at date & time of appeal submission
    * @param appeal_text student appeal
+   * @param grade student grade
    */
   async insertNewAppeal(
     aid: number,
     sid: number,
     cid: number,
     created_at: Date,
-    appeal_text: string
+    appeal_text: string,
+    grade: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_new_appeal', {
       aid,
@@ -189,6 +191,7 @@ export class SupabaseService {
       cid,
       created_at,
       sid,
+      grade,
     });
 
     if (error) {
