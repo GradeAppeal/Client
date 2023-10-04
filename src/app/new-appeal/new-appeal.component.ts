@@ -72,7 +72,8 @@ export class NewAppealComponent implements OnInit {
         1,
         this.courseId,
         now,
-        this.appeal
+        this.appeal,
+        90
       );
     } catch (err) {
       console.log(err);
