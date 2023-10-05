@@ -17,6 +17,7 @@ import {
   Course,
   Assignment,
   Message,
+  Student,
 } from '../shared/interfaces/psql.interface';
 
 @Injectable({
@@ -99,6 +100,17 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorCourses');
+    }
+    return data;
+  }
+
+  async fetchStudents(cid: number): Promise<Student[]> {
+    const { data, error } = await this.supabase.rpc('get_students', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudents');
     }
     return data;
   }
@@ -194,6 +206,40 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchMessages');
+    }
+    return data;
+  }
+
+  /**
+   * Inserts interaction history to supabase
+   * @param appid appeal id
+   * @param sender_id sender id--depends on student/prof mode
+   * @param recipient_id recipient id--depends on student/prof mode
+   * @param created_at timestamp
+   * @param message_text text
+   * @param from_grader boolean: grader or not
+   * @returns 1 if insert was successful, 0 otherwise
+   */
+  async insertMessages(
+    appid: number,
+    sender_id: number,
+    recipient_id: number,
+    created_at: Date,
+    message_text: string,
+    from_grader: boolean
+  ): Promise<number> {
+    let { data, error } = await this.supabase.rpc('insert_message', {
+      appid,
+      created_at,
+      from_grader,
+      message_text,
+      recipient_id,
+      sender_id,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert messages');
     }
     return data;
   }
