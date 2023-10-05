@@ -7,6 +7,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-chat',
@@ -16,36 +17,26 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
 export class ChatComponent {
   @Output() customTitleChange: EventEmitter<string> =
     new EventEmitter<string>();
-  @Input() appeal_id: string;
-
-  title = 'chat-ui';
-  email = 'abc123@gmail.com';
+  @Input() appeal_id: number;
+  @Input() student_id: number;
+  @Input() current_appeal: ProfessorAppeal;
+  @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
+
   chatInputMessage: string = '';
+  messageCount: number = 0;
+  fromGrader = false;
+  isUser: Boolean;
   messages!: Message[];
-  user = {
-    id: 1,
-    email: 'abcd@gmail.com',
+  user= {
+    id: 0 ,
+    email: "abc123@gmail.com",
   };
-  professor = {
-    id: 1,
-    email: '1234@gmail.com',
-  };
-
-  student = {
-    id: 2,
-    email: 'abc@gmail.com',
+  sender = {
+    id: 0 ,
+    email: "ccc1233@gmail.com",
   };
 
-  chats: {
-    user: any;
-    message: string;
-  }[] = [
-    {
-      user: this.student,
-      message: 'Hello professor. Please fix my grade. Thanks',
-    },
-  ];
   // export interface Message {
   //   id: number;
   //   created_at: Date;
@@ -55,25 +46,50 @@ export class ChatComponent {
   //   message_text: string;
   //   from_grader: boolean;
   // }
+  // export interface ProfessorAppeal {
+  //   appeal_id: number;
+  //   appeal_text: string;
+  //   assignment_id: number;
+  //   code: number;
+  //   created_at: Date;
+  //   is_open: boolean;
+  //   prefix: string;
+  //   student_id: number;
+  //   student_name: string;
+  // }
+  professorAppeals!: ProfessorAppeal[];
 
   constructor(private supabase: SupabaseService) {}
   async ngOnInit() {
-    this.messages = await this.supabase.fetchMessages(29);
-    console.log(this.messages);
+    this.user.id = 10; //TODO make this actual user ID not just fake data
+    if (this.current_appeal){
+      this.sender.id = this.current_appeal.student_id;
+      this.messages = await this.supabase.fetchMessages(this.current_appeal.appeal_id);
+    }
+    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
   }
+
 
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
 
   send() {
-    this.chats.push({
-      message: this.chatInputMessage,
-      user: this.professor,
+    this.messages.push({
+      id: 1 + this.messageCount,     //TODO make id better system
+      created_at: new Date(), 
+      sender_id: this.user.id, 
+      recipient_id: this.current_appeal.student_id, 
+      appeal_id: this.current_appeal.appeal_id, 
+      message_text: this.chatInputMessage, 
+      from_grader: this.fromGrader
     });
-
+    this.messageCount ++;
     this.chatInputMessage = '';
     this.scrollToBottom();
+  }
+  useTemplate(){
+    
   }
 
   scrollToBottom() {
@@ -81,9 +97,12 @@ export class ChatComponent {
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  generateFakeId(): string {
-    const current = new Date();
-    const timestamp = current.getTime();
-    return timestamp.toString();
-  }
+    // Function to select an appeal
+    async selectAppeal(appeal: any) {
+      // Copy the selected appeal's data into the form fields
+      this.current_appeal = appeal;
+      this.sender.id = this.current_appeal.student_id;
+      this.messages = await this.supabase.fetchMessages(this.current_appeal.appeal_id);
+      console.log(this.current_appeal);
+    }
 }

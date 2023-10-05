@@ -1,40 +1,56 @@
+    <!-- Left Pane (List of Appeals) -->
+    <div class="inbox">
+      <mat-nav-list>
+        <mat-list-item
+          class="inbox-item"
+          *ngFor="let appeal of this.professorAppeals"
+          (click)="selectAppeal(appeal)"
+        >
+          <p matLine>
+            {{appeal?.student_name}}
+          </p>
+          
+
+          <p matLine>{{ appeal?.created_at }}</p>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+
+    <!-- Right Pane (Selected Appeal Details) -->
+    <div class="right-pane">
 <div class="card">
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
-      <img class="header-avatar" ngxGravatar [email]="email" />
-      <h1>Sam Hoogewind</h1>
+      <img class="header-avatar" ngxGravatar [email]="user.email" />
+      <h1>{{current_appeal?.student_name}} {{current_appeal?.appeal_id}}</h1>
     </mat-toolbar-row>
   </mat-toolbar>
   <div class="chat-list" #chatListContainer>
-    <ng-container *ngFor="let chat of chats">
-      <div
-        class="chat-item"
-        [ngClass]="{
-          right: chat?.user?.id == professor.id,
-          left: chat?.user?.id != professor.id
-        }"
-      >
-        <img id="avatar" ngxGravatar [email]="chat?.user?.email" />
-        <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl"> -->
-        <p id="message-body">{{ chat?.message }}</p>
-      </div>
-    </ng-container>
 
     <ng-container *ngFor="let chat of this.messages">
       <div
         class="chat-item"
         [ngClass]="{
-          right: chat?.recipient_id == user.id,
+          right: chat?.sender_id == user.id,
           left: chat?.sender_id != user.id
         }"
       >
-        <!-- <img id="avatar" ngxGravatar [email]="chat?.user?.email" /> -->
-        <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl"> -->
+        <!-- <img ngxGravatar [email]="user.email" /> -->
+        <img *ngIf="isUser" ngxGravatar [email]="user.email" />
+        <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
+
+         <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
         <p id="message-body">{{ chat?.message_text }}</p>
       </div>
     </ng-container>
   </div>
   <div class="chat-footer">
+    <button
+    mat-stroked-button
+    class="use-template-button"
+    (click)="useTemplate()"
+    [disabled]="chatInputMessage === ''"
+  >Use Template</button> 
     <input
       matInput
       id="chat-textarea"
@@ -50,4 +66,5 @@
       Send
     </button>
   </div>
+</div>
 </div>
