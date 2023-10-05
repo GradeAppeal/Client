@@ -47,15 +47,10 @@ export class ProfessorAppealInboxComponent {
     this.selectedAppeal = appeal;
     console.log(this.selectedAppeal);
   }
-  toggleChat() {
-    this.chat();
-    this.showChat = !this.showChat;
-    console.log(this.showChat);
-  }
 
   composeMessage() {}
-  chat() {
+  chat(appeal: ProfessorAppeal) {
     const changeToChat = 'true';
-    this.isChat.emit(changeToChat);
+    this.isChat.emit({professorAppeal: appeal});
   }
 }
