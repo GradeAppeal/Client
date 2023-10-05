@@ -23,3 +23,11 @@ export interface Message {
   message_text: string;
   from_grader: boolean;
 }
+
+export interface Student {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  is_grader: boolean;
+}

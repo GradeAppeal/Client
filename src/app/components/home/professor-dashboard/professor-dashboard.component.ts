@@ -14,5 +14,7 @@ export class ProfessorDashboardComponent {
   constructor(private readonly supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
     this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+    const students = await this.supabase.fetchStudents(1);
+    console.log({ students });
   }
 }
