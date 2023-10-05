@@ -18,21 +18,28 @@ export class ProfessorAppealInboxComponent {
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
-  email = "abc123@gmail.com"
+  email = 'abc123@gmail.com';
   showChat: boolean = false;
   date = new Date();
 
   professorAppeals!: ProfessorAppeal[];
   professorCourse!: ProfessorCourse[];
-  selectedAppeal : ProfessorAppeal;
-  constructor(private supabase: SupabaseService) {
-  }
+  selectedAppeal: ProfessorAppeal;
+  fetchedAppeals = false;
+
+  constructor(private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-    this.professorCourse = await this.supabase.fetchProfessorCourses(1);
-    console.log(this.professorAppeals);
-    this.selectedAppeal = this.professorAppeals[0];
+    try {
+      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+      this.professorCourse = await this.supabase.fetchProfessorCourses(1);
+      this.selectedAppeal = this.professorAppeals[0];
+      this.fetchedAppeals = true;
+      this.fixDate();
+    } catch (err) {
+      console.log(err);
+    }
   }
+  fixDate() {}
 
   // Function to select an appeal
   selectAppeal(appeal: any) {
@@ -40,9 +47,15 @@ export class ProfessorAppealInboxComponent {
     this.selectedAppeal = appeal;
     console.log(this.selectedAppeal);
   }
-  chat(appeal: ProfessorAppeal) {
-    console.log(appeal);
-    this.isChat.emit({professorAppeal: appeal});
-   }
-  
+  toggleChat() {
+    this.chat();
+    this.showChat = !this.showChat;
+    console.log(this.showChat);
+  }
+
+  composeMessage() {}
+  chat() {
+    const changeToChat = 'true';
+    this.isChat.emit(changeToChat);
+  }
 }
