@@ -8,6 +8,7 @@
           class="inbox-item"
           *ngFor="let appeal of professorAppeals"
           (click)="selectAppeal(appeal)"
+          [class.selected-appeal]="appeal === selectedAppeal"
         >
           <p matLine>
             {{ appeal.student_name }}
