@@ -228,7 +228,7 @@ export class SupabaseService {
     message_text: string,
     from_grader: boolean
   ): Promise<number> {
-    let { data, error } = await this.supabase.rpc('insert_message', {
+    const { data, error } = await this.supabase.rpc('insert_message', {
       appid,
       created_at,
       from_grader,
@@ -240,6 +240,18 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('insert messages');
+    }
+    return data;
+  }
+
+  async getUserId(id: number, type: 'student' | 'professor'): Promise<number> {
+    const { data, error } = await this.supabase.rpc(`get_${type}_user_id`, {
+      id,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('getUserId:');
     }
     return data;
   }
