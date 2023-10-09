@@ -7,6 +7,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
@@ -29,7 +30,7 @@ export class ChatComponent {
   isUser: Boolean;
   messages!: Message[];
   user= {
-    id: 0 ,
+    id: 10 ,
     email: "abc123@gmail.com",
   };
   sender = {
@@ -74,20 +75,6 @@ export class ChatComponent {
     this.scrollToBottom();
   }
 
-  send() {
-    this.messages.push({
-      id: 1 + this.messageCount,     //TODO make id better system
-      created_at: new Date(), 
-      sender_id: this.user.id, 
-      recipient_id: this.current_appeal.student_id, 
-      appeal_id: this.current_appeal.appeal_id, 
-      message_text: this.chatInputMessage, 
-      from_grader: this.fromGrader
-    });
-    this.messageCount ++;
-    this.chatInputMessage = '';
-    this.scrollToBottom();
-  }
   useTemplate(){
     
   }
@@ -105,4 +92,55 @@ export class ChatComponent {
       this.messages = await this.supabase.fetchMessages(this.current_appeal.appeal_id);
       console.log(this.current_appeal);
     }
+
+    // async insertMessages(
+    //   appid: number,
+    //   sender_id: number,
+    //   recipient_id: number,
+    //   created_at: Date,
+    //   message_text: string,
+    //   from_grader: boolean
+    // ): 
+      /**
+   * Submit student appeal to database
+   */
+  async sendMessage(): Promise<void> {
+    const now = getTimestampTz(new Date());
+    try {
+      await this.supabase.insertMessages(
+        this.current_appeal.appeal_id,
+        this.user.id,
+        3,
+        //this.current_appeal.student_id,
+        now,
+        this.chatInputMessage,
+        this.fromGrader
+      );
+      console.log("Sent to database!");
+      console.log(        this.current_appeal.appeal_id,
+        this.user.id,
+        this.current_appeal.student_id,
+        now,
+        this.chatInputMessage,
+        this.fromGrader);
+
+        this.messages.push({
+          id: 1 + this.messageCount,     //TODO make id better system
+          created_at: getTimestampTz(new Date()), 
+          sender_id: this.user.id, 
+          recipient_id: this.current_appeal.student_id, 
+          appeal_id: this.current_appeal.appeal_id, 
+          message_text: this.chatInputMessage, 
+          from_grader: this.fromGrader
+        });
+    
+        this.messageCount ++;
+        this.chatInputMessage = '';
+        this.scrollToBottom();
+        console.log(this.messages);
+    } catch (err) {
+      console.log(err);
+      throw new Error('onSubmitAppeal');
+    }
+  }
 }

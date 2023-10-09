@@ -1,6 +1,8 @@
+    <div class="container">
     <!-- Left Pane (List of Appeals) -->
+    <div class="inbox-wrapper">
     <div class="inbox">
-      <mat-nav-list>
+      <mat-nav-list >
         <mat-list-item
           class="inbox-item"
           *ngFor="let appeal of this.professorAppeals"
@@ -15,7 +17,7 @@
         </mat-list-item>
       </mat-nav-list>
     </div>
-
+</div>
     <!-- Right Pane (Selected Appeal Details) -->
     <div class="right-pane">
 <div class="card">
@@ -60,11 +62,12 @@
     <button
       mat-stroked-button
       id="send-button"
-      (click)="send()"
+      (click)="sendMessage()"
       [disabled]="chatInputMessage === ''"
     >
       Send
     </button>
   </div>
+</div>
 </div>
 </div>
