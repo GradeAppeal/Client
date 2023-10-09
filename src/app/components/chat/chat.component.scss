@@ -153,17 +153,18 @@ $primary: blue;
 }
 
 .inbox {
-  // flex: 0 0 200px; /* Set a fixed width of 200px */
-  // overflow-y: auto; /* Enable vertical scrolling if content exceeds 200px */
-  /* Other inbox styles */
+
 }
 .inbox-wrapper {
-  flex: 0 0 200px; /* Set a fixed width of 200px */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds 200px */
+  flex: 0 0 200px; 
+  overflow-y: auto; 
 }
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
-  /* Other right pane styles */
+
   margin: 10px;
 }
 
+.selected-appeal {
+  background-color: rgba(167, 166, 166, 0.635); /* Set the background color to a darker shade */
+}
