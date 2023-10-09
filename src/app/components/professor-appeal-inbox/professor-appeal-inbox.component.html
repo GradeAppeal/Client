@@ -12,8 +12,8 @@
           <p matLine>
             {{ appeal.student_name }}
           </p>
-
-          <p matLine>{{ appeal.created_at }}</p>
+          <p matLine>{{ formatTimestamp(appeal.created_at).date }}</p>
+          <p matLine>{{ formatTimestamp(appeal.created_at).time }}</p>
         </mat-list-item>
       </mat-nav-list>
     </div>
