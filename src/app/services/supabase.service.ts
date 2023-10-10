@@ -245,9 +245,11 @@ export class SupabaseService {
   }
 
   async getUserId(id: number, type: 'student' | 'professor'): Promise<number> {
-    const { data, error } = await this.supabase.rpc(`get_${type}_user_id`, {
-      id,
-    });
+    const input = type == 'student' ? { sid: id } : { pid: id };
+    const { data, error } = await this.supabase.rpc(
+      `get_${type}_user_id`,
+      input
+    );
 
     if (error) {
       console.log(error);
