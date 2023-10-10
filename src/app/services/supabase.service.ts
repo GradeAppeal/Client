@@ -328,4 +328,39 @@ export class SupabaseService {
     }
     return data;
   }
+
+  /**
+   * deletes student from course
+   * @param sid student id
+   * @param cid course id
+   * @returns 1 if successful
+   */
+  async deleteStudentFromCourse(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc(
+      'delete_student_from_course',
+      {
+        sid,
+        cid,
+      }
+    );
+
+    if (error) {
+      console.log(error);
+      throw new Error('deleteStudentFromCourse: ');
+    }
+    return data;
+  }
+
+  async updateCourseGrader(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('updateCourseGrader: ');
+    }
+    return data;
+  }
 }
