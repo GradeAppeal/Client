@@ -33,11 +33,11 @@ export class ProfessorNavigationComponent {
 
   onIsChat(payload: { professorAppeal: ProfessorAppeal }) {
     const appeal = payload.professorAppeal;
-    if (appeal){
+    if (appeal) {
       this.appeal_id = appeal['appeal_id'];
       this.student_id = appeal['student_id'];
       this.current_appeal = appeal;
-      this.selectedTab = "Chat";
+      this.selectedTab = 'Interaction History';
     }
   }
 }
