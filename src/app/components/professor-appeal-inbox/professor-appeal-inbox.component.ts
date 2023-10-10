@@ -14,7 +14,7 @@ import {
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
 export class ProfessorAppealInboxComponent {
-  @Output() isChat= new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
+  @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
@@ -34,12 +34,17 @@ export class ProfessorAppealInboxComponent {
       this.professorCourse = await this.supabase.fetchProfessorCourses(1);
       this.selectedAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
-      this.fixDate();
     } catch (err) {
       console.log(err);
     }
   }
-  fixDate() {}
+
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const time = d.toTimeString().split(' ')[0];
+    return { date, time };
+  }
 
   // Function to select an appeal
   selectAppeal(appeal: any) {
@@ -51,6 +56,6 @@ export class ProfessorAppealInboxComponent {
   composeMessage() {}
   chat(appeal: ProfessorAppeal) {
     const changeToChat = 'true';
-    this.isChat.emit({professorAppeal: appeal});
+    this.isChat.emit({ professorAppeal: appeal });
   }
 }

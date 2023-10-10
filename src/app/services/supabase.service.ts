@@ -256,4 +256,110 @@ export class SupabaseService {
     }
     return data;
   }
+
+  /**
+   * Insert new user as a student
+   * @param firstName
+   * @param lastName
+   * @param email
+   * @returns trigger insert student
+   */
+  async insertStudent(firstName: string, lastName: string, email: string) {
+    const type = 'student';
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      firstName,
+      lastName,
+      email,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert student: ');
+    }
+    return data;
+  }
+
+  /**
+   * Insert new user as a professor
+   * @param firstName
+   * @param lastName
+   * @param email
+   * @returns trigger insert professor
+   */
+  async insertProfessor(firstName: string, lastName: string, email: string) {
+    const type = 'professor';
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      firstName,
+      lastName,
+      email,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert professor: ');
+    }
+    return data;
+  }
+
+  /**
+   * insert student users into course (only if student is a registered user)
+   * @param email student's email
+   * @param cid course id
+   * @param isGrader grader status
+   * @returns 1 of insert is successful
+   */
+  async insertStudentCourse(
+    student_email: string,
+    cid: number,
+    is_grader: boolean
+  ): Promise<number> {
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      student_email,
+      cid,
+      is_grader,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert student to course: ');
+    }
+    return data;
+  }
+
+  /**
+   * deletes student from course
+   * @param sid student id
+   * @param cid course id
+   * @returns 1 if successful
+   */
+  async deleteStudentFromCourse(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc(
+      'delete_student_from_course',
+      {
+        sid,
+        cid,
+      }
+    );
+
+    if (error) {
+      console.log(error);
+      throw new Error('deleteStudentFromCourse: ');
+    }
+    return data;
+  }
+
+  async updateCourseGrader(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('updateCourseGrader: ');
+    }
+    return data;
+  }
 }
