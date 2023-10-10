@@ -30,4 +30,5 @@ export interface Student {
   last_name: string;
   email: string;
   is_grader: boolean;
+  //role: string;
 }

@@ -1,6 +1,6 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Student } from '../components/profile/profile.component';
+import { Student } from '../shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-edit-students-pop-up',

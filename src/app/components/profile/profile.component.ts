@@ -1,74 +1,72 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/edit-students-pop-up/edit-students-pop-up.component';
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
+import { Student } from 'src/app/shared/interfaces/psql.interface';
+import { OnChanges } from '@angular/core';
 
-export interface Student {
-  studentName: string,
-  isGrader: boolean,
-}
-export interface Course {
-  courseNumber: string,
-  courseName: string,
-  students: Student[],
-}
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnChanges {
 
-  constructor(
-    private router: Router,
-    private dialog: MatDialog
-    )
-    {}
-  // pull courses and students from database
-  courses: Course[]= [
-    {
-      courseNumber: "CS336",
-      courseName: "Web Development",
-      students: [
-        {studentName: 'Sam Hoogewind', isGrader: false},
-        {studentName: 'Ael Lee', isGrader: true},
-        {studentName: 'Justin Voss', isGrader: false},
-        {studentName: 'Tyler Voss', isGrader: false}
-      ]
-    },
-    {
-      courseNumber: "MATH251",
-      courseName: "Discrete Math",
-      students: [
-        {studentName: 'Joe Smith', isGrader: true},
-        {studentName: 'John Rodgers', isGrader: true},
-        {studentName: 'Adam Scott', isGrader: false}
-      ]
-    },
-    {
-      courseNumber: "CS112",
-      courseName: "Intro to Data Structures",
-      students: []
-    },
-    {
-      courseNumber: "CS262",
-      courseName: "Software Development",
-      students: []
-    }
-  ]
-
+  courseStudents!: Student[];
+  professorCourses!: ProfessorCourse[];
+  fetchedStudents = false;
+  fetchedCourses = false;
   currentPage = "view";
-  currentCourse = this.courses[0];
+  currentCourse = -1;
   addedStudents: string;
   studentsToAdd: string[];
 
-  swapView(page: string, course: Course) {
+  constructor(
+    private dialog: MatDialog,
+    private supabase: SupabaseService
+    )
+    {}
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  async ngOnInit(): Promise<void> {
+    try {
+        this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+        this.fetchedCourses = true;
+    } catch (err) {
+        console.log(err);
+    }
+  }
+
+  async retrieveRoster(courseID: number): Promise<void> {
+    try {
+        this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
+        this.fetchedStudents = true;
+        console.log(this.courseStudents);
+    } catch (err) {
+        console.log(err);
+    }
+  }
+
+  async swapView(page: string, courseID: number) {
     this.currentPage = page;
-    this.currentCourse = course;
+    this.currentCourse = courseID;
+    if (page == "editRoster") {
+      await this.retrieveRoster(courseID);
+      //this.assignRoles();
+    } else {
+      this.fetchedStudents = false;
+      this.courseStudents = [];
+    }
   }
 
   editStudent(student: Student) {
+    console.log(student);
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
       width: '250px',
       data: {student: student}
@@ -85,20 +83,35 @@ export class ProfileComponent {
     });
   }
 
-  makeGrader(student: Student) {
-    student.isGrader = !student.isGrader;
+  async makeGrader(student: Student) {
+    try {
+      console.log(student.id, this.currentCourse);
+      await this.supabase.updateGrader(student.id, this.currentCourse);
+      student.is_grader = !student.is_grader;
+    } catch (err) {
+      throw new Error('makeGrader');
+    }
   }
 
   removeStudent(student: Student) {
-    this.currentCourse.students = this.currentCourse.students.filter(item => item != student);
+    //this.currentCourse.students = this.currentCourse.students.filter(item => item != student);
   }
 
-  addStudents() {
+  async addStudents(): Promise<void> {
+    // parse students added
     this.studentsToAdd = this.addedStudents.split("\n");
-    this.studentsToAdd.forEach( (student) => {this.currentCourse.students.push({studentName: student, isGrader: false});});
-  }
-
-  getCourses () {
-    return this.courses;
+    try {
+      // this.studentsToAdd.forEach(async student => {
+      //   await this.supabase.insertUser(
+      //     "student",
+      //     student.first_name,
+      //     student.last_name,
+      //     student.email
+      //   )
+      // })
+    } catch (err) {
+      console.log(err);
+      throw new Error('addStudents');
+    }
   }
 }
