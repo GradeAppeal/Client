@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/edit-students-pop-up/edit-students-pop-up.component';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
+import { OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +12,7 @@ import { Student } from 'src/app/shared/interfaces/psql.interface';
   styleUrls: ['./profile.component.scss'],
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnChanges {
 
   courseStudents!: Student[];
   professorCourses!: ProfessorCourse[];
@@ -27,6 +28,11 @@ export class ProfileComponent {
     private supabase: SupabaseService
     )
     {}
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -81,7 +87,7 @@ export class ProfileComponent {
     try {
       console.log(student.id, this.currentCourse);
       await this.supabase.updateGrader(student.id, this.currentCourse);
-      //this.assignRoles();
+      student.is_grader = !student.is_grader;
     } catch (err) {
       throw new Error('makeGrader');
     }
@@ -108,11 +114,4 @@ export class ProfileComponent {
       throw new Error('addStudents');
     }
   }
-    //this.studentsToAdd.forEach( (student) => {this.currentCourse.students.push({studentName: student, isGrader: false});});
-
-    // assignRoles() {
-    //   this.courseStudents.forEach(student => {
-    //     (student.is_grader == true) ? student.role = "Grader" : student.role = "Student";
-    //   });
-    // }
 }
