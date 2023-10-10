@@ -79,7 +79,8 @@ export class ProfileComponent {
 
   async makeGrader(student: Student) {
     try {
-      await this.supabase.updateGrader(this.currentCourse, student.id);
+      console.log(student.id, this.currentCourse);
+      await this.supabase.updateGrader(student.id, this.currentCourse);
       //this.assignRoles();
     } catch (err) {
       throw new Error('makeGrader');

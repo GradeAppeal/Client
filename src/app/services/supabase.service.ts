@@ -288,12 +288,12 @@ export class SupabaseService {
   }
 
   async updateGrader(
-    cid: number,
-    sid: number
+    sid: number,
+    cid: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
-      cid,
-      sid
+      sid,
+      cid
     });
 
     if (error) {
