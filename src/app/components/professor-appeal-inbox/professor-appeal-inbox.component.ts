@@ -1,4 +1,7 @@
+import { HttpParams } from '@angular/common/http';
+import { ViewEncapsulation } from '@angular/compiler';
 import { Component, Output, EventEmitter } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import {
   ProfessorAppeal,
@@ -11,13 +14,14 @@ import {
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
 export class ProfessorAppealInboxComponent {
-  @Output() isChat: EventEmitter<string> = new EventEmitter<string>();
+  @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
   //inboxAppeals: AppealInbox[];
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
   showChat: boolean = false;
   date = new Date();
+
   professorAppeals!: ProfessorAppeal[];
   professorCourse!: ProfessorCourse[];
   selectedAppeal: ProfessorAppeal;
@@ -48,15 +52,10 @@ export class ProfessorAppealInboxComponent {
     this.selectedAppeal = appeal;
     console.log(this.selectedAppeal);
   }
-  toggleChat() {
-    this.chat();
-    this.showChat = !this.showChat;
-    console.log(this.showChat);
-  }
 
   composeMessage() {}
-  chat() {
+  chat(appeal: ProfessorAppeal) {
     const changeToChat = 'true';
-    this.isChat.emit(changeToChat);
+    this.isChat.emit({ professorAppeal: appeal });
   }
 }

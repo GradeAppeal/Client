@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -12,6 +13,9 @@ export class ProfessorNavigationComponent {
   customTitle: string;
   constructor(private router: Router, private supabase: SupabaseService) {}
   showChat: boolean = false;
+  appeal_id: number;
+  student_id: number;
+  current_appeal: ProfessorAppeal;
 
   email = 'victor.norman@calvin.edu';
   selectedTab: string = 'Appeal Inbox';
@@ -27,13 +31,13 @@ export class ProfessorNavigationComponent {
     console.log({ students });
   }
 
-  onIsChat(customTitle: string) {
-    // Do something with the customTitle received from app-chat
-    if (customTitle == 'true') {
-      console.log('Received customTitle:', customTitle);
-      this.selectedTab = 'Chat';
-    } else {
-      this.selectedTab = 'Appeals Inbox';
+  onIsChat(payload: { professorAppeal: ProfessorAppeal }) {
+    const appeal = payload.professorAppeal;
+    if (appeal){
+      this.appeal_id = appeal['appeal_id'];
+      this.student_id = appeal['student_id'];
+      this.current_appeal = appeal;
+      this.selectedTab = "Chat";
     }
   }
 }

@@ -6,14 +6,16 @@ $primary: blue;
 .card {
  background: $background;
  height: 90vh;
- width: 100%;
+ min-width: 20%;
+ max-width: 100%;
  display: flex;
  flex-direction: column;
- filter: drop-shadow(0px 0px 5px black);
+ filter: drop-shadow(0px 0px 2px black);
  border-radius: 15px;
  padding: 16px;
 
 }
+
 
 .chat-list {
  margin-top: auto;
@@ -79,7 +81,6 @@ $primary: blue;
    flex: 1;
    margin: 0 8px;
    border: 0px;
-   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
    padding: 16px;
    border-radius: 8px;
  }
@@ -92,6 +93,15 @@ $primary: blue;
    color: white;
    padding: 0 8px;
    border-radius: 8px;
+ }
+ .use-template-button{
+  border: 1px solid white;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  background: blue;
+  color: white;
+  padding: 0 8px;
+  border-radius: 8px;
  }
 
 }
@@ -107,4 +117,54 @@ $primary: blue;
 
 ::-webkit-scrollbar {
  display: none;
+}
+
+.inbox-item{
+  //  padding-top: 60px;
+   border: solid gray 1px;
+   float: left;
+   padding-bottom: 20px;
+   padding-top: 20px;
+   height: 100px;
+   p{
+     font-size: 10px;
+     padding: 0px;
+     margin-right: 10px;
+   }
+}
+
+// .inbox{
+//   width: 200px;
+//   float: left;
+//   margin-left: -10px;
+//   margin-right: 20px;
+// }
+
+// .right-pane{
+//   min-width: 20%;
+//   width: 80%;
+//   float: right;
+// }
+
+.container{
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.inbox {
+
+}
+.inbox-wrapper {
+  flex: 0 0 200px; 
+  overflow-y: auto; 
+}
+.right-pane {
+  flex: 1; /* Let the right pane grow to take available space */
+
+  margin: 10px;
+}
+
+.selected-appeal {
+  background-color: rgba(167, 166, 166, 0.635); /* Set the background color to a darker shade */
 }

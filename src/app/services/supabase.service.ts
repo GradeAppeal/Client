@@ -250,7 +250,6 @@ export class SupabaseService {
       `get_${type}_user_id`,
       input
     );
-
     if (error) {
       console.log(error);
       throw new Error('getUserId:');
