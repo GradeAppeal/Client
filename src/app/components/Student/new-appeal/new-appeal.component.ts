@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../services/supabase.service';
+import { SupabaseService } from '../../../services/supabase.service';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { getTimestampTz } from '../shared/functions/time.util';
+import { getTimestampTz } from '../../../shared/functions/time.util';
 
 @Component({
   selector: 'app-new-appeal',

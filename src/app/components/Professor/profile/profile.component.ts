@@ -1,6 +1,6 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EditStudentsPopUpComponent } from 'src/app/edit-students-pop-up/edit-students-pop-up.component';
+import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
@@ -11,24 +11,17 @@ import { OnChanges } from '@angular/core';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-
 export class ProfileComponent implements OnChanges {
-
   courseStudents!: Student[];
   professorCourses!: ProfessorCourse[];
   fetchedStudents = false;
   fetchedCourses = false;
-  currentPage = "view";
+  currentPage = 'view';
   currentCourse = -1;
   addedStudents: string;
   studentsToAdd: string[];
 
-  constructor(
-    private dialog: MatDialog,
-    private supabase: SupabaseService
-    )
-    {}
-
+  constructor(private dialog: MatDialog, private supabase: SupabaseService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -36,27 +29,27 @@ export class ProfileComponent implements OnChanges {
 
   async ngOnInit(): Promise<void> {
     try {
-        this.professorCourses = await this.supabase.fetchProfessorCourses(1);
-        this.fetchedCourses = true;
+      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+      this.fetchedCourses = true;
     } catch (err) {
-        console.log(err);
+      console.log(err);
     }
   }
 
   async retrieveRoster(courseID: number): Promise<void> {
     try {
-        this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
-        this.fetchedStudents = true;
-        console.log(this.courseStudents);
+      this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
+      this.fetchedStudents = true;
+      console.log(this.courseStudents);
     } catch (err) {
-        console.log(err);
+      console.log(err);
     }
   }
 
   async swapView(page: string, courseID: number) {
     this.currentPage = page;
     this.currentCourse = courseID;
-    if (page == "editRoster") {
+    if (page == 'editRoster') {
       await this.retrieveRoster(courseID);
       //this.assignRoles();
     } else {
@@ -69,15 +62,14 @@ export class ProfileComponent implements OnChanges {
     console.log(student);
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
       width: '250px',
-      data: {student: student}
+      data: { student: student },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-      if (result == "grader") {
+      if (result == 'grader') {
         this.makeGrader(student);
-      }
-      else if (result == "remove") {
+      } else if (result == 'remove') {
         this.removeStudent(student);
       }
     });
@@ -99,7 +91,7 @@ export class ProfileComponent implements OnChanges {
 
   async addStudents(): Promise<void> {
     // parse students added
-    this.studentsToAdd = this.addedStudents.split("\n");
+    this.studentsToAdd = this.addedStudents.split('\n');
     try {
       // this.studentsToAdd.forEach(async student => {
       //   await this.supabase.insertUser(
@@ -115,3 +107,4 @@ export class ProfileComponent implements OnChanges {
     }
   }
 }
+export { Student };

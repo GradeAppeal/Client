@@ -11,11 +11,11 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
+  selector: 'app-professor-interaction-history',
+  templateUrl: './professor-interaction-history.component.html',
+  styleUrls: ['./professor-interaction-history.component.scss'],
 })
-export class ChatComponent {
+export class ProfessorInteractionHistoryComponent {
   @Output() customTitleChange: EventEmitter<string> =
     new EventEmitter<string>();
   @Input() appeal_id: number;

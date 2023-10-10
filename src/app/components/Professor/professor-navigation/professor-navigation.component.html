@@ -31,7 +31,7 @@
       </div>
 
       <div *ngIf="selectedTab === 'Chat'">
-      <app-chat [current_appeal]="this.current_appeal" [student_id]="this.student_id" [appeal_id]="this.appeal_id" ></app-chat>
+      <app-professor-interaction-history [current_appeal]="this.current_appeal" [student_id]="this.student_id" [appeal_id]="this.appeal_id" ></app-professor-interaction-history>
       </div>
 
       <div *ngIf="selectedTab === 'Closed Appeals'">
