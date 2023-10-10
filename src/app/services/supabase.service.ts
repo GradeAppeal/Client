@@ -166,6 +166,22 @@ export class SupabaseService {
     return data;
   }
 
+    /**
+   * Fetch students for a particular course
+   * @param cid course id for students
+   * @returns List of students for a course
+   */
+    async fetchStudentsForClass(cid: number): Promise<Student[]> {
+      const { data, error } = await this.supabase.rpc('get_students', {
+        cid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('Error in fetchStudentsforNewClass');
+      }
+      return data;
+    }
+
   /**
    * Writes student appeal to database
    * @param aid assignment id from UI
@@ -361,5 +377,48 @@ export class SupabaseService {
       throw new Error('updateCourseGrader: ');
     }
     return data;
+  }
+
+  /**
+   * Writes student appeal to database
+   * @param type student or professor
+   * @param first_name first name
+   * @param last_name last name
+   * @param email user's email prefix (no @calvin.edu)
+   */
+  async insertUser(
+    type: string,
+    first_name: string,
+    last_name: string,
+    email: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      first_name,
+      last_name,
+      email
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insertUser');
+    }
+    console.log({ data });
+  }
+
+  async updateGrader(
+    sid: number,
+    cid: number
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('UpdateGrader');
+    }
+    console.log({ data });
   }
 }

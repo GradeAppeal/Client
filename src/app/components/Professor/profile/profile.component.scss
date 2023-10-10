@@ -12,7 +12,9 @@
 }
 
 .course-wording {
-  margin-top: 25px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: larger;
 }
 
 .edit-button, .assignments-button {
@@ -46,6 +48,11 @@
 
 .roster-table td {
   padding: 5px;
+}
+
+.student-data {
+  justify-content: space-between;
+  display: flex;
 }
 
 .blue-button {
