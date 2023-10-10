@@ -193,4 +193,25 @@ export class SupabaseService {
     }
     console.log({ data });
   }
+
+   /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+   async insertNewAssignment(
+    cid: number,
+    assignment_name: string,
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_new_assignment', {
+      cid,
+      assignment_name,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insertNewAppeal');
+    }
+    console.log({ data });
+  }
 }

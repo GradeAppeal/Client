@@ -1,19 +1,18 @@
 <div *ngIf="currentPage == 'view'" class="course-wrapper">
-  <mat-card class="courses" *ngFor="let course of courses">
-    <mat-card-title class="course-wording">{{ course.courseNumber }}</mat-card-title>
-    <mat-card-subtitle class="course-wording">{{ course.courseName }}</mat-card-subtitle>
-    <button type="submit" (click)="swapView('editAssignments', currentCourse)" class="blue-button">View Assignments</button>
+  <mat-card class="courses" *ngFor="let course of professorCourses">
+    <mat-card-title class="course-wording">{{formatProfessorCourse(course)}}</mat-card-title>
+    <mat-card-subtitle class="course-wording">{{ course.name }}</mat-card-subtitle>
+    <button type="submit" (click)="swapView('editAssignments', course)" class="blue-button">View Assignments</button>
     <button type="submit" (click)="swapView('editRoster', course)" class="blue-button">Edit Roster</button>
-
   </mat-card>
 </div>
 
 <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
-  <p>editing assignments</p>
-  <button type="submit" (click)="swapView('view', currentCourse)" class="blue-button">Back</button>
+  <button type="submit" (click)="swapView('view', currentCourse)" class="blue-button back-button">Back</button>
+  <app-assignments [course]="currentCourse"></app-assignments>
 </div>
 
-<div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
+<!-- <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
   <div class="roster-wrapper">
     <table class="roster-table" *ngIf="currentCourse.students.length != 0">
       <tr>
@@ -34,4 +33,4 @@
     <mat-label>Students to add</mat-label>
     <textarea matInput [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
   </mat-form-field>
-</div>
+</div> -->
