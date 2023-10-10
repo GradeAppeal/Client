@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { StudentDashboardComponent } from './components/home/student-dashboard/student-dashboard.component';
-import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
-import { ChatComponent } from './components/chat/chat.component';
-import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
-import { StudentNavigationComponent } from './student-navigation/student-navigation.component';
-import { NewAppealComponent } from './new-appeal/new-appeal.component';
-import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
+import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
+import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
+import { ProfileComponent } from './components/Professor/profile/profile.component';
+import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
+import { ProfessorInteractionHistoryComponent } from './components/Professor/professor-interaction-history/professor-interaction-history.component';
+import { EditTemplatesComponent } from './components/Professor/edit-templates/edit-templates.component';
+import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
+import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
+import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 const routes: Routes = [
   {
     path: '',
@@ -28,12 +28,8 @@ const routes: Routes = [
     component: NewAppealComponent,
   },
   {
-    path: "professor",
+    path: 'professor',
     component: ProfessorNavigationComponent,
-  },
-  {
-    path: 'professor/chat',
-    component: ChatComponent,
   },
   {
     path: 'professor/closed-appeals',
