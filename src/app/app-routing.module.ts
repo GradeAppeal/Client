@@ -38,6 +38,20 @@ const routes: Routes = [
       },
     ]
   },
+  {
+    path: 'professor',
+    component: ProfessorNavigationComponent,
+    children: [
+      {
+        path: 'appeal-inbox',
+        component: ProfessorAppealInboxComponent,
+      },
+      {
+        path: 'interaction-history',
+        component: ProfessorInteractionHistoryComponent,
+      },
+    ]
+  },
 
 
 

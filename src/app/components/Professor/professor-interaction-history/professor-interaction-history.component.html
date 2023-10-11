@@ -25,7 +25,7 @@
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
       <img class="header-avatar" ngxGravatar [email]="user.email" />
-      <h1>{{current_appeal?.student_name}} {{current_appeal?.appeal_id}}</h1>
+      <h1>&nbsp; {{current_appeal?.student_name}}<span>: </span>{{current_appeal?.assignment_name}}</h1>
     </mat-toolbar-row>
   </mat-toolbar>
   <div class="chat-list" #chatListContainer>
