@@ -10,7 +10,7 @@ export interface Course {
   code: number;
   name: string;
   section: string;
-  semester: string;
+  semester: 'FA' | 'SP' | 'SU';
   year: number;
 }
 
