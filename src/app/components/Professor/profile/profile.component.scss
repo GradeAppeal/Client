@@ -1,6 +1,8 @@
 .courses {
   margin: 2%;
   width: 22vw;
+  min-width: 400px;
+  min-height: 250px;
   height: 35vh;
   text-align: center;
   align-items: center;
@@ -57,4 +59,8 @@
 
 .blue-button {
   margin-bottom: 5px;
+}
+
+.back-button {
+  margin-left: 0px;
 }

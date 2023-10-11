@@ -3,11 +3,8 @@ import { ViewEncapsulation } from '@angular/compiler';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import {
-  ProfessorAppeal,
-  ProfessorCourse,
-} from 'src/app/shared/interfaces/professor.interface';
-
+import {ProfessorAppeal} from 'src/app/shared/interfaces/professor.interface';
+import { Course } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -23,7 +20,7 @@ export class ProfessorAppealInboxComponent {
   date = new Date();
 
   professorAppeals!: ProfessorAppeal[];
-  professorCourse!: ProfessorCourse[];
+  professorCourses!: Course[];
   selectedAppeal: ProfessorAppeal;
   fetchedAppeals = false;
 
@@ -31,7 +28,7 @@ export class ProfessorAppealInboxComponent {
   async ngOnInit(): Promise<void> {
     try {
       this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-      this.professorCourse = await this.supabase.fetchProfessorCourses(1);
+      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
       this.selectedAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
     } catch (err) {

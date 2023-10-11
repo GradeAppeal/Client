@@ -1,0 +1,49 @@
+@import "src/styles.scss";
+
+.course-title {
+    font-size: 2em;
+    font-weight: bold;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.assignment-wrapper {
+    display: flex;
+  }
+  
+  .assignment-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .assignment-table tr:nth-child(even){background-color: #f2f2f2;}
+  .assignment-table tr:hover {background-color: #ddd;}
+  
+  .assignment-table, .assignment-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .assignment-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: white;
+  }
+  
+  .assignment-table td {
+    padding: 5px;
+  }
+
+.blue-button {
+  // background-color: $primary-blue;
+  // color: white;
+  // font-family: Roboto;
+  // font-size: 1em;
+  // font-weight: bold;
+  // padding: 0.5em;
+  // margin: 0.5em;
+  // padding-left: 1em;
+  // padding-right: 1em;
+  // border-radius: 1.5em;
+}

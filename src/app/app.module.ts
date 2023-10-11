@@ -8,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
-// import { AccountComponent } from './components/account/account.component';g
+// import { AccountComponent } from './components/account/account.component';
 
 /* Material Design Imports  */
 import { MatSelectModule } from '@angular/material/select';
@@ -31,6 +31,8 @@ import { ProfessorAppealInboxComponent } from './components/Professor/professor-
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
+import { AssignmentsComponent } from './assignments/assignments.component';
+import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 
 @NgModule({
@@ -42,11 +44,14 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
     ClosedAppealsComponent,
     ProfileComponent,
     ProfessorInteractionHistoryComponent,
+    ProfessorInteractionHistoryComponent,
     EditTemplatesComponent,
     ProfessorAppealInboxComponent,
     StudentNavigationComponent,
     NewAppealComponent,
     EditStudentsPopUpComponent,
+    AssignmentsComponent,
+    AddAssignmentComponent,
     StudentInteractionHistoryComponent,
   ],
   imports: [
