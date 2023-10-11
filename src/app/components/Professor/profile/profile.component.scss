@@ -1,0 +1,66 @@
+.courses {
+  margin: 2%;
+  width: 22vw;
+  min-width: 400px;
+  min-height: 250px;
+  height: 35vh;
+  text-align: center;
+  align-items: center;
+}
+
+.course-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.course-wording {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: larger;
+}
+
+.edit-button, .assignments-button {
+  margin: 10px;
+  width: 15vw;
+}
+
+.roster-wrapper {
+  display: flex;
+}
+
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.roster-table tr:nth-child(even){background-color: #f2f2f2;}
+.roster-table tr:hover {background-color: #ddd;}
+
+.roster-table, .roster-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.roster-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+}
+
+.roster-table td {
+  padding: 5px;
+}
+
+.student-data {
+  justify-content: space-between;
+  display: flex;
+}
+
+.blue-button {
+  margin-bottom: 5px;
+}
+
+.back-button {
+  margin-left: 0px;
+}

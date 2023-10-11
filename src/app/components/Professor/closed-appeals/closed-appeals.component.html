@@ -1,0 +1,24 @@
+<!-- closed-appeals.component.html -->
+
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Closed Appeals</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Closed Appeals List -->
+      <ul class="closed-appeals-list">
+        <li *ngFor="let appeal of closedAppeals">
+          <mat-icon class="status-icon">done</mat-icon>
+          <div class="appeal-details">
+            <p class="course-name">Stats</p>
+            <p class="appeal-text">I flunked"</p>
+          </div>
+        </li>
+        <!-- If there are no closed appeals -->
+        <div *ngIf="closedAppeals.length === 0" class="no-appeals-message">
+          No closed appeals to display.
+        </div>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+  

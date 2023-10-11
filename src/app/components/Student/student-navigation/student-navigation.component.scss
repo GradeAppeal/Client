@@ -1,0 +1,44 @@
+@import "src/styles.scss";
+.sidenav-container {
+    height: 100%;
+    margin: 0px;
+  }
+  
+  mat-sidenav {
+    width: 200px;
+  }
+  mat-sidenav-content {
+    height: 100%;
+  }
+
+  .tab-list {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+
+  .top-bar{
+    font-size: 40px;
+    color: $primary-blue;
+    height: 80px;
+    padding-top: 8px;
+  }
+
+  .left-content{
+    margin-right: auto;
+    align-items: center; 
+    display: flex;
+  }
+
+  .right-content {
+    margin-left: auto; 
+    display: flex;
+    align-items: center; 
+  }
+
+  .tab-list {
+    background-color: $secondary-blue;
+    height: 100%;
+    }
+
+ 
