@@ -1,20 +1,22 @@
-    <div class="container">
+<div class="container">
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox-wrapper">
     <div class="inbox">
       <mat-nav-list >
         <mat-list-item
           class="inbox-item"
-          *ngFor="let appeal of this.professorAppeals"
+          *ngFor="let appeal of this.studentAppeals"
           (click)="selectAppeal(appeal)"
           [class.selected-appeal]="appeal === current_appeal"
         >
           <p matLine>
-            {{appeal?.student_name}}
+            {{appeal?.professor_first_name}}
           </p>
           
 
           <p matLine>{{ appeal?.created_at }}</p>
+          <p matLine>{{ appeal?.course_name }}</p>
+          <p matLine>{{ appeal?.assignment_name }}</p>
         </mat-list-item>
       </mat-nav-list>
     </div>
@@ -25,7 +27,7 @@
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
       <img class="header-avatar" ngxGravatar [email]="user.email" />
-      <h1>&nbsp; {{current_appeal?.student_name}}<span>: </span>{{current_appeal?.assignment_name}}</h1>
+      <h1>{{current_appeal?.professor_first_name}} {{current_appeal?.professor_last_name}}<span>:</span> {{current_appeal?.assignment_name}}</h1>
     </mat-toolbar-row>
   </mat-toolbar>
   <div class="chat-list" #chatListContainer>
@@ -37,6 +39,7 @@
           right: chat?.sender_id == user.id,
           left: chat?.sender_id != user.id
         }"
+
       >
         <!-- <img ngxGravatar [email]="user.email" /> -->
         <img *ngIf="isUser" ngxGravatar [email]="user.email" />

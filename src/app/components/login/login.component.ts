@@ -42,6 +42,6 @@ export class LoginComponent {
   }
 
   onStudent() {
-    this.router.navigateByUrl('/student');
+    this.router.navigateByUrl('/student/course-dashboard');
   }
 }

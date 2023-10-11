@@ -33,6 +33,7 @@ import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.c
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { AddAssignmentComponent } from './add-assignment/add-assignment.componen
     EditStudentsPopUpComponent,
     AssignmentsComponent,
     AddAssignmentComponent,
+    StudentInteractionHistoryComponent,
   ],
   imports: [
     BrowserModule,

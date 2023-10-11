@@ -75,9 +75,14 @@ export class NewAppealComponent implements OnInit {
         this.appeal,
         90
       );
+      this.navigateToInteractionHistory();
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
   }
+  navigateToInteractionHistory() {
+    this.router.navigate(['/student-navigation/student-interaction-history']);
+  }
+  
 }

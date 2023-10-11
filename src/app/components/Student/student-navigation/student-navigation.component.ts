@@ -17,4 +17,7 @@ export class StudentNavigationComponent {
   navigateToHome() {
     this.router.navigate(['/'])
   }
+  navigateTo(route: string){
+    this.router.navigate([route])
+  }
 }
