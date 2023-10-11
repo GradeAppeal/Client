@@ -96,15 +96,15 @@ export class ProfessorInteractionHistoryComponent {
 
     try {
       console.log(this.current_appeal.student_id);
-      let recipient_user_id = await this.supabase.getUserId(
+      let student_user_id = await this.supabase.getUserId(
         this.current_appeal.student_id,
         'student'
       );
-      console.log(recipient_user_id);
+      console.log(student_user_id);
       await this.supabase.insertMessages(
         this.current_appeal.appeal_id,
-        this.user.id,
-        recipient_user_id,
+        this.user.id,         //professor user id
+        student_user_id,        //student user id
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -114,7 +114,7 @@ export class ProfessorInteractionHistoryComponent {
         id: 1 + this.messageCount, //TODO make id better system
         created_at: getTimestampTz(new Date()),
         sender_id: this.user.id,
-        recipient_id: recipient_user_id,
+        recipient_id: student_user_id,
         appeal_id: this.current_appeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,

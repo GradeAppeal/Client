@@ -26,6 +26,7 @@ export interface StudentAppeal {
   course_section?: string | null;
   course_semester: 'FA' | 'SP' | 'SU';
   course_year: number;
+  professor_id: number;
   professor_first_name: string;
   professor_last_name: string;
   assignment_id: number;
