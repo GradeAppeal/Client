@@ -8,8 +8,13 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
-import { StudentCourse } from '../shared/interfaces/student.interface';
-import { ProfessorAppeal} from '../shared/interfaces/professor.interface';
+import {
+  StudentCourse,
+  StudentAppeal,
+} from '../shared/interfaces/student.interface';
+import {
+  ProfessorAppeal,
+} from '../shared/interfaces/professor.interface';
 import {
   Course,
   Assignment,
@@ -38,14 +43,6 @@ export class SupabaseService {
     return this._session;
   }
 
-  profile(user: User) {
-    return this.supabase
-      .from('User')
-      .select(`first_name, last_name, email`)
-      .eq('id', user.id)
-      .single();
-  }
-
   authChanges(
     callback: (event: AuthChangeEvent, session: Session | null) => void
   ) {
@@ -59,15 +56,6 @@ export class SupabaseService {
   signOut() {
     return this.supabase.auth.signOut();
   }
-
-  // updateProfile(profile: Profile) {
-  //   const update = {
-  //     ...profile,
-  //     updated_at: new Date(),
-  //   };
-
-  //   return this.supabase.from('profiles').upsert(update);
-  // }
 
   /**
    * Fetches the student's courses (both enrolled and grading)
@@ -383,6 +371,12 @@ export class SupabaseService {
     return data;
   }
 
+  /**
+   * toggles grader status
+   * @param sid student id
+   * @param cid course id
+   * @returns 1 if update was successful
+   */
   async updateCourseGrader(sid: number, cid: number): Promise<number> {
     let { data, error } = await this.supabase.rpc('update_grader', {
       sid,
@@ -413,7 +407,7 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
-      email
+      email,
     });
 
     if (error) {
@@ -423,13 +417,15 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  async updateGrader(
-    sid: number,
-    cid: number
-  ): Promise<void> {
+  /**
+   * update student grader status (toggle)
+   * @param sid student ID
+   * @param cid course ID
+   */
+  async updateGrader(sid: number, cid: number): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
-      cid
+      cid,
     });
 
     if (error) {
@@ -437,5 +433,22 @@ export class SupabaseService {
       throw new Error('UpdateGrader');
     }
     console.log({ data });
+  }
+
+  /**
+   *
+   * @param sid student id
+   * @returns All the appeals made by the student
+   */
+  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_student_appeals', {
+      sid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('UpdateGrader');
+    }
+    return data;
   }
 }

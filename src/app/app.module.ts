@@ -8,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
-// import { AccountComponent } from './components/account/account.component';g
+// import { AccountComponent } from './components/account/account.component';
 
 /* Material Design Imports  */
 import { MatSelectModule } from '@angular/material/select';
@@ -42,6 +42,7 @@ import { AddAssignmentComponent } from './add-assignment/add-assignment.componen
     ProfessorNavigationComponent,
     ClosedAppealsComponent,
     ProfileComponent,
+    ProfessorInteractionHistoryComponent,
     ProfessorInteractionHistoryComponent,
     EditTemplatesComponent,
     ProfessorAppealInboxComponent,
