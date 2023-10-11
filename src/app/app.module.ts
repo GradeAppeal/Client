@@ -7,8 +7,7 @@ import { GravatarModule } from 'ngx-gravatar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
-import { StudentDashboardComponent } from './components/home/student-dashboard/student-dashboard.component';
-import { ProfessorDashboardComponent } from './components/home/professor-dashboard/professor-dashboard.component';
+import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
 // import { AccountComponent } from './components/account/account.component';g
 
 /* Material Design Imports  */
@@ -23,17 +22,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-
-import { ProfessorNavigationComponent } from './components/professor-navigation/professor-navigation.component';
-import { ClosedAppealsComponent } from './components/closed-appeals/closed-appeals.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ChatComponent } from './components/chat/chat.component';
-import { EditTemplatesComponent } from './components/edit-templates/edit-templates.component';
-import { ProfessorAppealInboxComponent } from './components/professor-appeal-inbox/professor-appeal-inbox.component';
-import { StudentNavigationComponent } from './student-navigation/student-navigation.component';
-import { InteractionHistoryComponent } from './interaction-history/interaction-history.component';
-import { NewAppealComponent } from './new-appeal/new-appeal.component';
-import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
+import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
+import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
+import { ProfileComponent } from './components/Professor/profile/profile.component';
+import { ProfessorInteractionHistoryComponent } from './components/Professor/professor-interaction-history/professor-interaction-history.component';
+import { EditTemplatesComponent } from './components/Professor/edit-templates/edit-templates.component';
+import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
+import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
+import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
+import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 
@@ -42,15 +39,13 @@ import { AddAssignmentComponent } from './add-assignment/add-assignment.componen
     AppComponent,
     LoginComponent,
     StudentDashboardComponent,
-    ProfessorDashboardComponent,
     ProfessorNavigationComponent,
     ClosedAppealsComponent,
     ProfileComponent,
-    ChatComponent,
+    ProfessorInteractionHistoryComponent,
     EditTemplatesComponent,
     ProfessorAppealInboxComponent,
     StudentNavigationComponent,
-    InteractionHistoryComponent,
     NewAppealComponent,
     EditStudentsPopUpComponent,
     AssignmentsComponent,

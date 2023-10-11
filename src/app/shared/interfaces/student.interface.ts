@@ -11,10 +11,10 @@ export interface StudentCourse {
 }
 
 export interface NewAppeal {
-  student_name : string;
-  student_email : string;
-  selected_assignment : string;  
-  grade : string;
+  student_name: string;
+  student_email: string;
+  selected_assignment: string;
+  grade: string;
   reason: string;
-  created_at : string;
+  created_at: string;
 }

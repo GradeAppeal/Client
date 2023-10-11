@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from '../shared/interfaces/psql.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../services/supabase.service';
-import { ProfessorCourse } from '../shared/interfaces/professor.interface';
+import { Course } from '../shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-add-assignment',
@@ -13,7 +13,7 @@ import { ProfessorCourse } from '../shared/interfaces/professor.interface';
 export class AddAssignmentComponent {
   newAssignment : string;
   assignments : Assignment[];
-  currentCourse: ProfessorCourse; 
+  currentCourse: Course; 
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,

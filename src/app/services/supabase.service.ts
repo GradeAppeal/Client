@@ -9,11 +9,13 @@ import {
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { StudentCourse } from '../shared/interfaces/student.interface';
+import { ProfessorAppeal} from '../shared/interfaces/professor.interface';
 import {
-  ProfessorCourse,
-  ProfessorAppeal,
-} from '../shared/interfaces/professor.interface';
-import { Course, Assignment } from '../shared/interfaces/psql.interface';
+  Course,
+  Assignment,
+  Message,
+  Student,
+} from '../shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +90,7 @@ export class SupabaseService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorCourses(pid: number): Promise<ProfessorCourse[]> {
+  async fetchProfessorCourses(pid: number): Promise<Course[]> {
     const { data, error } = await this.supabase.rpc('get_professor_courses', {
       pid,
     });
@@ -99,35 +101,32 @@ export class SupabaseService {
     return data;
   }
 
+  async fetchStudents(cid: number): Promise<Student[]> {
+    const { data, error } = await this.supabase.rpc('get_students', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudents');
+    }
+    return data;
+  }
+
   /**
    * fetch from supabase: professor appeals
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorAppeals(pid: number): Promise<any> {
-    const { data, error } = await this.supabase.rpc('get_professor_appeals', {
-      pid,
-    });
+  async fetchProfessorAppeals(pid: number): Promise<ProfessorAppeal[]> {
+    const { data, error } = await this.supabase.rpc(
+      'get_professor_appeals_with_grade',
+      {
+        pid,
+      }
+    );
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorAppeals');
-    }
-    return data;
-  }
-  /**
-   * fetch from supabase: student grade for an assignment they made an appeal for
-   * @param aid assignment id
-   * @param sid student_id
-   * @returns student's grade
-   */
-  async fetchStudentGrade(aid: number, sid: number): Promise<number> {
-    const { data, error } = await this.supabase.rpc('get_student_grade', {
-      aid,
-      sid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('Error in fetchStudentGrade');
     }
     return data;
   }
@@ -164,6 +163,22 @@ export class SupabaseService {
     return data;
   }
 
+    /**
+   * Fetch students for a particular course
+   * @param cid course id for students
+   * @returns List of students for a course
+   */
+    async fetchStudentsForClass(cid: number): Promise<Student[]> {
+      const { data, error } = await this.supabase.rpc('get_students', {
+        cid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('Error in fetchStudentsforNewClass');
+      }
+      return data;
+    }
+
   /**
    * Writes student appeal to database
    * @param aid assignment id from UI
@@ -171,13 +186,15 @@ export class SupabaseService {
    * @param cid course id from UI
    * @param created_at date & time of appeal submission
    * @param appeal_text student appeal
+   * @param grade student grade
    */
   async insertNewAppeal(
     aid: number,
     sid: number,
     cid: number,
     created_at: Date,
-    appeal_text: string
+    appeal_text: string,
+    grade: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_new_appeal', {
       aid,
@@ -185,6 +202,7 @@ export class SupabaseService {
       cid,
       created_at,
       sid,
+      grade,
     });
 
     if (error) {
@@ -207,10 +225,216 @@ export class SupabaseService {
       cid,
       assignment_name,
     });
+    if (error) {
+      console.log(error);
+      throw new Error('insert_new_assignment');
+    }
+    console.log({ data });
+  }
+  
+
+  async fetchMessages(aid: number): Promise<Message[]> {
+    const { data, error } = await this.supabase.rpc('get_messages', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchMessages');
+    }
+    return data;
+  }  
+
+  /**
+   * Inserts interaction history to supabase
+   * @param appid appeal id
+   * @param sender_id sender id--depends on student/prof mode
+   * @param recipient_id recipient id--depends on student/prof mode
+   * @param created_at timestamp
+   * @param message_text text
+   * @param from_grader boolean: grader or not
+   * @returns 1 if insert was successful, 0 otherwise
+   */
+  async insertMessages(
+    appid: number,
+    sender_id: number,
+    recipient_id: number,
+    created_at: Date,
+    message_text: string,
+    from_grader: boolean
+  ): Promise<number> {
+    const { data, error } = await this.supabase.rpc('insert_message', {
+      appid,
+      created_at,
+      from_grader,
+      message_text,
+      recipient_id,
+      sender_id,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('insert messages');
+    }
+    return data;
+  }
+
+  async getUserId(id: number, type: 'student' | 'professor'): Promise<number> {
+    const input = type == 'student' ? { sid: id } : { pid: id };
+    const { data, error } = await this.supabase.rpc(
+      `get_${type}_user_id`,
+      input
+    );
+    if (error) {
+      console.log(error);
+      throw new Error('getUserId:');
+    }
+    return data;
+  }
+
+  /**
+   * Insert new user as a student
+   * @param firstName
+   * @param lastName
+   * @param email
+   * @returns trigger insert student
+   */
+  async insertStudent(firstName: string, lastName: string, email: string) {
+    const type = 'student';
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      firstName,
+      lastName,
+      email,
+    });
 
     if (error) {
       console.log(error);
-      throw new Error('insertNewAppeal');
+      throw new Error('insert student: ');
+    }
+    return data;
+  }
+
+  /**
+   * Insert new user as a professor
+   * @param firstName
+   * @param lastName
+   * @param email
+   * @returns trigger insert professor
+   */
+  async insertProfessor(firstName: string, lastName: string, email: string) {
+    const type = 'professor';
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      firstName,
+      lastName,
+      email,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert professor: ');
+    }
+    return data;
+  }
+
+  /**
+   * insert student users into course (only if student is a registered user)
+   * @param email student's email
+   * @param cid course id
+   * @param isGrader grader status
+   * @returns 1 of insert is successful
+   */
+  async insertStudentCourse(
+    student_email: string,
+    cid: number,
+    is_grader: boolean
+  ): Promise<number> {
+    let { data, error } = await this.supabase.rpc('insert_user', {
+      student_email,
+      cid,
+      is_grader,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insert student to course: ');
+    }
+    return data;
+  }
+
+  /**
+   * deletes student from course
+   * @param sid student id
+   * @param cid course id
+   * @returns 1 if successful
+   */
+  async deleteStudentFromCourse(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc(
+      'delete_student_from_course',
+      {
+        sid,
+        cid,
+      }
+    );
+
+    if (error) {
+      console.log(error);
+      throw new Error('deleteStudentFromCourse: ');
+    }
+    return data;
+  }
+
+  async updateCourseGrader(sid: number, cid: number): Promise<number> {
+    let { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('updateCourseGrader: ');
+    }
+    return data;
+  }
+
+  /**
+   * Writes student appeal to database
+   * @param type student or professor
+   * @param first_name first name
+   * @param last_name last name
+   * @param email user's email prefix (no @calvin.edu)
+   */
+  async insertUser(
+    type: string,
+    first_name: string,
+    last_name: string,
+    email: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_user', {
+      type,
+      first_name,
+      last_name,
+      email
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('insertUser');
+    }
+    console.log({ data });
+  }
+
+  async updateGrader(
+    sid: number,
+    cid: number
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('UpdateGrader');
     }
     console.log({ data });
   }
