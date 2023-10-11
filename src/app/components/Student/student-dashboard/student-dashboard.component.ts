@@ -27,6 +27,6 @@ export class StudentDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    this.router.navigateByUrl(`/new-appeal/${course.course_id}`);
+    this.router.navigateByUrl(`/student/new-appeal/${course.course_id}`);
   }
 }

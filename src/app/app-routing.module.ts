@@ -10,6 +10,7 @@ import { EditTemplatesComponent } from './components/Professor/edit-templates/ed
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
+import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 const routes: Routes = [
   {
     path: '',
@@ -18,15 +19,28 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
+    children: [
+      {
+        path: 'course-dashboard',
+        component: StudentDashboardComponent,
+      },
+      {
+        path: 'student/:id',
+        component: StudentDashboardComponent,
+      },
+      {
+        path: 'new-appeal/:courseId',
+        component: NewAppealComponent,
+      },
+      { 
+        path: 'student-interaction-history', 
+        component: StudentInteractionHistoryComponent 
+      },
+    ]
   },
-  {
-    path: 'student/:id',
-    component: StudentDashboardComponent,
-  },
-  {
-    path: 'new-appeal/:courseId',
-    component: NewAppealComponent,
-  },
+
+
+
   {
     path: 'professor',
     component: ProfessorNavigationComponent,
