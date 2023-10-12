@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/compiler';
 import { Component, Output, EventEmitter } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import {ProfessorAppeal} from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -21,15 +21,15 @@ export class ProfessorAppealInboxComponent {
 
   professorAppeals!: ProfessorAppeal[];
   professorCourses!: Course[];
-  selectedAppeal: ProfessorAppeal;
+  currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(private router: Router, private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
     try {
       this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
       this.professorCourses = await this.supabase.fetchProfessorCourses(1);
-      this.selectedAppeal = this.professorAppeals[0];
+      this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
     } catch (err) {
       console.log(err);
@@ -46,13 +46,16 @@ export class ProfessorAppealInboxComponent {
   // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
-    this.selectedAppeal = appeal;
-    console.log(this.selectedAppeal);
+    this.currentAppeal = appeal;
+    console.log(this.currentAppeal);
   }
 
   composeMessage() {}
   chat(appeal: ProfessorAppeal) {
     const changeToChat = 'true';
     this.isChat.emit({ professorAppeal: appeal });
+  }
+  navigateTo(route: string){
+    this.router.navigate([route])
   }
 }

@@ -18,12 +18,15 @@
        margin-right: 10px;
      }
   }
-  
+
   .inbox{
+    border: solid gray 1px;
     width: 200px;
     float: left;
     margin-left: -10px;
     margin-right: 20px;
+    height: 90vh; /* 100% of the viewport height */
+    overflow-y: auto; /* Hide overflow content */
   }
 
   .appeal{
@@ -72,4 +75,7 @@
 
   .selected-appeal {
     background-color: rgba(167, 166, 166, 0.635); /* Set the background color to a darker shade */
+  }
+  mat-nav-list{
+    padding: 0px;
   }
