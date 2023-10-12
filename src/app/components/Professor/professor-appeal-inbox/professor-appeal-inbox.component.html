@@ -30,8 +30,8 @@
             <h2 class="appeal-header">
               <img class="inbox-avatar" ngxGravatar [email]="email" />
               <p>
-                Appeal {{ selectedAppeal.appeal_id }}: &nbsp;{{
-                  selectedAppeal.student_name
+                {{selectedAppeal.student_name }}: &nbsp;{{
+                  selectedAppeal.assignment_name 
                 }}
               </p>
             </h2>
@@ -39,7 +39,7 @@
               <strong>Student Name:</strong> {{ selectedAppeal.student_name }}
             </p>
             <p>
-              <strong>Assignment:</strong> {{ selectedAppeal.assignment_name }}
+              <strong>Appeal Number:</strong> {{ selectedAppeal.appeal_id }}
             </p>
             <p>
               <strong>Grade Received:</strong>

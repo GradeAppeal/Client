@@ -12,6 +12,7 @@ import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.c
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { AdminComponent } from './components/admin/admin.component';
 
+import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,15 +21,40 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
+    children: [
+      {
+        path: 'course-dashboard',
+        component: StudentDashboardComponent,
+      },
+      {
+        path: 'student/:id',
+        component: StudentDashboardComponent,
+      },
+      {
+        path: 'new-appeal/:courseId',
+        component: NewAppealComponent,
+      },
+      {
+        path: 'student-interaction-history',
+        component: StudentInteractionHistoryComponent,
+      },
+    ],
   },
   {
-    path: 'student/:id',
-    component: StudentDashboardComponent,
+    path: 'professor',
+    component: ProfessorNavigationComponent,
+    children: [
+      {
+        path: 'appeal-inbox',
+        component: ProfessorAppealInboxComponent,
+      },
+      {
+        path: 'interaction-history',
+        component: ProfessorInteractionHistoryComponent,
+      },
+    ],
   },
-  {
-    path: 'new-appeal/:courseId',
-    component: NewAppealComponent,
-  },
+
   {
     path: 'professor',
     component: ProfessorNavigationComponent,

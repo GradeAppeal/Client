@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   onStudent() {
-    this.router.navigateByUrl('/student');
+    this.router.navigateByUrl('/student/course-dashboard');
   }
 
   onSignup() {}

@@ -2,7 +2,7 @@ import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
+import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
 import { OnChanges } from '@angular/core';
 
@@ -13,14 +13,15 @@ import { OnChanges } from '@angular/core';
 })
 export class ProfileComponent implements OnChanges {
   courseStudents!: Student[];
-  professorCourses!: ProfessorCourse[];
+  professorCourses!: Course[];
   fetchedStudents = false;
   fetchedCourses = false;
+  fetchedCourse = false;
   currentPage = 'view';
-  currentCourse = -1;
+  currentCourseID = -1;
   addedStudents: string;
   studentsToAdd: string[];
-
+  currentCourse : Course;
   constructor(private dialog: MatDialog, private supabase: SupabaseService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,6 +37,21 @@ export class ProfileComponent implements OnChanges {
     }
   }
 
+    /**
+ * Formats course name information like shown in Moodle
+ * @param course Course object containing course information
+ * @returns formatted string of course (moodle format)
+ */
+    formatCourse(course: Course): string {
+      return course.section
+        ? `${course.year - 2000}${course.semester} ${course.prefix}-${
+            course.code
+          }-${course.section} - ${course.name}`
+        : `${course.year - 2000}${course.semester} ${course.prefix}-${
+            course.code
+          } - ${course.name}`;
+    }
+
   async retrieveRoster(courseID: number): Promise<void> {
     try {
       this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
@@ -46,9 +62,11 @@ export class ProfileComponent implements OnChanges {
     }
   }
 
-  async swapView(page: string, courseID: number) {
+
+  async swapView(page: string, courseID: number, course : Course) {
     this.currentPage = page;
-    this.currentCourse = courseID;
+    this.currentCourseID = courseID;
+    this.currentCourse = course;
     if (page == 'editRoster') {
       await this.retrieveRoster(courseID);
       //this.assignRoles();
@@ -77,8 +95,8 @@ export class ProfileComponent implements OnChanges {
 
   async makeGrader(student: Student) {
     try {
-      console.log(student.id, this.currentCourse);
-      await this.supabase.updateGrader(student.id, this.currentCourse);
+      console.log(student.id, this.currentCourseID);
+      await this.supabase.updateGrader(student.id, this.currentCourseID);
       student.is_grader = !student.is_grader;
     } catch (err) {
       throw new Error('makeGrader');
@@ -86,7 +104,7 @@ export class ProfileComponent implements OnChanges {
   }
 
   removeStudent(student: Student) {
-    //this.currentCourse.students = this.currentCourse.students.filter(item => item != student);
+    //this.currentCourseID.students = this.currentCourseID.students.filter(item => item != student);
   }
 
   async addStudents(): Promise<void> {

@@ -18,6 +18,8 @@ export class StudentDashboardComponent {
   async ngOnInit(): Promise<void> {
     this.studentCourses = await this.supabase.fetchStudentCourses(1);
     console.log(this.studentCourses);
+    const studentAppeals = await this.supabase.fetchStudentAppeals(1);
+    console.log({ studentAppeals });
   }
   onNewAppeal(course: StudentCourse) {
     this.course_string =
@@ -27,6 +29,6 @@ export class StudentDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    this.router.navigateByUrl(`/new-appeal/${course.course_id}`);
+    this.router.navigateByUrl(`/student/new-appeal/${course.course_id}`);
   }
 }

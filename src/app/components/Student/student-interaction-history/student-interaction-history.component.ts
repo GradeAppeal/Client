@@ -1,26 +1,21 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  ViewChild,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
+import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 @Component({
-  selector: 'app-professor-interaction-history',
-  templateUrl: './professor-interaction-history.component.html',
-  styleUrls: ['./professor-interaction-history.component.scss'],
+  selector: 'app-student-interaction-history',
+  templateUrl: './student-interaction-history.component.html',
+  styleUrls: ['./student-interaction-history.component.scss'],
 })
-export class ProfessorInteractionHistoryComponent {
+export class StudentInteractionHistoryComponent {
   @Output() customTitleChange: EventEmitter<string> =
     new EventEmitter<string>();
   @Input() appeal_id: number;
   @Input() student_id: number;
-  @Input() current_appeal: ProfessorAppeal;
+  @Input() current_appeal: StudentAppeal;
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
@@ -29,28 +24,27 @@ export class ProfessorInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  user = {
-    id: 10,
+  user = {    //student
+    id: 3,
     email: 'abc123@gmail.com',
   };
-  sender = {
+  sender = { //professor
     id: 0,
     email: 'ccc1233@gmail.com',
   };
 
-  professorAppeals!: ProfessorAppeal[];
+  studentAppeals!: StudentAppeal[];
 
   constructor(private supabase: SupabaseService) {}
   async ngOnInit() {
-    this.user.id = 10; //TODO make this actual user ID not just fake data
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+    this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
     if (this.current_appeal) {
       //this.sender.id = this.current_appeal.student_id;
       this.messages = await this.supabase.fetchMessages(
         this.current_appeal.appeal_id
       );
     } else {
-      this.current_appeal = this.professorAppeals[0];
+      this.current_appeal = this.studentAppeals[0];
       this.messages = await this.supabase.fetchMessages(
         this.current_appeal.appeal_id
       );
@@ -80,14 +74,6 @@ export class ProfessorInteractionHistoryComponent {
     console.log(this.current_appeal);
   }
 
-  // async insertMessages(
-  //   appid: number,
-  //   sender_id: number,
-  //   recipient_id: number,
-  //   created_at: Date,
-  //   message_text: string,
-  //   from_grader: boolean
-  // ):
   /**
    * Submit student appeal to database
    */
@@ -95,16 +81,16 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      console.log(this.current_appeal.student_id);
-      let student_user_id = await this.supabase.getUserId(
-        this.current_appeal.student_id,
-        'student'
+      let professor_user_id = await this.supabase.getUserId(
+        this.current_appeal.professor_id,
+        'professor'
       );
-      console.log(student_user_id);
+      console.log(professor_user_id);
+      console.log(this.user.id)
       await this.supabase.insertMessages(
         this.current_appeal.appeal_id,
-        this.user.id,         //professor user id
-        student_user_id,        //student user id
+        this.user.id,                    //sender id: student
+        professor_user_id,               //recipientid : professor
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -114,7 +100,7 @@ export class ProfessorInteractionHistoryComponent {
         id: 1 + this.messageCount, //TODO make id better system
         created_at: getTimestampTz(new Date()),
         sender_id: this.user.id,
-        recipient_id: student_user_id,
+        recipient_id: professor_user_id,
         appeal_id: this.current_appeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
