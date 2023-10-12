@@ -10,6 +10,8 @@ import { EditTemplatesComponent } from './components/Professor/edit-templates/ed
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
+import { AdminComponent } from './components/admin/admin.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -42,6 +44,10 @@ const routes: Routes = [
   {
     path: 'professor/edit-templates',
     component: EditTemplatesComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
   },
   {
     path: '**',

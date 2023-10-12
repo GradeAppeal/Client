@@ -63,6 +63,18 @@ export class SupabaseService {
     return this.supabase.auth.signOut();
   }
 
+  async signInWithEmail(email: string, password: string) {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('signInWithEmail: ');
+    }
+    console.log(data);
+  }
+
   // updateProfile(profile: Profile) {
   //   const update = {
   //     ...profile,
@@ -166,21 +178,21 @@ export class SupabaseService {
     return data;
   }
 
-    /**
+  /**
    * Fetch students for a particular course
    * @param cid course id for students
    * @returns List of students for a course
    */
-    async fetchStudentsForClass(cid: number): Promise<Student[]> {
-      const { data, error } = await this.supabase.rpc('get_students', {
-        cid,
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('Error in fetchStudentsforNewClass');
-      }
-      return data;
+  async fetchStudentsForClass(cid: number): Promise<Student[]> {
+    const { data, error } = await this.supabase.rpc('get_students', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentsforNewClass');
     }
+    return data;
+  }
 
   /**
    * Writes student appeal to database
@@ -396,7 +408,7 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
-      email
+      email,
     });
 
     if (error) {
@@ -406,13 +418,10 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  async updateGrader(
-    sid: number,
-    cid: number
-  ): Promise<void> {
+  async updateGrader(sid: number, cid: number): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
-      cid
+      cid,
     });
 
     if (error) {

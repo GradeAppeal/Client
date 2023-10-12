@@ -31,6 +31,7 @@ import { ProfessorAppealInboxComponent } from './components/Professor/professor-
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { EditStudentsPopUpComponent } from './components/Student/edit-students-p
     StudentNavigationComponent,
     NewAppealComponent,
     EditStudentsPopUpComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,

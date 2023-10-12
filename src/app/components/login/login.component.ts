@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { Router } from '@angular/router';
@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loading = false;
 
-  signInForm = this.formBuilder.group({
+  loginForm = this.formBuilder.group({
     email: '',
+    password: '',
   });
 
   constructor(
@@ -21,19 +22,23 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  async onSubmit(): Promise<void> {
+  async ngOnInit() {}
+
+  async onLogin(): Promise<void> {
+    this.loading = true;
+    const email = this.loginForm.value.email as string;
+    const password = this.loginForm.value.password as string;
     try {
-      this.loading = true;
-      const email = this.signInForm.value.email as string;
-      const { error } = await this.supabase.signIn(email);
-      if (error) throw error;
-      alert('Check your email for the login link!');
+      await this.supabase.signInWithEmail(email, password);
+      this.router.navigateByUrl('/admin');
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        alert(
+          `A user for ${email} does not exist or the password is incorrect`
+        );
       }
     } finally {
-      this.signInForm.reset();
+      this.loginForm.reset();
       this.loading = false;
     }
   }
@@ -44,4 +49,6 @@ export class LoginComponent {
   onStudent() {
     this.router.navigateByUrl('/student');
   }
+
+  onSignup() {}
 }
