@@ -22,6 +22,8 @@
 
   mat-sidenav-content {
     padding: 16px; /* Add padding to content area */
+    overflow: hidden;
+    height: 100vh;
   }
 
 .top-bar{

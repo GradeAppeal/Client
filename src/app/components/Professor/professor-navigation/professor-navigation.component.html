@@ -7,7 +7,7 @@
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
       <span class="left-content">
-        <span (click)="navigateToPage('/')" class="material-symbols-outlined">
+        <span (click)="navigateTo('/')" class="material-symbols-outlined">
           rocket_launch
         </span>
         <span>{{ selectedTab }}</span>
@@ -23,69 +23,44 @@
   <mat-sidenav #sidenav mode="side" opened>
     <mat-action-list class="tab-list">
       <button
-        mat-list-item
-        (click)="selectTab('Appeal Inbox')"
-        [class.selected]="selectedTab === 'Appeal Inbox'"
-      >
+      mat-list-item
+      (click)="navigateTo('professor/appeal-inbox')"
+      [class.selected]="selectedTab === 'Appeal Inbox'"
+    >
         &ensp;Appeal Inbox
       </button>
       <button
-        mat-list-item
-        (click)="selectTab('Interaction History')"
-        [class.selected]="selectedTab === 'Interaction History'"
-      >
+      mat-list-item
+      (click)="navigateTo('professor/interaction-history/')"
+      [class.selected]="selectedTab === 'Interaction History'"
+    >
         &ensp;Interaction History
       </button>
       <button
-        mat-list-item
-        (click)="selectTab('Closed Appeals')"
-        [class.selected]="selectedTab === 'Closed Appeals'"
-      >
+      mat-list-item
+      (click)="navigateTo('professor/closed-appeals')"
+      [class.selected]="selectedTab === 'Closed Appeals'"
+    >
         &ensp;Closed Appeals
       </button>
       <button
-        mat-list-item
-        (click)="selectTab('Profile')"
-        [class.selected]="selectedTab === 'Profile'"
-      >
+      mat-list-item
+      (click)="navigateTo('professor/profile')"
+      [class.selected]="selectedTab === 'Profile'"
+    >
         &ensp;Profile
       </button>
       <button
-        mat-list-item
-        (click)="selectTab('Edit Templates')"
-        [class.selected]="selectedTab === 'Edit Templates'"
-      >
+      mat-list-item
+      (click)="navigateTo('professor/edit-templates')"
+      [class.selected]="selectedTab === 'Edit Templates'"
+    >
         &ensp;Edit Templates
       </button>
     </mat-action-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="content">
-    <!-- <router-outlet></router-outlet> -->
-    <div *ngIf="selectedTab === 'Appeal Inbox'">
-      <app-professor-appeal-inbox
-        (isChat)="onIsChat($event)"
-      ></app-professor-appeal-inbox>
-    </div>
-
-    <div *ngIf="selectedTab === 'Interaction History'">
-      <app-professor-interaction-history
-        [current_appeal]="this.current_appeal"
-        [student_id]="this.student_id"
-        [appeal_id]="this.appeal_id"
-      ></app-professor-interaction-history>
-    </div>
-
-    <div *ngIf="selectedTab === 'Closed Appeals'">
-      <app-closed-appeals></app-closed-appeals>
-    </div>
-
-    <div *ngIf="selectedTab === 'Profile'">
-      <app-profile></app-profile>
-    </div>
-
-    <div *ngIf="selectedTab === 'Edit Templates'">
-      <app-edit-templates></app-edit-templates>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
