@@ -6,6 +6,7 @@ import {
   ViewChild,
   EventEmitter,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
@@ -16,14 +17,9 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
   styleUrls: ['./professor-interaction-history.component.scss'],
 })
 export class ProfessorInteractionHistoryComponent {
-  @Output() customTitleChange: EventEmitter<string> =
-    new EventEmitter<string>();
-  @Input() appeal_id: number;
-  @Input() student_id: number;
-  @Input() current_appeal: ProfessorAppeal;
-  @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
-
+  currentAppeal: ProfessorAppeal;
+  appealId: number;
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = false;
@@ -40,19 +36,32 @@ export class ProfessorInteractionHistoryComponent {
 
   professorAppeals!: ProfessorAppeal[];
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private supabase: SupabaseService
+  ) {
+    this.route.params.subscribe((params) => {
+      this.appealId = +params['id']; // Convert the parameter to a number
+      console.log(this.appealId);
+    });
+  }
   async ngOnInit() {
     this.user.id = 10; //TODO make this actual user ID not just fake data
     this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-    if (this.current_appeal) {
-      //this.sender.id = this.current_appeal.student_id;
+    this.currentAppeal =
+      this.professorAppeals.find(
+        (appeal) => appeal.appeal_id === this.appealId
+      ) || this.professorAppeals[0];
+
+    if (this.currentAppeal) {
+      //this.sender.id = this.currentAppeal.student_id;
       this.messages = await this.supabase.fetchMessages(
-        this.current_appeal.appeal_id
+        this.currentAppeal.appeal_id
       );
     } else {
-      this.current_appeal = this.professorAppeals[0];
+      this.currentAppeal = this.professorAppeals[0];
       this.messages = await this.supabase.fetchMessages(
-        this.current_appeal.appeal_id
+        this.currentAppeal.appeal_id
       );
     }
     this.messageCount = this.messages.length;
@@ -72,22 +81,14 @@ export class ProfessorInteractionHistoryComponent {
   // Function to select an appeal
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
-    this.current_appeal = appeal;
-    //this.sender.id = this.current_appeal.student_id;
+    this.currentAppeal = appeal;
+    //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.supabase.fetchMessages(
-      this.current_appeal.appeal_id
+      this.currentAppeal.appeal_id
     );
-    console.log(this.current_appeal);
+    console.log(this.currentAppeal);
   }
 
-  // async insertMessages(
-  //   appid: number,
-  //   sender_id: number,
-  //   recipient_id: number,
-  //   created_at: Date,
-  //   message_text: string,
-  //   from_grader: boolean
-  // ):
   /**
    * Submit student appeal to database
    */
@@ -95,16 +96,16 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      console.log(this.current_appeal.student_id);
+      console.log(this.currentAppeal.student_id);
       let student_user_id = await this.supabase.getUserId(
-        this.current_appeal.student_id,
+        this.currentAppeal.student_id,
         'student'
       );
       console.log(student_user_id);
       await this.supabase.insertMessages(
-        this.current_appeal.appeal_id,
-        this.user.id,         //professor user id
-        student_user_id,        //student user id
+        this.currentAppeal.appeal_id,
+        this.user.id, //professor user id
+        student_user_id, //student user id
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -115,7 +116,7 @@ export class ProfessorInteractionHistoryComponent {
         created_at: getTimestampTz(new Date()),
         sender_id: this.user.id,
         recipient_id: student_user_id,
-        appeal_id: this.current_appeal.appeal_id,
+        appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
       });

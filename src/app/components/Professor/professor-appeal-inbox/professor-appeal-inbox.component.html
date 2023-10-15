@@ -1,6 +1,5 @@
 <!-- Main Content Section -->
 <div class="content">
-  <div *ngIf="!showChat" class="content-container">
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox" *ngIf="fetchedAppeals">
       <mat-nav-list>
@@ -8,7 +7,7 @@
           class="inbox-item"
           *ngFor="let appeal of professorAppeals"
           (click)="selectAppeal(appeal)"
-          [class.selected-appeal]="appeal === selectedAppeal"
+          [class.selected-appeal]="appeal === currentAppeal"
         >
           <p matLine>
             {{ appeal.student_name }}
@@ -30,29 +29,28 @@
             <h2 class="appeal-header">
               <img class="inbox-avatar" ngxGravatar [email]="email" />
               <p>
-                {{selectedAppeal.student_name }}: &nbsp;{{
-                  selectedAppeal.assignment_name 
-                }}
+                {{currentAppeal.student_name }}: &nbsp;
+                {{currentAppeal.assignment_name }}
               </p>
             </h2>
             <p>
-              <strong>Student Name:</strong> {{ selectedAppeal.student_name }}
+              <strong>Student Name:</strong> {{ currentAppeal.student_name }}
             </p>
             <p>
-              <strong>Appeal Number:</strong> {{ selectedAppeal.appeal_id }}
+              <strong>Appeal Number:</strong> {{ currentAppeal.appeal_id }}
             </p>
             <p>
               <strong>Grade Received:</strong>
-              {{ selectedAppeal.appeal_grade }}
+              {{ currentAppeal.appeal_grade }}
             </p>
 
             <mat-card class="message">
-              <p>{{ selectedAppeal.appeal_text }}</p>
+              <p>{{ currentAppeal.appeal_text }}</p>
             </mat-card>
             <div class="buttons">
               <button
                 class="chat"
-                (click)="chat(selectedAppeal)"
+                (click)="navigateTo('professor/interaction-history/' + this.currentAppeal.appeal_id )"
                 mat-stroked-button
                 accent
               >
@@ -66,9 +64,4 @@
         </div>
       </ng-template>
     </div>
-  </div>
-
-  <div *ngIf="showChat">
-    <app-professor-interaction-history></app-professor-interaction-history>
-  </div>
 </div>

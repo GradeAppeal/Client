@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     }
   }
-  onSkip() {
-    this.router.navigateByUrl('/professor');
+  onProfessor() {
+    this.router.navigateByUrl('/professor/appeal-inbox');
   }
 
   onStudent() {

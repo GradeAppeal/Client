@@ -19,6 +19,36 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'professor',
+    component: ProfessorNavigationComponent,
+    children: [
+      {
+        path: 'appeal-inbox',
+        component: ProfessorAppealInboxComponent,
+      },
+      {
+        path: 'interaction-history',
+        component: ProfessorInteractionHistoryComponent,
+      },
+      {
+        path: 'interaction-history/:id',
+        component: ProfessorInteractionHistoryComponent,
+      },
+      {
+        path: 'closed-appeals',
+        component: ClosedAppealsComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+      {
+        path: 'edit-templates',
+        component: EditTemplatesComponent,
+      },
+    ],
+  },
+  {
     path: 'student',
     component: StudentNavigationComponent,
     children: [
