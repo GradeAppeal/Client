@@ -31,9 +31,10 @@ import { ProfessorAppealInboxComponent } from './components/Professor/professor-
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
-import { AssignmentsComponent } from './assignments/assignments.component';
-import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
+import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { DeleteConfirmationComponent } from './components/Professor/assignments/delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     BrowserModule,
