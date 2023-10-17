@@ -219,6 +219,24 @@ export class SupabaseService {
     }
     console.log({ data });
   }
+
+     /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+     async deleteAssignment(
+      aid: number,
+    ): Promise<void> {
+      const { data, error } = await this.supabase.rpc('delete_assignment', {
+        aid
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('delete_assignment');
+      }
+      console.log({ data });
+    }
   
 
   async fetchMessages(aid: number): Promise<Message[]> {

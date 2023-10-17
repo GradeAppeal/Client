@@ -1,9 +1,9 @@
 import { Component, Inject, Optional, Input  } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Assignment } from '../shared/interfaces/psql.interface';
+import { Assignment } from '../../../../shared/interfaces/psql.interface';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../services/supabase.service';
-import { Course } from '../shared/interfaces/psql.interface';
+import { SupabaseService } from '../../../../services/supabase.service';
+import { Course } from '../../../../shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-add-assignment',
@@ -28,7 +28,7 @@ export class AddAssignmentComponent {
   
 
   /**
-   * Submit student appeal to database
+   * Add assignment to database
    */
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
