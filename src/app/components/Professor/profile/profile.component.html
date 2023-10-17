@@ -3,7 +3,7 @@
     <mat-card-title class="course-wording">{{ course.prefix }}-{{course.code}}-{{course.section}} {{course.semester}}-{{course.year}}</mat-card-title>
     <mat-card-subtitle class="course-wording">{{ course.name }}</mat-card-subtitle>
     <button type="submit" (click)="swapView('editAssignments', course.id, course)" class="blue-button">View Assignments</button>
-    <button type="submit" (click)="swapView('editRoster', course.id, course)" class="blue-button">Edit Roster</button>
+    <button type="submit" (click)="swapView('editRoster', course.id, course)" class="blue-button">View Roster</button>
   </mat-card>
 </div>
 
@@ -13,6 +13,8 @@
 </div>
 
 <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
+  <button type="submit" (click)="swapView('view', currentCourseID, currentCourse)" class="blue-button">Back</button>
+  <p class="course-title">{{formatCourse(currentCourse)}}</p>
   <div *ngIf="fetchedStudents == true">
     <div class="roster-wrapper">
       <table class="roster-table" *ngIf="courseStudents.length != 0">
@@ -30,7 +32,6 @@
       <p *ngIf="courseStudents.length == 0"> There are no students in this class.</p>
     </div>
     <button type="submit" (click)="addStudents()" class="blue-button">Add Students</button>
-    <button type="submit" (click)="swapView('view', currentCourseID, currentCourse)" class="blue-button">Back</button>
     <mat-form-field class="example-full-width">
       <mat-label>Students to add</mat-label>
       <textarea matInput [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>

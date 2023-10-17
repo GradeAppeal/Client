@@ -1,12 +1,13 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { SupabaseService } from '../services/supabase.service';
+import { SupabaseService } from '../../../services/supabase.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { ProfileComponent } from '../components/Professor/profile/profile.component';
+import { ProfileComponent } from '../profile/profile.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AddAssignmentComponent } from '../add-assignment/add-assignment.component';
+import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-assignments',
@@ -50,18 +51,25 @@ export class AssignmentsComponent {
   }
   
 /**
-   * Add new assignment to database
+   * Goes to AddAssignment pop up component
    */
-async addAssignment(assignments : Assignment[], course : Course): Promise<void> {
+async addAssignmentPopUp(assignments : Assignment[], course : Course): Promise<void> {
   const dialogRef = this.dialog.open(AddAssignmentComponent, {
-    width: "75%",
-    height: "75%",
+    width: "50%",
+    height: "55%",
     data: {assignments: assignments, course : course}
   });
 }
 
-toggleEditMode() {
-  this.editMode = !this.editMode;
+/**
+   * Goes to DeleteConfirmation pop up component
+   */
+async deleteAssignmentPopUp(assignment : Assignment, course : Course): Promise<void> {
+  const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    width: "35%",
+    height: "35%",
+    data: {assignment: assignment, course : course}
+  });
 }
 
 
