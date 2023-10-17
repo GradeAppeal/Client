@@ -34,12 +34,23 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
+            <mat-label>Enter your grade:</mat-label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              matInput
+              [(ngModel)]="grade"
+            />
+          </mat-form-field>
+          <mat-form-field>
             <mat-label>Enter your reason for appeal:</mat-label>
             <textarea matInput [(ngModel)]="appeal"></textarea>
           </mat-form-field>
           <button mat-raised-button (click)="onSubmitAppeal()">Submit</button>
-          <button (click)="navigateToInteractionHistory()">Go to Interaction History</button>
-
+          <button (click)="navigateToInteractionHistory()">
+            Go to Interaction History
+          </button>
         </div>
       </mat-card>
     </div>

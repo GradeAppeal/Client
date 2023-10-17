@@ -1,0 +1,22 @@
+<div class="register-container">
+  <div class="register-info-container">
+    <h1>Instructor Registeration</h1>
+    <h2>
+      Please register below with the format <i>first.last@calvin.edu</i> format
+    </h2>
+  </div>
+
+  <form class="register-form">
+    <mat-form-field>
+      <label for="email">Email</label>
+      <input matInput placeholder="email@calvin.edu" name="email" />
+    </mat-form-field>
+    <mat-form-field>
+      <label for="password">Password</label>
+      <input matInput type="password" placeholder="Password" name="password" />
+    </mat-form-field>
+    <button type="submit" class="blue-button" (click)="onRegister()">
+      Register
+    </button>
+  </form>
+</div>

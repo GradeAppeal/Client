@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,10 +29,10 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.value.email as string;
     const password = this.loginForm.value.password as string;
     try {
-      await this.supabase.signInWithEmail(email, password);
+      await this.supabase.signIn(email, password);
       this.router.navigateByUrl('/admin');
     } catch (error) {
-      if (error instanceof Error) {
+      if (error) {
         alert(
           `A user for ${email} does not exist or the password is incorrect`
         );
@@ -48,6 +48,10 @@ export class LoginComponent implements OnInit {
 
   onStudent() {
     this.router.navigateByUrl('/student/course-dashboard');
+  }
+
+  onRegister() {
+    this.router.navigateByUrl('/register');
   }
 
   onSignup() {}

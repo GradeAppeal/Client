@@ -1,0 +1,18 @@
+@import "/src/styles.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  .admin-header {
+    font-size: 3vh;
+    font-weight: 700;
+    color: $primary-blue;
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row;
+  }
+}

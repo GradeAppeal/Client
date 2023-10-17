@@ -1,10 +1,10 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
-import { SupabaseService } from 'src/app/services/supabase.service';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
 import { OnChanges } from '@angular/core';
+import { ProfessorService } from 'src/app/services/professor.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,8 +21,11 @@ export class ProfileComponent implements OnChanges {
   currentCourseID = -1;
   addedStudents: string;
   studentsToAdd: string[];
-  currentCourse : Course;
-  constructor(private dialog: MatDialog, private supabase: SupabaseService) {}
+  currentCourse: Course;
+  constructor(
+    private dialog: MatDialog,
+    private professorService: ProfessorService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -30,31 +33,35 @@ export class ProfileComponent implements OnChanges {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+      this.professorCourses = await this.professorService.fetchProfessorCourses(
+        1
+      );
       this.fetchedCourses = true;
     } catch (err) {
       console.log(err);
     }
   }
 
-    /**
- * Formats course name information like shown in Moodle
- * @param course Course object containing course information
- * @returns formatted string of course (moodle format)
- */
-    formatCourse(course: Course): string {
-      return course.section
-        ? `${course.year - 2000}${course.semester} ${course.prefix}-${
-            course.code
-          }-${course.section} - ${course.name}`
-        : `${course.year - 2000}${course.semester} ${course.prefix}-${
-            course.code
-          } - ${course.name}`;
-    }
+  /**
+   * Formats course name information like shown in Moodle
+   * @param course Course object containing course information
+   * @returns formatted string of course (moodle format)
+   */
+  formatCourse(course: Course): string {
+    return course.section
+      ? `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        }-${course.section} - ${course.name}`
+      : `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        } - ${course.name}`;
+  }
 
   async retrieveRoster(courseID: number): Promise<void> {
     try {
-      this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
+      this.courseStudents = await this.professorService.fetchStudentsForClass(
+        courseID
+      );
       this.fetchedStudents = true;
       console.log(this.courseStudents);
     } catch (err) {
@@ -62,8 +69,7 @@ export class ProfileComponent implements OnChanges {
     }
   }
 
-
-  async swapView(page: string, courseID: number, course : Course) {
+  async swapView(page: string, courseID: number, course: Course) {
     this.currentPage = page;
     this.currentCourseID = courseID;
     this.currentCourse = course;
@@ -96,7 +102,10 @@ export class ProfileComponent implements OnChanges {
   async makeGrader(student: Student) {
     try {
       console.log(student.id, this.currentCourseID);
-      await this.supabase.updateGrader(student.id, this.currentCourseID);
+      await this.professorService.updateGrader(
+        student.id,
+        this.currentCourseID
+      );
       student.is_grader = !student.is_grader;
     } catch (err) {
       throw new Error('makeGrader');

@@ -1,9 +1,7 @@
-import { HttpParams } from '@angular/common/http';
-import { ViewEncapsulation } from '@angular/compiler';
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
-import {ProfessorAppeal} from 'src/app/shared/interfaces/professor.interface';
+import { Router } from '@angular/router';
+import { ProfessorService } from 'src/app/services/professor.service';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -24,11 +22,18 @@ export class ProfessorAppealInboxComponent {
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
 
-  constructor(private router: Router, private supabase: SupabaseService) {}
+  constructor(
+    private router: Router,
+    private professorService: ProfessorService
+  ) {}
   async ngOnInit(): Promise<void> {
     try {
-      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+      this.professorAppeals = await this.professorService.fetchProfessorAppeals(
+        1
+      );
+      this.professorCourses = await this.professorService.fetchProfessorCourses(
+        1
+      );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
     } catch (err) {
@@ -52,10 +57,9 @@ export class ProfessorAppealInboxComponent {
 
   composeMessage() {}
   chat(appeal: ProfessorAppeal) {
-    const changeToChat = 'true';
     this.isChat.emit({ professorAppeal: appeal });
   }
-  navigateTo(route: string){
-    this.router.navigate([route])
+  navigateTo(route: string) {
+    this.router.navigate([route]);
   }
 }

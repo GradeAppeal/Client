@@ -18,23 +18,23 @@
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
   <div class="right-pane">
-    <div class="card">
+    <div class="card" *ngIf="messageLoaded">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
           <img class="header-avatar" ngxGravatar [email]="user.email" />
           <h1>
-            &nbsp; {{ currentAppeal?.student_name }}<span>: </span
-            >{{ currentAppeal?.assignment_name }}
+            &nbsp; {{ currentAppeal.student_name }}<span>: </span
+            >{{ currentAppeal.assignment_name }}
           </h1>
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
-        <ng-container *ngFor="let chat of this.messages">
+        <ng-container *ngFor="let message of this.messages">
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id
+              right: message.sender_id == user.id,
+              left: message.sender_id != user.id
             }"
           >
             <!-- <img ngxGravatar [email]="user.email" /> -->
@@ -42,7 +42,7 @@
             <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
 
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
-            <p id="message-body">{{ chat?.message_text }}</p>
+            <p id="message-body">{{ message.message_text }}</p>
           </div>
         </ng-container>
       </div>

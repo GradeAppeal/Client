@@ -11,6 +11,7 @@ import { StudentNavigationComponent } from './components/Student/student-navigat
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { RegisterComponent } from './components/register/register.component';
 
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 const routes: Routes = [
@@ -104,6 +105,10 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: '**',

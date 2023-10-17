@@ -35,6 +35,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

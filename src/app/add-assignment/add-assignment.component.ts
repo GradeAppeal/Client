@@ -1,31 +1,30 @@
-import { Component, Inject, Optional, Input  } from '@angular/core';
+import { Component, Inject, Optional, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from '../shared/interfaces/psql.interface';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../services/supabase.service';
 import { Course } from '../shared/interfaces/psql.interface';
+import { ProfessorService } from '../services/professor.service';
 
 @Component({
   selector: 'app-add-assignment',
   templateUrl: './add-assignment.component.html',
-  styleUrls: ['./add-assignment.component.scss']
+  styleUrls: ['./add-assignment.component.scss'],
 })
 export class AddAssignmentComponent {
-  newAssignment : string;
-  assignments : Assignment[];
-  currentCourse: Course; 
+  newAssignment: string;
+  assignments: Assignment[];
+  currentCourse: Course;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
     private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
-    private supabase: SupabaseService,
+    private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
     this.currentCourse = data.course;
   }
-  
 
   /**
    * Submit student appeal to database
@@ -33,16 +32,15 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
-      await this.supabase.insertNewAssignment(
+      await this.professorService.insertNewAssignment(
         this.currentCourse.id,
-        this.newAssignment,
+        this.newAssignment
       );
     } catch (err) {
       console.log(err);
       throw new Error('onAddAssignment');
     }
-  /*   close pop-up */
+    /*   close pop-up */
     this.dialogRef.close();
   }
-
 }

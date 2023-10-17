@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-root',

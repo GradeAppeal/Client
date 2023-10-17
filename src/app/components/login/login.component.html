@@ -18,6 +18,7 @@
           <div>
             <label for="email">Email</label> <br />
             <input
+              matInput
               id="email"
               formControlName="email"
               class="inputField"
@@ -26,6 +27,7 @@
             />
             <br />
             <input
+              matInput
               id="password"
               formControlName="password"
               class="inputField"
@@ -44,7 +46,7 @@
             </button>
             <br /><br />
             <button
-              (click)="onSkip()"
+              (click)="onLogin()"
               type="submit"
               class="blue-button"
               [disabled]="loading"
@@ -59,6 +61,14 @@
               [disabled]="loading"
             >
               {{ loading ? "Loading" : "Student" }}
+            </button>
+            <button
+              (click)="onRegister()"
+              type="submit"
+              class="blue-button"
+              [disabled]="loading"
+            >
+              {{ loading ? "Loading" : "Register" }}
             </button>
           </div>
         </form>

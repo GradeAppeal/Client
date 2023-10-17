@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../../../services/supabase.service';
+import { SupabaseService } from '../../../services/auth.service';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from '../../../shared/functions/time.util';
+import { StudentService } from 'src/app/services/student.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-new-appeal',
@@ -19,11 +21,14 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
+  grade: number;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private supabase: SupabaseService
+    private supabase: SupabaseService,
+    private studentService: StudentService,
+    private sharedService: SharedService
   ) {}
 
   navigateToHome() {
@@ -34,9 +39,11 @@ export class NewAppealComponent implements OnInit {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
       // don't render form until course and assignment information has been fetched
-      this.course = await this.supabase.fetchCourseForNewAppeal(this.courseId);
+      this.course = await this.studentService.fetchCourseForNewAppeal(
+        this.courseId
+      );
       this.isCourseFetched = true;
-      this.assignments = await this.supabase.fetchAssignmentsForNewAppeal(
+      this.assignments = await this.sharedService.fetchAssignmentsForNewAppeal(
         this.courseId
       );
       this.isAssignmentsFetched = true;
@@ -67,13 +74,13 @@ export class NewAppealComponent implements OnInit {
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      await this.supabase.insertNewAppeal(
+      await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
-        1,
+        this.appeal,
         this.courseId,
         now,
-        this.appeal,
-        90
+        1,
+        this.grade
       );
       this.navigateToInteractionHistory();
     } catch (err) {
@@ -84,5 +91,4 @@ export class NewAppealComponent implements OnInit {
   navigateToInteractionHistory() {
     this.router.navigate(['/student-navigation/student-interaction-history']);
   }
-  
 }

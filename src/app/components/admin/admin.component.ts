@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SupabaseService } from 'src/app/services/supabase.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,15 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent {
-  constructor(
-    private readonly supabase: SupabaseService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
   onClickStudentView() {
-    this.router.navigateByUrl('/student');
+    this.router.navigateByUrl('/student/course-dashboard');
   }
 
   onClickProfessorView() {
-    this.router.navigateByUrl('/professor');
+    this.router.navigateByUrl('/professor/appeal-inbox');
   }
 }

@@ -1,8 +1,14 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { SharedService } from 'src/app/services/shared.service';
+import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 @Component({
@@ -24,31 +30,40 @@ export class StudentInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  user = {    //student
+  loadMessages = false;
+  user = {
+    //student
     id: 3,
     email: 'abc123@gmail.com',
   };
-  sender = { //professor
+  sender = {
+    //professor
     id: 0,
     email: 'ccc1233@gmail.com',
   };
 
   studentAppeals!: StudentAppeal[];
+  loadStudentAppeals = false;
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(
+    private studentService: StudentService,
+    private sharedService: SharedService
+  ) {}
   async ngOnInit() {
-    this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
+    this.studentAppeals = await this.studentService.fetchStudentAppeals(1);
+    this.loadStudentAppeals = true;
     if (this.current_appeal) {
       //this.sender.id = this.current_appeal.student_id;
-      this.messages = await this.supabase.fetchMessages(
+      this.messages = await this.sharedService.fetchMessages(
         this.current_appeal.appeal_id
       );
     } else {
       this.current_appeal = this.studentAppeals[0];
-      this.messages = await this.supabase.fetchMessages(
+      this.messages = await this.sharedService.fetchMessages(
         this.current_appeal.appeal_id
       );
     }
+    this.loadMessages = true;
     this.messageCount = this.messages.length;
   }
 
@@ -68,7 +83,7 @@ export class StudentInteractionHistoryComponent {
     // Copy the selected appeal's data into the form fields
     this.current_appeal = appeal;
     //this.sender.id = this.current_appeal.student_id;
-    this.messages = await this.supabase.fetchMessages(
+    this.messages = await this.sharedService.fetchMessages(
       this.current_appeal.appeal_id
     );
     console.log(this.current_appeal);
@@ -81,16 +96,16 @@ export class StudentInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      let professor_user_id = await this.supabase.getUserId(
+      let professor_user_id = await this.sharedService.getUserId(
         this.current_appeal.professor_id,
         'professor'
       );
       console.log(professor_user_id);
-      console.log(this.user.id)
-      await this.supabase.insertMessages(
+      console.log(this.user.id);
+      await this.sharedService.insertMessages(
         this.current_appeal.appeal_id,
-        this.user.id,                    //sender id: student
-        professor_user_id,               //recipientid : professor
+        this.user.id, //sender id: student
+        professor_user_id, //recipientid : professor
         now,
         this.chatInputMessage,
         this.fromGrader
