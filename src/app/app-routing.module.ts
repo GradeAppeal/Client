@@ -44,7 +44,7 @@ const routes: Routes = [
         path: 'edit-templates',
         component: EditTemplatesComponent,
       },
-    ]
+    ],
   },
   {
     path: 'student',
@@ -58,15 +58,20 @@ const routes: Routes = [
         path: 'student/:id',
         component: StudentDashboardComponent,
       },
+
       {
-        path: 'new-appeal/:courseId',
-        component: NewAppealComponent,
+        path: 'interaction-history',
+        component: StudentInteractionHistoryComponent,
       },
-      { 
-        path: 'student-interaction-history', 
-        component: StudentInteractionHistoryComponent 
+      {
+        path: 'interaction-history/:id',
+        component: StudentInteractionHistoryComponent,
       },
-    ]
+    ],
+  },
+  {
+    path: 'new-appeal/:courseId',
+    component: NewAppealComponent,
   },
 
   {

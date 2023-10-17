@@ -120,6 +120,10 @@ export class ProfessorInteractionHistoryComponent {
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
       });
+      console.log(this.messages[this.messages.length - 1].created_at);
+      this.currentAppeal.created_at =
+        this.messages[this.messages.length - 1].created_at;
+      console.log(this.currentAppeal.created_at);
 
       this.chatInputMessage = '';
       this.scrollToBottom();
@@ -127,6 +131,45 @@ export class ProfessorInteractionHistoryComponent {
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
+    }
+  }
+
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+
+    const time = `${formattedHours}:${minutes
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+    return { date, time };
+  }
+
+  formatMessageTimestamp(timestamp: Date): string {
+    //TODO make it show date if most recent message is more than a day
+    const currentDate = new Date();
+    const messageDate = new Date(timestamp);
+
+    if (
+      currentDate.getFullYear() === messageDate.getFullYear() &&
+      currentDate.getMonth() === messageDate.getMonth() &&
+      currentDate.getDate() === messageDate.getDate()
+    ) {
+      // If the message was sent today, display only the time
+      const hours = messageDate.getHours().toString().padStart(2, '0');
+      const minutes = messageDate.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    } else {
+      // If the message was sent on a different day, display the full date
+      const year = messageDate.getFullYear();
+      const month = (messageDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = messageDate.getDate().toString().padStart(2, '0');
+      const hours = messageDate.getHours().toString().padStart(2, '0');
+      const minutes = messageDate.getMinutes().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
   }
 }

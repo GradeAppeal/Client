@@ -3,8 +3,9 @@ import { ViewEncapsulation } from '@angular/compiler';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import {ProfessorAppeal} from 'src/app/shared/interfaces/professor.interface';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { formatTimestamp } from 'src/app/shared/functions/time.util';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -35,27 +36,33 @@ export class ProfessorAppealInboxComponent {
       console.log(err);
     }
   }
-
-  formatTimestamp(timestamp: Date): { date: string; time: string } {
-    const d = new Date(timestamp);
-    const date = d.toDateString();
-    const time = d.toTimeString().split(' ')[0];
-    return { date, time };
-  }
-
   // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
   }
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
 
+    const time = `${formattedHours}:${minutes
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+    return { date, time };
+  }
+
+  compareDate() {}
   composeMessage() {}
   chat(appeal: ProfessorAppeal) {
     const changeToChat = 'true';
     this.isChat.emit({ professorAppeal: appeal });
   }
-  navigateTo(route: string){
-    this.router.navigate([route])
+  navigateTo(route: string) {
+    this.router.navigate([route]);
   }
 }

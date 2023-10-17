@@ -2,49 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    height: 100vh; /* 100% of the viewport height */
-    overflow: hidden; /* Hide overflow content */
+html,
+body {
+  height: 100vh; /* 100% of the viewport height */
+  overflow: hidden; /* Hide overflow content */
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-$primary-blue: #3A62D7;
-$secondary-blue: #C1D1FF;
+$primary-blue: #3a62d7;
+$secondary-blue: #c1d1ff;
 // $hover-blue: #254394;
-$hover-blue: #728EDD;
+$hover-blue: #728edd;
 
 .material-symbols-outlined {
-    cursor: pointer;
-    color: $primary-blue;
-    font-size: 80px ;
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-  }
+  cursor: pointer;
+  color: $primary-blue;
+  font-size: 80px;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
 
 .blue-button {
-    background-color: $primary-blue;
-    color: white;
-    font-family: Roboto;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 0.5em;
-    margin: 0.5em;
-    padding-left: 1em;
-    padding-right: 1em;
-    border-radius: 1.5em;
+  background-color: $primary-blue;
+  color: white;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.5em;
+  margin: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 1.5em;
 }
 
 .blue-button:hover {
-    background-color: $hover-blue;
+  background-color: $hover-blue;
 }
 
 .global-th {
-    background-color: $primary-blue;
+  background-color: $primary-blue;
 }
 
 .global-blue {
-    background-color: $primary-blue;
+  background-color: $primary-blue;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: $secondary-blue; /* color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary-blue; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid $secondary-blue; /* creates padding around scroll thumb */
 }
