@@ -9,3 +9,12 @@ export const getTimestampTz = (date: Date): Date => {
   );
   return newDate;
 };
+
+export const formatTimestamp = (
+  timestamp: Date
+): { date: string; time: string } => {
+  const d = new Date(timestamp);
+  const date = d.toDateString();
+  const time = d.toTimeString().split(' ')[0];
+  return { date, time };
+};

@@ -61,6 +61,13 @@ export class NewAppealComponent implements OnInit {
         } - ${course.name}`;
   }
 
+  submitAppeal() {
+    console.log(this.appeal);
+    this.navigateTo('/student/interaction-history/31'); //TODO fix the id, get the actual appeal id somehow
+
+    //this.navigateTo('/student/interaction-history/' + this.appeal);
+    //this.onSubmitAppeal();
+  }
   /**
    * Submit student appeal to database
    */
@@ -75,14 +82,12 @@ export class NewAppealComponent implements OnInit {
         this.appeal,
         90
       );
-      this.navigateToInteractionHistory();
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
   }
-  navigateToInteractionHistory() {
-    this.router.navigate(['/student-navigation/student-interaction-history']);
+  navigateTo(route: string) {
+    this.router.navigate([route]);
   }
-  
 }

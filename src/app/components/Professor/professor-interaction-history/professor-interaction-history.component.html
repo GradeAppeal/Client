@@ -8,11 +8,17 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <p matLine>
-          {{ appeal?.student_name }}
+        <!-- <p matLine class="inbox-timestamp">
+          {{ formatTimestamp(appeal.created_at).time }}
+        </p> -->
+
+        <p class="inbox-timestamp">
+          {{ formatTimestamp(appeal.created_at).time }}
         </p>
 
-        <p matLine>{{ appeal?.created_at }}</p>
+        <p matLine class="inbox-name">
+          {{ appeal?.student_name }}
+        </p>
       </mat-list-item>
     </mat-nav-list>
   </div>
@@ -37,12 +43,21 @@
               left: chat?.sender_id != user.id
             }"
           >
-            <!-- <img ngxGravatar [email]="user.email" /> -->
-            <img *ngIf="isUser" ngxGravatar [email]="user.email" />
-            <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
-
+            <div class="timestamp">
+              {{ formatTimestamp(chat.created_at).time }}
+            </div>
+            <br />
+            <hr />
+            <div class="avatar-wrapper">
+              <!-- <img ngxGravatar [email]="user.email" /> -->
+              <img *ngIf="isUser" ngxGravatar [email]="user.email" />
+              <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
+            </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
-            <p id="message-body">{{ chat?.message_text }}</p>
+
+            <p id="message-body">
+              {{ chat?.message_text }}
+            </p>
           </div>
         </ng-container>
       </div>

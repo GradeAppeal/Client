@@ -23,43 +23,32 @@
   <mat-sidenav #sidenav mode="side" opened>
     <mat-action-list class="tab-list">
       <button
-      class="tab-text"
-      mat-list-item
-      (click)="navigateTo('/student/course-dashboard')"
-      [class.selected]="selectedTab === 'Course Dashboard'"
-    >
-      &ensp;Course Dashboard
-    </button>
-    <button
-      mat-list-item
-      (click)="navigateTo('/student/course-dashboard')"
-
-      [class.selected]="selectedTab === 'Grader Dashboard'"
-      *ngIf="grader"
-    >
-      &ensp;Grader Dashboard
-    </button>
-    <button
-      mat-list-item
-      (click)="navigateTo('/student/student-interaction-history')"
-      [class.selected]="selectedTab === 'Interaction History'"
-    >
-      &ensp;Interaction History
-    </button>
+        class="tab-text"
+        mat-list-item
+        (click)="navigateTo('/student/course-dashboard')"
+        [class.selected]="selectedTab === 'Course Dashboard'"
+      >
+        &ensp;Course Dashboard
+      </button>
+      <button
+        mat-list-item
+        (click)="navigateTo('/student/course-dashboard')"
+        [class.selected]="selectedTab === 'Grader Dashboard'"
+        *ngIf="grader"
+      >
+        &ensp;Grader Dashboard
+      </button>
+      <button
+        mat-list-item
+        (click)="navigateTo('/student/interaction-history')"
+        [class.selected]="selectedTab === 'Interaction History'"
+      >
+        &ensp;Interaction History
+      </button>
     </mat-action-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <router-outlet></router-outlet>
-    <!-- <div *ngIf="selectedTab === 'Course Dashboard'">
-      <app-student-dashboard></app-student-dashboard>
-    </div>
-    <div *ngIf="selectedTab === 'Grader Dashboard'">
-      <app-closed-appeals></app-closed-appeals>
-    </div>
-
-    <div *ngIf="selectedTab === 'Interaction History'">
-      <app-student-interaction-history></app-student-interaction-history>
-    </div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>
