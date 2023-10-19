@@ -9,7 +9,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import {
+  ProfessorAppeal,
+  ProfessorTemplate,
+} from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-professor-interaction-history',
@@ -33,8 +36,11 @@ export class ProfessorInteractionHistoryComponent {
     id: 0,
     email: 'ccc1233@gmail.com',
   };
-
   professorAppeals!: ProfessorAppeal[];
+  professorTemplates!: ProfessorTemplate[];
+
+  //template
+  selectedTemplate: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -46,8 +52,19 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
-    this.user.id = 10; //TODO make this actual user ID not just fake data
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+    this.user.id = 1; //TODO make this actual user ID not just fake data
+    let professor_user_id = await this.supabase.getUserId(
+      this.user.id,
+      'professor'
+    );
+    console.log(professor_user_id);
+    this.professorAppeals = await this.supabase.fetchProfessorAppeals(
+      this.user.id
+    );
+    this.professorTemplates = await this.supabase.fetchProfessorTemplates(
+      this.user.id
+    );
+    console.log(this.professorTemplates);
     this.currentAppeal =
       this.professorAppeals.find(
         (appeal) => appeal.appeal_id === this.appealId
@@ -71,7 +88,10 @@ export class ProfessorInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  useTemplate() {}
+  selectTemplate(template: string) {
+    this.selectedTemplate = template;
+    this.chatInputMessage = template;
+  }
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;

@@ -11,3 +11,9 @@ export interface ProfessorAppeal {
   student_name: string;
   appeal_grade: number;
 }
+
+export interface ProfessorTemplate {
+  template_id: number;
+  temp_text: string;
+  temp_name: string;
+}

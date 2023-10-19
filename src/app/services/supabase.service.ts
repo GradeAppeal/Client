@@ -14,6 +14,7 @@ import {
 } from '../shared/interfaces/student.interface';
 import {
   ProfessorAppeal,
+  ProfessorTemplate,
 } from '../shared/interfaces/professor.interface';
 import {
   Course,
@@ -120,6 +121,22 @@ export class SupabaseService {
   }
 
   /**
+   * fetch from supabase: professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_templates', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorTemplates');
+    }
+    return data;
+  }
+
+  /**
    * Fetch course information for new appeal
    * @param cid course id for appeal
    * @returns The course of the assignment the student is making an appeal for
@@ -151,21 +168,21 @@ export class SupabaseService {
     return data;
   }
 
-    /**
+  /**
    * Fetch students for a particular course
    * @param cid course id for students
    * @returns List of students for a course
    */
-    async fetchStudentsForClass(cid: number): Promise<Student[]> {
-      const { data, error } = await this.supabase.rpc('get_students', {
-        cid,
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('Error in fetchStudentsforNewClass');
-      }
-      return data;
+  async fetchStudentsForClass(cid: number): Promise<Student[]> {
+    const { data, error } = await this.supabase.rpc('get_students', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentsforNewClass');
     }
+    return data;
+  }
 
   /**
    * Writes student appeal to database
@@ -200,14 +217,14 @@ export class SupabaseService {
     console.log({ data });
   }
 
-   /**
+  /**
    * Writes new assignment to database
    * @param cid course id from UI
    * @param assignment_name name of assignment
    */
-   async insertNewAssignment(
+  async insertNewAssignment(
     cid: number,
-    assignment_name: string,
+    assignment_name: string
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_new_assignment', {
       cid,
@@ -220,24 +237,21 @@ export class SupabaseService {
     console.log({ data });
   }
 
-     /**
+  /**
    * Writes new assignment to database
    * @param cid course id from UI
    * @param assignment_name name of assignment
    */
-     async deleteAssignment(
-      aid: number,
-    ): Promise<void> {
-      const { data, error } = await this.supabase.rpc('delete_assignment', {
-        aid
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('delete_assignment');
-      }
-      console.log({ data });
+  async deleteAssignment(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_assignment', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('delete_assignment');
     }
-  
+    console.log({ data });
+  }
 
   async fetchMessages(aid: number): Promise<Message[]> {
     const { data, error } = await this.supabase.rpc('get_messages', {
@@ -248,7 +262,7 @@ export class SupabaseService {
       throw new Error('Error in fetchMessages');
     }
     return data;
-  }  
+  }
 
   /**
    * Inserts interaction history to supabase
