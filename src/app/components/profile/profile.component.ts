@@ -118,10 +118,11 @@ export class ProfileComponent implements OnChanges {
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
-        email: this.splitStudent[2].substring(0, this.splitStudent[2].length-11)
+        email: this.splitStudent[2]
       };
       this.parsedStudentsToAdd.push(this.parsedStudent);
     })
+    console.log(this.parsedStudentsToAdd);
     try {
       this.parsedStudentsToAdd.forEach(async student => {
         await this.supabase.insertStudent(
