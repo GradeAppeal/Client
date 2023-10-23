@@ -317,12 +317,12 @@ export class SupabaseService {
    * @param email
    * @returns trigger insert student
    */
-  async insertStudent(firstName: string, lastName: string, email: string) {
+  async insertStudent(first_name: string, last_name: string, email: string) {
     const type = 'student';
     let { data, error } = await this.supabase.rpc('insert_user', {
       type,
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
     });
 
@@ -439,7 +439,7 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
-      email,
+      email
     });
 
     if (error) {
@@ -449,15 +449,13 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  /**
-   * update student grader status (toggle)
-   * @param sid student ID
-   * @param cid course ID
-   */
-  async updateGrader(sid: number, cid: number): Promise<void> {
+  async updateGrader(
+    sid: number,
+    cid: number
+  ): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
-      cid,
+      cid
     });
 
     if (error) {
@@ -467,12 +465,12 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  /**
+   /**
    *
    * @param sid student id
    * @returns All the appeals made by the student
    */
-  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+   async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
     const { data, error } = await this.supabase.rpc('get_student_appeals', {
       sid,
     });

@@ -32,9 +32,9 @@
       <p *ngIf="courseStudents.length == 0"> There are no students in this class.</p>
     </div>
     <button type="submit" (click)="addStudents()" class="blue-button">Add Students</button>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="student-input">
       <mat-label>Students to add</mat-label>
-      <textarea matInput [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
+      <textarea matInput class="text-area" rows="6" cols="1" [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
     </mat-form-field>
   </div>
 </div>
