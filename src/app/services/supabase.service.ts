@@ -8,10 +8,13 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
-import { StudentCourse } from '../shared/interfaces/student.interface';
 import {
-  ProfessorCourse,
+  StudentCourse,
+  StudentAppeal,
+} from '../shared/interfaces/student.interface';
+import {
   ProfessorAppeal,
+  ProfessorTemplate,
 } from '../shared/interfaces/professor.interface';
 import {
   Course,
@@ -41,14 +44,6 @@ export class SupabaseService {
     return this._session;
   }
 
-  profile(user: User) {
-    return this.supabase
-      .from('User')
-      .select(`first_name, last_name, email`)
-      .eq('id', user.id)
-      .single();
-  }
-
   authChanges(
     callback: (event: AuthChangeEvent, session: Session | null) => void
   ) {
@@ -62,15 +57,6 @@ export class SupabaseService {
   signOut() {
     return this.supabase.auth.signOut();
   }
-
-  // updateProfile(profile: Profile) {
-  //   const update = {
-  //     ...profile,
-  //     updated_at: new Date(),
-  //   };
-
-  //   return this.supabase.from('profiles').upsert(update);
-  // }
 
   /**
    * Fetches the student's courses (both enrolled and grading)
@@ -93,7 +79,7 @@ export class SupabaseService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorCourses(pid: number): Promise<ProfessorCourse[]> {
+  async fetchProfessorCourses(pid: number): Promise<Course[]> {
     const { data, error } = await this.supabase.rpc('get_professor_courses', {
       pid,
     });
@@ -130,6 +116,22 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorAppeals');
+    }
+    return data;
+  }
+
+  /**
+   * fetch from supabase: professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_templates', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorTemplates');
     }
     return data;
   }
@@ -183,6 +185,22 @@ export class SupabaseService {
     }
 
   /**
+   * Fetch students for a particular course
+   * @param cid course id for students
+   * @returns List of students for a course
+   */
+  async fetchStudentsForClass(cid: number): Promise<Student[]> {
+    const { data, error } = await this.supabase.rpc('get_students', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentsforNewClass');
+    }
+    return data;
+  }
+
+  /**
    * Writes student appeal to database
    * @param aid assignment id from UI
    * @param sid student id from auth
@@ -211,6 +229,42 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('insertNewAppeal');
+    }
+    console.log({ data });
+  }
+
+  /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+  async insertNewAssignment(
+    cid: number,
+    assignment_name: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_new_assignment', {
+      cid,
+      assignment_name,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('insert_new_assignment');
+    }
+    console.log({ data });
+  }
+
+  /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+  async deleteAssignment(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_assignment', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('delete_assignment');
     }
     console.log({ data });
   }
@@ -252,7 +306,6 @@ export class SupabaseService {
       recipient_id,
       sender_id,
     });
-
     if (error) {
       console.log(error);
       throw new Error('insert messages');
@@ -366,6 +419,12 @@ export class SupabaseService {
     return data;
   }
 
+  /**
+   * toggles grader status
+   * @param sid student id
+   * @param cid course id
+   * @returns 1 if update was successful
+   */
   async updateCourseGrader(sid: number, cid: number): Promise<number> {
     let { data, error } = await this.supabase.rpc('update_grader', {
       sid,
@@ -396,7 +455,11 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
+<<<<<<< HEAD
       email
+=======
+      email,
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859
     });
 
     if (error) {
@@ -406,6 +469,7 @@ export class SupabaseService {
     console.log({ data });
   }
 
+<<<<<<< HEAD
   async updateGrader(
     sid: number,
     cid: number
@@ -413,6 +477,17 @@ export class SupabaseService {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
       cid
+=======
+  /**
+   * update student grader status (toggle)
+   * @param sid student ID
+   * @param cid course ID
+   */
+  async updateGrader(sid: number, cid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid,
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859
     });
 
     if (error) {
@@ -421,4 +496,25 @@ export class SupabaseService {
     }
     console.log({ data });
   }
+<<<<<<< HEAD
 }
+=======
+
+  /**
+   *
+   * @param sid student id
+   * @returns All the appeals made by the student
+   */
+  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_student_appeals', {
+      sid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('UpdateGrader');
+    }
+    return data;
+  }
+}
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859

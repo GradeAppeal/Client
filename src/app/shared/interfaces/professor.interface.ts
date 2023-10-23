@@ -1,13 +1,3 @@
-export interface ProfessorCourse {
-  code: number;
-  id: number;
-  name: string;
-  prefix: string;
-  section: string;
-  semester: 'FA' | 'SP' | 'SU';
-  year: number;
-}
-
 export interface ProfessorAppeal {
   appeal_id: number;
   appeal_text: string;
@@ -20,4 +10,10 @@ export interface ProfessorAppeal {
   student_id: number;
   student_name: string;
   appeal_grade: number;
+}
+
+export interface ProfessorTemplate {
+  template_id: number;
+  temp_text: string;
+  temp_name: string;
 }

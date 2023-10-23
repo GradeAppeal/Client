@@ -1,0 +1,177 @@
+@import "src/styles.scss";
+
+$background: white;
+
+.card {
+  background: $background;
+  height: 90vh;
+  min-width: 20%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  filter: drop-shadow(0px 0px 2px black);
+  border-radius: 15px;
+  padding: 16px;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chat-list {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+  .chat-item {
+    max-width: 80%;
+    margin: 8px 0px;
+    display: flex;
+    flex-direction: row;
+
+    #message-body {
+      background: $primary-blue;
+      margin: auto 8px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      display: flex;
+      flex-direction: row;
+    }
+
+    #avatar {
+      height: 44px;
+      width: 44px;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 99;
+      border: 3px solid $background;
+    }
+  }
+
+  .left {
+    margin-right: auto;
+    margin-left: 8px;
+
+    #message-body {
+      margin-left: -10px;
+      background-color: lightgray;
+      color: black;
+    }
+  }
+
+  .right {
+    margin-right: 8px;
+    margin-left: auto;
+    flex-direction: row-reverse;
+
+    #message-body {
+      margin-right: -10px;
+    }
+  }
+}
+
+.chat-footer {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  background: $primary-blue;
+  border-radius: 6px;
+
+  #chat-textarea {
+    flex: 1;
+    margin: 0 8px;
+    border: 0px;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  #send-button {
+    border: 1px solid white;
+    cursor: pointer;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+    background: $primary-blue;
+    color: white;
+    padding: 0 8px;
+    border-radius: 8px;
+  }
+  .use-template-button {
+    border: 1px solid white;
+    cursor: pointer;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+    background: $primary-blue;
+    color: white;
+    padding: 0 8px;
+    border-radius: 8px;
+  }
+}
+
+#clear-button {
+  border: 0;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  background: $primary-blue;
+  border-radius: 6px;
+}
+
+.inbox-item {
+  //  padding-top: 60px;
+  border: solid gray 1px;
+  float: left;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  p.inbox-name {
+    float: left;
+    width: 25%;
+    font-size: 11px;
+    padding: 0px;
+  }
+  p.inbox-timestamp {
+    float: right;
+    width: 25%;
+    font-size: 8px;
+    padding: 0px;
+  }
+}
+.timestamp {
+  color: gray;
+  font-size: 12px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.inbox {
+  border: solid gray 1px;
+  width: 200px;
+  float: left;
+  margin-left: -10px;
+  margin-right: 20px;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.right-pane {
+  flex: 1; /* Let the right pane grow to take available space */
+
+  margin: 10px;
+}
+
+.selected-appeal {
+  background-color: rgba(
+    167,
+    166,
+    166,
+    0.635
+  ); /* Set the background color to a darker shade */
+}
+
+mat-nav-list {
+  padding: 0px;
+}

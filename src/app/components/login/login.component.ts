@@ -37,11 +37,11 @@ export class LoginComponent {
       this.loading = false;
     }
   }
-  onSkip() {
-    this.router.navigateByUrl('/professor');
+  onProfessor() {
+    this.router.navigateByUrl('/professor/appeal-inbox');
   }
 
   onStudent() {
-    this.router.navigateByUrl('/student');
+    this.router.navigateByUrl('/student/course-dashboard');
   }
 }

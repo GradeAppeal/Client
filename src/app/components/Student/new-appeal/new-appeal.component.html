@@ -1,0 +1,45 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+
+<div class="main">
+  <div>
+    <mat-toolbar class="top-bar">
+      <mat-toolbar-row>
+        <span class="left-content">
+          <span (click)="navigateToHome()" class="material-symbols-outlined">
+            rocket_launch
+          </span>
+          <span>New Appeal</span>
+        </span>
+        <div class="right-content">
+          <img class="header-avatar" ngxGravatar [email]="email" />
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class="card-container" *ngIf="isCourseFetched && isAssignmentsFetched">
+      <mat-card class="appeal-card">
+        <mat-card-title>{{ formatCourse(course) }}</mat-card-title>
+        <div class="input-area">
+          <mat-form-field>
+            <mat-label>Select Assignment:</mat-label>
+            <mat-select [(ngModel)]="selectedAssignmentId">
+              <mat-option
+                *ngFor="let assignment of assignments"
+                [value]="assignment.id"
+                >{{ assignment.assignment_name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your reason for appeal:</mat-label>
+            <textarea matInput [(ngModel)]="appeal"></textarea>
+          </mat-form-field>
+          <button mat-raised-button (click)="submitAppeal()">Submit</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+import { HttpParams } from '@angular/common/http';
+import { ViewEncapsulation } from '@angular/compiler';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { formatTimestamp } from 'src/app/shared/functions/time.util';
+@Component({
+  selector: 'app-professor-appeal-inbox',
+  templateUrl: './professor-appeal-inbox.component.html',
+  styleUrls: ['./professor-appeal-inbox.component.scss'],
+})
+export class ProfessorAppealInboxComponent {
+  @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
+  //inboxAppeals: AppealInbox[];
+  appeals: any[];
+  appeal: any;
+  email = 'abc123@gmail.com';
+  showChat: boolean = false;
+  date = new Date();
+
+  professorAppeals!: ProfessorAppeal[];
+  professorCourses!: Course[];
+  currentAppeal: ProfessorAppeal;
+  fetchedAppeals = false;
+
+  constructor(private router: Router, private supabase: SupabaseService) {}
+  async ngOnInit(): Promise<void> {
+    try {
+      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+      this.currentAppeal = this.professorAppeals[0];
+      this.fetchedAppeals = true;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  // Function to select an appeal
+  selectAppeal(appeal: any) {
+    // Copy the selected appeal's data into the form fields
+    this.currentAppeal = appeal;
+    console.log(this.currentAppeal);
+  }
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+
+    const time = `${formattedHours}:${minutes
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+    return { date, time };
+  }
+
+  compareDate() {}
+  composeMessage() {}
+  chat(appeal: ProfessorAppeal) {
+    const changeToChat = 'true';
+    this.isChat.emit({ professorAppeal: appeal });
+  }
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
+}
