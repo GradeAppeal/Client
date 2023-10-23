@@ -280,12 +280,12 @@ export class SupabaseService {
    * @param email
    * @returns trigger insert student
    */
-  async insertStudent(firstName: string, lastName: string, email: string) {
+  async insertStudent(first_name: string, last_name: string, email: string) {
     const type = 'student';
     let { data, error } = await this.supabase.rpc('insert_user', {
       type,
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
     });
 
