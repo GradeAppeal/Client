@@ -63,13 +63,22 @@
       </div>
       <div class="chat-footer">
         <button
-          mat-stroked-button
           class="use-template-button"
-          (click)="useTemplate()"
-          [disabled]="chatInputMessage === ''"
+          mat-stroked-button
+          [matMenuTriggerFor]="menu"
         >
           Use Template
         </button>
+        <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let template of professorTemplates"
+            (click)="selectTemplate(template.temp_text)"
+          >
+            {{ template.temp_name }}
+          </button>
+        </mat-menu>
+
         <input
           matInput
           id="chat-textarea"

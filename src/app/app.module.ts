@@ -22,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/Professor/profile/profile.component';
@@ -75,6 +76,7 @@ import { DeleteConfirmationComponent } from './components/Professor/assignments/
     MatToolbarModule,
     MatInputModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
