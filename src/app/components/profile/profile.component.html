@@ -1,0 +1,40 @@
+<div *ngIf="currentPage == 'view'" class="course-wrapper">
+  <mat-card class="courses" *ngFor="let course of professorCourses">
+    <mat-card-title class="course-wording">{{ course.prefix }}-{{course.code}}-{{course.section}} {{course.semester}}-{{course.year}}</mat-card-title>
+    <mat-card-subtitle class="course-wording">{{ course.name }}</mat-card-subtitle>
+    <button type="submit" (click)="swapView('editAssignments', course.id)" class="blue-button">View Assignments</button>
+    <button type="submit" (click)="swapView('editRoster', course.id)" class="blue-button">Edit Roster</button>
+
+  </mat-card>
+</div>
+
+<div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
+  <p>editing assignments</p>
+  <button type="submit" (click)="swapView('view', currentCourse)" class="blue-button">Back</button>
+</div>
+
+<div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
+  <div *ngIf="fetchedStudents == true">
+    <div class="roster-wrapper">
+      <table class="roster-table" *ngIf="courseStudents.length != 0">
+        <tr>
+          <th class="global-th">Name</th>
+          <th class="global-th">Role</th>
+        </tr>
+        <tr *ngFor="let student of courseStudents">
+          <td class="student-data">{{student.first_name}} {{student.last_name}} <button class="edit-icon" (click)="editStudent(student)"><mat-icon>edit</mat-icon></button></td>
+          <td *ngIf="student.is_grader == false">Student</td>
+          <td *ngIf="student.is_grader == true">Grader</td>
+          <!-- <td>{{ student.role }}</td> -->
+        </tr>
+      </table>
+      <p *ngIf="courseStudents.length == 0"> There are no students in this class.</p>
+    </div>
+    <button type="submit" (click)="addStudents()" class="blue-button">Add Students</button>
+    <button type="submit" (click)="swapView('view', currentCourse)" class="blue-button">Back</button>
+    <mat-form-field class="student-input">
+      <mat-label>Students to add</mat-label>
+      <textarea matInput class="text-area" rows="6" cols="1" [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
+    </mat-form-field>
+  </div>
+</div>

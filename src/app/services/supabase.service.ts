@@ -168,6 +168,22 @@ export class SupabaseService {
     return data;
   }
 
+    /**
+   * Fetch students for a particular course
+   * @param cid course id for students
+   * @returns List of students for a course
+   */
+    async fetchStudentsForClass(cid: number): Promise<Student[]> {
+      const { data, error } = await this.supabase.rpc('get_students', {
+        cid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('Error in fetchStudentsforNewClass');
+      }
+      return data;
+    }
+
   /**
    * Fetch students for a particular course
    * @param cid course id for students
@@ -317,12 +333,12 @@ export class SupabaseService {
    * @param email
    * @returns trigger insert student
    */
-  async insertStudent(firstName: string, lastName: string, email: string) {
+  async insertStudent(first_name: string, last_name: string, email: string) {
     const type = 'student';
     let { data, error } = await this.supabase.rpc('insert_user', {
       type,
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
     });
 
@@ -439,7 +455,11 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
+<<<<<<< HEAD
+      email
+=======
       email,
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859
     });
 
     if (error) {
@@ -449,6 +469,15 @@ export class SupabaseService {
     console.log({ data });
   }
 
+<<<<<<< HEAD
+  async updateGrader(
+    sid: number,
+    cid: number
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_grader', {
+      sid,
+      cid
+=======
   /**
    * update student grader status (toggle)
    * @param sid student ID
@@ -458,6 +487,7 @@ export class SupabaseService {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
       cid,
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859
     });
 
     if (error) {
@@ -466,6 +496,9 @@ export class SupabaseService {
     }
     console.log({ data });
   }
+<<<<<<< HEAD
+}
+=======
 
   /**
    *
@@ -484,3 +517,4 @@ export class SupabaseService {
     return data;
   }
 }
+>>>>>>> 47fcde1ed4ed59c5dcc99da8257a7a20ae5b3859

@@ -62,3 +62,7 @@ $hover-blue: #728edd;
   border-radius: 20px; /* roundness of the scroll thumb */
   border: 3px solid $secondary-blue; /* creates padding around scroll thumb */
 }
+
+.global-blue {
+    background-color: $primary-blue;
+}
