@@ -5,7 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { formatTimestamp } from 'src/app/shared/functions/time.util';
+import { formatTimestamp } from 'src/app/shared/functions/general.util';
+import { navigate } from 'src/app/shared/functions/general.util';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -42,18 +43,8 @@ export class ProfessorAppealInboxComponent {
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
   }
-  formatTimestamp(timestamp: Date): { date: string; time: string } {
-    const d = new Date(timestamp);
-    const date = d.toDateString();
-    const hours = d.getHours();
-    const minutes = d.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
-
-    const time = `${formattedHours}:${minutes
-      .toString()
-      .padStart(2, '0')} ${ampm}`;
-    return { date, time };
+  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+    return formatTimestamp(timestamp);
   }
 
   compareDate() {}
@@ -63,6 +54,6 @@ export class ProfessorAppealInboxComponent {
     this.isChat.emit({ professorAppeal: appeal });
   }
   navigateTo(route: string) {
-    this.router.navigate([route]);
+    navigate(this.router, route); //use the navigate function from general.utils
   }
 }

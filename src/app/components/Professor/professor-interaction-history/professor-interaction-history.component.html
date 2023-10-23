@@ -8,12 +8,8 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <!-- <p matLine class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
-        </p> -->
-
         <p class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
+          {{ localFormatTimestamp(appeal.created_at).time }}
         </p>
 
         <p matLine class="inbox-name">
@@ -44,7 +40,7 @@
             }"
           >
             <div class="timestamp">
-              {{ formatTimestamp(chat.created_at).time }}
+              {{ localFormatTimestamp(chat.created_at).time }}
             </div>
             <br />
             <hr />
