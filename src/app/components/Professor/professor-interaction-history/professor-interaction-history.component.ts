@@ -53,9 +53,10 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
+    this.professorUserId = (await this.authService.getUserId()) as string;
     this.user.id = 10; //TODO make this actual user ID not just fake data
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      1
+      this.professorUserId
     );
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professorUserId);

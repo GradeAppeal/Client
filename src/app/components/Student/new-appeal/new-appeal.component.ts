@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../../../services/auth.service';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { getTimestampTz } from '../../../shared/functions/time.util';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
-import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-new-appeal',
@@ -13,7 +12,6 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./new-appeal.component.scss'],
 })
 export class NewAppealComponent implements OnInit {
-  studentUserId: string;
   email = 'sth6@calvin.edu';
   isCourseFetched = false;
   courseId: number;
@@ -22,14 +20,12 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
-  grade: number;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authService: SupabaseService,
-    private studentService: StudentService,
-    private sharedService: SharedService
+    private supabase: SupabaseService,
+    private studentService: StudentService
   ) {}
 
   navigateToHome() {
@@ -39,16 +35,12 @@ export class NewAppealComponent implements OnInit {
   async ngOnInit() {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
-      // get student user id
-      const user = await this.authService.getUser();
-      this.studentUserId = user?.id as string;
-
       // don't render form until course and assignment information has been fetched
       this.course = await this.studentService.fetchCourseForNewAppeal(
         this.courseId
       );
       this.isCourseFetched = true;
-      this.assignments = await this.sharedService.fetchAssignmentsForNewAppeal(
+      this.assignments = await this.studentService.fetchAssignmentsForNewAppeal(
         this.courseId
       );
       this.isAssignmentsFetched = true;
@@ -86,14 +78,14 @@ export class NewAppealComponent implements OnInit {
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      await this.studentService.insertNewAppeal(
-        this.selectedAssignmentId,
-        this.appeal,
-        this.courseId,
-        now,
-        this.studentUserId,
-        this.grade
-      );
+      // await this.supabase.insertNewAppeal(
+      //   this.selectedAssignmentId,
+      //   1,
+      //   this.courseId,
+      //   now,
+      //   this.appeal,
+      //   90
+      // );
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');

@@ -1,9 +1,10 @@
 import { Component, Inject, Optional, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Assignment } from '../shared/interfaces/psql.interface';
+import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../services/supabase.service';
-import { Course } from '../shared/interfaces/psql.interface';
+import { SupabaseService } from 'src/app/services/auth.service';
+import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { ProfessorService } from 'src/app/services/professor.service';
 
 @Component({
   selector: 'app-add-assignment',
@@ -20,7 +21,8 @@ export class AddAssignmentComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
-    private supabase: SupabaseService
+    private authService: SupabaseService,
+    private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
     this.currentCourse = data.course;
@@ -32,7 +34,7 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
-      await this.supabase.insertNewAssignment(
+      await this.professorService.insertNewAssignment(
         this.currentCourse.id,
         this.newAssignment
       );

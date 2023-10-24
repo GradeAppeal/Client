@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from './auth.service';
-import { Course, Student } from '../shared/interfaces/psql.interface';
-import { ProfessorAppeal } from '../shared/interfaces/professor.interface';
+import { Course, Student } from 'src/app/shared/interfaces/psql.interface';
+import {
+  ProfessorAppeal,
+  ProfessorTemplate,
+} from '../shared/interfaces/professor.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -161,6 +164,22 @@ export class ProfessorService {
     return data;
   }
 
+  /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+  async deleteAssignment(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_assignment', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('delete_assignment');
+    }
+    console.log({ data });
+  }
+
   // async insertStudentToCourse(
   //   student_email: string,
   //   cid: number
@@ -198,4 +217,19 @@ export class ProfessorService {
   //     }
   //   }
   // }
+  /**
+   * fetch from supabase: professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchProfessorTemplates(pid: string): Promise<ProfessorTemplate[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_templates', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorTemplates');
+    }
+    return data;
+  }
 }

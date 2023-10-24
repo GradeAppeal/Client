@@ -45,21 +45,24 @@ export class StudentInteractionHistoryComponent {
   studentAppeals!: StudentAppeal[];
   loadStudentAppeals = false;
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(
+    private studentService: StudentService,
+    private sharedService: SharedService
+  ) {}
   async ngOnInit() {
-    this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
-    if (this.current_appeal) {
+    this.studentAppeals = await this.studentService.fetchStudentAppeals(1);
+    if (this.currentAppeal) {
       //this.sender.id = this.current_appeal.student_id;
-      this.messages = await this.supabase.fetchMessages(
-        this.current_appeal.appeal_id
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
       );
     } else {
-      this.current_appeal = this.studentAppeals[0];
-      this.messages = await this.supabase.fetchMessages(
-        this.current_appeal.appeal_id
+      this.currentAppeal = this.studentAppeals[0];
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
       );
     }
-    this.loadMessages = true;
+    this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
   }
 
@@ -79,7 +82,7 @@ export class StudentInteractionHistoryComponent {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
     //this.sender.id = this.currentAppeal.student_id;
-    this.messages = await this.supabase.fetchMessages(
+    this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
     console.log(this.currentAppeal);
@@ -99,7 +102,7 @@ export class StudentInteractionHistoryComponent {
       console.log(professor_user_id);
       console.log(this.user.id);
       await this.sharedService.insertMessages(
-        this.current_appeal.appeal_id,
+        this.currentAppeal.appeal_id,
         this.user.id, //sender id: student
         professor_user_id, //recipientid : professor
         now,

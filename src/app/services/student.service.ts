@@ -5,7 +5,7 @@ import {
   StudentAppeal,
   StudentCourse,
 } from '../shared/interfaces/student.interface';
-import { Course } from '../shared/interfaces/psql.interface';
+import { Course, Assignment } from '../shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -100,5 +100,20 @@ export class StudentService {
       throw new Error('insertNewAppeal');
     }
     console.log({ data });
+  }
+  /**
+   * Fetch assignments for a particular course
+   * @param cid course id for appeal
+   * @returns List of assignments for a course
+   */
+  async fetchAssignmentsForNewAppeal(cid: number): Promise<Assignment[]> {
+    const { data, error } = await this.supabase.rpc('get_assignments', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchAssignmentsForNewAppeal');
+    }
+    return data;
   }
 }

@@ -13,6 +13,11 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 export class ProfessorNavigationComponent {
   email = 'victor.norman@calvin.edu';
   selectedTab: string = 'Appeal Inbox';
+  title: string = 'Appeal Inbox';
+  constructor(
+    private router: Router,
+    private professorService: ProfessorService
+  ) {}
   selectTab(tabName: string): void {
     this.selectedTab = tabName;
   }

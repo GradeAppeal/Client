@@ -48,7 +48,6 @@ const routes: Routes = [
         component: EditTemplatesComponent,
       },
     ],
-    ],
   },
   {
     path: 'student',
@@ -68,31 +67,8 @@ const routes: Routes = [
         component: StudentInteractionHistoryComponent,
       },
       {
-        path: 'interaction-history/:id',
-        component: StudentInteractionHistoryComponent,
-      },
-    ],
-  },
-  {
-    path: 'new-appeal/:courseId',
-    component: NewAppealComponent,
-      {
         path: 'student-interaction-history',
         component: StudentInteractionHistoryComponent,
-      },
-    ],
-  },
-  {
-    path: 'professor',
-    component: ProfessorNavigationComponent,
-    children: [
-      {
-        path: 'appeal-inbox',
-        component: ProfessorAppealInboxComponent,
-      },
-      {
-        path: 'interaction-history',
-        component: ProfessorInteractionHistoryComponent,
       },
     ],
   },

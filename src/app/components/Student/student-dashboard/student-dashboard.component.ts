@@ -13,7 +13,7 @@ export class StudentDashboardComponent {
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
-    private readonly supabase: SupabaseService,
+    private readonly authService: SupabaseService,
     private readonly studentService: StudentService,
     private router: Router
   ) {}
