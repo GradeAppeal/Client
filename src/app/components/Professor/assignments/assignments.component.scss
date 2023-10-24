@@ -35,15 +35,46 @@
     padding: 5px;
   }
 
-.blue-button {
-  // background-color: $primary-blue;
-  // color: white;
-  // font-family: Roboto;
-  // font-size: 1em;
-  // font-weight: bold;
-  // padding: 0.5em;
-  // margin: 0.5em;
-  // padding-left: 1em;
-  // padding-right: 1em;
-  // border-radius: 1.5em;
+
+.add-button {
+  margin: 5px;
+  margin-top: 10px;
 }
+
+.add-button:hover {
+  background-color: $hover-blue;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+.assignment-row {
+  display: flex;
+  justify-content: space-between;
+}
+ 
+.assingment-name {
+  flex: 1;
+}
+
+.icon-cell {
+
+}
+
+.delete-icon {
+  color: $primary-blue;
+}
+
+.delete-icon:hover {
+  cursor: pointer;
+  color: red;
+}
+

@@ -8,11 +8,13 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <p matLine>
-          {{ appeal?.student_name }}
+        <p class="inbox-timestamp">
+          {{ localFormatTimestamp(appeal.created_at).time }}
         </p>
 
-        <p matLine>{{ appeal?.created_at }}</p>
+        <p matLine class="inbox-name">
+          {{ appeal?.student_name }}
+        </p>
       </mat-list-item>
     </mat-nav-list>
   </div>
@@ -42,19 +44,28 @@
             <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
 
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
-            <p id="message-body">{{ message.message_text }}</p>
+            <p id="message-body">{{ chat?.message_text }}</p>
           </div>
         </ng-container>
       </div>
       <div class="chat-footer">
         <button
-          mat-stroked-button
           class="use-template-button"
-          (click)="useTemplate()"
-          [disabled]="chatInputMessage === ''"
+          mat-stroked-button
+          [matMenuTriggerFor]="menu"
         >
           Use Template
         </button>
+        <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let template of professorTemplates"
+            (click)="selectTemplate(template.temp_text)"
+          >
+            {{ template.temp_name }}
+          </button>
+        </mat-menu>
+
         <input
           matInput
           id="chat-textarea"

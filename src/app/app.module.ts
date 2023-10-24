@@ -8,7 +8,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
-// import { AccountComponent } from './components/account/account.component';
 
 /* Material Design Imports  */
 import { MatSelectModule } from '@angular/material/select';
@@ -22,6 +21,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/Professor/profile/profile.component';
@@ -32,9 +32,10 @@ import { StudentNavigationComponent } from './components/Student/student-navigat
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { AssignmentsComponent } from './assignments/assignments.component';
-import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
+import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { DeleteConfirmationComponent } from './components/Professor/assignments/delete-confirmation/delete-confirmation.component';
 import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
@@ -56,6 +57,7 @@ import { RegisterComponent } from './components/register/register.component';
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
+    DeleteConfirmationComponent,
     RegisterComponent,
   ],
   imports: [
@@ -66,10 +68,10 @@ import { RegisterComponent } from './components/register/register.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MatCardModule,
     MatButtonModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatCardModule,
     MatListModule,
     MatIconModule,
     MatTabsModule,
@@ -77,6 +79,7 @@ import { RegisterComponent } from './components/register/register.component';
     MatToolbarModule,
     MatInputModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

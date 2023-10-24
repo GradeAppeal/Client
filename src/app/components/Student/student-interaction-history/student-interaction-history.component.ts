@@ -21,7 +21,7 @@ export class StudentInteractionHistoryComponent {
     new EventEmitter<string>();
   @Input() appeal_id: number;
   @Input() student_id: number;
-  @Input() current_appeal: StudentAppeal;
+  @Input() currentAppeal: StudentAppeal;
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
@@ -29,8 +29,8 @@ export class StudentInteractionHistoryComponent {
   messageCount: number = 0;
   fromGrader = false;
   isUser: Boolean;
+  appealId: number;
   messages!: Message[];
-  loadMessages = false;
   user = {
     //student
     id: 3,
@@ -45,21 +45,17 @@ export class StudentInteractionHistoryComponent {
   studentAppeals!: StudentAppeal[];
   loadStudentAppeals = false;
 
-  constructor(
-    private studentService: StudentService,
-    private sharedService: SharedService
-  ) {}
+  constructor(private supabase: SupabaseService) {}
   async ngOnInit() {
-    this.studentAppeals = await this.studentService.fetchStudentAppeals(1);
-    this.loadStudentAppeals = true;
+    this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
     if (this.current_appeal) {
       //this.sender.id = this.current_appeal.student_id;
-      this.messages = await this.sharedService.fetchMessages(
+      this.messages = await this.supabase.fetchMessages(
         this.current_appeal.appeal_id
       );
     } else {
       this.current_appeal = this.studentAppeals[0];
-      this.messages = await this.sharedService.fetchMessages(
+      this.messages = await this.supabase.fetchMessages(
         this.current_appeal.appeal_id
       );
     }
@@ -81,12 +77,12 @@ export class StudentInteractionHistoryComponent {
   // Function to select an appeal
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
-    this.current_appeal = appeal;
-    //this.sender.id = this.current_appeal.student_id;
-    this.messages = await this.sharedService.fetchMessages(
-      this.current_appeal.appeal_id
+    this.currentAppeal = appeal;
+    //this.sender.id = this.currentAppeal.student_id;
+    this.messages = await this.supabase.fetchMessages(
+      this.currentAppeal.appeal_id
     );
-    console.log(this.current_appeal);
+    console.log(this.currentAppeal);
   }
 
   /**
@@ -97,7 +93,7 @@ export class StudentInteractionHistoryComponent {
 
     try {
       let professor_user_id = await this.sharedService.getUserId(
-        this.current_appeal.professor_id,
+        this.currentAppeal.professor_id,
         'professor'
       );
       console.log(professor_user_id);
@@ -116,7 +112,7 @@ export class StudentInteractionHistoryComponent {
         created_at: getTimestampTz(new Date()),
         sender_id: this.user.id,
         recipient_id: professor_user_id,
-        appeal_id: this.current_appeal.appeal_id,
+        appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
       });
@@ -128,5 +124,18 @@ export class StudentInteractionHistoryComponent {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
+  }
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+
+    const time = `${formattedHours}:${minutes
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+    return { date, time };
   }
 }

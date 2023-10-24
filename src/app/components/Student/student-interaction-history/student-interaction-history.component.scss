@@ -12,6 +12,10 @@ $background: white;
   filter: drop-shadow(0px 0px 2px black);
   border-radius: 15px;
   padding: 16px;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .chat-list {
@@ -113,10 +117,6 @@ $background: white;
   border-radius: 6px;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .inbox-item {
   //  padding-top: 60px;
   border: solid gray 1px;
@@ -131,19 +131,6 @@ $background: white;
   }
 }
 
-// .inbox{
-//   width: 200px;
-//   float: left;
-//   margin-left: -10px;
-//   margin-right: 20px;
-// }
-
-// .right-pane{
-//   min-width: 20%;
-//   width: 80%;
-//   float: right;
-// }
-
 .container {
   display: flex;
   flex-direction: row;
@@ -151,11 +138,18 @@ $background: white;
 }
 
 .inbox {
+  border: solid gray 1px;
+  width: 200px;
+  float: left;
+  margin-left: -10px;
+  margin-right: 0px;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+  mat-nav-list {
+    padding: 0px;
+  }
 }
-.inbox-wrapper {
-  flex: 0 0 200px;
-  overflow-y: auto;
-}
+
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 
@@ -169,4 +163,8 @@ $background: white;
     166,
     0.635
   ); /* Set the background color to a darker shade */
+}
+
+.inbox-timestamp {
+  float: right;
 }

@@ -3,8 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import {
+  ProfessorAppeal,
+  ProfessorTemplate,
+} from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-professor-interaction-history',
@@ -15,6 +19,7 @@ export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
   private professorUserId: string;
   currentAppeal: ProfessorAppeal;
+  selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
   appealId: number;
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -30,8 +35,11 @@ export class ProfessorInteractionHistoryComponent {
     id: 0,
     email: 'ccc1233@gmail.com',
   };
-
   professorAppeals!: ProfessorAppeal[];
+  professorTemplates!: ProfessorTemplate[];
+
+  //template
+  selectedTemplate: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -44,14 +52,13 @@ export class ProfessorInteractionHistoryComponent {
       console.log(this.appealId);
     });
   }
-  async ngOnInit(): Promise<void> {
-    const user = await this.authService.getUser();
-    this.professorUserId = user?.id as string;
+  async ngOnInit() {
     this.user.id = 10; //TODO make this actual user ID not just fake data
-    console.log(this.professorUserId);
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      this.professorUserId
+      1
     );
+    this.professorTemplates =
+      await this.professorService.fetchProfessorTemplates(this.professorUserId);
     this.currentAppeal =
       this.professorAppeals.find(
         (appeal) => appeal.appeal_id === this.appealId
@@ -76,7 +83,10 @@ export class ProfessorInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  useTemplate() {}
+  selectTemplate(template: string) {
+    this.selectedTemplate = template;
+    this.chatInputMessage = template;
+  }
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
@@ -125,6 +135,10 @@ export class ProfessorInteractionHistoryComponent {
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
       });
+      console.log(this.messages[this.messages.length - 1].created_at);
+      this.currentAppeal.created_at =
+        this.messages[this.messages.length - 1].created_at;
+      console.log(this.currentAppeal.created_at);
 
       this.chatInputMessage = '';
       this.scrollToBottom();
@@ -133,5 +147,13 @@ export class ProfessorInteractionHistoryComponent {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
+  }
+
+  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+    return formatTimestamp(timestamp);
+  }
+
+  selectRecipient(recipient: 'Student' | 'Grader') {
+    this.selectedRecipient = recipient;
   }
 }

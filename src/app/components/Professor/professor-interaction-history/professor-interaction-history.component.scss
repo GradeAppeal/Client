@@ -22,7 +22,6 @@ $background: white;
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  padding: 16px;
   overflow-y: scroll;
 
   .chat-item {
@@ -117,23 +116,33 @@ $background: white;
   border-radius: 6px;
 }
 
-
-
-
-.inbox-item{
+.inbox-item {
   //  padding-top: 60px;
-   border: solid gray 1px;
-   float: left;
-   padding-bottom: 50px;
-   padding-top: 50px;
-   p{
-     font-size: 10px;
-     padding: 0px;
-     margin-right: 10px;
-   }
+  border: solid gray 1px;
+  float: left;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  p.inbox-name {
+    float: left;
+    width: 25%;
+    font-size: 11px;
+    padding: 0px;
+  }
+  p.inbox-timestamp {
+    float: right;
+    width: 25%;
+    font-size: 8px;
+    padding: 0px;
+  }
+}
+.timestamp {
+  color: gray;
+  font-size: 12px;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
-.inbox{
+.inbox {
   border: solid gray 1px;
   width: 200px;
   float: left;
@@ -143,8 +152,7 @@ $background: white;
   overflow-y: auto; /* Hide overflow content */
 }
 
-
-.container{
+.container {
   position: relative;
   z-index: 1;
 }
@@ -164,6 +172,6 @@ $background: white;
   ); /* Set the background color to a darker shade */
 }
 
-mat-nav-list{
+mat-nav-list {
   padding: 0px;
 }

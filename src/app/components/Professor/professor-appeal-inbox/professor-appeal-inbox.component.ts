@@ -1,9 +1,10 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { formatTimestamp } from 'src/app/shared/functions/general.util';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -44,21 +45,17 @@ export class ProfessorAppealInboxComponent {
       console.log(err);
     }
   }
-
-  formatTimestamp(timestamp: Date): { date: string; time: string } {
-    const d = new Date(timestamp);
-    const date = d.toDateString();
-    const time = d.toTimeString().split(' ')[0];
-    return { date, time };
-  }
-
   // Function to select an appeal
   selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
   }
+  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+    return formatTimestamp(timestamp);
+  }
 
+  compareDate() {}
   composeMessage() {}
   chat(appeal: ProfessorAppeal) {
     this.isChat.emit({ professorAppeal: appeal });

@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { setTitle } from 'src/app/shared/functions/general.util';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -8,11 +11,6 @@ import { ProfessorService } from 'src/app/services/professor.service';
   styleUrls: ['./professor-navigation.component.scss'],
 })
 export class ProfessorNavigationComponent {
-  constructor(
-    private router: Router,
-    private professorService: ProfessorService
-  ) {}
-
   email = 'victor.norman@calvin.edu';
   selectedTab: string = 'Appeal Inbox';
   selectTab(tabName: string): void {

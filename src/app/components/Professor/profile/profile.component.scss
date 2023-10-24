@@ -1,3 +1,10 @@
+.course-title {
+  font-size: 2em;
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .courses {
   margin: 2%;
   width: 22vw;
@@ -59,6 +66,12 @@
 
 .blue-button {
   margin-bottom: 5px;
+}
+
+.student-input {
+  width: 30vw;
+  height: 30vh;
+  padding-top: 10px;
 }
 
 .back-button {

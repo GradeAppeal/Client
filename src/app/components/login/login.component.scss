@@ -14,11 +14,6 @@
   border: 1px solid darkgray;
 }
 
-.cover-image {
-  height: 100%;
-  width: 100%;
-}
-
 .login-wrapper {
   display: flex;
   width: 100vw;
@@ -30,13 +25,13 @@
 .logo {
   //border: 5px solid red;
   margin-left: 10vw;
-  float: left
+  float: left;
 }
 
 .form {
   //border: 5px solid blue;
   margin-right: 10vw;
-  float: right
+  float: right;
 }
 
 .welcome {
@@ -58,8 +53,10 @@
 }
 
 .cover-image {
-  height: 100%;
   width: 100%;
+  max-width: 500px;
+  min-width: 400px;
+  height: 100%;
 }
 
 .login-wrapper {

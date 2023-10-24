@@ -7,6 +7,11 @@ import { OnChanges } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SupabaseService } from 'src/app/services/auth.service';
 
+export interface ParsedStudent {
+  first_name: string;
+  last_name: string;
+  email: string;
+}
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -23,6 +28,9 @@ export class ProfileComponent implements OnChanges {
   addedStudents: string;
   studentsToAdd: string[];
   currentCourse: Course;
+  parsedStudentsToAdd: ParsedStudent[] = [];
+  parsedStudent: ParsedStudent;
+  splitStudent: string[];
   constructor(
     private dialog: MatDialog,
     private professorService: ProfessorService,
@@ -122,15 +130,27 @@ export class ProfileComponent implements OnChanges {
   async addStudents(): Promise<void> {
     // parse students added
     this.studentsToAdd = this.addedStudents.split('\n');
+    this.addedStudents = '';
+    this.studentsToAdd.shift(); // get rid of the column names
+    this.studentsToAdd = this.studentsToAdd.filter((n) => n); // get rid of empty strings from copy pasting
+    this.studentsToAdd.forEach((student) => {
+      this.splitStudent = student.split('\t');
+      this.parsedStudent = {
+        first_name: this.splitStudent[0],
+        last_name: this.splitStudent[1],
+        email: this.splitStudent[2],
+      };
+      this.parsedStudentsToAdd.push(this.parsedStudent);
+    });
+    console.log(this.parsedStudentsToAdd);
     try {
-      // this.studentsToAdd.forEach(async student => {
-      //   await this.supabase.insertUser(
-      //     "student",
+      // this.parsedStudentsToAdd.forEach(async (student) => {
+      //   await this.supabase.insertStudent(
       //     student.first_name,
       //     student.last_name,
       //     student.email
-      //   )
-      // })
+      //   );
+      // });
     } catch (err) {
       console.log(err);
       throw new Error('addStudents');
