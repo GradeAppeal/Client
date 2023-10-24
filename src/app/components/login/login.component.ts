@@ -29,8 +29,17 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.value.email as string;
     const password = this.loginForm.value.password as string;
     try {
-      await this.supabase.signIn(email, password);
-      this.router.navigateByUrl('/admin');
+      const authData = await this.supabase.signIn(email, password);
+      const authEmail = authData.user?.email as string;
+      const authUserRole = await this.supabase.getRole(authEmail);
+      if (authUserRole === 'admin') {
+        this.router.navigateByUrl('/admin');
+      } else if (authUserRole === 'professor') {
+        this.router.navigateByUrl('/professor/appeal-inbox');
+      } else if (authUserRole === 'student') {
+        alert('You cannot register unless added to a class');
+        this.router.navigateByUrl('/login');
+      }
     } catch (error) {
       if (error) {
         alert(

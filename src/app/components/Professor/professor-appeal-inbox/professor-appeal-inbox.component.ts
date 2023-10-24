@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -21,18 +22,21 @@ export class ProfessorAppealInboxComponent {
   professorCourses!: Course[];
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
+  user: any;
 
   constructor(
     private router: Router,
+    private authService: SupabaseService,
     private professorService: ProfessorService
   ) {}
   async ngOnInit(): Promise<void> {
     try {
+      const userId = (await this.authService.getUserId()) as string;
       this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-        1
+        userId
       );
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        1
+        userId
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;

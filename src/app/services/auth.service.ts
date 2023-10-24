@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import {
   AuthChangeEvent,
   AuthSession,
+  AuthUser,
   createClient,
   Session,
   SupabaseClient,
+  User,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 
@@ -13,7 +15,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SupabaseService {
   private supabase: SupabaseClient;
-  _session: AuthSession | null = null;
+  _session: AuthSession | null;
 
   constructor() {
     this.supabase = createClient(
@@ -22,12 +24,9 @@ export class SupabaseService {
     );
   }
 
+  // getter for supabase client in child classes
   get client() {
     return this.supabase;
-  }
-
-  get user() {
-    return this.supabase.auth.getUser();
   }
 
   get session() {
@@ -35,6 +34,24 @@ export class SupabaseService {
       this._session = data.session;
     });
     return this._session;
+  }
+
+  async getUser(): Promise<User | null> {
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.getUser();
+    if (error) {
+      console.log({ error });
+      throw new Error('Error getting user');
+    }
+    return user;
+  }
+
+  async getUserId() {
+    const userInfo = await this.supabase.auth.getUser();
+    const userId = userInfo.data.user?.id;
+    return userId;
   }
 
   authChanges(
@@ -49,15 +66,27 @@ export class SupabaseService {
    * @param password user-defined password
    * @returns
    */
-  async signUp(email: string, password: string) {
+  async signUp(
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string
+  ) {
     const { data, error } = await this.supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          first_name,
+          last_name,
+        },
+      },
     });
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('signUp');
     }
+    console.log({ data });
     return data;
   }
 
@@ -108,6 +137,22 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('insert student: ');
+    }
+    return data;
+  }
+
+  async getRole(email: string | null): Promise<string> {
+    if (!email) {
+      throw new Error('Nonetype Email');
+    }
+
+    let { data, error } = await this.supabase.rpc('get_role', {
+      auth_email: email,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('Get auth user role: ');
     }
     return data;
   }

@@ -21,7 +21,7 @@ export class ProfessorService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorCourses(pid: number): Promise<Course[]> {
+  async fetchProfessorCourses(pid: string): Promise<Course[]> {
     const { data, error } = await this.supabase.rpc('get_professor_courses', {
       pid,
     });
@@ -37,13 +37,11 @@ export class ProfessorService {
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorAppeals(pid: number): Promise<ProfessorAppeal[]> {
-    const { data, error } = await this.supabase.rpc(
-      'get_professor_appeals_with_grade',
-      {
-        pid,
-      }
-    );
+  async fetchProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
+    console.log(pid);
+    const { data, error } = await this.supabase.rpc('get_professor_appeals', {
+      pid,
+    });
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorAppeals');
@@ -162,4 +160,42 @@ export class ProfessorService {
     }
     return data;
   }
+
+  // async insertStudentToCourse(
+  //   student_email: string,
+  //   cid: number
+  // ): Promise<number> {
+  //   const { data, error } = await this.supabase.rpc('student_is_user', {
+  //     student_email,
+  //   });
+
+  //   if (error) {
+  //     console.log(error);
+  //     throw new Error('insert student to course: ');
+  //   }
+
+  //   if (data) {
+  //     const { data, error } = await this.supabase.rpc(
+  //       'insert_student_to_course',
+  //       {
+  //         student_email,
+  //         cid,
+  //       }
+  //     );
+  //     if (error) {
+  //       console.log(error);
+  //       throw new Error('insert student to course: ');
+  //     }
+  //     return data;
+  //   } else {
+  //     const { data, error } = await this.supabase.auth.signInWithOtp({
+  //       email: student_email,
+  //       options: {},
+  //     });
+  //     if (error) {
+  //       console.log(error);
+  //       throw new Error('insert student to course: ');
+  //     }
+  //   }
+  // }
 }

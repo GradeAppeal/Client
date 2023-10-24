@@ -5,6 +5,7 @@ import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
 import { OnChanges } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,8 @@ export class ProfileComponent implements OnChanges {
   currentCourse: Course;
   constructor(
     private dialog: MatDialog,
-    private professorService: ProfessorService
+    private professorService: ProfessorService,
+    private authService: SupabaseService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -33,8 +35,9 @@ export class ProfileComponent implements OnChanges {
 
   async ngOnInit(): Promise<void> {
     try {
+      const userId = (await this.authService.getUserId()) as string;
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        1
+        userId
       );
       this.fetchedCourses = true;
     } catch (err) {

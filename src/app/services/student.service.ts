@@ -83,7 +83,7 @@ export class StudentService {
     appeal_text: string,
     cid: number,
     created_at: Date,
-    sid: number,
+    sid: string,
     student_grade: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_new_appeal', {

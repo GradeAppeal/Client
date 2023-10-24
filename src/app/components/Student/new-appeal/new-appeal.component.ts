@@ -13,6 +13,7 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./new-appeal.component.scss'],
 })
 export class NewAppealComponent implements OnInit {
+  studentUserId: string;
   email = 'sth6@calvin.edu';
   isCourseFetched = false;
   courseId: number;
@@ -26,7 +27,7 @@ export class NewAppealComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private supabase: SupabaseService,
+    private authService: SupabaseService,
     private studentService: StudentService,
     private sharedService: SharedService
   ) {}
@@ -38,6 +39,10 @@ export class NewAppealComponent implements OnInit {
   async ngOnInit() {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
+      // get student user id
+      const user = await this.authService.getUser();
+      this.studentUserId = user?.id as string;
+
       // don't render form until course and assignment information has been fetched
       this.course = await this.studentService.fetchCourseForNewAppeal(
         this.courseId
@@ -79,7 +84,7 @@ export class NewAppealComponent implements OnInit {
         this.appeal,
         this.courseId,
         now,
-        1,
+        this.studentUserId,
         this.grade
       );
       this.navigateToInteractionHistory();

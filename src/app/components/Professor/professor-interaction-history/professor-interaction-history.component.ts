@@ -13,6 +13,7 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
 })
 export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
+  private professorUserId: string;
   currentAppeal: ProfessorAppeal;
   appealId: number;
   chatInputMessage: string = '';
@@ -35,17 +36,21 @@ export class ProfessorInteractionHistoryComponent {
   constructor(
     private route: ActivatedRoute,
     private professorService: ProfessorService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private authService: SupabaseService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
       console.log(this.appealId);
     });
   }
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
+    const user = await this.authService.getUser();
+    this.professorUserId = user?.id as string;
     this.user.id = 10; //TODO make this actual user ID not just fake data
+    console.log(this.professorUserId);
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      1
+      this.professorUserId
     );
     this.currentAppeal =
       this.professorAppeals.find(
