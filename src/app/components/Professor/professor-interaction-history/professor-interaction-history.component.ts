@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   ProfessorAppeal,
@@ -22,6 +23,7 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
 export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
   currentAppeal: ProfessorAppeal;
+  selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
   appealId: number;
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -154,42 +156,11 @@ export class ProfessorInteractionHistoryComponent {
     }
   }
 
-  formatTimestamp(timestamp: Date): { date: string; time: string } {
-    const d = new Date(timestamp);
-    const date = d.toDateString();
-    const hours = d.getHours();
-    const minutes = d.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
-
-    const time = `${formattedHours}:${minutes
-      .toString()
-      .padStart(2, '0')} ${ampm}`;
-    return { date, time };
+  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+    return formatTimestamp(timestamp);
   }
 
-  formatMessageTimestamp(timestamp: Date): string {
-    //TODO make it show date if most recent message is more than a day
-    const currentDate = new Date();
-    const messageDate = new Date(timestamp);
-
-    if (
-      currentDate.getFullYear() === messageDate.getFullYear() &&
-      currentDate.getMonth() === messageDate.getMonth() &&
-      currentDate.getDate() === messageDate.getDate()
-    ) {
-      // If the message was sent today, display only the time
-      const hours = messageDate.getHours().toString().padStart(2, '0');
-      const minutes = messageDate.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    } else {
-      // If the message was sent on a different day, display the full date
-      const year = messageDate.getFullYear();
-      const month = (messageDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = messageDate.getDate().toString().padStart(2, '0');
-      const hours = messageDate.getHours().toString().padStart(2, '0');
-      const minutes = messageDate.getMinutes().toString().padStart(2, '0');
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
-    }
+  selectRecipient(recipient: 'Student' | 'Grader') {
+    this.selectedRecipient = recipient;
   }
 }

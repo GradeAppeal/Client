@@ -7,10 +7,10 @@
   <mat-toolbar class="top-bar">
     <mat-toolbar-row>
       <span class="left-content">
-        <span (click)="navigateToHome()" class="material-symbols-outlined">
+        <span (click)="navigateTo('/')" class="material-symbols-outlined">
           rocket_launch
         </span>
-        <span>{{ selectedTab }}</span>
+        <span>{{ title }}</span>
       </span>
       <div class="right-content">
         <img class="header-avatar" ngxGravatar [email]="email" />

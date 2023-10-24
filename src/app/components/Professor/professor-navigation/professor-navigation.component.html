@@ -10,7 +10,7 @@
         <span (click)="navigateTo('/')" class="material-symbols-outlined">
           rocket_launch
         </span>
-        <span>{{ selectedTab }}</span>
+        <span>{{ title }}</span>
       </span>
       <div class="right-content">
         <img class="header-avatar" ngxGravatar [email]="email" />
@@ -23,38 +23,63 @@
   <mat-sidenav #sidenav mode="side" opened>
     <mat-action-list class="tab-list">
       <button
-      mat-list-item
-      (click)="navigateTo('professor/appeal-inbox')"
-      [class.selected]="selectedTab === 'Appeal Inbox'"
-    >
+        class="sidenav-button"
+        (click)="navigateTo('professor/appeal-inbox')"
+        [class.selected]="selectedTab === 'Appeal Inbox'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="mailbox"
+        ></mat-icon>
         &ensp;Appeal Inbox
       </button>
       <button
-      mat-list-item
-      (click)="navigateTo('professor/interaction-history/')"
-      [class.selected]="selectedTab === 'Interaction History'"
-    >
+        class="sidenav-button"
+        (click)="navigateTo('professor/interaction-history/')"
+        [class.selected]="selectedTab === 'Interaction History'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="chat"
+        ></mat-icon>
         &ensp;Interaction History
       </button>
       <button
-      mat-list-item
-      (click)="navigateTo('professor/closed-appeals')"
-      [class.selected]="selectedTab === 'Closed Appeals'"
-    >
+        class="sidenav-button"
+        (click)="navigateTo('professor/closed-appeals')"
+        [class.selected]="selectedTab === 'Closed Appeals'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="delete"
+        ></mat-icon>
         &ensp;Closed Appeals
       </button>
       <button
-      mat-list-item
-      (click)="navigateTo('professor/profile')"
-      [class.selected]="selectedTab === 'Profile'"
-    >
+        class="sidenav-button"
+        (click)="navigateTo('professor/profile')"
+        [class.selected]="selectedTab === 'Profile'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="person"
+        ></mat-icon>
         &ensp;Profile
       </button>
       <button
-      mat-list-item
-      (click)="navigateTo('professor/edit-templates')"
-      [class.selected]="selectedTab === 'Edit Templates'"
-    >
+        class="sidenav-button"
+        (click)="navigateTo('professor/edit-templates')"
+        [class.selected]="selectedTab === 'Edit Templates'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="edit"
+        ></mat-icon>
         &ensp;Edit Templates
       </button>
     </mat-action-list>
