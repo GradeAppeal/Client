@@ -18,6 +18,7 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
 export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
   private professorUserId: string;
+  noAppeals: boolean;
   currentAppeal: ProfessorAppeal;
   selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
   appealId: number;
@@ -58,26 +59,29 @@ export class ProfessorInteractionHistoryComponent {
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
       this.professorUserId
     );
+    this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professorUserId);
-    this.currentAppeal =
-      this.professorAppeals.find(
-        (appeal) => appeal.appeal_id === this.appealId
-      ) || this.professorAppeals[0];
+    if (!this.noAppeals) {
+      this.currentAppeal =
+        this.professorAppeals.find(
+          (appeal) => appeal.appeal_id === this.appealId
+        ) || this.professorAppeals[0];
 
-    if (this.currentAppeal) {
-      //this.sender.id = this.currentAppeal.student_id;
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
-    } else {
-      this.currentAppeal = this.professorAppeals[0];
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      if (this.currentAppeal) {
+        //this.sender.id = this.currentAppeal.student_id;
+        this.messages = await this.sharedService.fetchMessages(
+          this.currentAppeal.appeal_id
+        );
+      } else {
+        this.currentAppeal = this.professorAppeals[0];
+        this.messages = await this.sharedService.fetchMessages(
+          this.currentAppeal.appeal_id
+        );
+      }
+      this.messageLoaded = true;
+      this.messageCount = this.messages.length;
     }
-    this.messageLoaded = true;
-    this.messageCount = this.messages.length;
   }
 
   ngAfterViewChecked() {

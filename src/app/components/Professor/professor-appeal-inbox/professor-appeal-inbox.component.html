@@ -1,5 +1,5 @@
 <!-- Main Content Section -->
-<div class="content">
+<div class="content" *ngIf="!noAppeals">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox" *ngIf="fetchedAppeals">
     <mat-nav-list>
@@ -67,4 +67,8 @@
       </div>
     </ng-template>
   </div>
+</div>
+<div class="empty-inbox" *ngIf="noAppeals">
+  <h1>No appeals have beeen initiated</h1>
+  <h2>Please check back later</h2>
 </div>

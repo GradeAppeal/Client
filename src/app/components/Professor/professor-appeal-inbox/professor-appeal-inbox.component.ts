@@ -5,6 +5,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -13,6 +14,7 @@ import { formatTimestamp } from 'src/app/shared/functions/general.util';
 export class ProfessorAppealInboxComponent {
   @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
   //inboxAppeals: AppealInbox[];
+  noAppeals: boolean;
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
@@ -34,10 +36,12 @@ export class ProfessorAppealInboxComponent {
     try {
       const userId = (await this.authService.getUserId()) as string;
       this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-        userId
+        PROFESSOR_UUID
       );
+      this.noAppeals = this.professorAppeals.length === 0 ? true : false;
+      console.log(this.professorAppeals, 'appeals');
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        userId
+        PROFESSOR_UUID
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
