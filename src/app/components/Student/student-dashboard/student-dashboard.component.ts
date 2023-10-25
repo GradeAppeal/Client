@@ -3,6 +3,7 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
+import { STUDENT_UUID } from 'src/app/shared/strings';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -10,6 +11,7 @@ import { StudentService } from 'src/app/services/student.service';
   styleUrls: ['./student-dashboard.component.scss'],
 })
 export class StudentDashboardComponent {
+  studentUserId!: string;
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
@@ -18,9 +20,14 @@ export class StudentDashboardComponent {
     private router: Router
   ) {}
   async ngOnInit(): Promise<void> {
-    this.studentCourses = await this.studentService.fetchStudentCourses(1);
+    this.studentUserId = (await this.authService.getUserId()) as string;
+    this.studentCourses = await this.studentService.fetchStudentCourses(
+      STUDENT_UUID
+    );
     console.log(this.studentCourses);
-    const studentAppeals = await this.studentService.fetchStudentAppeals(1);
+    const studentAppeals = await this.studentService.fetchStudentAppeals(
+      STUDENT_UUID
+    );
     console.log({ studentAppeals });
   }
   onNewAppeal(course: StudentCourse) {

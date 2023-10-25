@@ -6,11 +6,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
+import { STUDENT_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-student-interaction-history',
   templateUrl: './student-interaction-history.component.html',
@@ -25,6 +27,7 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  studentUserId: string;
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = false;
@@ -46,11 +49,15 @@ export class StudentInteractionHistoryComponent {
   loadStudentAppeals = false;
 
   constructor(
+    private authService: SupabaseService,
     private studentService: StudentService,
     private sharedService: SharedService
   ) {}
   async ngOnInit() {
-    this.studentAppeals = await this.studentService.fetchStudentAppeals(1);
+    this.studentUserId = (await this.authService.getUserId()) as string;
+    this.studentAppeals = await this.studentService.fetchStudentAppeals(
+      STUDENT_UUID
+    );
     if (this.currentAppeal) {
       //this.sender.id = this.current_appeal.student_id;
       this.messages = await this.sharedService.fetchMessages(

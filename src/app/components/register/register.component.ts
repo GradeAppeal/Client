@@ -40,8 +40,7 @@ export class RegisterComponent {
       } else if (authUserRole === 'professor') {
         this.router.navigateByUrl('/professor/appeal-inbox');
       } else if (authUserRole === 'student') {
-        alert('You cannot register unless added to a class');
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/student');
       }
     } catch (err) {
       console.log({ err });

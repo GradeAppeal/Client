@@ -32,6 +32,7 @@ export interface StudentAppeal {
   assignment_id: number;
   assignment_name: string;
   appeal_id: number;
+  appeal_grade?: number;
   created_at: Date;
   is_open: boolean;
 }

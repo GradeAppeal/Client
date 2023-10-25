@@ -1,4 +1,4 @@
-import { Component, Inject, Optional, Input } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,6 +25,7 @@ export class AddAssignmentComponent {
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
+    console.log({data})
     this.currentCourse = data.course;
   }
 

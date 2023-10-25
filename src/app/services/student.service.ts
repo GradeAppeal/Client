@@ -24,7 +24,7 @@ export class StudentService {
    * @param sid student id
    * @returns
    */
-  async fetchStudentCourses(sid: number): Promise<StudentCourse[]> {
+  async fetchStudentCourses(sid: string): Promise<StudentCourse[]> {
     const { data, error } = await this.supabase.rpc('get_student_courses', {
       sid,
     });
@@ -41,7 +41,8 @@ export class StudentService {
    * @param sid student id
    * @returns All the appeals made by the student
    */
-  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+  async fetchStudentAppeals(sid: string): Promise<StudentAppeal[]> {
+    console.log({ sid }, 'From fetchStudentappeals');
     const { data, error } = await this.supabase.rpc('get_student_appeals', {
       sid,
     });

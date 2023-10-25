@@ -128,6 +128,8 @@ export class ProfessorService {
     cid: number,
     assignment_name: string
   ): Promise<void> {
+    console.log({ cid });
+    console.log({ assignment_name });
     const { data, error } = await this.supabase.rpc('insert_new_assignment', {
       cid,
       assignment_name,
