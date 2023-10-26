@@ -1,9 +1,7 @@
 @import "src/styles.scss";
 
-$background: white;
-
 .card {
-  background: $background;
+  background: white;
   height: 90vh;
   min-width: 20%;
   max-width: 100%;
@@ -47,7 +45,7 @@ $background: white;
       object-fit: cover;
       border-radius: 50%;
       z-index: 99;
-      border: 3px solid $background;
+      border: 3px solid white;
     }
   }
 
@@ -149,7 +147,6 @@ $background: white;
     padding: 0px;
   }
 }
-
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 

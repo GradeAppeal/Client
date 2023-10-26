@@ -51,11 +51,11 @@ export class StudentInteractionHistoryComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
-      console.log(this.appealId);
     });
   }
   async ngOnInit() {
     this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
+    console.log(this.studentAppeals);
     this.currentAppeal =
       this.studentAppeals.find(
         (appeal) => appeal.appeal_id === this.appealId

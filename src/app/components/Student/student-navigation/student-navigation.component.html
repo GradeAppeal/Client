@@ -2,53 +2,74 @@
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
 />
-
-<div>
-  <mat-toolbar class="top-bar">
-    <mat-toolbar-row>
-      <span class="left-content">
-        <span (click)="navigateTo('/')" class="material-symbols-outlined">
-          rocket_launch
-        </span>
-        <span>{{ title }}</span>
+<div class="app-container">
+  <div class="top-bar">
+    <span class="left-content">
+      <span (click)="navigateTo('/')" class="material-symbols-outlined">
+        rocket_launch
       </span>
-      <div class="right-content">
-        <img class="header-avatar" ngxGravatar [email]="email" />
-      </div>
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
+      <span>{{ title }}</span>
+    </span>
+    <span class="right-content">
+      <img class="header-avatar" ngxGravatar [email]="email" />
+    </span>
+  </div>
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav mode="side" opened>
-    <mat-action-list class="tab-list">
+  <div class="sidenav-container">
+    <div class="tab-list">
       <button
-        class="tab-text"
-        mat-list-item
+        class="tab-text sidenav-button"
         (click)="navigateTo('/student/course-dashboard')"
-        [class.selected]="selectedTab === 'Course Dashboard'"
+        [class.selected]="selectedTab === '/student/course-dashboard'"
       >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="dashboard"
+        ></mat-icon>
         &ensp;Course Dashboard
       </button>
       <button
-        mat-list-item
+        class="sidenav-button"
         (click)="navigateTo('/student/course-dashboard')"
-        [class.selected]="selectedTab === 'Grader Dashboard'"
+        [class.selected]="selectedTab === '/student/course-dashboard'"
         *ngIf="grader"
       >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="dashboard"
+        ></mat-icon>
         &ensp;Grader Dashboard
       </button>
       <button
-        mat-list-item
+        class="sidenav-button"
         (click)="navigateTo('/student/interaction-history')"
-        [class.selected]="selectedTab === 'Interaction History'"
+        [class.selected]="selectedTab === '/student/interaction-history'"
       >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="chat"
+        ></mat-icon>
         &ensp;Interaction History
       </button>
-    </mat-action-list>
-  </mat-sidenav>
+      <button
+        class="sidenav-button"
+        (click)="navigateTo('student/grader/interaction-history')"
+        [class.selected]="selectedTab === 'student/grader/interaction-history'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="grade"
+        ></mat-icon>
+        &ensp;Grader View
+      </button>
+    </div>
 
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

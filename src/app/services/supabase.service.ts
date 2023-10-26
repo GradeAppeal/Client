@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import {
   StudentCourse,
   StudentAppeal,
+  GraderAppeal,
 } from '../shared/interfaces/student.interface';
 import {
   ProfessorAppeal,
@@ -439,7 +440,7 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
-      email
+      email,
     });
 
     if (error) {
@@ -449,13 +450,10 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  async updateGrader(
-    sid: number,
-    cid: number
-  ): Promise<void> {
+  async updateGrader(sid: number, cid: number): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
-      cid
+      cid,
     });
 
     if (error) {
@@ -465,12 +463,12 @@ export class SupabaseService {
     console.log({ data });
   }
 
-   /**
+  /**
    *
    * @param sid student id
    * @returns All the appeals made by the student
    */
-   async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
     const { data, error } = await this.supabase.rpc('get_student_appeals', {
       sid,
     });
@@ -481,4 +479,68 @@ export class SupabaseService {
     }
     return data;
   }
+  /**
+   *
+   * @param sid student id
+   * @returns All the appeals made by the student
+   */
+  async fetchGraderAppeals(sid: number): Promise<GraderAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_grader_appeals', {
+      sid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('UpdateGrader');
+    }
+    return data;
+  }
+
+  // /**
+  //  *
+  //  * @param sid student id
+  //  * @returns All the appeals made by the student
+  //  */
+  // async fetchGraderAppeals(sid: number, cid: number): Promise<GraderAppeal[]> {
+  //   const { data: graderAppealData, error: graderAppealsError } =
+  //     await this.supabase.rpc('get_grader_appeals', {
+  //       sid,
+  //     });
+
+  //   const { data: professorData, error: professorError } =
+  //     await this.supabase.rpc('get_professor_for_grader', { cid });
+
+  //   if (graderAppealData && professorData) {
+  //     // Map the data into the desired 'GraderAppeal' interface
+  //     const combinedData = graderAppealData.map(
+  //       (graderAppeal: { professor_id: any }) => {
+  //         const professorInfo = professorData.find(
+  //           (prof: { professor_id: any }) =>
+  //             prof.professor_id === graderAppeal.professor_id
+  //         );
+
+  //         return {
+  //           ...graderAppeal,
+  //           professor_id: professorInfo ? professorInfo.professor_id : null,
+  //           professor_first_name: professorInfo
+  //             ? professorInfo.professor_first_name
+  //             : null,
+  //           professor_last_name: professorInfo
+  //             ? professorInfo.professor_last_name
+  //             : null,
+  //         };
+  //       }
+  //     );
+  //     return combinedData;
+  //   }
+  //   if (graderAppealsError) {
+  //     console.log(graderAppealsError);
+  //     throw new Error('UpdateGrader');
+  //   }
+  //   if (professorError) {
+  //     console.log(professorError);
+  //     throw new Error('UpdateGrader');
+  //   }
+  //   return [];
+  // }
 }

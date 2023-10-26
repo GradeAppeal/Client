@@ -22,6 +22,7 @@ $background: white;
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  padding: 16px;
   overflow-y: scroll;
 
   .chat-item {
@@ -118,60 +119,35 @@ $background: white;
 
 .inbox-item {
   //  padding-top: 60px;
-  border-top: solid gray 1px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: rgb(233, 232, 232);
-    cursor: pointer;
-  }
-  .left-section {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  p.inbox-name,
-  p.inbox-assignment-name {
-    font-weight: bold;
-    font-size: 11px;
-    padding-left: 5px;
-    margin: 0;
-    width: 100%;
-  }
-  p.inbox-timestamp {
-    font-size: 8px;
-    margin: 0; /* Remove the default margin to avoid spacing issues */
-    width: 25%;
-  }
-  p.inbox-assignment-name {
-    padding-bottom: 5px;
-    font-weight: 400;
+  border: solid gray 1px;
+  float: left;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  height: 100px;
+  p {
+    font-size: 10px;
+    padding: 0px;
+    margin-right: 10px;
   }
 }
-.timestamp {
-  color: gray;
-  font-size: 12px;
-  padding-right: 5px;
-  padding-left: 5px;
-}
-
-// .inbox {
-//   border: solid gray 1px;
-//   width: 200px;
-//   float: left;
-//   margin-left: -10px;
-//   margin-right: 20px;
-//   height: 90vh; /* 100% of the viewport height */
-//   overflow-y: auto; /* Hide overflow content */
-// }
 
 .container {
-  position: relative;
-  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.inbox {
+  border: solid gray 1px;
+  width: 200px;
+  float: left;
+  margin-left: -10px;
+  margin-right: 0px;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+  mat-nav-list {
+    padding: 0px;
+  }
 }
 
 .right-pane {
@@ -189,6 +165,6 @@ $background: white;
   ); /* Set the background color to a darker shade */
 }
 
-mat-nav-list {
-  padding: 0px;
+.inbox-timestamp {
+  float: right;
 }

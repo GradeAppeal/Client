@@ -1,48 +1,53 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   Output,
   ViewChild,
-  EventEmitter,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import {
-  ProfessorAppeal,
-  ProfessorTemplate,
-} from 'src/app/shared/interfaces/professor.interface';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
+import {
+  GraderAppeal,
+  StudentAppeal,
+} from 'src/app/shared/interfaces/student.interface';
 @Component({
-  selector: 'app-professor-interaction-history',
-  templateUrl: './professor-interaction-history.component.html',
-  styleUrls: ['./professor-interaction-history.component.scss'],
+  selector: 'app-grader-interaction-history',
+  templateUrl: './grader-interaction-history.component.html',
+  styleUrls: ['./grader-interaction-history.component.scss'],
 })
-export class ProfessorInteractionHistoryComponent {
+export class GraderInteractionHistoryComponent {
+  @Output() customTitleChange: EventEmitter<string> =
+    new EventEmitter<string>();
+  @Input() appeal_id: number;
+  @Input() student_id: number;
+  @Input() currentAppeal: GraderAppeal;
+  @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
-  currentAppeal: ProfessorAppeal;
-  selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
-  appealId: number;
+
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = false;
   isUser: Boolean;
+  appealId: number;
   messages!: Message[];
   user = {
-    id: 10,
+    //student
+    id: 3,
     email: 'abc123@gmail.com',
   };
   sender = {
+    //professor
     id: 0,
     email: 'ccc1233@gmail.com',
   };
-  professorAppeals!: ProfessorAppeal[];
-  professorTemplates!: ProfessorTemplate[];
 
-  //template
-  selectedTemplate: string = '';
+  studentAppeals!: StudentAppeal[];
+  graderAppeals!: GraderAppeal[];
 
   constructor(
     private route: ActivatedRoute,
@@ -54,32 +59,17 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
-    this.user.id = 1; //TODO make this actual user ID not just fake data
-    let professor_user_id = await this.supabase.getUserId(
-      this.user.id,
-      'professor'
-    );
-    console.log(professor_user_id);
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(
-      this.user.id
-    );
-    console.log(this.professorAppeals);
-    this.professorTemplates = await this.supabase.fetchProfessorTemplates(
-      this.user.id
-    );
-    console.log(this.professorTemplates);
+    this.graderAppeals = await this.supabase.fetchGraderAppeals(1);
     this.currentAppeal =
-      this.professorAppeals.find(
-        (appeal) => appeal.appeal_id === this.appealId
-      ) || this.professorAppeals[0];
-
+      this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
+      this.graderAppeals[0];
     if (this.currentAppeal) {
       //this.sender.id = this.currentAppeal.student_id;
       this.messages = await this.supabase.fetchMessages(
         this.currentAppeal.appeal_id
       );
     } else {
-      this.currentAppeal = this.professorAppeals[0];
+      this.currentAppeal = this.graderAppeals[0];
       this.messages = await this.supabase.fetchMessages(
         this.currentAppeal.appeal_id
       );
@@ -91,10 +81,7 @@ export class ProfessorInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  selectTemplate(template: string) {
-    this.selectedTemplate = template;
-    this.chatInputMessage = template;
-  }
+  useTemplate() {}
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
@@ -117,18 +104,13 @@ export class ProfessorInteractionHistoryComponent {
    */
   async sendMessage(): Promise<void> {
     const now = getTimestampTz(new Date());
-
+    const student_user_id = 1; //TODO fix this
     try {
-      console.log(this.currentAppeal.student_id);
-      let student_user_id = await this.supabase.getUserId(
-        this.currentAppeal.student_id,
-        'student'
-      );
-      console.log(student_user_id);
+      console.log(this.user.id);
       await this.supabase.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //professor user id
-        student_user_id, //student user id
+        this.user.id, //sender id: grader
+        student_user_id, //recipientid : student
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -143,10 +125,6 @@ export class ProfessorInteractionHistoryComponent {
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
       });
-      console.log(this.messages[this.messages.length - 1].created_at);
-      this.currentAppeal.created_at =
-        this.messages[this.messages.length - 1].created_at;
-      console.log(this.currentAppeal.created_at);
 
       this.chatInputMessage = '';
       this.scrollToBottom();
@@ -156,12 +134,17 @@ export class ProfessorInteractionHistoryComponent {
       throw new Error('onSubmitAppeal');
     }
   }
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
+    const d = new Date(timestamp);
+    const date = d.toDateString();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
 
-  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
-    return formatTimestamp(timestamp);
-  }
-
-  selectRecipient(recipient: 'Student' | 'Grader') {
-    this.selectedRecipient = recipient;
+    const time = `${formattedHours}:${minutes
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+    return { date, time };
   }
 }

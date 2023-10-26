@@ -2,7 +2,7 @@
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
     <mat-nav-list>
-      <div
+      <mat-list-item
         class="inbox-item"
         *ngFor="let appeal of this.studentAppeals"
         (click)="selectAppeal(appeal)"
@@ -19,7 +19,7 @@
 
         <p matLine>{{ appeal.course_name }}</p>
         <p matLine>{{ appeal?.assignment_name }}</p>
-      </div>
+      </mat-list-item>
     </mat-nav-list>
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
@@ -29,8 +29,8 @@
         <mat-toolbar-row>
           <img class="header-avatar" ngxGravatar [email]="user.email" />
           <h1>
-            {{ currentAppeal?.professor_first_name }}
-            {{ currentAppeal?.professor_last_name }}<span>:</span>
+            <!-- {{ currentAppeal?.professor_first_name }}
+            {{ currentAppeal?.professor_last_name }}<span>:</span> -->
             {{ currentAppeal?.assignment_name }}
           </h1>
         </mat-toolbar-row>

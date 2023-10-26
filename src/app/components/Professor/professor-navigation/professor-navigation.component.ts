@@ -11,7 +11,7 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 })
 export class ProfessorNavigationComponent {
   email = 'victor.norman@calvin.edu';
-  selectedTab: string = 'Appeal Inbox';
+  selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
   constructor(private router: Router, private supabase: SupabaseService) {
     this.router.events.subscribe((event) => {
@@ -21,6 +21,7 @@ export class ProfessorNavigationComponent {
     });
   }
   navigateTo(route: string) {
+    this.selectedTab = route;
     this.router.navigate([route]);
   }
 
@@ -28,29 +29,4 @@ export class ProfessorNavigationComponent {
     const students = await this.supabase.fetchStudents(1);
     console.log({ students });
   }
-
-  //checks the url following either professor or student, sets the title of the Banner
-  // setTitle(url: string) {
-  //   const segments = url.split('/');
-  //   let title = '';
-
-  //   for (let i = 0; i < segments.length; i++) {
-  //     if (segments[i] === 'professor' || segments[i] === 'student') {
-  //       title = segments
-  //         .slice(i + 1)
-  //         .map((segment) => this.capitalizeWords(segment))
-  //         .join(' ');
-  //       break;
-  //     }
-  //   }
-  //   this.title = title;
-  // }
-
-  // //fixes the formatting of the title
-  // capitalizeWords(str: string): string {
-  //   return str
-  //     .split('-')
-  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //     .join(' ');
-  // }
 }

@@ -36,6 +36,7 @@ import { AssignmentsComponent } from './components/Professor/assignments/assignm
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { DeleteConfirmationComponent } from './components/Professor/assignments/delete-confirmation/delete-confirmation.component';
+import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { DeleteConfirmationComponent } from './components/Professor/assignments/
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
     DeleteConfirmationComponent,
+    GraderInteractionHistoryComponent,
   ],
   imports: [
     BrowserModule,

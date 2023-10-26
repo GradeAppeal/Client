@@ -1,22 +1,24 @@
 <div class="container">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
-    <mat-nav-list>
-      <mat-list-item
+    <div>
+      <div
         class="inbox-item"
         *ngFor="let appeal of this.professorAppeals"
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
+        <div class="left-section">
+          <p matLine class="inbox-name">
+            {{ appeal?.student_name }}
+          </p>
+          <p class="inbox-assignment-name">{{ appeal.assignment_name }}</p>
+        </div>
         <p class="inbox-timestamp">
           {{ localFormatTimestamp(appeal.created_at).time }}
         </p>
-
-        <p matLine class="inbox-name">
-          {{ appeal?.student_name }}
-        </p>
-      </mat-list-item>
-    </mat-nav-list>
+      </div>
+    </div>
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
   <div class="right-pane">
