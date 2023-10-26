@@ -50,7 +50,9 @@ $background: white;
       border: 3px solid $background;
     }
   }
-
+  .name {
+    display: none;
+  }
   .left {
     margin-right: auto;
     margin-left: 8px;
@@ -59,6 +61,13 @@ $background: white;
       margin-left: -10px;
       background-color: lightgray;
       color: black;
+    }
+    .name {
+      display: block;
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 30px;
+      padding-right: 20px;
     }
   }
 
@@ -69,6 +78,12 @@ $background: white;
 
     #message-body {
       margin-right: -10px;
+    }
+  }
+  .grader {
+    #message-body {
+      background-color: lightblue;
+      color: black;
     }
   }
 }
@@ -119,15 +134,15 @@ $background: white;
 
 .inbox-item {
   //  padding-top: 60px;
-  border: solid gray 1px;
+  border-top: solid gray 1px;
   float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   height: 100px;
+
   p {
     font-size: 10px;
-    padding: 0px;
-    margin-right: 10px;
+    padding-left: 15px;
   }
 }
 
@@ -138,11 +153,8 @@ $background: white;
 }
 
 .inbox {
-  border: solid gray 1px;
   width: 200px;
   float: left;
-  margin-left: -10px;
-  margin-right: 0px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
   mat-nav-list {

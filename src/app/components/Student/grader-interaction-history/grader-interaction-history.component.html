@@ -1,26 +1,24 @@
 <div class="container">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
-    <mat-nav-list>
-      <mat-list-item
-        class="inbox-item"
-        *ngFor="let appeal of this.studentAppeals"
-        (click)="selectAppeal(appeal)"
-        [class.selected-appeal]="appeal === currentAppeal"
-      >
-        <p matLine class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
-        </p>
-        <p matLine>
-          <b>
-            {{ appeal?.professor_first_name }}
-          </b>
-        </p>
+    <div
+      class="inbox-item"
+      *ngFor="let appeal of this.graderAppeals"
+      (click)="selectAppeal(appeal)"
+      [class.selected-appeal]="appeal === currentAppeal"
+    >
+      <p matLine class="inbox-timestamp">
+        {{ formatTimestamp(appeal.created_at).time }}
+      </p>
+      <p matLine>
+        <b>
+          <!-- {{ appeal?.professor_first_name }} -->
+        </b>
+      </p>
 
-        <p matLine>{{ appeal.course_name }}</p>
-        <p matLine>{{ appeal?.assignment_name }}</p>
-      </mat-list-item>
-    </mat-nav-list>
+      <p matLine>{{ appeal.course_name }}</p>
+      <p matLine>{{ appeal?.assignment_name }}</p>
+    </div>
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
   <div class="right-pane">
@@ -41,14 +39,18 @@
             class="chat-item"
             [ngClass]="{
               right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id
+              left: chat?.sender_id != user.id,
+              grader: chat?.from_grader == true
             }"
           >
+            <p class="name">{{ chat.sender_id }}</p>
+            <!-- need to change to name -->
             <!-- <img ngxGravatar [email]="user.email" /> -->
             <img *ngIf="isUser" ngxGravatar [email]="user.email" />
             <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
 
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
+
             <p id="message-body">{{ chat?.message_text }}</p>
           </div>
         </ng-container>

@@ -70,6 +70,12 @@ $background: white;
       margin-right: -10px;
     }
   }
+  .grader {
+    #message-body {
+      background-color: lightblue;
+      color: black;
+    }
+  }
 }
 
 .chat-footer {

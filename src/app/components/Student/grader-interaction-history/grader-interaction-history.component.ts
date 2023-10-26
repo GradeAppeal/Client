@@ -31,7 +31,7 @@ export class GraderInteractionHistoryComponent {
 
   chatInputMessage: string = '';
   messageCount: number = 0;
-  fromGrader = false;
+  fromGrader = true;
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
@@ -60,6 +60,7 @@ export class GraderInteractionHistoryComponent {
   }
   async ngOnInit() {
     this.graderAppeals = await this.supabase.fetchGraderAppeals(1);
+    console.log(this.graderAppeals);
     this.currentAppeal =
       this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
       this.graderAppeals[0];
@@ -104,13 +105,21 @@ export class GraderInteractionHistoryComponent {
    */
   async sendMessage(): Promise<void> {
     const now = getTimestampTz(new Date());
-    const student_user_id = 1; //TODO fix this
+    const student_user_id = 10; //TODO fix this
     try {
       console.log(this.user.id);
+      // await this.supabase.insertMessages(
+      //   this.currentAppeal.appeal_id,
+      //   this.user.id, //sender id: grader
+      //   student_user_id, //recipientid : student
+      //   now,
+      //   this.chatInputMessage,
+      //   this.fromGrader
+      // );
       await this.supabase.insertMessages(
-        this.currentAppeal.appeal_id,
+        15,
         this.user.id, //sender id: grader
-        student_user_id, //recipientid : student
+        10, //recipientid : student
         now,
         this.chatInputMessage,
         this.fromGrader

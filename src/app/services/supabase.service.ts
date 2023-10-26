@@ -491,7 +491,7 @@ export class SupabaseService {
 
     if (error) {
       console.log(error);
-      throw new Error('UpdateGrader');
+      throw new Error('GetGrader');
     }
     return data;
   }

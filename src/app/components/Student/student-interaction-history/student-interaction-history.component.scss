@@ -117,30 +117,26 @@
 
 .inbox-item {
   //  padding-top: 60px;
-  border: solid gray 1px;
-  float: left;
+  border-top: solid gray 1px;
+  //float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   height: 100px;
   p {
     font-size: 10px;
     padding: 0px;
-    margin-right: 10px;
+    margin-left: 15px;
   }
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
+  display: relative;
+  flex: 1;
 }
 
 .inbox {
-  border: solid gray 1px;
   width: 200px;
   float: left;
-  margin-left: -10px;
-  margin-right: 0px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
   mat-nav-list {

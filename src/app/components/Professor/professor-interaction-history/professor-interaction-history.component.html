@@ -38,7 +38,8 @@
             class="chat-item"
             [ngClass]="{
               right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id
+              left: chat?.sender_id != user.id,
+              grader: chat?.from_grader == true
             }"
           >
             <div class="timestamp">

@@ -54,19 +54,9 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
-    this.user.id = 1; //TODO make this actual user ID not just fake data
-    let professor_user_id = await this.supabase.getUserId(
-      this.user.id,
-      'professor'
-    );
-    console.log(professor_user_id);
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(
-      this.user.id
-    );
+    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1); //uses professor.id rather than the user id
     console.log(this.professorAppeals);
-    this.professorTemplates = await this.supabase.fetchProfessorTemplates(
-      this.user.id
-    );
+    this.professorTemplates = await this.supabase.fetchProfessorTemplates(1);
     console.log(this.professorTemplates);
     this.currentAppeal =
       this.professorAppeals.find(
@@ -125,6 +115,9 @@ export class ProfessorInteractionHistoryComponent {
         'student'
       );
       console.log(student_user_id);
+      console.log(this.user.id);
+      console.log(student_user_id);
+
       await this.supabase.insertMessages(
         this.currentAppeal.appeal_id,
         this.user.id, //professor user id
