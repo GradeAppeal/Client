@@ -32,3 +32,10 @@ export interface Student {
   is_grader: boolean;
   //role: string;
 }
+
+export interface StudentCourse {
+  student_id: string;
+  course_id: number;
+  is_grader: boolean;
+  //role: string;
+}

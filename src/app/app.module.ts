@@ -31,7 +31,6 @@ import { ProfessorAppealInboxComponent } from './components/Professor/professor-
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { EditStudentsPopUpComponent } from './components/Student/edit-students-pop-up/edit-students-pop-up.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
@@ -53,7 +52,6 @@ import { RegisterComponent } from './components/register/register.component';
     StudentNavigationComponent,
     NewAppealComponent,
     EditStudentsPopUpComponent,
-    AdminComponent,
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,

@@ -1,20 +1,49 @@
 <div *ngIf="currentPage == 'view'" class="course-wrapper">
   <mat-card class="courses" *ngFor="let course of professorCourses">
-    <mat-card-title class="course-wording">{{ course.prefix }}-{{course.code}}-{{course.section}} {{course.semester}}-{{course.year}}</mat-card-title>
-    <mat-card-subtitle class="course-wording">{{ course.name }}</mat-card-subtitle>
-    <button type="submit" (click)="swapView('editAssignments', course.id, course)" class="blue-button">View Assignments</button>
-    <button type="submit" (click)="swapView('editRoster', course.id, course)" class="blue-button">View Roster</button>
+    <mat-card-title class="course-wording"
+      >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
+      {{ course.semester }}-{{ course.year }}</mat-card-title
+    >
+    <mat-card-subtitle class="course-wording">{{
+      course.name
+    }}</mat-card-subtitle>
+    <button
+      type="submit"
+      (click)="swapView('editAssignments', course.id, course)"
+      class="blue-button"
+    >
+      View Assignments
+    </button>
+    <button
+      type="submit"
+      (click)="swapView('editRoster', course.id, course)"
+      class="blue-button"
+    >
+      View Roster
+    </button>
   </mat-card>
 </div>
 
 <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
-  <button type="submit" (click)="swapView('view', currentCourseID, currentCourse)" class="blue-button back-button">Back</button>
+  <button
+    type="submit"
+    (click)="swapView('view', currentCourseID, currentCourse)"
+    class="blue-button back-button"
+  >
+    Back
+  </button>
   <app-assignments [course]="currentCourse"></app-assignments>
 </div>
 
 <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
-  <button type="submit" (click)="swapView('view', currentCourseID, currentCourse)" class="blue-button">Back</button>
-  <p class="course-title">{{formatCourse(currentCourse)}}</p>
+  <button
+    type="submit"
+    (click)="swapView('view', currentCourseID, currentCourse)"
+    class="blue-button"
+  >
+    Back
+  </button>
+  <p class="course-title">{{ formatCourse(currentCourse) }}</p>
   <div *ngIf="fetchedStudents == true">
     <div class="roster-wrapper">
       <table class="roster-table" *ngIf="courseStudents.length != 0">
@@ -23,18 +52,34 @@
           <th class="global-th">Role</th>
         </tr>
         <tr *ngFor="let student of courseStudents">
-          <td class="student-data">{{student.first_name}} {{student.last_name}} <button class="edit-icon" (click)="editStudent(student)"><mat-icon>edit</mat-icon></button></td>
+          <td class="student-data">
+            {{ student.first_name }} {{ student.last_name }}
+            <button class="edit-icon" (click)="editStudent(student)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
           <td *ngIf="student.is_grader == false">Student</td>
           <td *ngIf="student.is_grader == true">Grader</td>
           <!-- <td>{{ student.role }}</td> -->
         </tr>
       </table>
-      <p *ngIf="courseStudents.length == 0"> There are no students in this class.</p>
+      <p *ngIf="courseStudents.length == 0">
+        There are no students in this class.
+      </p>
     </div>
-    <button type="submit" (click)="addStudents()" class="blue-button">Add Students</button>
+    <button type="submit" (click)="addStudents()" class="blue-button">
+      Add Students
+    </button>
     <mat-form-field class="student-input">
       <mat-label>Students to add</mat-label>
-      <textarea matInput class="text-area" rows="6" cols="1" [(ngModel)]="addedStudents" placeholder="Ex. Sam Hoogewind"></textarea>
+      <textarea
+        matInput
+        class="text-area"
+        rows="6"
+        cols="1"
+        [(ngModel)]="addedStudents"
+        placeholder="Ex. Sam Hoogewind"
+      ></textarea>
     </mat-form-field>
   </div>
 </div>

@@ -1,17 +1,12 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
-import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { Student } from 'src/app/shared/interfaces/psql.interface';
+import { Course, Student } from 'src/app/shared/interfaces/psql.interface';
+import { ParsedStudent } from 'src/app/shared/interfaces/professor.interface';
 import { OnChanges } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SupabaseService } from 'src/app/services/auth.service';
 
-export interface ParsedStudent {
-  first_name: string;
-  last_name: string;
-  email: string;
-}
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -86,7 +81,6 @@ export class ProfileComponent implements OnChanges {
     this.currentCourse = course;
     if (page == 'editRoster') {
       await this.retrieveRoster(courseID);
-      //this.assignRoles();
     } else {
       this.fetchedStudents = false;
       this.courseStudents = [];
@@ -110,6 +104,10 @@ export class ProfileComponent implements OnChanges {
     });
   }
 
+  /**
+   * toggle grader status
+   * @param student student to change status
+   */
   async makeGrader(student: Student) {
     try {
       console.log(student.id, this.currentCourseID);
@@ -123,11 +121,12 @@ export class ProfileComponent implements OnChanges {
     }
   }
 
-  removeStudent(student: Student) {
-    //this.currentCourseID.students = this.currentCourseID.students.filter(item => item != student);
-  }
-
-  async addStudents(): Promise<void> {
+  /**
+   * Parse student informtion from textbox input
+   * @returns paresed student from textbox input
+   */
+  parseStudents(): ParsedStudent[] {
+    const parsedStudentsToAdd: ParsedStudent[] = [];
     // parse students added
     this.studentsToAdd = this.addedStudents.split('\n');
     this.addedStudents = '';
@@ -140,21 +139,70 @@ export class ProfileComponent implements OnChanges {
         last_name: this.splitStudent[1],
         email: this.splitStudent[2],
       };
-      this.parsedStudentsToAdd.push(this.parsedStudent);
+      parsedStudentsToAdd.push(this.parsedStudent);
     });
-    console.log(this.parsedStudentsToAdd);
+    return parsedStudentsToAdd;
+  }
+
+  /**
+   * Adds students to Course
+   * separately handles registered & unregistered users
+   */
+  async addStudents(): Promise<void> {
+    const parsedStudentsToAdd = this.parseStudents();
+    const cid = this.currentCourseID;
     try {
-      // this.parsedStudentsToAdd.forEach(async (student) => {
-      //   await this.supabase.insertStudent(
-      //     student.first_name,
-      //     student.last_name,
-      //     student.email
-      //   );
-      // });
-    } catch (err) {
-      console.log(err);
+      // Whether a student is a registered user or not
+      const userStatus = await this.professorService.fetchStudentUserStatus(
+        parsedStudentsToAdd
+      );
+
+      // split into registered & unregistered students
+      const existingUsers = parsedStudentsToAdd.filter((_, i) => userStatus[i]);
+      const nonExistingUsers = parsedStudentsToAdd.filter(
+        (_, i) => !userStatus[i]
+      );
+
+      // get student ids of registered students & store in array
+      const existingUserIds = await this.professorService.fetchStudentIds(
+        existingUsers
+      );
+      // invite new students to course and store their ids in an array
+      const newUserIds = await this.professorService.inviteStudentsToCourse(
+        nonExistingUsers
+      );
+      // get all student ids to add to course
+      const studentUserIds = existingUserIds
+        .concat([...newUserIds])
+        .filter((id) => id !== null);
+
+      // insert students to course
+      await this.professorService.insertStudentsToCourse(studentUserIds, cid);
+      // empty out
+      this.parsedStudentsToAdd = [];
+    } catch (error) {
+      console.log({ error });
       throw new Error('addStudents');
     }
   }
+
+  /**
+   * remove single student from course
+   * @param student info of student to remove
+   */
+  async removeStudent(student: Student) {
+    const sid = student.id;
+    const cid = this.currentCourseID;
+    try {
+      const deletedStudent =
+        await this.professorService.deleteStudentFromCourse(sid, cid);
+      console.log(`deleted student: ${{ deletedStudent }}`);
+      console.log(
+        `${student.first_name} ${student.last_name} has been removed`
+      );
+    } catch (error) {
+      console.log({ error });
+      throw new Error('removeStudent');
+    }
+  }
 }
-export { Student };

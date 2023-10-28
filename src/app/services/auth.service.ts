@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import {
   AuthChangeEvent,
   AuthSession,
-  AuthUser,
   createClient,
   Session,
   SupabaseClient,
   User,
 } from '@supabase/supabase-js';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/secret_env';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class SupabaseService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
-      environment.supabaseKey
+      environment.serviceRoleKey
     );
   }
 
@@ -88,6 +87,29 @@ export class SupabaseService {
     }
     console.log({ data });
     return data;
+  }
+
+  async createStudentUser(
+    first_name: string,
+    last_name: string,
+    email: string,
+    cid: number
+  ) {
+    const { data, error } = await this.supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: 'https://example.com/welcome',
+        data: {
+          first_name,
+          last_name,
+        },
+      },
+    });
+
+    if (error) {
+      console.log({ error });
+      throw new Error('createStudentUser: ');
+    }
   }
 
   /**
