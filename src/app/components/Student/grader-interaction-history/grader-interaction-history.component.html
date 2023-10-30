@@ -38,12 +38,13 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id,
+              right: chat?.sender_id == user.id ,
               left: chat?.sender_id != user.id,
-              grader: chat?.from_grader == true
+              grader: chat?.from_grader == true,
+              professor: professorMatch(chat.sender_id),
             }"
           >
-            <p class="name">{{ chat.sender_id }}</p>
+            <p class="name">{{ chat.sender_name }}</p>
             <!-- need to change to name -->
             <!-- <img ngxGravatar [email]="user.email" /> -->
             <img *ngIf="isUser" ngxGravatar [email]="user.email" />
@@ -61,6 +62,7 @@
           id="chat-textarea"
           [(ngModel)]="chatInputMessage"
           required
+          (keydown.enter)="sendMessage()"
         />
         <button
           mat-stroked-button

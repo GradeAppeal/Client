@@ -115,7 +115,9 @@ export class StudentInteractionHistoryComponent {
         professor_user_id, //recipientid : professor
         now,
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        'Tyler',
+        'Justin'
       );
       console.log('Sent to database!');
       this.messages.push({
@@ -126,6 +128,8 @@ export class StudentInteractionHistoryComponent {
         appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
+        sender_name: 'Tyler',
+        recipient_name: 'Justin',
       });
 
       this.chatInputMessage = '';

@@ -29,7 +29,7 @@ export class ProfessorAppealInboxComponent {
   constructor(private router: Router, private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
     try {
-      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
+      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1); //todo fix id
       this.professorCourses = await this.supabase.fetchProfessorCourses(1);
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
@@ -37,22 +37,13 @@ export class ProfessorAppealInboxComponent {
       console.log(err);
     }
   }
-  // Function to select an appeal
   selectAppeal(appeal: any) {
-    // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    console.log(this.currentAppeal);
   }
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
-  compareDate() {}
-  composeMessage() {}
-  chat(appeal: ProfessorAppeal) {
-    const changeToChat = 'true';
-    this.isChat.emit({ professorAppeal: appeal });
-  }
   navigateTo(route: string) {
     navigate(this.router, route); //use the navigate function from general.utils
   }

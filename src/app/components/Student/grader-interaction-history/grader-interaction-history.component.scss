@@ -70,6 +70,12 @@ $background: white;
       padding-right: 20px;
     }
   }
+  .professor {
+    #message-body {
+      background-color: lightblue;
+      color: black;
+    }
+  }
 
   .right {
     margin-right: 8px;
@@ -82,8 +88,6 @@ $background: white;
   }
   .grader {
     #message-body {
-      background-color: lightblue;
-      color: black;
     }
   }
 }

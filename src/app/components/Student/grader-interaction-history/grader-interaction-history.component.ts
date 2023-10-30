@@ -9,7 +9,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import {
+  Professor,
+  ProfessorAppeal,
+} from 'src/app/shared/interfaces/professor.interface';
 import { Message } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -48,6 +51,8 @@ export class GraderInteractionHistoryComponent {
 
   studentAppeals!: StudentAppeal[];
   graderAppeals!: GraderAppeal[];
+  professors!: Professor[];
+  professorIds: [];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,17 +60,20 @@ export class GraderInteractionHistoryComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
-      console.log(this.appealId);
     });
   }
   async ngOnInit() {
     this.graderAppeals = await this.supabase.fetchGraderAppeals(1);
+    this.professors = await this.supabase.fetchProfessors();
+    this.professorIds;
     console.log(this.graderAppeals);
+    console.log(this.professors);
+    //select current appeal based on id from url. Otherwise, set to first appeal
     this.currentAppeal =
       this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
       this.graderAppeals[0];
     if (this.currentAppeal) {
-      //this.sender.id = this.currentAppeal.student_id;
+      //if appeal exists, find messages for it
       this.messages = await this.supabase.fetchMessages(
         this.currentAppeal.appeal_id
       );
@@ -76,24 +84,20 @@ export class GraderInteractionHistoryComponent {
       );
     }
     this.messageCount = this.messages.length;
+    console.log(this.messages);
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
 
-  useTemplate() {}
-
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  // Function to select an appeal
   async selectAppeal(appeal: any) {
-    // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.supabase.fetchMessages(
       this.currentAppeal.appeal_id
     );
@@ -104,27 +108,18 @@ export class GraderInteractionHistoryComponent {
    * Submit student appeal to database
    */
   async sendMessage(): Promise<void> {
-    const now = getTimestampTz(new Date());
     const student_user_id = 10; //TODO fix this
     try {
-      console.log(this.user.id);
-      // await this.supabase.insertMessages(
-      //   this.currentAppeal.appeal_id,
-      //   this.user.id, //sender id: grader
-      //   student_user_id, //recipientid : student
-      //   now,
-      //   this.chatInputMessage,
-      //   this.fromGrader
-      // );
       await this.supabase.insertMessages(
-        15,
+        this.currentAppeal.appeal_id,
         this.user.id, //sender id: grader
-        10, //recipientid : student
-        now,
+        10, //recipientid : professor??
+        new Date(),
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        'Tyler',
+        'Justin'
       );
-      console.log('Sent to database!');
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system
         created_at: getTimestampTz(new Date()),
@@ -133,11 +128,12 @@ export class GraderInteractionHistoryComponent {
         appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
+        sender_name: 'Tyler',
+        recipient_name: 'Justin',
       });
 
       this.chatInputMessage = '';
       this.scrollToBottom();
-      console.log(this.messages);
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
@@ -155,5 +151,8 @@ export class GraderInteractionHistoryComponent {
       .toString()
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
+  }
+  professorMatch(id: number): boolean {
+    return this.professors.some((professor) => professor.user_id === id);
   }
 }

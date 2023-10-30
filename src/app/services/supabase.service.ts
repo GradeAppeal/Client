@@ -14,6 +14,7 @@ import {
   GraderAppeal,
 } from '../shared/interfaces/student.interface';
 import {
+  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from '../shared/interfaces/professor.interface';
@@ -133,6 +134,20 @@ export class SupabaseService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchProfessorTemplates');
+    }
+    return data;
+  }
+
+  /**
+   * Fetches the student's courses (both enrolled and grading)
+   * @param sid student id
+   * @returns
+   */
+  async fetchProfessors(): Promise<Professor[]> {
+    const { data, error } = await this.supabase.rpc('get_professors');
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessors');
     }
     return data;
   }
@@ -281,7 +296,9 @@ export class SupabaseService {
     recipient_id: number,
     created_at: Date,
     message_text: string,
-    from_grader: boolean
+    from_grader: boolean,
+    sender_name: string,
+    recipient_name: string
   ): Promise<number> {
     const { data, error } = await this.supabase.rpc('insert_message', {
       appid,
@@ -290,6 +307,8 @@ export class SupabaseService {
       message_text,
       recipient_id,
       sender_id,
+      sender_name,
+      recipient_name,
     });
     if (error) {
       console.log(error);

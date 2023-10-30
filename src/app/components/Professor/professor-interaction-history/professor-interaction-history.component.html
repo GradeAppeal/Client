@@ -65,6 +65,14 @@
           class="use-template-button"
           mat-stroked-button
           [matMenuTriggerFor]="menu"
+          (click)="sendToGrader()"
+        >
+          Send To Grader
+        </button>
+        <button
+          class="use-template-button"
+          mat-stroked-button
+          [matMenuTriggerFor]="menu"
         >
           Use Template
         </button>
