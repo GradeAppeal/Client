@@ -13,7 +13,8 @@ export interface ProfessorAppeal {
 }
 
 export interface ProfessorTemplate {
-  template_id: number;
+  professor_id: number;
+  id: number;
   temp_text: string;
   temp_name: string;
 }

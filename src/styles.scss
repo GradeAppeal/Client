@@ -26,7 +26,7 @@ $hover-blue: #728edd;
 
 .blue-button {
   background-color: $primary-blue;
-  color: white;
+  color: white !important;
   font-family: Roboto;
   font-size: 1em;
   font-weight: bold;
