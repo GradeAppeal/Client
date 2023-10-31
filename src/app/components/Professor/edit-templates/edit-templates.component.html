@@ -1,24 +1,25 @@
 <!-- edit-templates.component.html -->
-
 <mat-card>
     <mat-card-header>
-      <mat-card-title>Edit Templates</mat-card-title>
+      <h1 class="card-title">Edit Templates</h1>
     </mat-card-header>
     <mat-card-content>
       <!-- Template List -->
-      <ul class="template-list">
-        <li *ngFor="let template of templates">
-          <mat-icon class="edit-icon" (click)="editTemplate(template)">edit</mat-icon>
-          <div class="template-details">
-            <p class="template-name">Template 1</p>
-            <p class="template-description">Most often used response for Grade appeals.</p>
-          </div>
-        </li>
+      <mat-nav-list>
+        <mat-list-item
+          class="template-item"
+          *ngFor="let template of professorTemplates"
+        >
+          <span class="template-name">
+            {{template.temp_name}}
+          </span>
+          <span class="template-text">{{template.temp_text}}</span>
+        </mat-list-item>
+      </mat-nav-list>
         <!-- If there are no templates -->
-        <div *ngIf="templates.length === 0" class="no-templates-message">
+        <div *ngIf="professorTemplates.length === 0" class="no-templates-message">
           No templates to display.
         </div>
-      </ul>
     </mat-card-content>
   </mat-card>
   

@@ -169,19 +169,24 @@ export class SupabaseService {
   }
 
   /**
-   * Fetch students for a particular course
-   * @param cid course id for students
-   * @returns List of students for a course
+   * Writes new assignment to database
+   * @param pid professor id
+   * @param assignment_name name of assignment
    */
-  async fetchStudentsForClass(cid: number): Promise<Student[]> {
-    const { data, error } = await this.supabase.rpc('get_students', {
-      cid,
+  async insertProfessorTemplate(
+    pid: number,
+    temp_name: string,
+    temp_text: string,
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_professor_template', {
+      pid,
+      temp_name,
+      temp_text
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchStudentsforNewClass');
+      throw new Error('insert_professor_template');
     }
-    return data;
   }
 
   /**
