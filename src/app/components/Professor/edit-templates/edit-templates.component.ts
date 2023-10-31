@@ -8,6 +8,9 @@ import {
 } from '@angular/core';
 import { ProfessorTemplate } from 'src/app/shared/interfaces/professor.interface';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTemplateComponent } from './add-template/add-template.component';
+import { DeleteTemplateComponent } from './delete-template/delete-template.component';
 
 @Component({
   selector: 'app-edit-templates',
@@ -15,30 +18,37 @@ import { SupabaseService } from 'src/app/services/supabase.service';
   styleUrls: ['./edit-templates.component.scss']
 })
 export class EditTemplatesComponent {
-  constructor(private supabase: SupabaseService){}
-  @ViewChild('inboxContainer') list?: ElementRef<HTMLDivElement>;
-
+  constructor(private supabase: SupabaseService, private dialog: MatDialog,){}
   professorTemplates : ProfessorTemplate[];
-
+  professorID = 1;  //TODO make this actual user ID not just fake data
   editTemplate(template: ProfessorTemplate){
-
-  }
-  addTemplate(template: ProfessorTemplate){
-
   }
 
   async ngOnInit() {
     this.professorTemplates = await this.supabase.fetchProfessorTemplates(
-      1 //TODO make this actual user ID not just fake data
+      this.professorID
     );
     }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
+  /**
+ * Goes to AddTemplate pop up component
+ */
+async addTemplatePopUp(professorID: number): Promise<void> {
+  const dialogRef = this.dialog.open(AddTemplateComponent, {
+    width: "80%",
+    height: "80%",
+    data: {professorID: professorID}
+  });
+}
 
-  scrollToBottom() {
-    const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
-  }
+/**
+   * Goes to DeleteTemplate pop up component
+   */
+async deleteTemplatePopUp(templateID: number): Promise<void> {
+  const dialogRef = this.dialog.open(DeleteTemplateComponent, {
+    width: "50%",
+    height: "55%",
+    data: {templateID: templateID}
+  });
+}
 }

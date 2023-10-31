@@ -1,12 +1,9 @@
-.card-title {
-    font-size: 2em;
-    font-weight: bold;
-}
-.template-name {
-    font-size: 1.4em;
-    padding-right: 1em;
-}
+@import "src/app/components/Professor/assignments/assignments.component.scss";
 
+.template-name{
+    font-size: large;
+    font-weight: 500;
+}
 .template-text {
     color: grey;
 }

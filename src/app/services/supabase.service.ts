@@ -120,21 +120,21 @@ export class SupabaseService {
     return data;
   }
 
-  /**
-   * fetch from supabase: professor appeals
+    /**
+   * fetch from supabase: professor templates
    * @param pid professor id (later replaced with auth.id)
-   * @returns courses the prof is teaching in JSON format
+   * @returns templates the professor made
    */
-  async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
-    const { data, error } = await this.supabase.rpc('get_professor_templates', {
-      pid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('Error in fetchProfessorTemplates');
+    async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
+      const { data, error } = await this.supabase.rpc('get_professor_templates', {
+        pid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('Error in fetchProfessorTemplates');
+      }
+      return data;
     }
-    return data;
-  }
 
   /**
    * Fetch course information for new appeal
@@ -173,21 +173,38 @@ export class SupabaseService {
    * @param pid professor id
    * @param assignment_name name of assignment
    */
-  async insertProfessorTemplate(
+  async insertTemplate(
     pid: number,
     temp_name: string,
     temp_text: string,
   ): Promise<void> {
-    const { data, error } = await this.supabase.rpc('insert_professor_template', {
+    const { data, error } = await this.supabase.rpc('insert_template', {
       pid,
       temp_name,
       temp_text
     });
     if (error) {
       console.log(error);
-      throw new Error('insert_professor_template');
+      throw new Error('insert_template');
     }
+    console.log(data);
   }
+
+  /**
+   * Delete template from database
+   * @param tid template id
+   */
+  async deleteTemplate(tid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_template', {
+      tid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('deleteTemplate');
+    }
+    console.log({ data });
+  }
+
 
   /**
    * Writes student appeal to database
