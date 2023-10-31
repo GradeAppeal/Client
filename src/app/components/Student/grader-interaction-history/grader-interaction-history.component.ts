@@ -38,6 +38,7 @@ export class GraderInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
+  currentProfessor: string | null = '';
   user = {
     //student
     id: 3,
@@ -69,21 +70,18 @@ export class GraderInteractionHistoryComponent {
     console.log(this.graderAppeals);
     console.log(this.professors);
     //select current appeal based on id from url. Otherwise, set to first appeal
-    this.currentAppeal =
+    this.selectAppeal(
       this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
-      this.graderAppeals[0];
+        this.graderAppeals[0]
+    );
     if (this.currentAppeal) {
       //if appeal exists, find messages for it
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      this.selectAppeal(this.currentAppeal);
     } else {
-      this.currentAppeal = this.graderAppeals[0];
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      this.selectAppeal(this.graderAppeals[0]);
     }
     this.messageCount = this.messages.length;
+
     console.log(this.messages);
   }
 
@@ -117,7 +115,7 @@ export class GraderInteractionHistoryComponent {
         new Date(),
         this.chatInputMessage,
         this.fromGrader,
-        'Tyler',
+        'tyler',
         'Justin'
       );
       this.messages.push({
@@ -152,7 +150,13 @@ export class GraderInteractionHistoryComponent {
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
   }
+  //checks if a professor is in the list of professors
   professorMatch(id: number): boolean {
     return this.professors.some((professor) => professor.user_id === id);
+  }
+  // set current professor
+  setProfessor(targetId: number): void {
+    const professor = this.professors.find((p) => p.id === targetId);
+    this.currentProfessor = professor ? professor.first_name : null;
   }
 }

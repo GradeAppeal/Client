@@ -270,7 +270,7 @@ export class SupabaseService {
   }
 
   async fetchMessages(aid: number): Promise<Message[]> {
-    const { data, error } = await this.supabase.rpc('get_messages', {
+    const { data, error } = await this.supabase.rpc('get_messages3', {
       aid,
     });
     if (error) {
