@@ -62,7 +62,7 @@ export class ProfileComponent implements OnChanges {
 
   async retrieveRoster(courseID: number): Promise<void> {
     try {
-      this.courseStudents = await this.supabase.fetchStudentsForClass(courseID);
+      this.courseStudents = await this.supabase.fetchStudents(courseID);
       this.fetchedStudents = true;
       console.log(this.courseStudents);
     } catch (err) {
