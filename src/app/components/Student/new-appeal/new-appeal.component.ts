@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from 'src/app/services/auth.service';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
+import { STUDENT_UUID } from 'src/app/shared/strings';
 
 @Component({
   selector: 'app-new-appeal',
@@ -24,7 +24,6 @@ export class NewAppealComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private supabase: SupabaseService,
     private studentService: StudentService
   ) {}
 
@@ -78,14 +77,21 @@ export class NewAppealComponent implements OnInit {
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      // await this.supabase.insertNewAppeal(
-      //   this.selectedAssignmentId,
-      //   1,
-      //   this.courseId,
-      //   now,
-      //   this.appeal,
-      //   90
-      // );
+      console.log(
+        this.selectedAssignmentId,
+        this.appeal,
+        this.courseId,
+        now,
+        STUDENT_UUID
+      );
+      const success = await this.studentService.insertNewAppeal(
+        this.selectedAssignmentId,
+        STUDENT_UUID,
+        this.courseId,
+        now,
+        this.appeal
+      );
+      console.log({ success });
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');

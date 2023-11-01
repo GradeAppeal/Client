@@ -38,6 +38,7 @@ export class StudentDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
+    console.log({ course });
     this.router.navigateByUrl(`/new-appeal/${course.course_id}`);
   }
 }

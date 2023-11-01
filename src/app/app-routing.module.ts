@@ -71,6 +71,10 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'new-appeal/:courseId',
+    component: NewAppealComponent,
+  },
 
   {
     path: 'professor',

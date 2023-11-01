@@ -81,19 +81,17 @@ export class StudentService {
    */
   async insertNewAppeal(
     aid: number,
-    appeal_text: string,
+    sid: string,
     cid: number,
     created_at: Date,
-    sid: string,
-    student_grade: number
+    appeal_text: string
   ): Promise<void> {
-    const { data, error } = await this.supabase.rpc('insert_new_appeal', {
+    const { data, error } = await this.supabase.rpc('insert_appeal', {
       aid,
-      appeal_text,
+      sid,
       cid,
       created_at,
-      sid,
-      student_grade,
+      appeal_text,
     });
 
     if (error) {
@@ -101,6 +99,7 @@ export class StudentService {
       throw new Error('insertNewAppeal');
     }
     console.log({ data });
+    return data;
   }
   /**
    * Fetch assignments for a particular course
