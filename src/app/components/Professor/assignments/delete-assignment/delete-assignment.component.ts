@@ -6,11 +6,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ProfessorService } from 'src/app/services/professor.service';
 
 @Component({
-  selector: 'app-delete-confirmation',
-  templateUrl: './delete-confirmation.component.html',
-  styleUrls: ['./delete-confirmation.component.scss'],
+  selector: 'app-delete-assignment',
+  templateUrl: './delete-assignment.component.html',
+  styleUrls: ['./delete-assignment.component.scss'],
 })
-export class DeleteConfirmationComponent {
+export class DeleteAssignmentComponent {
   assignment: Assignment;
   course: Course;
 
@@ -18,7 +18,7 @@ export class DeleteConfirmationComponent {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
     private route: ActivatedRoute,
-    private dialogRef: MatDialogRef<DeleteConfirmationComponent>,
+    private dialogRef: MatDialogRef<DeleteAssignmentComponent>,
     private professorService: ProfessorService
   ) {
     this.assignment = data.assignment;

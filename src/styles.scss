@@ -26,7 +26,7 @@ $hover-blue: #728edd;
 
 .blue-button {
   background-color: $primary-blue;
-  color: white;
+  color: white !important;
   font-family: Roboto;
   font-size: 1em;
   font-weight: bold;
@@ -54,15 +54,50 @@ $hover-blue: #728edd;
 }
 
 ::-webkit-scrollbar-track {
-  background: $secondary-blue; /* color of the tracking area */
+  background: white; /* color of the tracking area */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $primary-blue; /* color of the scroll thumb */
+  background-color: darkgray; /* color of the scroll thumb */
   border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid $secondary-blue; /* creates padding around scroll thumb */
+  border: 3px solid white; /* creates padding around scroll thumb */
 }
 
 .global-blue {
-    background-color: $primary-blue;
+  background-color: $primary-blue;
+}
+.inbox {
+  // border: solid gray 1px;
+  width: 200px;
+  float: left;
+  margin-left: -10px;
+  margin-right: 20px;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+}
+
+.inbox-item {
+  //  padding-top: 60px;
+  border-top: solid gray 1px;
+  float: left;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 100%;
+  &:hover {
+    background-color: rgb(233, 232, 232);
+    cursor: pointer;
+  }
+  p.inbox-name {
+    font-weight: bold;
+    float: left;
+    width: 50%;
+    font-size: 11px;
+    padding-left: 5px;
+  }
+  p.inbox-timestamp {
+    float: right;
+    width: 25%;
+    font-size: 8px;
+    padding: 0px;
+  }
 }

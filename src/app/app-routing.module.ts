@@ -13,6 +13,7 @@ import { ProfessorAppealInboxComponent } from './components/Professor/professor-
 import { RegisterComponent } from './components/register/register.component';
 
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 const routes: Routes = [
   {
     path: '',
@@ -68,6 +69,14 @@ const routes: Routes = [
       {
         path: 'student-interaction-history',
         component: StudentInteractionHistoryComponent,
+      },
+      {
+        path: 'grader/interaction-history',
+        component: GraderInteractionHistoryComponent,
+      },
+      {
+        path: 'grader/interaction-history/:id',
+        component: GraderInteractionHistoryComponent,
       },
     ],
   },

@@ -22,6 +22,7 @@ $background: white;
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  padding: 16px;
   overflow-y: scroll;
 
   .chat-item {
@@ -49,7 +50,9 @@ $background: white;
       border: 3px solid $background;
     }
   }
-
+  .name {
+    display: none;
+  }
   .left {
     margin-right: auto;
     margin-left: 8px;
@@ -57,6 +60,19 @@ $background: white;
     #message-body {
       margin-left: -10px;
       background-color: lightgray;
+      color: black;
+    }
+    .name {
+      display: block;
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 30px;
+      padding-right: 20px;
+    }
+  }
+  .professor {
+    #message-body {
+      background-color: lightblue;
       color: black;
     }
   }
@@ -72,8 +88,6 @@ $background: white;
   }
   .grader {
     #message-body {
-      background-color: lightblue;
-      color: black;
     }
   }
 }
@@ -125,59 +139,31 @@ $background: white;
 .inbox-item {
   //  padding-top: 60px;
   border-top: solid gray 1px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: rgb(233, 232, 232);
-    cursor: pointer;
-  }
-  .left-section {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  p.inbox-name,
-  p.inbox-assignment-name {
-    font-weight: bold;
-    font-size: 11px;
-    padding-left: 5px;
-    margin: 0;
-    width: 100%;
-  }
-  p.inbox-timestamp {
-    font-size: 8px;
-    margin: 0; /* Remove the default margin to avoid spacing issues */
-    width: 25%;
-  }
-  p.inbox-assignment-name {
-    padding-bottom: 5px;
-    font-weight: 400;
-  }
-}
-.timestamp {
-  color: gray;
-  font-size: 12px;
-  padding-right: 5px;
-  padding-left: 5px;
-}
+  float: left;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  height: 100px;
 
-// .inbox {
-//   border: solid gray 1px;
-//   width: 200px;
-//   float: left;
-//   margin-left: -10px;
-//   margin-right: 20px;
-//   height: 90vh; /* 100% of the viewport height */
-//   overflow-y: auto; /* Hide overflow content */
-// }
+  p {
+    font-size: 10px;
+    padding-left: 15px;
+  }
+}
 
 .container {
-  position: relative;
-  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.inbox {
+  width: 200px;
+  float: left;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+  mat-nav-list {
+    padding: 0px;
+  }
 }
 
 .right-pane {
@@ -195,22 +181,6 @@ $background: white;
   ); /* Set the background color to a darker shade */
 }
 
-mat-nav-list {
-  padding: 0px;
-}
-
-.empty-inbox {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  h1 {
-    color: $primary-blue;
-    font-size: 5vh;
-  }
-  h2 {
-    font-size: 2vh;
-  }
+.inbox-timestamp {
+  float: right;
 }

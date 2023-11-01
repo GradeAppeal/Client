@@ -3,7 +3,7 @@
   <div class="inbox">
     <div
       class="inbox-item"
-      *ngFor="let appeal of this.studentAppeals"
+      *ngFor="let appeal of this.graderAppeals"
       (click)="selectAppeal(appeal)"
       [class.selected-appeal]="appeal === currentAppeal"
     >
@@ -12,7 +12,7 @@
       </p>
       <p matLine>
         <b>
-          {{ appeal?.professor_first_name }}
+          <!-- {{ appeal?.professor_first_name }} -->
         </b>
       </p>
 
@@ -27,8 +27,8 @@
         <mat-toolbar-row>
           <img class="header-avatar" ngxGravatar [email]="user.email" />
           <h1>
-            {{ currentAppeal?.professor_first_name }}
-            {{ currentAppeal?.professor_last_name }}<span>:</span>
+            <!-- {{ currentAppeal?.professor_first_name }}
+            {{ currentAppeal?.professor_last_name }}<span>:</span> -->
             {{ currentAppeal?.assignment_name }}
           </h1>
         </mat-toolbar-row>
@@ -38,15 +38,20 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id
+              right: chat?.sender_id == user.id ,
+              left: chat?.sender_id != user.id,
+              grader: chat?.from_grader == true,
+              professor: professorMatch(chat.sender_id),
             }"
           >
+            <p class="name">{{ chat.sender_name }}</p>
+            <!-- need to change to name -->
             <!-- <img ngxGravatar [email]="user.email" /> -->
             <img *ngIf="isUser" ngxGravatar [email]="user.email" />
             <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
 
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
+
             <p id="message-body">{{ chat?.message_text }}</p>
           </div>
         </ng-container>
@@ -57,6 +62,7 @@
           id="chat-textarea"
           [(ngModel)]="chatInputMessage"
           required
+          (keydown.enter)="sendMessage()"
         />
         <button
           mat-stroked-button

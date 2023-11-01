@@ -49,11 +49,8 @@ export class ProfessorAppealInboxComponent {
       console.log(err);
     }
   }
-  // Function to select an appeal
   selectAppeal(appeal: any) {
-    // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    console.log(this.currentAppeal);
   }
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);

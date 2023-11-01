@@ -8,7 +8,7 @@ import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfileComponent } from '../profile/profile.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
-import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
 
 @Component({
   selector: 'app-assignments',
@@ -66,13 +66,13 @@ export class AssignmentsComponent {
   }
 
   /**
-   * Goes to DeleteConfirmation pop up component
+   * Goes to DeleteAssignment pop up component
    */
   async deleteAssignmentPopUp(
     assignment: Assignment,
     course: Course
   ): Promise<void> {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
       width: '35%',
       height: '35%',
       data: { assignment: assignment, course: course },

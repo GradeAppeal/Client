@@ -1,9 +1,7 @@
 @import "src/styles.scss";
 
-$background: white;
-
 .card {
-  background: $background;
+  background: white;
   height: 90vh;
   min-width: 20%;
   max-width: 100%;
@@ -47,7 +45,7 @@ $background: white;
       object-fit: cover;
       border-radius: 50%;
       z-index: 99;
-      border: 3px solid $background;
+      border: 3px solid white;
     }
   }
 
@@ -119,37 +117,32 @@ $background: white;
 
 .inbox-item {
   //  padding-top: 60px;
-  border: solid gray 1px;
-  float: left;
+  border-top: solid gray 1px;
+  //float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   height: 100px;
   p {
     font-size: 10px;
     padding: 0px;
-    margin-right: 10px;
+    margin-left: 15px;
   }
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
+  display: relative;
+  flex: 1;
 }
 
 .inbox {
-  border: solid gray 1px;
   width: 200px;
   float: left;
-  margin-left: -10px;
-  margin-right: 0px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
   mat-nav-list {
     padding: 0px;
   }
 }
-
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 
