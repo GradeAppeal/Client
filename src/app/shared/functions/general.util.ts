@@ -41,6 +41,5 @@ export const formatTimestamp = (
   const time = `${formattedHours}:${minutes
     .toString()
     .padStart(2, '0')} ${ampm}`;
-  console.log({ date, time });
   return { date, time };
 };

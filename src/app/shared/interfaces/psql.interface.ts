@@ -22,6 +22,8 @@ export interface Message {
   appeal_id: number;
   message_text: string;
   from_grader: boolean;
+  sender_name: string;
+  recipient_name: string;
 }
 
 export interface Student {

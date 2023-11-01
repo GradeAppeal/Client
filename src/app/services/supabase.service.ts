@@ -11,8 +11,10 @@ import { environment } from 'src/environments/environment';
 import {
   StudentCourse,
   StudentAppeal,
+  GraderAppeal,
 } from '../shared/interfaces/student.interface';
 import {
+  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from '../shared/interfaces/professor.interface';
@@ -135,6 +137,20 @@ export class SupabaseService {
       }
       return data;
     }
+
+  /**
+   * Fetches the student's courses (both enrolled and grading)
+   * @param sid student id
+   * @returns
+   */
+  async fetchProfessors(): Promise<Professor[]> {
+    const { data, error } = await this.supabase.rpc('get_professors');
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessors');
+    }
+    return data;
+  }
 
   /**
    * Fetch course information for new appeal
@@ -276,7 +292,7 @@ export class SupabaseService {
   }
 
   async fetchMessages(aid: number): Promise<Message[]> {
-    const { data, error } = await this.supabase.rpc('get_messages', {
+    const { data, error } = await this.supabase.rpc('get_messages3', {
       aid,
     });
     if (error) {
@@ -302,7 +318,9 @@ export class SupabaseService {
     recipient_id: number,
     created_at: Date,
     message_text: string,
-    from_grader: boolean
+    from_grader: boolean,
+    sender_name: string,
+    recipient_name: string
   ): Promise<number> {
     const { data, error } = await this.supabase.rpc('insert_message', {
       appid,
@@ -311,6 +329,8 @@ export class SupabaseService {
       message_text,
       recipient_id,
       sender_id,
+      sender_name,
+      recipient_name,
     });
     if (error) {
       console.log(error);
@@ -461,7 +481,7 @@ export class SupabaseService {
       type,
       first_name,
       last_name,
-      email
+      email,
     });
 
     if (error) {
@@ -471,13 +491,10 @@ export class SupabaseService {
     console.log({ data });
   }
 
-  async updateGrader(
-    sid: number,
-    cid: number
-  ): Promise<void> {
+  async updateGrader(sid: number, cid: number): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
-      cid
+      cid,
     });
 
     if (error) {
@@ -487,12 +504,12 @@ export class SupabaseService {
     console.log({ data });
   }
 
-   /**
+  /**
    *
    * @param sid student id
    * @returns All the appeals made by the student
    */
-   async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
+  async fetchStudentAppeals(sid: number): Promise<StudentAppeal[]> {
     const { data, error } = await this.supabase.rpc('get_student_appeals', {
       sid,
     });
@@ -503,4 +520,68 @@ export class SupabaseService {
     }
     return data;
   }
+  /**
+   *
+   * @param sid student id
+   * @returns All the appeals made by the student
+   */
+  async fetchGraderAppeals(sid: number): Promise<GraderAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_grader_appeals', {
+      sid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('GetGrader');
+    }
+    return data;
+  }
+
+  // /**
+  //  *
+  //  * @param sid student id
+  //  * @returns All the appeals made by the student
+  //  */
+  // async fetchGraderAppeals(sid: number, cid: number): Promise<GraderAppeal[]> {
+  //   const { data: graderAppealData, error: graderAppealsError } =
+  //     await this.supabase.rpc('get_grader_appeals', {
+  //       sid,
+  //     });
+
+  //   const { data: professorData, error: professorError } =
+  //     await this.supabase.rpc('get_professor_for_grader', { cid });
+
+  //   if (graderAppealData && professorData) {
+  //     // Map the data into the desired 'GraderAppeal' interface
+  //     const combinedData = graderAppealData.map(
+  //       (graderAppeal: { professor_id: any }) => {
+  //         const professorInfo = professorData.find(
+  //           (prof: { professor_id: any }) =>
+  //             prof.professor_id === graderAppeal.professor_id
+  //         );
+
+  //         return {
+  //           ...graderAppeal,
+  //           professor_id: professorInfo ? professorInfo.professor_id : null,
+  //           professor_first_name: professorInfo
+  //             ? professorInfo.professor_first_name
+  //             : null,
+  //           professor_last_name: professorInfo
+  //             ? professorInfo.professor_last_name
+  //             : null,
+  //         };
+  //       }
+  //     );
+  //     return combinedData;
+  //   }
+  //   if (graderAppealsError) {
+  //     console.log(graderAppealsError);
+  //     throw new Error('UpdateGrader');
+  //   }
+  //   if (professorError) {
+  //     console.log(professorError);
+  //     throw new Error('UpdateGrader');
+  //   }
+  //   return [];
+  // }
 }

@@ -38,6 +38,7 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
+import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { DeleteTemplateComponent } from './components/Professor/edit-templates/d
     DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
+    GraderInteractionHistoryComponent,
   ],
   imports: [
     BrowserModule,

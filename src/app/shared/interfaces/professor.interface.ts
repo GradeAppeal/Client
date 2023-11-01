@@ -19,6 +19,10 @@ export interface ProfessorTemplate {
   temp_name: string;
 }
 
-export interface ProfessorCourse {
-
+export interface Professor {
+  id: number;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
 }

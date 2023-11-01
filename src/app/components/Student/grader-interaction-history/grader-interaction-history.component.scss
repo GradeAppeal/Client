@@ -1,7 +1,9 @@
 @import "src/styles.scss";
 
+$background: white;
+
 .card {
-  background: white;
+  background: $background;
   height: 90vh;
   min-width: 20%;
   max-width: 100%;
@@ -45,10 +47,12 @@
       object-fit: cover;
       border-radius: 50%;
       z-index: 99;
-      border: 3px solid white;
+      border: 3px solid $background;
     }
   }
-
+  .name {
+    display: none;
+  }
   .left {
     margin-right: auto;
     margin-left: 8px;
@@ -56,6 +60,19 @@
     #message-body {
       margin-left: -10px;
       background-color: lightgray;
+      color: black;
+    }
+    .name {
+      display: block;
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 30px;
+      padding-right: 20px;
+    }
+  }
+  .professor {
+    #message-body {
+      background-color: lightblue;
       color: black;
     }
   }
@@ -67,6 +84,10 @@
 
     #message-body {
       margin-right: -10px;
+    }
+  }
+  .grader {
+    #message-body {
     }
   }
 }
@@ -118,20 +139,21 @@
 .inbox-item {
   //  padding-top: 60px;
   border-top: solid gray 1px;
-  //float: left;
+  float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   height: 100px;
+
   p {
     font-size: 10px;
-    padding: 0px;
-    margin-left: 15px;
+    padding-left: 15px;
   }
 }
 
 .container {
-  display: relative;
-  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
 }
 
 .inbox {
@@ -143,6 +165,7 @@
     padding: 0px;
   }
 }
+
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 
