@@ -125,9 +125,7 @@ export class ProfessorInteractionHistoryComponent {
         student_user_id, //student user id
         now,
         this.chatInputMessage,
-        this.fromGrader,
-        'Tyler',
-        'Justin'
+        this.fromGrader
       );
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system

@@ -35,6 +35,14 @@ export interface Student {
   //role: string;
 }
 
+export interface Professor {
+  id: number;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 export interface StudentCourse {
   student_id: string;
   course_id: number;

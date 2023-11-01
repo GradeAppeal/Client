@@ -366,4 +366,40 @@ export class ProfessorService {
       throw new Error('fetchStudentIds');
     }
   }
+  /**
+   * Writes new assignment to database
+   * @param pid professor id
+   * @param assignment_name name of assignment
+   */
+  async insertTemplate(
+    pid: number,
+    temp_name: string,
+    temp_text: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_template', {
+      pid,
+      temp_name,
+      temp_text,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('insert_template');
+    }
+    console.log(data);
+  }
+
+  /**
+   * Delete template from database
+   * @param tid template id
+   */
+  async deleteTemplate(tid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_template', {
+      tid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('deleteTemplate');
+    }
+    console.log({ data });
+  }
 }

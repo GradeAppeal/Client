@@ -7,13 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { GraderService } from 'src/app/services/grader.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import {
-  Professor,
-  ProfessorAppeal,
-} from 'src/app/shared/interfaces/professor.interface';
-import { Message } from 'src/app/shared/interfaces/psql.interface';
+import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import { Message, Professor } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
   StudentAppeal,
@@ -57,15 +55,16 @@ export class GraderInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private supabase: SupabaseService
+    private graderService: GraderService,
+    private sharedService: SharedService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
     });
   }
   async ngOnInit() {
-    this.graderAppeals = await this.supabase.fetchGraderAppeals(1);
-    this.professors = await this.supabase.fetchProfessors();
+    this.graderAppeals = await this.graderService.fetchGraderAppeals(1);
+    this.professors = await this.graderService.fetchProfessors();
     this.professorIds;
     console.log(this.graderAppeals);
     console.log(this.professors);
@@ -96,7 +95,7 @@ export class GraderInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    this.messages = await this.supabase.fetchMessages(
+    this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
     console.log(this.currentAppeal);
@@ -108,15 +107,13 @@ export class GraderInteractionHistoryComponent {
   async sendMessage(): Promise<void> {
     const student_user_id = 10; //TODO fix this
     try {
-      await this.supabase.insertMessages(
+      await this.sharedService.insertMessages(
         this.currentAppeal.appeal_id,
         this.user.id, //sender id: grader
         10, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
-        this.fromGrader,
-        'tyler',
-        'Justin'
+        this.fromGrader
       );
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system
