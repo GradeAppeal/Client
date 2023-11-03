@@ -122,21 +122,21 @@ export class SupabaseService {
     return data;
   }
 
-    /**
+  /**
    * fetch from supabase: professor templates
    * @param pid professor id (later replaced with auth.id)
    * @returns templates the professor made
    */
-    async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
-      const { data, error } = await this.supabase.rpc('get_professor_templates', {
-        pid,
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('Error in fetchProfessorTemplates');
-      }
-      return data;
+  async fetchProfessorTemplates(pid: number): Promise<ProfessorTemplate[]> {
+    const { data, error } = await this.supabase.rpc('get_professor_templates', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchProfessorTemplates');
     }
+    return data;
+  }
 
   /**
    * Fetches the student's courses (both enrolled and grading)
@@ -192,12 +192,12 @@ export class SupabaseService {
   async insertTemplate(
     pid: number,
     temp_name: string,
-    temp_text: string,
+    temp_text: string
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_template', {
       pid,
       temp_name,
-      temp_text
+      temp_text,
     });
     if (error) {
       console.log(error);
@@ -220,7 +220,6 @@ export class SupabaseService {
     }
     console.log({ data });
   }
-
 
   /**
    * Writes student appeal to database
@@ -292,12 +291,12 @@ export class SupabaseService {
   }
 
   async fetchMessages(aid: number): Promise<Message[]> {
-    const { data, error } = await this.supabase.rpc('get_messages3', {
+    const { data, error } = await this.supabase.rpc('get_messages_3', {
       aid,
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchMessages');
+      throw new Error('Error in fetchMessages3');
     }
     return data;
   }
@@ -318,19 +317,15 @@ export class SupabaseService {
     recipient_id: number,
     created_at: Date,
     message_text: string,
-    from_grader: boolean,
-    sender_name: string,
-    recipient_name: string
+    from_grader: boolean
   ): Promise<number> {
     const { data, error } = await this.supabase.rpc('insert_message', {
+      sender_id,
+      recipient_id,
       appid,
       created_at,
-      from_grader,
       message_text,
-      recipient_id,
-      sender_id,
-      sender_name,
-      recipient_name,
+      from_grader,
     });
     if (error) {
       console.log(error);

@@ -39,15 +39,17 @@ export class GraderInteractionHistoryComponent {
   appealId: number;
   messages!: Message[];
   currentProfessor: string | null = '';
-  user = {
+  grader = {
     //student
     id: 3,
     email: 'abc123@gmail.com',
+    name: 'Sample',
   };
   sender = {
     //professor
     id: 0,
     email: 'ccc1233@gmail.com',
+    name: 'Sample',
   };
 
   studentAppeals!: StudentAppeal[];
@@ -105,31 +107,23 @@ export class GraderInteractionHistoryComponent {
   /**
    * Submit student appeal to database
    */
-  async sendMessage(): Promise<void> {
-    const student_user_id = 10; //TODO fix this
+  async sendMessage(
+    message: string,
+    notification: boolean = false
+  ): Promise<void> {
+    if (notification === true) {
+      message = 'Notification:' + message;
+    }
     try {
       await this.supabase.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //sender id: grader
+        this.grader.id, //sender id: grader
         10, //recipientid : professor??
         new Date(),
-        this.chatInputMessage,
-        this.fromGrader,
-        'tyler',
-        'Justin'
+        message,
+        this.fromGrader
       );
-      this.messages.push({
-        id: 1 + this.messageCount, //TODO make id better system
-        created_at: getTimestampTz(new Date()),
-        sender_id: this.user.id,
-        recipient_id: student_user_id,
-        appeal_id: this.currentAppeal.appeal_id,
-        message_text: this.chatInputMessage,
-        from_grader: this.fromGrader,
-        sender_name: 'Tyler',
-        recipient_name: 'Justin',
-      });
-
+      this.localSendMessage(message);
       this.chatInputMessage = '';
       this.scrollToBottom();
     } catch (err) {
@@ -137,6 +131,7 @@ export class GraderInteractionHistoryComponent {
       throw new Error('onSubmitAppeal');
     }
   }
+
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     const d = new Date(timestamp);
     const date = d.toDateString();
@@ -158,5 +153,18 @@ export class GraderInteractionHistoryComponent {
   setProfessor(targetId: number): void {
     const professor = this.professors.find((p) => p.id === targetId);
     this.currentProfessor = professor ? professor.first_name : null;
+  }
+  localSendMessage(message: string) {
+    this.messages.push({
+      id: 1 + this.messageCount, //TODO make id better system
+      created_at: getTimestampTz(new Date()),
+      sender_id: this.grader.id,
+      recipient_id: 10, //todo fix... professor?
+      appeal_id: this.currentAppeal.appeal_id,
+      message_text: this.chatInputMessage,
+      from_grader: this.fromGrader,
+      sender_name: '',
+      recipient_name: '',
+    });
   }
 }

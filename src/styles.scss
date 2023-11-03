@@ -101,3 +101,83 @@ $hover-blue: #728edd;
     padding: 0px;
   }
 }
+
+//interaction-history styling
+.chat-list {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: scroll;
+
+  .chat-item {
+    max-width: 80%;
+    margin: 8px 0px;
+    display: flex;
+    flex-direction: row;
+
+    #message-body {
+      background: $primary-blue;
+      margin: auto 8px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      display: flex;
+      flex-direction: row;
+    }
+    &.notification {
+      #message-body {
+        border-radius: 0px;
+        margin-right: 5px;
+      }
+    }
+    #avatar {
+      height: 44px;
+      width: 44px;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 99;
+      border: 3px solid white;
+    }
+  }
+  .name {
+    display: none;
+  }
+  .left {
+    margin-right: auto;
+    margin-left: 8px;
+
+    #message-body {
+      margin-left: -10px;
+      background-color: lightgray;
+      color: black;
+    }
+    .name {
+      display: block;
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 30px;
+      padding-right: 20px;
+    }
+  }
+  .lightblue {
+    #message-body {
+      background-color: lightblue;
+      color: black;
+    }
+  }
+
+  .right {
+    margin-right: 8px;
+    margin-left: auto;
+    flex-direction: row-reverse;
+
+    #message-body {
+      margin-right: -10px;
+    }
+  }
+  .grader {
+    #message-body {
+    }
+  }
+}

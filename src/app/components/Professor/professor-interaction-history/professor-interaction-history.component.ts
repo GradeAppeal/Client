@@ -11,6 +11,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
+  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from 'src/app/shared/interfaces/professor.interface';
@@ -30,17 +31,20 @@ export class ProfessorInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  user = {
+  professor = {
     id: 10,
     email: 'abc123@gmail.com',
+    name: 'Sam',
   };
-  sender = {
+  student = {
     id: 0,
     email: 'ccc1233@gmail.com',
+    name: 'Justin',
   };
+
   professorAppeals!: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
-
+  professors: Professor[];
   //template
   selectedTemplate: string = '';
 
@@ -56,24 +60,31 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals = await this.supabase.fetchProfessorAppeals(1); //todo fix ID
     this.professorTemplates = await this.supabase.fetchProfessorTemplates(1);
+    this.professors = await this.supabase.fetchProfessors();
     //select current appeal based on id from url. Otherwise, set to first appeal
-    this.currentAppeal =
+    this.selectAppeal(
       this.professorAppeals.find(
         (appeal) => appeal.appeal_id === this.appealId
-      ) || this.professorAppeals[0];
-
+      ) || this.professorAppeals[0]
+    );
     if (this.currentAppeal) {
-      //get messages for current appeal
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      //if appeal exists, find messages for it
+      this.selectAppeal(this.currentAppeal);
     } else {
-      this.currentAppeal = this.professorAppeals[0];
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      this.selectAppeal(this.professorAppeals[0]);
     }
-    this.messageCount = this.messages.length;
+    this.student.name = this.currentAppeal.student_name;
+    if (this.professorMatch(this.messages[0].sender_id)) {
+      this.professor.name = this.messages[0].sender_name;
+      console.log('work');
+    } else if (this.professorMatch(this.messages[1].sender_id)) {
+      this.professor.name = this.messages[0].sender_name;
+      this.messageCount = this.messages.length;
+    } else {
+      this.student.name = this.messages[0].sender_name;
+    }
+    console.log(this.professor.name);
+    console.log(this.student.name);
   }
 
   ngAfterViewChecked() {
@@ -95,41 +106,35 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.supabase.fetchMessages(
       this.currentAppeal.appeal_id
     );
+    this.student.id = await this.supabase.getUserId(
+      this.currentAppeal.student_id,
+      'student'
+    );
+    console.log(this.messages);
   }
 
   /**
    * Submit student appeal to database
    */
-  async sendMessage(): Promise<void> {
+  async sendMessage(
+    message: string,
+    notification: boolean = false
+  ): Promise<void> {
     const now = getTimestampTz(new Date());
-
+    if (notification === true) {
+      message = 'Notification:' + message;
+    }
     try {
-      let student_user_id = await this.supabase.getUserId(
-        this.currentAppeal.student_id,
-        'student'
-      );
-
       await this.supabase.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //professor user id
-        student_user_id, //student user id
+        this.professor.id, //professor user id
+        this.student.id, //student user id
         now,
-        this.chatInputMessage,
-        this.fromGrader,
-        'Tyler',
-        'Justin'
+        message,
+        this.fromGrader
       );
-      this.messages.push({
-        id: 1 + this.messageCount, //TODO make id better system
-        created_at: getTimestampTz(new Date()),
-        sender_id: this.user.id,
-        recipient_id: student_user_id,
-        appeal_id: this.currentAppeal.appeal_id,
-        message_text: this.chatInputMessage,
-        from_grader: this.fromGrader,
-        sender_name: 'Tyler',
-        recipient_name: 'Justin',
-      });
+      this.localSendMessage(message);
+
       this.currentAppeal.created_at =
         this.messages[this.messages.length - 1].created_at;
 
@@ -144,8 +149,30 @@ export class ProfessorInteractionHistoryComponent {
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
+  //checks if a professor is in the list of professors
+  professorMatch(id: number): boolean {
+    return this.professors.some((professor) => professor.user_id === id);
+  }
 
-  async sendToGrader() {}
+  localSendMessage(message: string) {
+    console.log(this.student.id);
+    console.log(this.professor.id);
+    this.messages.push({
+      id: 1 + this.messageCount, //TODO make id better system
+      created_at: getTimestampTz(new Date()),
+      sender_id: this.professor.id,
+      recipient_id: this.student.id,
+      appeal_id: this.currentAppeal.appeal_id,
+      message_text: message,
+      from_grader: this.fromGrader,
+      sender_name: '',
+      recipient_name: '',
+    });
+  }
+
+  async sendToGrader() {
+    this.sendMessage('Sent to Grader', true);
+  }
   //   let student_user_id = await this.supabase.getUserId(
   //     this.currentAppeal.student_id,
   //     'student'

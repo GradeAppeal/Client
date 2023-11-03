@@ -32,15 +32,17 @@ export class StudentInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
-  user = {
+  student = {
     //student
     id: 3,
     email: 'abc123@gmail.com',
+    name: 'Sample',
   };
-  sender = {
+  professor = {
     //professor
     id: 0,
     email: 'ccc1233@gmail.com',
+    name: 'Sample',
   };
 
   studentAppeals!: StudentAppeal[];
@@ -56,22 +58,22 @@ export class StudentInteractionHistoryComponent {
   async ngOnInit() {
     this.studentAppeals = await this.supabase.fetchStudentAppeals(1);
     console.log(this.studentAppeals);
-    this.currentAppeal =
+    this.selectAppeal(
       this.studentAppeals.find(
         (appeal) => appeal.appeal_id === this.appealId
-      ) || this.studentAppeals[0];
+      ) || this.studentAppeals[0]
+    );
     if (this.currentAppeal) {
-      //this.sender.id = this.currentAppeal.student_id;
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      //if appeal exists, find messages for it
+      this.selectAppeal(this.currentAppeal);
     } else {
-      this.currentAppeal = this.studentAppeals[0];
-      this.messages = await this.supabase.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      this.selectAppeal(this.studentAppeals[0]);
     }
     this.messageCount = this.messages.length;
+    this.professor.id = await this.supabase.getUserId(
+      this.currentAppeal.professor_id,
+      'professor'
+    );
   }
 
   ngAfterViewChecked() {
@@ -99,39 +101,27 @@ export class StudentInteractionHistoryComponent {
   /**
    * Submit student appeal to database
    */
-  async sendMessage(): Promise<void> {
+  async sendMessage(
+    message: string,
+    notification: boolean = false
+  ): Promise<void> {
     const now = getTimestampTz(new Date());
-
+    if (notification === true) {
+      message = 'Notification:' + message;
+    }
     try {
-      let professor_user_id = await this.supabase.getUserId(
-        this.currentAppeal.professor_id,
-        'professor'
-      );
-      console.log(professor_user_id);
-      console.log(this.user.id);
+      console.log(this.professor.id);
+      console.log(this.student.id);
       await this.supabase.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //sender id: student
-        professor_user_id, //recipientid : professor
+        this.student.id, //sender id: student
+        this.professor.id, //recipientid : professor
         now,
         this.chatInputMessage,
-        this.fromGrader,
-        'Tyler',
-        'Justin'
+        this.fromGrader
       );
       console.log('Sent to database!');
-      this.messages.push({
-        id: 1 + this.messageCount, //TODO make id better system
-        created_at: getTimestampTz(new Date()),
-        sender_id: this.user.id,
-        recipient_id: professor_user_id,
-        appeal_id: this.currentAppeal.appeal_id,
-        message_text: this.chatInputMessage,
-        from_grader: this.fromGrader,
-        sender_name: 'Tyler',
-        recipient_name: 'Justin',
-      });
-
+      this.localSendMessage(message);
       this.chatInputMessage = '';
       this.scrollToBottom();
       console.log(this.messages);
@@ -152,5 +142,18 @@ export class StudentInteractionHistoryComponent {
       .toString()
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
+  }
+  localSendMessage(message: string) {
+    this.messages.push({
+      id: 1 + this.messageCount, //TODO make id better system
+      created_at: getTimestampTz(new Date()),
+      sender_id: this.student.id,
+      recipient_id: this.professor.id,
+      appeal_id: this.currentAppeal.appeal_id,
+      message_text: message,
+      from_grader: this.fromGrader,
+      sender_name: '',
+      recipient_name: '',
+    });
   }
 }
