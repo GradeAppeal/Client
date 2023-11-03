@@ -25,7 +25,7 @@
     <div class="card">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
-          <img class="header-avatar" ngxGravatar [email]="user.email" />
+          <img class="header-avatar" ngxGravatar [email]="grader.email" />
           <h1>
             <!-- {{ currentAppeal?.professor_first_name }}
             {{ currentAppeal?.professor_last_name }}<span>:</span> -->
@@ -44,15 +44,34 @@
               professor: professorMatch(chat.sender_id),
             }"
           >
-            <p class="name">{{ chat.sender_name }}</p>
-            <!-- need to change to name -->
-            <!-- <img ngxGravatar [email]="user.email" /> -->
-            <img *ngIf="isUser" ngxGravatar [email]="user.email" />
-            <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
-
+            <p
+              class="name"
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.sender_name }}
+            </p>
+            <div *ngIf="!chat.message_text.trim().startsWith('Notification:')">
+              <!-- need to change to name -->
+              <!-- <img ngxGravatar [email]="user.email" /> -->
+              <img *ngIf="isUser" ngxGravatar [email]="grader.email" />
+              <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
+            </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
 
-            <p id="message-body">{{ chat?.message_text }}</p>
+            <p
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              id="message-body"
+            >
+              {{ chat?.message_text }}
+            </p>
+            <p
+              class="notification-text"
+              id="message-body"
+              *ngIf="chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.message_text.substring(13) }}
+              <!-- Display text after "Notification:" -->
+            </p>
           </div>
         </ng-container>
       </div>
@@ -62,12 +81,12 @@
           id="chat-textarea"
           [(ngModel)]="chatInputMessage"
           required
-          (keydown.enter)="sendMessage()"
+          (keydown.enter)="sendMessage(this.chatInputMessage)"
         />
         <button
           mat-stroked-button
           id="send-button"
-          (click)="sendMessage()"
+          (click)="sendMessage(this.chatInputMessage)"
           [disabled]="chatInputMessage === ''"
         >
           Send

@@ -37,15 +37,17 @@ export class StudentInteractionHistoryComponent {
   messages!: Message[];
   professor: string;
   student: string;
-  user = {
+  student = {
     //student
     id: 3,
     email: 'abc123@gmail.com',
+    name: 'Sample',
   };
-  sender = {
+  professor = {
     //professor
     id: 0,
     email: 'ccc1233@gmail.com',
+    name: 'Sample',
   };
 
   studentAppeals!: StudentAppeal[];
@@ -75,6 +77,10 @@ export class StudentInteractionHistoryComponent {
 
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
+    this.professor.id = await this.supabase.getUserId(
+      this.currentAppeal.professor_id,
+      'professor'
+    );
   }
 
   ngAfterViewChecked() {
@@ -102,7 +108,10 @@ export class StudentInteractionHistoryComponent {
   /**
    * Submit student appeal to database
    */
-  async sendMessage(): Promise<void> {
+  async sendMessage(
+    message: string,
+    notification: boolean = false
+  ): Promise<void> {
     const now = getTimestampTz(new Date());
 
     try {
@@ -121,20 +130,10 @@ export class StudentInteractionHistoryComponent {
         now,
         this.chatInputMessage,
         this.fromGrader
+        this.fromGrader
       );
       console.log('Sent to database!');
-      this.messages.push({
-        id: 1 + this.messageCount, //TODO make id better system
-        created_at: now,
-        sender_id: studentID,
-        recipient_id: professorID,
-        appeal_id: this.currentAppeal.appeal_id,
-        message_text: this.chatInputMessage,
-        from_grader: this.fromGrader,
-        sender_name: 'Tyler',
-        recipient_name: 'Justin',
-      });
-
+      this.localSendMessage(message);
       this.chatInputMessage = '';
       this.scrollToBottom();
       console.log(this.messages);
@@ -156,5 +155,18 @@ export class StudentInteractionHistoryComponent {
       .toString()
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
+  }
+  localSendMessage(message: string) {
+    this.messages.push({
+      id: 1 + this.messageCount, //TODO make id better system
+      created_at: getTimestampTz(new Date()),
+      sender_id: this.student.id,
+      recipient_id: this.professor.id,
+      appeal_id: this.currentAppeal.appeal_id,
+      message_text: message,
+      from_grader: this.fromGrader,
+      sender_name: '',
+      recipient_name: '',
+    });
   }
 }

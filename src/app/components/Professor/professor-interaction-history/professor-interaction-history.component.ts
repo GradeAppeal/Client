@@ -6,6 +6,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
+  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from 'src/app/shared/interfaces/professor.interface';
@@ -28,17 +29,20 @@ export class ProfessorInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  user = {
+  professor = {
     id: 10,
     email: 'abc123@gmail.com',
+    name: 'Sam',
   };
-  sender = {
+  student = {
     id: 0,
     email: 'ccc1233@gmail.com',
+    name: 'Justin',
   };
+
   professorAppeals!: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
-
+  professors: Professor[];
   //template
   selectedTemplate: string = '';
 
@@ -104,14 +108,24 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
+    this.student.id = await this.supabase.getUserId(
+      this.currentAppeal.student_id,
+      'student'
+    );
+    console.log(this.messages);
   }
 
   /**
    * Submit student appeal to database
    */
-  async sendMessage(): Promise<void> {
+  async sendMessage(
+    message: string,
+    notification: boolean = false
+  ): Promise<void> {
     const now = getTimestampTz(new Date());
-
+    if (notification === true) {
+      message = 'Notification:' + message;
+    }
     try {
       console.log(this.currentAppeal);
       const studentID = this.currentAppeal.student_id;
@@ -151,8 +165,30 @@ export class ProfessorInteractionHistoryComponent {
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
+  //checks if a professor is in the list of professors
+  professorMatch(id: number): boolean {
+    return this.professors.some((professor) => professor.user_id === id);
+  }
 
-  async sendToGrader() {}
+  localSendMessage(message: string) {
+    console.log(this.student.id);
+    console.log(this.professor.id);
+    this.messages.push({
+      id: 1 + this.messageCount, //TODO make id better system
+      created_at: getTimestampTz(new Date()),
+      sender_id: this.professor.id,
+      recipient_id: this.student.id,
+      appeal_id: this.currentAppeal.appeal_id,
+      message_text: message,
+      from_grader: this.fromGrader,
+      sender_name: '',
+      recipient_name: '',
+    });
+  }
+
+  async sendToGrader() {
+    this.sendMessage('Sent to Grader', true);
+  }
   //   let student_user_id = await this.supabase.getUserId(
   //     this.currentAppeal.student_id,
   //     'student'

@@ -25,7 +25,7 @@
     <div class="card" *ngIf="messageLoaded">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
-          <img class="header-avatar" ngxGravatar [email]="user.email" />
+          <img class="header-avatar" ngxGravatar [email]="professor.email" />
           <h1>
             &nbsp; {{ currentAppeal.student_name }}<span>: </span
             >{{ currentAppeal.assignment_name }}
@@ -37,36 +37,58 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id,
-              grader: chat?.from_grader == true
+              right: chat?.sender_id == professor.id,
+              left: chat?.sender_id != professor.id,
+              lightblue: chat?.from_grader == true,
+              notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >
-            <!-- <img ngxGravatar [email]="user.email" /> -->
-            <img *ngIf="isUser" ngxGravatar [email]="user.email" />
-            <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
-
+            <div class="timestamp">
+              {{ localFormatTimestamp(chat.created_at).time }}
+              <p class="name">{{ chat.sender_name }}</p>
+            </div>
+            <br />
+            <hr />
+            <div
+              class="avatar-wrapper"
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+            >
+              <!-- <img ngxGravatar [email]="user.email" /> -->
+              <img *ngIf="isUser" ngxGravatar [email]="professor.email" />
+              <img *ngIf="!isUser" ngxGravatar [email]="student.email" />
+            </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
-            <p id="message-body">{{ chat?.message_text }}</p>
+
+            <p
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              id="message-body"
+            >
+              {{ chat?.message_text }}
+            </p>
+            <p
+              class="notification-text"
+              id="message-body"
+              *ngIf="chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.message_text.substring(13) }}
+              <!-- Display text after "Notification:" -->
+            </p>
           </div>
         </ng-container>
       </div>
       <div class="chat-footer">
-        <button
-          class="use-template-button"
-          mat-stroked-button
-          [matMenuTriggerFor]="menu"
-          (click)="sendToGrader()"
-        >
-          Send To Grader
-        </button>
-        <button
-          class="use-template-button"
-          mat-stroked-button
-          [matMenuTriggerFor]="menu"
-        >
-          Use Template
-        </button>
+        <div class="buttons">
+          <button
+            class="use-template-button"
+            mat-stroked-button
+            [matMenuTriggerFor]="menu"
+          >
+            Use Template
+          </button>
+          <button mat-stroked-button (click)="sendToGrader()">
+            Send To Grader
+          </button>
+        </div>
         <mat-menu #menu="matMenu">
           <button
             mat-menu-item
@@ -86,6 +108,7 @@
         <button
           mat-stroked-button
           id="send-button"
+          (click)="sendMessage(this.chatInputMessage)"
           [disabled]="chatInputMessage === ''"
           (click)="sendMessage()"
         >
