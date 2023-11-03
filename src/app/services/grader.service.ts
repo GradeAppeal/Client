@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from './auth.service';
-import {
-  GraderAppeal,
-  StudentAppeal,
-  StudentCourse,
-} from '../shared/interfaces/student.interface';
+import { GraderAppeal } from '../shared/interfaces/student.interface';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
-import { Course, Assignment } from '../shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
