@@ -6,11 +6,10 @@ import { SharedService } from 'src/app/services/shared.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
-  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from 'src/app/shared/interfaces/professor.interface';
-import { Message } from 'src/app/shared/interfaces/psql.interface';
+import { Professor, Message } from 'src/app/shared/interfaces/psql.interface';
 @Component({
   selector: 'app-professor-interaction-history',
   templateUrl: './professor-interaction-history.component.html',
@@ -59,7 +58,7 @@ export class ProfessorInteractionHistoryComponent {
   }
   async ngOnInit() {
     this.professorUserId = (await this.authService.getUserId()) as string;
-    this.user.id = 10; //TODO make this actual user ID not just fake data
+    //this.user.id = 10; //TODO make this actual user ID not just fake data
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
       this.professorUserId
     );
@@ -108,10 +107,10 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    this.student.id = await this.supabase.getUserId(
-      this.currentAppeal.student_id,
-      'student'
-    );
+    // this.student.id = await this.supabase.getUserId(
+    //   this.currentAppeal.student_id,
+    //   'student'
+    // );
     console.log(this.messages);
   }
 

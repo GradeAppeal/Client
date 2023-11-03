@@ -38,8 +38,8 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id === user.id ,
-              left: chat?.sender_id !== user.id,
+              right: chat?.sender_id === grader.id ,
+              left: chat?.sender_id !== grader.id,
               grader: chat?.from_grader === true,
               professor: professorMatch(chat.sender_id),
             }"
