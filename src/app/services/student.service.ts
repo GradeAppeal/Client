@@ -49,7 +49,7 @@ export class StudentService {
 
     if (error) {
       console.log(error);
-      throw new Error('UpdateGrader');
+      throw new Error('fetchStudentAppeals');
     }
     return data;
   }
@@ -85,7 +85,8 @@ export class StudentService {
     cid: number,
     created_at: Date,
     appeal_text: string
-  ): Promise<void> {
+  ): Promise<number> {
+    console.log();
     const { data, error } = await this.supabase.rpc('insert_appeal', {
       aid,
       sid,

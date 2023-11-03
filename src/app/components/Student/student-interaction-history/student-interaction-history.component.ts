@@ -6,6 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
@@ -34,6 +35,8 @@ export class StudentInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
+  professor: string;
+  student: string;
   user = {
     //student
     id: 3,
@@ -49,26 +52,27 @@ export class StudentInteractionHistoryComponent {
   loadStudentAppeals = false;
 
   constructor(
+    private route: ActivatedRoute,
     private authService: SupabaseService,
     private studentService: StudentService,
     private sharedService: SharedService
   ) {}
   async ngOnInit() {
+    this.appealId = this.route.snapshot.params['appealId'];
+    const appealId = this.appealId;
+    console.log({ appealId });
     this.studentUserId = (await this.authService.getUserId()) as string;
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       STUDENT_UUID
     );
-    if (this.currentAppeal) {
-      //this.sender.id = this.current_appeal.student_id;
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
-    } else {
-      this.currentAppeal = this.studentAppeals[0];
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
-    }
+
+    this.currentAppeal = this.studentAppeals[0];
+    this.professor = `${this.currentAppeal.professor_first_name} ${this.currentAppeal.professor_last_name}`;
+    this.student = await this.sharedService.getUserName(STUDENT_UUID);
+    this.messages = await this.sharedService.fetchMessages(
+      this.currentAppeal.appeal_id
+    );
+
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
   }
@@ -102,16 +106,18 @@ export class StudentInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      let professor_user_id = await this.sharedService.getUserId(
-        this.currentAppeal.professor_id,
-        'professor'
-      );
-      console.log(professor_user_id);
-      console.log(this.user.id);
+      const professorID = this.currentAppeal.professor_id;
+      const studentID = this.studentUserId;
+      // let professor_user_id = await this.sharedService.getUserId(
+      //   this.currentAppeal.professor_id,
+      //   'professor'
+      // );
+      // console.log(professor_user_id);
+      // console.log(this.user.id);
       await this.sharedService.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //sender id: student
-        professor_user_id, //recipientid : professor
+        studentID, //sender id: student
+        professorID, //recipientid : professor
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -119,9 +125,9 @@ export class StudentInteractionHistoryComponent {
       console.log('Sent to database!');
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system
-        created_at: getTimestampTz(new Date()),
-        sender_id: this.user.id,
-        recipient_id: professor_user_id,
+        created_at: now,
+        sender_id: studentID,
+        recipient_id: professorID,
         appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
@@ -137,6 +143,7 @@ export class StudentInteractionHistoryComponent {
       throw new Error('onSubmitAppeal');
     }
   }
+
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     const d = new Date(timestamp);
     const date = d.toDateString();

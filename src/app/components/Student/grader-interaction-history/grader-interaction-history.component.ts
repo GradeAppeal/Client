@@ -16,6 +16,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { PROFESSOR_UUID, STUDENT_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -63,13 +64,16 @@ export class GraderInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
-    this.graderAppeals = await this.graderService.fetchGraderAppeals(1);
+    this.graderAppeals = await this.graderService.fetchGraderAppeals(
+      STUDENT_UUID
+    );
     this.professors = await this.graderService.fetchProfessors();
+    console.log(this.professors);
     this.professorIds;
     console.log(this.graderAppeals);
     console.log(this.professors);
     //select current appeal based on id from url. Otherwise, set to first appeal
-    this.selectAppeal(
+    await this.selectAppeal(
       this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
         this.graderAppeals[0]
     );
@@ -98,7 +102,8 @@ export class GraderInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log(this.currentAppeal);
+    const messages = this.messages;
+    console.log({ messages });
   }
 
   /**
@@ -109,8 +114,8 @@ export class GraderInteractionHistoryComponent {
     try {
       await this.sharedService.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //sender id: grader
-        10, //recipientid : professor??
+        STUDENT_UUID, //sender id: grader
+        PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
         this.fromGrader
@@ -148,7 +153,7 @@ export class GraderInteractionHistoryComponent {
     return { date, time };
   }
   //checks if a professor is in the list of professors
-  professorMatch(id: number): boolean {
+  professorMatch(id: number | string): boolean {
     return this.professors.some((professor) => professor.user_id === id);
   }
   // set current professor

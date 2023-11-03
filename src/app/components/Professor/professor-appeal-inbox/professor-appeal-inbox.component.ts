@@ -38,6 +38,8 @@ export class ProfessorAppealInboxComponent {
       this.professorAppeals = await this.professorService.fetchProfessorAppeals(
         PROFESSOR_UUID
       );
+      const profAppeals = this.professorAppeals;
+      console.log({ profAppeals });
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
       console.log(this.professorAppeals, 'appeals');
       this.professorCourses = await this.professorService.fetchProfessorCourses(

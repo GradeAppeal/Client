@@ -42,6 +42,8 @@ export class NewAppealComponent implements OnInit {
       this.assignments = await this.studentService.fetchAssignmentsForNewAppeal(
         this.courseId
       );
+      const assignments = this.assignments;
+      console.log({ assignments });
       this.isAssignmentsFetched = true;
     } catch (err) {
       console.log(err);
@@ -64,13 +66,6 @@ export class NewAppealComponent implements OnInit {
         } - ${course.name}`;
   }
 
-  submitAppeal() {
-    console.log(this.appeal);
-    this.navigateTo('/student/interaction-history/31'); //TODO fix the id, get the actual appeal id somehow
-
-    //this.navigateTo('/student/interaction-history/' + this.appeal);
-    //this.onSubmitAppeal();
-  }
   /**
    * Submit student appeal to database
    */
@@ -84,14 +79,16 @@ export class NewAppealComponent implements OnInit {
         now,
         STUDENT_UUID
       );
-      const success = await this.studentService.insertNewAppeal(
+      const appealID = await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
         STUDENT_UUID,
         this.courseId,
         now,
         this.appeal
       );
-      console.log({ success });
+
+      console.log({ appealID });
+      this.router.navigateByUrl(`student/interaction-history/${appealID}`);
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');

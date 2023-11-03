@@ -33,7 +33,14 @@
               {{ currentAppeal.assignment_name }}
             </p>
           </h2>
-          <p><strong>Student Name:</strong> {{ currentAppeal.student_name }}</p>
+          <p>
+            <strong>Student Name:</strong>
+            {{
+              currentAppeal.student_first_name +
+                " " +
+                currentAppeal.student_last_name
+            }}
+          </p>
           <p><strong>Appeal Number:</strong> {{ currentAppeal.appeal_id }}</p>
           <p>
             <strong>Grade Received:</strong>

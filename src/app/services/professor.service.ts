@@ -366,10 +366,12 @@ export class ProfessorService {
       throw new Error('fetchStudentIds');
     }
   }
+
   /**
-   * Writes new assignment to database
+   * Insert template to database
    * @param pid professor id
-   * @param assignment_name name of assignment
+   * @param temp_name template name
+   * @param temp_text template text
    */
   async insertTemplate(
     pid: number,
@@ -385,7 +387,7 @@ export class ProfessorService {
       console.log(error);
       throw new Error('insert_template');
     }
-    console.log(data);
+    console.log({ data });
   }
 
   /**

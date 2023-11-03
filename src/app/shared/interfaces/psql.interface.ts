@@ -17,8 +17,8 @@ export interface Course {
 export interface Message {
   id: number;
   created_at: Date;
-  sender_id: number;
-  recipient_id: number;
+  sender_id: string | number;
+  recipient_id: string | number;
   appeal_id: number;
   message_text: string;
   from_grader: boolean;

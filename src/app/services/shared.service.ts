@@ -59,8 +59,8 @@ export class SharedService {
    */
   async insertMessages(
     appid: number,
-    sender_id: number,
-    recipient_id: number,
+    sender_id: string,
+    recipient_id: string,
     created_at: Date,
     message_text: string,
     from_grader: boolean
@@ -80,22 +80,13 @@ export class SharedService {
     return data;
   }
 
-  /**
-   * Get corresponding user ID for student or professor
-   * @param id id for Students or Professors table
-   * @param type student or professor type
-   * @returns the id for accessing the Users Table
-   * TODO: user id will eventually become type UUID, not bigint (update accordingly)
-   */
-  async getUserId(id: number, type: 'student' | 'professor'): Promise<number> {
-    const input = type == 'student' ? { sid: id } : { pid: id };
-    const { data, error } = await this.supabase.rpc(
-      `get_${type}_user_id`,
-      input
-    );
+  async getUserName(userid: string): Promise<string> {
+    const { data, error } = await this.supabase.rpc('get_user_name', {
+      userid,
+    });
     if (error) {
       console.log(error);
-      throw new Error('getUserId:');
+      throw new Error('getUserName');
     }
     return data;
   }

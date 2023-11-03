@@ -12,7 +12,7 @@
       </p>
       <p matLine>
         <b>
-          <!-- {{ appeal?.professor_first_name }} -->
+          {{ appeal?.professor_first_name + " " + appeal?.professor_last_name }}
         </b>
       </p>
 
@@ -34,13 +34,13 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
-        <ng-container *ngFor="let chat of this.messages">
+        <ng-container *ngFor="let chat of messages">
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id ,
-              left: chat?.sender_id != user.id,
-              grader: chat?.from_grader == true,
+              right: chat?.sender_id === user.id ,
+              left: chat?.sender_id !== user.id,
+              grader: chat?.from_grader === true,
               professor: professorMatch(chat.sender_id),
             }"
           >

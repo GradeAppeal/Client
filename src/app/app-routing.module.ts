@@ -61,13 +61,12 @@ const routes: Routes = [
         path: 'student/:id',
         component: StudentDashboardComponent,
       },
-
       {
         path: 'interaction-history',
         component: StudentInteractionHistoryComponent,
       },
       {
-        path: 'student-interaction-history',
+        path: 'interaction-history/:appealId',
         component: StudentInteractionHistoryComponent,
       },
       {

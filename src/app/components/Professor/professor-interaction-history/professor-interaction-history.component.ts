@@ -113,25 +113,24 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      console.log(this.currentAppeal.student_id);
-      let student_user_id = await this.sharedService.getUserId(
-        this.currentAppeal.student_id,
-        'student'
-      );
-      console.log(student_user_id);
+      console.log(this.currentAppeal);
+      const studentID = this.currentAppeal.student_id;
+      const professorID = this.professorUserId;
+
+      // console.log(student_user_id);
       await this.sharedService.insertMessages(
         this.currentAppeal.appeal_id,
-        this.user.id, //professor user id
-        student_user_id, //student user id
+        professorID, //professor user id
+        studentID, //student user id
         now,
         this.chatInputMessage,
         this.fromGrader
       );
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system
-        created_at: getTimestampTz(new Date()),
-        sender_id: this.user.id,
-        recipient_id: student_user_id,
+        created_at: now,
+        sender_id: professorID,
+        recipient_id: studentID,
         appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
