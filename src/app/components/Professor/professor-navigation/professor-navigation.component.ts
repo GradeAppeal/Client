@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { setTitle } from 'src/app/shared/functions/general.util';
@@ -15,19 +15,18 @@ export class ProfessorNavigationComponent {
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private professorService: ProfessorService
   ) {}
-  selectTab(tabName: string): void {
-    this.selectedTab = tabName;
-  }
   navigateTo(route: string) {
     this.selectedTab = route;
+    console.log(route);
     this.router.navigate([route]);
   }
 
   async ngOnInit() {
     const students = await this.professorService.fetchStudents(1);
-    console.log({ students });
+    console.log(this.selectedTab);
   }
 }

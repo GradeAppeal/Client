@@ -57,7 +57,7 @@ export class ProfessorInteractionHistoryComponent {
     this.professorUserId = (await this.authService.getUserId()) as string;
     this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      this.professorUserId
+      PROFESSOR_UUID
     );
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
@@ -107,7 +107,7 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log(this.messages);
+    console.log(this.currentAppeal);
   }
 
   /**
@@ -119,7 +119,7 @@ export class ProfessorInteractionHistoryComponent {
   ): Promise<void> {
     const now = getTimestampTz(new Date());
     if (notification === true) {
-      message = 'Notification:' + message;
+      message = 'Notification: ' + message;
     }
     try {
       console.log(this.currentAppeal);
@@ -130,7 +130,7 @@ export class ProfessorInteractionHistoryComponent {
         this.professor.id, //professor user id
         this.student.id, //student user id
         now,
-        this.chatInputMessage,
+        message,
         this.fromGrader
       );
       this.messages.push({
@@ -139,7 +139,7 @@ export class ProfessorInteractionHistoryComponent {
         sender_id: this.professor.id,
         recipient_id: this.student.id,
         appeal_id: this.currentAppeal.appeal_id,
-        message_text: this.chatInputMessage,
+        message_text: message,
         from_grader: this.fromGrader,
         sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
         recipient_name: `${this.student.first_name} ${this.student.last_name}`,
@@ -161,22 +161,6 @@ export class ProfessorInteractionHistoryComponent {
   //checks if a professor is in the list of professors
   professorMatch(id: number): boolean {
     return this.professors.some((professor) => professor.user_id === id);
-  }
-
-  localSendMessage(message: string) {
-    console.log(this.student.id);
-    console.log(this.professor.id);
-    this.messages.push({
-      id: 1 + this.messageCount, //TODO make id better system
-      created_at: getTimestampTz(new Date()),
-      sender_id: this.professor.id,
-      recipient_id: this.student.id,
-      appeal_id: this.currentAppeal.appeal_id,
-      message_text: message,
-      from_grader: this.fromGrader,
-      sender_name: '',
-      recipient_name: '',
-    });
   }
 
   async sendToGrader() {

@@ -20,7 +20,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/appeal-inbox')"
-        [class.selected]="selectedTab === 'professor/appeal-inbox'"
+        [class.selected]="selectedTab.includes('appeal-inbox')"
       >
         <mat-icon
           aria-hidden="false"
@@ -32,7 +32,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/interaction-history/')"
-        [class.selected]="selectedTab === 'professor/interaction-history/'"
+        [class.selected]="selectedTab.includes('interaction-history')"
       >
         <mat-icon
           aria-hidden="false"
@@ -44,7 +44,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/closed-appeals')"
-        [class.selected]="selectedTab === 'professor/closed-appeals'"
+        [class.selected]="selectedTab.includes('closed-appeals')"
       >
         <mat-icon
           aria-hidden="false"
@@ -56,7 +56,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/profile')"
-        [class.selected]="selectedTab === 'professor/profile'"
+        [class.selected]="selectedTab.includes('profile')"
       >
         <mat-icon
           aria-hidden="false"
@@ -68,7 +68,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/edit-templates')"
-        [class.selected]="selectedTab === 'professor/edit-templates'"
+        [class.selected]="selectedTab.includes('edit-templates')"
       >
         <mat-icon
           aria-hidden="false"

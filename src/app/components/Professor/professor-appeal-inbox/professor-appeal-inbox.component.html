@@ -13,7 +13,8 @@
         {{ localFormatTimestamp(appeal.created_at).time }}
       </p>
       <p class="inbox-name" matLine>
-        {{ appeal.student_name }}
+        {{ currentAppeal.student_first_name }}
+        {{ currentAppeal.student_last_name }}
       </p>
     </div>
   </div>
@@ -29,7 +30,8 @@
           <h2 class="appeal-header">
             <img class="inbox-avatar" ngxGravatar [email]="email" />
             <p>
-              {{ currentAppeal.student_name }}: &nbsp;
+              {{ currentAppeal.student_first_name }}
+              {{ currentAppeal.student_last_name }}: &nbsp;
               {{ currentAppeal.assignment_name }}
             </p>
           </h2>
@@ -42,10 +44,6 @@
             }}
           </p>
           <p><strong>Appeal Number:</strong> {{ currentAppeal.appeal_id }}</p>
-          <p>
-            <strong>Grade Received:</strong>
-            {{ currentAppeal.appeal_grade }}
-          </p>
 
           <mat-card class="message">
             <p>{{ currentAppeal.appeal_text }}</p>
