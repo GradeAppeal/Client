@@ -3,7 +3,7 @@
   <div class="inbox">
     <div
       class="inbox-item"
-      *ngFor="let appeal of this.graderAppeals"
+      *ngFor="let appeal of graderAppeals"
       (click)="selectAppeal(appeal)"
       [class.selected-appeal]="appeal === currentAppeal"
     >

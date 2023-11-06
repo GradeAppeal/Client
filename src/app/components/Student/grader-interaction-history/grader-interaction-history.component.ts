@@ -68,6 +68,7 @@ export class GraderInteractionHistoryComponent {
     this.graderAppeals = await this.graderService.fetchGraderAppeals(
       STUDENT_UUID
     );
+    console.log('graderAppeals: ', this.graderAppeals);
     this.professors = await this.graderService.fetchProfessors();
     console.log(this.professors);
     this.professorIds;
