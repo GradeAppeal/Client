@@ -3,14 +3,16 @@ export interface ProfessorAppeal {
   appeal_text: string;
   assignment_id: number;
   assignment_name: string;
-  code: number;
+  course_code: number;
+  course_name: string;
+  course_prefix: string;
+  course_section: string;
+  course_semester: string;
+  course_year: number;
   created_at: Date;
   is_open: boolean;
-  prefix: string;
-  student_id: string;
-  student_name: string;
-  appeal_grade: number;
   student_first_name?: string;
+  student_id: string;
   student_last_name?: string;
 }
 
