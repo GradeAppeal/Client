@@ -5,6 +5,8 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
 import { OnChanges } from '@angular/core';
+import { AddCourseComponent } from './add-course/add-course.component';
+import { DeleteCourseComponent } from './delete-course/delete-course.component';
 
 export interface ParsedStudent {
   first_name: string;
@@ -143,6 +145,31 @@ export class ProfileComponent implements OnChanges {
       console.log(err);
       throw new Error('addStudents');
     }
+
   }
+
+  /**
+ * Goes to AddCourse pop up component
+ */
+  async addCoursePopUp(): Promise<void> {
+    const dialogRef = this.dialog.open(AddCourseComponent, {
+      width: "80%",
+      height: "80%",
+      data: {}
+    });
+  }
+  
+  /**
+     * Goes to DeleteTemplate pop up component
+     */
+  async deleteCoursePopUp(templateID: number): Promise<void> {
+    const dialogRef = this.dialog.open(DeleteCourseComponent, {
+      width: "50%",
+      height: "55%",
+      data: {}
+    });
+  }
+
+
 }
 export { Student };

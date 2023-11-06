@@ -1,3 +1,6 @@
+@import "src/app/components/Professor/assignments/assignments.component.scss";
+
+
 .course-title {
   font-size: 2em;
   font-weight: bold;
@@ -18,6 +21,7 @@
 .course-wrapper {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .course-wording {
@@ -76,4 +80,10 @@
 
 .back-button {
   margin-left: 0px;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 20px; 
+  left: 220px;
 }
