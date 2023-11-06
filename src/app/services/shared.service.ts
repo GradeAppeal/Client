@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from './auth.service';
-import { Assignment, Message } from '../shared/interfaces/psql.interface';
+import {
+  Assignment,
+  Message,
+  User,
+} from 'src/app/shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +61,7 @@ export class SharedService {
    * @param from_grader boolean: grader or not
    * @returns 1 if insert was successful, 0 otherwise
    */
-  async insertMessages(
+  async insertMessage(
     appid: number,
     sender_id: string,
     recipient_id: string,
@@ -75,19 +79,19 @@ export class SharedService {
     });
     if (error) {
       console.log(error);
-      throw new Error('insert messages');
+      throw new Error('insert message');
     }
     return data;
   }
 
-  async getUserName(userid: string): Promise<string> {
-    const { data, error } = await this.supabase.rpc('get_user_name', {
-      userid,
+  async getUserInfo(uid: string): Promise<User> {
+    const { data, error } = await this.supabase.rpc('get_user_info', {
+      uid,
     });
     if (error) {
       console.log(error);
-      throw new Error('getUserName');
+      throw new Error('getUser');
     }
-    return data;
+    return data[0];
   }
 }

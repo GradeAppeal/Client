@@ -11,7 +11,7 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { Message } from 'src/app/shared/interfaces/psql.interface';
+import { Message, User } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 import { STUDENT_UUID } from 'src/app/shared/strings';
 @Component({
@@ -28,6 +28,7 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  loading: boolean = true;
   studentUserId: string;
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -35,20 +36,8 @@ export class StudentInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
-  professor: string;
-  student: string;
-  student = {
-    //student
-    id: 3,
-    email: 'abc123@gmail.com',
-    name: 'Sample',
-  };
-  professor = {
-    //professor
-    id: 0,
-    email: 'ccc1233@gmail.com',
-    name: 'Sample',
-  };
+  professor: User;
+  student: User;
 
   studentAppeals!: StudentAppeal[];
   loadStudentAppeals = false;
@@ -63,24 +52,23 @@ export class StudentInteractionHistoryComponent {
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });
-    this.studentUserId = (await this.authService.getUserId()) as string;
+    // this.studentUserId = (await this.authService.getUserId()) as string;
+    this.student = await this.sharedService.getUserInfo(STUDENT_UUID);
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       STUDENT_UUID
     );
 
     this.currentAppeal = this.studentAppeals[0];
-    this.professor = `${this.currentAppeal.professor_first_name} ${this.currentAppeal.professor_last_name}`;
-    this.student = await this.sharedService.getUserName(STUDENT_UUID);
+    this.professor = await this.sharedService.getUserInfo(
+      this.currentAppeal.professor_id
+    );
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
 
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
-    this.professor.id = await this.supabase.getUserId(
-      this.currentAppeal.professor_id,
-      'professor'
-    );
+    this.loading = false;
   }
 
   ngAfterViewChecked() {
@@ -115,21 +103,15 @@ export class StudentInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
 
     try {
-      const professorID = this.currentAppeal.professor_id;
-      const studentID = this.studentUserId;
-      // let professor_user_id = await this.sharedService.getUserId(
-      //   this.currentAppeal.professor_id,
-      //   'professor'
-      // );
-      // console.log(professor_user_id);
-      // console.log(this.user.id);
-      await this.sharedService.insertMessages(
+      const professorID = this.professor.id;
+      const studentID = this.student.id;
+
+      await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         studentID, //sender id: student
         professorID, //recipientid : professor
         now,
         this.chatInputMessage,
-        this.fromGrader
         this.fromGrader
       );
       console.log('Sent to database!');

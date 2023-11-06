@@ -26,6 +26,14 @@ export interface Message {
   recipient_name: string;
 }
 
+export interface User {
+  id: string;
+  role: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 export interface Student {
   id: number;
   first_name: string;

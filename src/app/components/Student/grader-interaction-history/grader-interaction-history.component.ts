@@ -6,11 +6,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Message, Professor } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -119,7 +118,7 @@ export class GraderInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
-      await this.sharedService.insertMessages(
+      await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         STUDENT_UUID, //sender id: grader
         PROFESSOR_UUID, //recipientid : professor??

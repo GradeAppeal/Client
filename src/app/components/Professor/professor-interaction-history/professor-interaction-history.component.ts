@@ -9,7 +9,12 @@ import {
   ProfessorAppeal,
   ProfessorTemplate,
 } from 'src/app/shared/interfaces/professor.interface';
-import { Professor, Message } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Professor,
+  Message,
+  User,
+} from 'src/app/shared/interfaces/psql.interface';
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-professor-interaction-history',
   templateUrl: './professor-interaction-history.component.html',
@@ -28,16 +33,8 @@ export class ProfessorInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  professor = {
-    id: 10,
-    email: 'abc123@gmail.com',
-    name: 'Sam',
-  };
-  student = {
-    id: 0,
-    email: 'ccc1233@gmail.com',
-    name: 'Justin',
-  };
+  professor: User;
+  student: User;
 
   professorAppeals!: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -58,7 +55,7 @@ export class ProfessorInteractionHistoryComponent {
   }
   async ngOnInit() {
     this.professorUserId = (await this.authService.getUserId()) as string;
-    //this.user.id = 10; //TODO make this actual user ID not just fake data
+    this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
       this.professorUserId
     );
@@ -72,6 +69,9 @@ export class ProfessorInteractionHistoryComponent {
         ) || this.professorAppeals[0];
 
       if (this.currentAppeal) {
+        this.student = await this.sharedService.getUserInfo(
+          this.currentAppeal.student_id
+        );
         //this.sender.id = this.currentAppeal.student_id;
         this.messages = await this.sharedService.fetchMessages(
           this.currentAppeal.appeal_id
@@ -127,11 +127,11 @@ export class ProfessorInteractionHistoryComponent {
     }
     try {
       console.log(this.currentAppeal);
-      const studentID = this.currentAppeal.student_id;
-      const professorID = this.professorUserId;
+      const studentID = this.student.id;
+      const professorID = this.professor.id;
 
       // console.log(student_user_id);
-      await this.sharedService.insertMessages(
+      await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         professorID, //professor user id
         studentID, //student user id

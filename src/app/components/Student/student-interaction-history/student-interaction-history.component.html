@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
     <div
@@ -92,4 +92,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="loading" *ngIf="loading">
+  <h1>Loading Appeals...</h1>
 </div>
