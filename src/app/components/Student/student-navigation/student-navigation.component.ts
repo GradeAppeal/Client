@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { navigate, setTitle } from 'src/app/shared/functions/general.util';
+import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-student-navigation',
@@ -8,7 +9,7 @@ import { navigate, setTitle } from 'src/app/shared/functions/general.util';
   styleUrls: ['./student-navigation.component.scss'],
 })
 export class StudentNavigationComponent {
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: SupabaseService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.title = setTitle(event.url);
@@ -23,6 +24,15 @@ export class StudentNavigationComponent {
     this.selectedTab = tabName;
   }
 
+  async logout() {
+    try {
+      await this.authService.signOut();
+      console.log('sign out!');
+      this.navigateTo('/');
+    } catch (error) {
+      console.log({ error });
+    }
+  }
   navigateTo(route: string) {
     this.selectedTab = route;
     navigate(this.router, route); //use the navigate function from general.utils
