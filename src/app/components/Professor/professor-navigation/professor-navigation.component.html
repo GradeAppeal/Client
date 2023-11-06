@@ -72,6 +72,18 @@
       </button>
       <button
         class="sidenav-button"
+        (click)="navigateTo('professor/notifications')"
+        [class.selected]="selectedTab === 'Notifications'"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="notifications"
+        ></mat-icon>
+        &ensp;Notifications
+      </button>
+      <button
+        class="sidenav-button"
         (click)="navigateTo('professor/edit-templates')"
         [class.selected]="selectedTab === 'Edit Templates'"
       >

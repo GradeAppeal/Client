@@ -11,6 +11,7 @@ import { StudentNavigationComponent } from './components/Student/student-navigat
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 const routes: Routes = [
   {
     path: '',
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'edit-templates',
         component: EditTemplatesComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
     ],
   },

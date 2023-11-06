@@ -17,7 +17,3 @@ export interface ProfessorTemplate {
   temp_text: string;
   temp_name: string;
 }
-
-export interface ProfessorCourse {
-
-}
