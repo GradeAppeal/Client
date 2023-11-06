@@ -107,10 +107,6 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    // this.student.id = await this.supabase.getUserId(
-    //   this.currentAppeal.student_id,
-    //   'student'
-    // );
     console.log(this.messages);
   }
 
@@ -127,14 +123,12 @@ export class ProfessorInteractionHistoryComponent {
     }
     try {
       console.log(this.currentAppeal);
-      const studentID = this.student.id;
-      const professorID = this.professor.id;
 
       // console.log(student_user_id);
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        professorID, //professor user id
-        studentID, //student user id
+        this.professor.id, //professor user id
+        this.student.id, //student user id
         now,
         this.chatInputMessage,
         this.fromGrader
@@ -142,13 +136,13 @@ export class ProfessorInteractionHistoryComponent {
       this.messages.push({
         id: 1 + this.messageCount, //TODO make id better system
         created_at: now,
-        sender_id: professorID,
-        recipient_id: studentID,
+        sender_id: this.professor.id,
+        recipient_id: this.student.id,
         appeal_id: this.currentAppeal.appeal_id,
         message_text: this.chatInputMessage,
         from_grader: this.fromGrader,
-        sender_name: 'Tyler',
-        recipient_name: 'Justin',
+        sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
+        recipient_name: `${this.student.first_name} ${this.student.last_name}`,
       });
       this.currentAppeal.created_at =
         this.messages[this.messages.length - 1].created_at;

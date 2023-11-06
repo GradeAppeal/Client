@@ -27,8 +27,8 @@
         <mat-toolbar-row>
           <img class="header-avatar" ngxGravatar [email]="professor.email" />
           <h1>
-            &nbsp; {{ currentAppeal.student_name }}<span>: </span
-            >{{ currentAppeal.assignment_name }}
+            &nbsp; {{ student.first_name + " " + student.last_name
+            }}<span>: </span>{{ currentAppeal.assignment_name }}
           </h1>
         </mat-toolbar-row>
       </mat-toolbar>
