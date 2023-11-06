@@ -38,6 +38,8 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
+import { AddCourseComponent } from './components/Professor/profile/add-course/add-course.component';
+import { DeleteCourseComponent } from './components/Professor/profile/delete-course/delete-course.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { DeleteTemplateComponent } from './components/Professor/edit-templates/d
     DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
+    AddCourseComponent,
+    DeleteCourseComponent,
   ],
   imports: [
     BrowserModule,
