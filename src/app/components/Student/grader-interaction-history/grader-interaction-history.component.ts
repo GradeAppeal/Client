@@ -6,18 +6,16 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { ActivatedRoute } from '@angular/router';
+import { GraderService } from 'src/app/services/grader.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import {
-  Professor,
-  ProfessorAppeal,
-} from 'src/app/shared/interfaces/professor.interface';
-import { Message } from 'src/app/shared/interfaces/psql.interface';
+import { Message, Professor } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { PROFESSOR_UUID, STUDENT_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -59,20 +57,25 @@ export class GraderInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private supabase: SupabaseService
+    private graderService: GraderService,
+    private sharedService: SharedService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
     });
   }
   async ngOnInit() {
-    this.graderAppeals = await this.supabase.fetchGraderAppeals(1);
-    this.professors = await this.supabase.fetchProfessors();
+    this.graderAppeals = await this.graderService.fetchGraderAppeals(
+      STUDENT_UUID
+    );
+    console.log('graderAppeals: ', this.graderAppeals);
+    this.professors = await this.graderService.fetchProfessors();
+    console.log(this.professors);
     this.professorIds;
     console.log(this.graderAppeals);
     console.log(this.professors);
     //select current appeal based on id from url. Otherwise, set to first appeal
-    this.selectAppeal(
+    await this.selectAppeal(
       this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
         this.graderAppeals[0]
     );
@@ -98,10 +101,11 @@ export class GraderInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    this.messages = await this.supabase.fetchMessages(
+    this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log(this.currentAppeal);
+    const messages = this.messages;
+    console.log({ messages });
   }
 
   /**
@@ -115,12 +119,12 @@ export class GraderInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
-      await this.supabase.insertMessages(
+      await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        this.grader.id, //sender id: grader
-        10, //recipientid : professor??
+        STUDENT_UUID, //sender id: grader
+        PROFESSOR_UUID, //recipientid : professor??
         new Date(),
-        message,
+        this.chatInputMessage,
         this.fromGrader
       );
       this.localSendMessage(message);
@@ -146,7 +150,7 @@ export class GraderInteractionHistoryComponent {
     return { date, time };
   }
   //checks if a professor is in the list of professors
-  professorMatch(id: number): boolean {
+  professorMatch(id: number | string): boolean {
     return this.professors.some((professor) => professor.user_id === id);
   }
   // set current professor

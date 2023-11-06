@@ -10,6 +10,8 @@ import { EditTemplatesComponent } from './components/Professor/edit-templates/ed
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
+import { RegisterComponent } from './components/register/register.component';
+
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 const routes: Routes = [
@@ -59,13 +61,12 @@ const routes: Routes = [
         path: 'student/:id',
         component: StudentDashboardComponent,
       },
-
       {
         path: 'interaction-history',
         component: StudentInteractionHistoryComponent,
       },
       {
-        path: 'interaction-history/:id',
+        path: 'interaction-history/:appealId',
         component: StudentInteractionHistoryComponent,
       },
       {
@@ -83,6 +84,26 @@ const routes: Routes = [
     component: NewAppealComponent,
   },
 
+  {
+    path: 'professor',
+    component: ProfessorNavigationComponent,
+  },
+  {
+    path: 'professor/closed-appeals',
+    component: ClosedAppealsComponent,
+  },
+  {
+    path: 'professor/profile',
+    component: ProfileComponent,
+  },
+  {
+    path: 'professor/edit-templates',
+    component: EditTemplatesComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
   {
     path: '**',
     redirectTo: '/',

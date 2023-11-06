@@ -1,21 +1,20 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  ViewChild,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { SupabaseService } from 'src/app/services/auth.service';
+import { ProfessorService } from 'src/app/services/professor.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
-  Professor,
   ProfessorAppeal,
   ProfessorTemplate,
 } from 'src/app/shared/interfaces/professor.interface';
-import { Message } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Professor,
+  Message,
+  User,
+} from 'src/app/shared/interfaces/psql.interface';
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-professor-interaction-history',
   templateUrl: './professor-interaction-history.component.html',
@@ -23,24 +22,19 @@ import { Message } from 'src/app/shared/interfaces/psql.interface';
 })
 export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
+  private professorUserId: string;
+  noAppeals: boolean;
   currentAppeal: ProfessorAppeal;
   selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
   appealId: number;
   chatInputMessage: string = '';
   messageCount: number = 0;
+  messageLoaded = false;
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  professor = {
-    id: 10,
-    email: 'abc123@gmail.com',
-    name: 'Sam',
-  };
-  student = {
-    id: 0,
-    email: 'ccc1233@gmail.com',
-    name: 'Justin',
-  };
+  professor: User;
+  student: User;
 
   professorAppeals!: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -50,7 +44,9 @@ export class ProfessorInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private supabase: SupabaseService
+    private professorService: ProfessorService,
+    private sharedService: SharedService,
+    private authService: SupabaseService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
@@ -58,33 +54,37 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
-    this.professorAppeals = await this.supabase.fetchProfessorAppeals(1); //todo fix ID
-    this.professorTemplates = await this.supabase.fetchProfessorTemplates(1);
-    this.professors = await this.supabase.fetchProfessors();
-    //select current appeal based on id from url. Otherwise, set to first appeal
-    this.selectAppeal(
-      this.professorAppeals.find(
-        (appeal) => appeal.appeal_id === this.appealId
-      ) || this.professorAppeals[0]
+    this.professorUserId = (await this.authService.getUserId()) as string;
+    this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
+    this.professorAppeals = await this.professorService.fetchProfessorAppeals(
+      this.professorUserId
     );
-    if (this.currentAppeal) {
-      //if appeal exists, find messages for it
-      this.selectAppeal(this.currentAppeal);
-    } else {
-      this.selectAppeal(this.professorAppeals[0]);
-    }
-    this.student.name = this.currentAppeal.student_name;
-    if (this.professorMatch(this.messages[0].sender_id)) {
-      this.professor.name = this.messages[0].sender_name;
-      console.log('work');
-    } else if (this.professorMatch(this.messages[1].sender_id)) {
-      this.professor.name = this.messages[0].sender_name;
+    this.noAppeals = this.professorAppeals.length === 0 ? true : false;
+    this.professorTemplates =
+      await this.professorService.fetchProfessorTemplates(this.professorUserId);
+    if (!this.noAppeals) {
+      this.currentAppeal =
+        this.professorAppeals.find(
+          (appeal) => appeal.appeal_id === this.appealId
+        ) || this.professorAppeals[0];
+
+      if (this.currentAppeal) {
+        this.student = await this.sharedService.getUserInfo(
+          this.currentAppeal.student_id
+        );
+        //this.sender.id = this.currentAppeal.student_id;
+        this.messages = await this.sharedService.fetchMessages(
+          this.currentAppeal.appeal_id
+        );
+      } else {
+        this.currentAppeal = this.professorAppeals[0];
+        this.messages = await this.sharedService.fetchMessages(
+          this.currentAppeal.appeal_id
+        );
+      }
+      this.messageLoaded = true;
       this.messageCount = this.messages.length;
-    } else {
-      this.student.name = this.messages[0].sender_name;
     }
-    console.log(this.professor.name);
-    console.log(this.student.name);
   }
 
   ngAfterViewChecked() {
@@ -103,12 +103,9 @@ export class ProfessorInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    this.messages = await this.supabase.fetchMessages(
+    //this.sender.id = this.currentAppeal.student_id;
+    this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
-    );
-    this.student.id = await this.supabase.getUserId(
-      this.currentAppeal.student_id,
-      'student'
     );
     console.log(this.messages);
   }
@@ -125,16 +122,28 @@ export class ProfessorInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
-      await this.supabase.insertMessages(
+      console.log(this.currentAppeal);
+
+      // console.log(student_user_id);
+      await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.professor.id, //professor user id
         this.student.id, //student user id
         now,
-        message,
+        this.chatInputMessage,
         this.fromGrader
       );
-      this.localSendMessage(message);
-
+      this.messages.push({
+        id: 1 + this.messageCount, //TODO make id better system
+        created_at: now,
+        sender_id: this.professor.id,
+        recipient_id: this.student.id,
+        appeal_id: this.currentAppeal.appeal_id,
+        message_text: this.chatInputMessage,
+        from_grader: this.fromGrader,
+        sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
+        recipient_name: `${this.student.first_name} ${this.student.last_name}`,
+      });
       this.currentAppeal.created_at =
         this.messages[this.messages.length - 1].created_at;
 

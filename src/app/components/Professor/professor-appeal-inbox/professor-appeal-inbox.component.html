@@ -1,5 +1,5 @@
 <!-- Main Content Section -->
-<div class="content">
+<div class="content" *ngIf="!noAppeals">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox" *ngIf="fetchedAppeals">
     <div
@@ -33,7 +33,14 @@
               {{ currentAppeal.assignment_name }}
             </p>
           </h2>
-          <p><strong>Student Name:</strong> {{ currentAppeal.student_name }}</p>
+          <p>
+            <strong>Student Name:</strong>
+            {{
+              currentAppeal.student_first_name +
+                " " +
+                currentAppeal.student_last_name
+            }}
+          </p>
           <p><strong>Appeal Number:</strong> {{ currentAppeal.appeal_id }}</p>
           <p>
             <strong>Grade Received:</strong>
@@ -65,4 +72,8 @@
       </div>
     </ng-template>
   </div>
+</div>
+<div class="empty-inbox" *ngIf="noAppeals">
+  <h1>No appeals have beeen initiated</h1>
+  <h2>Please check back later</h2>
 </div>

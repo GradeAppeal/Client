@@ -7,9 +7,11 @@ export interface ProfessorAppeal {
   created_at: Date;
   is_open: boolean;
   prefix: string;
-  student_id: number;
+  student_id: string;
   student_name: string;
   appeal_grade: number;
+  student_first_name?: string;
+  student_last_name?: string;
 }
 
 export interface ProfessorTemplate {
@@ -19,9 +21,9 @@ export interface ProfessorTemplate {
   temp_name: string;
 }
 
-export interface Professor {
-  id: number;
-  user_id: number;
+export interface ProfessorCourse {}
+
+export interface ParsedStudent {
   first_name: string;
   last_name: string;
   email: string;

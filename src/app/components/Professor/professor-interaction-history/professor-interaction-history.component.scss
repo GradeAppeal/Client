@@ -145,3 +145,19 @@ $background: white;
 mat-nav-list {
   padding: 0px;
 }
+
+.empty-inbox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    color: $primary-blue;
+    font-size: 5vh;
+  }
+  h2 {
+    font-size: 2vh;
+  }
+}

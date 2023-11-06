@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { SupabaseService } from 'src/app/services/auth.service';
+import { ProfessorService } from 'src/app/services/professor.service';
 import { setTitle } from 'src/app/shared/functions/general.util';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 
@@ -13,12 +14,12 @@ export class ProfessorNavigationComponent {
   email = 'victor.norman@calvin.edu';
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
-  constructor(private router: Router, private supabase: SupabaseService) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.title = setTitle(event.url);
-      }
-    });
+  constructor(
+    private router: Router,
+    private professorService: ProfessorService
+  ) {}
+  selectTab(tabName: string): void {
+    this.selectedTab = tabName;
   }
   navigateTo(route: string) {
     this.selectedTab = route;
@@ -26,7 +27,7 @@ export class ProfessorNavigationComponent {
   }
 
   async ngOnInit() {
-    const students = await this.supabase.fetchStudents(1);
+    const students = await this.professorService.fetchStudents(1);
     console.log({ students });
   }
 }
