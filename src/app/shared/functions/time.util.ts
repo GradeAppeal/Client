@@ -4,8 +4,7 @@
  * @returns
  */
 export const getTimestampTz = (date: Date): Date => {
-  const newDate = new Date(
-    date.getTime() - date.getTimezoneOffset() * 60 * 1000
-  );
+  const newDate = new Date(date.getTime());
+  console.log({ newDate });
   return newDate;
 };

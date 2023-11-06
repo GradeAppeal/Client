@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../../../services/supabase.service';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { getTimestampTz } from '../../../shared/functions/time.util';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
+import { StudentService } from 'src/app/services/student.service';
+import { STUDENT_UUID } from 'src/app/shared/strings';
 
 @Component({
   selector: 'app-new-appeal',
@@ -23,7 +24,7 @@ export class NewAppealComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private supabase: SupabaseService
+    private studentService: StudentService
   ) {}
 
   navigateToHome() {
@@ -34,11 +35,15 @@ export class NewAppealComponent implements OnInit {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
       // don't render form until course and assignment information has been fetched
-      this.course = await this.supabase.fetchCourseForNewAppeal(this.courseId);
-      this.isCourseFetched = true;
-      this.assignments = await this.supabase.fetchAssignmentsForNewAppeal(
+      this.course = await this.studentService.fetchCourseForNewAppeal(
         this.courseId
       );
+      this.isCourseFetched = true;
+      this.assignments = await this.studentService.fetchAssignmentsForNewAppeal(
+        this.courseId
+      );
+      const assignments = this.assignments;
+      console.log({ assignments });
       this.isAssignmentsFetched = true;
     } catch (err) {
       console.log(err);
@@ -61,27 +66,29 @@ export class NewAppealComponent implements OnInit {
         } - ${course.name}`;
   }
 
-  submitAppeal() {
-    console.log(this.appeal);
-    this.navigateTo('/student/interaction-history/31'); //TODO fix the id, get the actual appeal id somehow
-
-    //this.navigateTo('/student/interaction-history/' + this.appeal);
-    //this.onSubmitAppeal();
-  }
   /**
    * Submit student appeal to database
    */
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      await this.supabase.insertNewAppeal(
+      console.log(
         this.selectedAssignmentId,
-        1,
+        this.appeal,
         this.courseId,
         now,
-        this.appeal,
-        90
+        STUDENT_UUID
       );
+      const appealID = await this.studentService.insertNewAppeal(
+        this.selectedAssignmentId,
+        STUDENT_UUID,
+        this.courseId,
+        now,
+        this.appeal
+      );
+
+      console.log({ appealID });
+      this.router.navigateByUrl(`student/interaction-history/${appealID}`);
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');

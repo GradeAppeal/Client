@@ -2,30 +2,25 @@
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
 />
-
-<div>
-  <mat-toolbar class="top-bar">
-    <mat-toolbar-row>
-      <span class="left-content">
-        <span (click)="navigateTo('/')" class="material-symbols-outlined">
-          rocket_launch
-        </span>
-        <span>{{ title }}</span>
+<div class="app-container">
+  <div class="top-bar">
+    <span class="left-content">
+      <span (click)="navigateTo('/')" class="material-symbols-outlined">
+        rocket_launch
       </span>
-      <div class="right-content">
-        <img class="header-avatar" ngxGravatar [email]="email" />
-      </div>
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
+      <span>{{ title }}</span>
+    </span>
+    <span class="right-content">
+      <img class="header-avatar" ngxGravatar [email]="email" />
+    </span>
+  </div>
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav mode="side" opened>
-    <mat-action-list class="tab-list">
+  <div class="sidenav-container">
+    <div class="tab-list">
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/appeal-inbox')"
-        [class.selected]="selectedTab === 'Appeal Inbox'"
+        [class.selected]="selectedTab === 'professor/appeal-inbox'"
       >
         <mat-icon
           aria-hidden="false"
@@ -37,7 +32,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/interaction-history/')"
-        [class.selected]="selectedTab === 'Interaction History'"
+        [class.selected]="selectedTab === 'professor/interaction-history/'"
       >
         <mat-icon
           aria-hidden="false"
@@ -49,7 +44,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/closed-appeals')"
-        [class.selected]="selectedTab === 'Closed Appeals'"
+        [class.selected]="selectedTab === 'professor/closed-appeals'"
       >
         <mat-icon
           aria-hidden="false"
@@ -61,7 +56,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/profile')"
-        [class.selected]="selectedTab === 'Profile'"
+        [class.selected]="selectedTab === 'professor/profile'"
       >
         <mat-icon
           aria-hidden="false"
@@ -73,7 +68,7 @@
       <button
         class="sidenav-button"
         (click)="navigateTo('professor/edit-templates')"
-        [class.selected]="selectedTab === 'Edit Templates'"
+        [class.selected]="selectedTab === 'professor/edit-templates'"
       >
         <mat-icon
           aria-hidden="false"
@@ -82,10 +77,9 @@
         ></mat-icon>
         &ensp;Edit Templates
       </button>
-    </mat-action-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content class="content">
+    </div>
+  </div>
+  <div class="content">
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>

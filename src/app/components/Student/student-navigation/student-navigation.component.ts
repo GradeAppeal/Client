@@ -17,13 +17,14 @@ export class StudentNavigationComponent {
   }
   grader = false;
   email = 'sth6@calvin.edu';
-  selectedTab: string = 'Course Dashboard';
+  selectedTab: string = '/student/course-dashboard';
   title: string = 'Course Dashboard';
   selectTab(tabName: string): void {
     this.selectedTab = tabName;
   }
 
   navigateTo(route: string) {
+    this.selectedTab = route;
     navigate(this.router, route); //use the navigate function from general.utils
   }
 }

@@ -2,7 +2,7 @@ import { MatSelect } from '@angular/material/select';
 import { Component, Inject, Optional, Input, ViewChild  } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SupabaseService } from '../../../../services/supabase.service';
+import { SupabaseService } from '../../../../services/auth.service';
 import { Course } from '../../../../shared/interfaces/psql.interface';
 
 @Component({
@@ -28,7 +28,7 @@ export class AddCourseComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddCourseComponent>,
-    private supabase: SupabaseService,
+    private authService: SupabaseService,
   ) {
   }
 

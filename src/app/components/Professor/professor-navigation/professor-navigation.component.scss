@@ -1,60 +1,13 @@
 @import "src/styles.scss";
 
-.sidenav-container {
-  height: 100%;
-}
-
-mat-sidenav {
-  width: 200px;
-  height: 100%;
-}
-
 .tab-list {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.tab-list {
-  background-color: $secondary-blue;
-  height: 100%;
-}
-
-mat-sidenav-content {
-  padding: 16px; /* Add padding to content area */
-  overflow: hidden;
-  height: 100vh;
-}
-
-.top-bar {
-  font-size: 40px;
   background-color: $primary-blue;
-  color: white;
-  height: 80px;
-  padding-top: 8px;
-}
-.left-content {
-  margin-right: auto;
-  align-items: center;
-  display: flex;
-}
-.right-content {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+  height: 100%;
 }
 
 .material-symbols-outlined {
   color: white;
 }
-
-.material-symbols-outlined {
-  color: white;
-}
-
-.content {
-  height: 100vh;
-}
-
 .sidenav-button {
   color: white;
   padding: 15px;
@@ -64,11 +17,46 @@ mat-sidenav-content {
     background-color: darken($primary-blue, 10%);
   }
 }
-
-.tab-list {
-  background-color: $primary-blue;
-}
-
 mat-icon {
   margin-right: 7px;
+}
+
+.selected {
+  background-color: darken($primary-blue, 15%);
+}
+
+.sidenav-container {
+  width: 200px; /* Set the width of the sidenav as needed */
+  height: 100vh;
+  float: left;
+}
+.top-bar {
+  font-size: 40px;
+  background-color: $primary-blue;
+  color: white;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+}
+
+.right-content {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  width: 50px;
+}
+.app-container {
+  height: 100vh;
+}
+
+.content {
+  padding-left: 10px;
+  overflow: auto;
 }
