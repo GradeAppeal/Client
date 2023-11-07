@@ -1,1 +1,6 @@
-<p>notifications works!</p>
+<div *ngFor="let appeal of newAppeals" class="notification-appeals">
+  <mat-card [ngClass]="{'completed-appeal': appeal.appeal_complete === true}">
+    <mat-card-title class="card-title">{{appeal.student_name}} - {{appeal.assignment_name}}</mat-card-title>
+    <mat-card-subtitle class="card-subtitle">{{ localFormatTimestamp(appeal.created_at).date }}</mat-card-subtitle>
+  </mat-card>
+</div>
