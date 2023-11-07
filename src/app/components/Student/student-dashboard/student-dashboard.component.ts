@@ -4,6 +4,7 @@ import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
 import { STUDENT_UUID } from 'src/app/shared/strings';
+import { Session } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -15,21 +16,42 @@ export class StudentDashboardComponent {
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
-    private readonly authService: SupabaseService,
     private readonly studentService: StudentService,
     private router: Router
   ) {}
   async ngOnInit(): Promise<void> {
-    this.studentUserId = (await this.authService.getUserId()) as string;
+    const { user } = this.studentService.session as Session;
     this.studentCourses = await this.studentService.fetchStudentCourses(
-      STUDENT_UUID
+      user.id
     );
-    console.log(this.studentCourses);
     const studentAppeals = await this.studentService.fetchStudentAppeals(
-      STUDENT_UUID
+      user.id
     );
     console.log({ studentAppeals });
   }
+
+  /**
+   * Only runs if user is a grader
+   * @param course
+   */
+  onViewAppeal(course: StudentCourse) {
+    this.course_string =
+      course.course_prefix +
+      course.course_code +
+      '-' +
+      course.course_section +
+      ' - ' +
+      course.professor_name;
+    console.log({ course });
+    this.router.navigateByUrl(
+      `student/grader/interaction-history/${course.course_id}`
+    );
+  }
+
+  /**
+   * Only runs if user is a student
+   * @param course
+   */
   onNewAppeal(course: StudentCourse) {
     this.course_string =
       course.course_prefix +

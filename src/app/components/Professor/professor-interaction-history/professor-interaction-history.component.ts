@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -14,7 +15,6 @@ import {
   Message,
   User,
 } from 'src/app/shared/interfaces/psql.interface';
-import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-professor-interaction-history',
   templateUrl: './professor-interaction-history.component.html',
@@ -22,7 +22,7 @@ import { PROFESSOR_UUID } from 'src/app/shared/strings';
 })
 export class ProfessorInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
-  private professorUserId: string;
+  session: Session;
   noAppeals: boolean;
   currentAppeal: ProfessorAppeal;
   selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
@@ -52,16 +52,17 @@ export class ProfessorInteractionHistoryComponent {
       this.appealId = +params['id']; // Get appeal id from url
       console.log(this.appealId);
     });
+    this.session = this.authService.session as Session;
   }
   async ngOnInit() {
-    this.professorUserId = (await this.authService.getUserId()) as string;
-    this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
+    const { user } = this.session;
+    this.professor = await this.sharedService.getUserInfo(user.id);
     this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      PROFESSOR_UUID
+      user.id
     );
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(this.professorUserId);
+      await this.professorService.fetchProfessorTemplates(user.id);
     if (!this.noAppeals) {
       this.currentAppeal =
         this.professorAppeals.find(

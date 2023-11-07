@@ -5,6 +5,7 @@ import {
   Assignment,
   Message,
   User,
+  Course,
 } from 'src/app/shared/interfaces/psql.interface';
 
 @Injectable({
@@ -17,6 +18,17 @@ export class SharedService {
   constructor(private supabaseService: SupabaseService) {
     this.supabase = this.supabaseService.client;
     this.session = this.supabaseService.session;
+  }
+
+  async getCourse(cid: number): Promise<Course> {
+    const { data, error } = await this.supabase.rpc('get_course', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in getCourse');
+    }
+    return data[0];
   }
 
   /**
