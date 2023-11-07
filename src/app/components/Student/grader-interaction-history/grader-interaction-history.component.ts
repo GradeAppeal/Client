@@ -10,7 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { Message, Professor } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Message,
+  Professor,
+  User,
+} from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
   StudentAppeal,
@@ -37,19 +41,8 @@ export class GraderInteractionHistoryComponent {
   appealId: number;
   messages!: Message[];
   currentProfessor: string | null = '';
-  grader = {
-    //student
-    id: 3,
-    email: 'abc123@gmail.com',
-    name: 'Sample',
-  };
-  sender = {
-    //professor
-    id: 0,
-    email: 'ccc1233@gmail.com',
-    name: 'Sample',
-  };
-
+  grader: User;
+  professor: User;
   studentAppeals!: StudentAppeal[];
   graderAppeals!: GraderAppeal[];
   professors!: Professor[];
@@ -65,6 +58,7 @@ export class GraderInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
+    this.grader = await this.sharedService.getUserInfo(STUDENT_UUID);
     this.graderAppeals = await this.graderService.fetchGraderAppeals(
       STUDENT_UUID
     );
@@ -85,6 +79,7 @@ export class GraderInteractionHistoryComponent {
     } else {
       this.selectAppeal(this.graderAppeals[0]);
     }
+    this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
     this.messageCount = this.messages.length;
 
     console.log(this.messages);
@@ -104,8 +99,7 @@ export class GraderInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    const messages = this.messages;
-    console.log({ messages });
+    console.log(this.messages);
   }
 
   /**

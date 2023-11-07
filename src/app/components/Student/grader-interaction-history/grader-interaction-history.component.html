@@ -41,7 +41,7 @@
               right: chat?.sender_id === grader.id,
               left: chat?.sender_id !== grader.id,
               grader: chat?.from_grader === true,
-              lightblue: professorMatch(chat.sender_id),
+              lightblue: chat?.sender_id === this.professor.id,
               notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >
@@ -55,7 +55,7 @@
               <!-- need to change to name -->
               <!-- <img ngxGravatar [email]="user.email" /> -->
               <img *ngIf="isUser" ngxGravatar [email]="grader.email" />
-              <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
+              <img *ngIf="!isUser" ngxGravatar [email]="professor.email" />
             </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
 
