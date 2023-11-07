@@ -12,13 +12,10 @@ import { formatTimestamp } from 'src/app/shared/functions/general.util';
 })
 export class NotificationsComponent {
 
-  date = new Date();
   professorAppeals!: ProfessorAppeal[];
   professorCourses!: Course[];
   fetchedAppeals = false;
-  newAppeals: ProfessorAppeal[] = [];
-  appealComplete = false;
-
+  toDoAppeals: ProfessorAppeal[] = [];
 
   constructor(private router: Router, private supabase: SupabaseService) {}
   async ngOnInit(): Promise<void> {
@@ -29,12 +26,12 @@ export class NotificationsComponent {
     } catch (err) {
       console.log(err);
     }
-    this.date.setDate(this.date.getDate() - 35);
     this.professorAppeals.forEach(appeal => {
-      if((new Date(appeal.created_at) > this.date) && (appeal.is_open)) {
-        this.newAppeals.push(appeal);
+      if((appeal.is_open) && (appeal.grader_id != null)) {
+        this.toDoAppeals.push(appeal);
       }
     });
+    console.log(this.toDoAppeals.length);
   }
 
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {

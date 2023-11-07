@@ -1,6 +1,11 @@
-<div *ngFor="let appeal of newAppeals" class="notification-appeals">
+<div *ngFor="let appeal of toDoAppeals" class="notification-appeals">
   <mat-card [ngClass]="{'completed-appeal': appeal.appeal_complete === true}">
     <mat-card-title class="card-title">{{appeal.student_name}} - {{appeal.assignment_name}}</mat-card-title>
     <mat-card-subtitle class="card-subtitle">{{ localFormatTimestamp(appeal.created_at).date }}</mat-card-subtitle>
+  </mat-card>
+</div>
+<div *ngIf="toDoAppeals.length === 0" class="no-appeals-message">
+  <mat-card class="notifcation-appeals">
+    <mat-card-title class="card-title">No notifications to display.</mat-card-title>
   </mat-card>
 </div>

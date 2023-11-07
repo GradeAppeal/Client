@@ -11,6 +11,7 @@ export interface ProfessorAppeal {
   student_name: string;
   appeal_grade: number;
   appeal_complete: boolean;
+  grader_id: number;
 }
 
 export interface ProfessorTemplate {
