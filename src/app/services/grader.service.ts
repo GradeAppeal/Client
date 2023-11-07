@@ -16,18 +16,41 @@ export class GraderService {
     this.session = this.supabaseService.session;
   }
   /**
-   *
+   * All appeals assigned to a grader
    * @param gid student grader id
-   * @returns All the appeals made by the student
+   * @returns All the appeals assigned to grader
    */
-  async fetchGraderAppeals(gid: string): Promise<GraderAppeal[]> {
-    const { data, error } = await this.supabase.rpc('get_grader_appeals', {
+  async fetchAllGraderAppeals(gid: string): Promise<GraderAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_all_grader_appeals', {
       gid,
     });
 
     if (error) {
       console.log(error);
-      throw new Error('GetGrader');
+      throw new Error('GetAllGraderAppeals');
+    }
+    return data;
+  }
+
+  /**
+   * Course-specific appeals assigned to a grader
+   * TODO: get only the assigned appeals
+   * @param gid student grader id
+   * @param cid course id for grader
+   * @returns All the appeals assigned to grader
+   */
+  async fetchCourseGraderAppeals(
+    gid: string,
+    cid: number
+  ): Promise<GraderAppeal[]> {
+    const { data, error } = await this.supabase.rpc('get_grader_appeals', {
+      gid,
+      cid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error('GetCourseGraderAppeals');
     }
     return data;
   }

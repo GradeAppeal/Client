@@ -14,7 +14,7 @@ export interface ProfessorAppeal {
   student_first_name?: string;
   student_id: string;
   student_last_name?: string;
-  grader_id?: number;
+  grader_id?: string;
 }
 
 export interface ProfessorTemplate {

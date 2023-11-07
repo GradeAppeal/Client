@@ -11,12 +11,12 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
   styleUrls: ['./professor-navigation.component.scss'],
 })
 export class ProfessorNavigationComponent {
-  email = 'victor.norman@calvin.edu';
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private authService: SupabaseService,
     private professorService: ProfessorService
   ) {}
   navigateTo(route: string) {
@@ -28,5 +28,15 @@ export class ProfessorNavigationComponent {
   async ngOnInit() {
     const students = await this.professorService.fetchStudents(1);
     console.log(this.selectedTab);
+  }
+
+  async logout() {
+    try {
+      await this.authService.signOut();
+      console.log('sign out!');
+      this.navigateTo('/');
+    } catch (error) {
+      console.log({ error });
+    }
   }
 }

@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
@@ -28,6 +29,7 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  session: Session;
   loading: boolean = true;
   studentUserId: string;
   chatInputMessage: string = '';
@@ -47,8 +49,11 @@ export class StudentInteractionHistoryComponent {
     private authService: SupabaseService,
     private studentService: StudentService,
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.session = this.authService.session as Session;
+  }
   async ngOnInit() {
+    const { user } = this.session;
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });

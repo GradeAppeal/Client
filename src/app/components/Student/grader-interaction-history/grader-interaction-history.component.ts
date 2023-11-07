@@ -7,12 +7,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Session, User } from '@supabase/supabase-js';
+import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   Message,
   Professor,
+  Course,
   User,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
@@ -34,13 +37,18 @@ export class GraderInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  session: Session;
+  user: User;
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = true;
+  noAppeals = true;
   isUser: Boolean;
   appealId: number;
+  courseId: number;
   messages!: Message[];
   currentProfessor: string | null = '';
+  currentCourse: Course | null;
   grader: User;
   professor: User;
   studentAppeals!: StudentAppeal[];
@@ -50,39 +58,62 @@ export class GraderInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private authService: SupabaseService,
     private graderService: GraderService,
     private sharedService: SharedService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
+      this.courseId = +params['id'];
     });
+    this.session = this.authService.session as Session;
   }
   async ngOnInit() {
-    this.grader = await this.sharedService.getUserInfo(STUDENT_UUID);
-    this.graderAppeals = await this.graderService.fetchGraderAppeals(
-      STUDENT_UUID
-    );
-    console.log('graderAppeals: ', this.graderAppeals);
+    // get auth user info from auth session
+    const { user } = this.session;
+
+    // if navigated from course dashboard, only get the appeals for that course
+    if (this.courseId) {
+      this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
+        user.id,
+        this.courseId
+      );
+      this.currentCourse = await this.sharedService.getCourse(this.courseId);
+    }
+    // otherwise, get all assigned appeals from all courses the grader is grading
+    else {
+      this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
+        user.id
+      );
+    }
+
+    this.graderAppeals.forEach((item) => {
+      console.log({ item });
+    });
     this.professors = await this.graderService.fetchProfessors();
-    console.log(this.professors);
+    const professors = this.professors;
+    console.log({ professors });
     this.professorIds;
     console.log(this.graderAppeals);
     console.log(this.professors);
-    //select current appeal based on id from url. Otherwise, set to first appeal
-    await this.selectAppeal(
-      this.graderAppeals.find((appeal) => appeal.appeal_id === this.appealId) ||
-        this.graderAppeals[0]
-    );
-    if (this.currentAppeal) {
-      //if appeal exists, find messages for it
-      this.selectAppeal(this.currentAppeal);
-    } else {
-      this.selectAppeal(this.graderAppeals[0]);
-    }
-    this.professor = await this.sharedService.getUserInfo(PROFESSOR_UUID);
-    this.messageCount = this.messages.length;
 
-    console.log(this.messages);
+    // show appeals if they exist, otherwise display message
+    if (this.graderAppeals.length > 0) {
+      await this.selectAppeal(this.graderAppeals[0]);
+      //select current appeal based on id from url. Otherwise, set to first appeal
+      if (this.currentAppeal) {
+        //if appeal exists, find messages for it
+        this.selectAppeal(this.currentAppeal);
+      } else {
+        this.selectAppeal(this.graderAppeals[0]);
+      }
+      this.messageCount = this.messages.length;
+
+      console.log(this.messages);
+      this.noAppeals = false;
+    } else {
+      this.noAppeals = true;
+    }
   }
 
   ngAfterViewChecked() {
