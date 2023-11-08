@@ -7,13 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { Message, User } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
-import { STUDENT_UUID } from 'src/app/shared/strings';
+
 @Component({
   selector: 'app-student-interaction-history',
   templateUrl: './student-interaction-history.component.html',
@@ -28,6 +29,7 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  session: Session;
   loading: boolean = true;
   studentUserId: string;
   chatInputMessage: string = '';
@@ -49,13 +51,15 @@ export class StudentInteractionHistoryComponent {
     private sharedService: SharedService
   ) {}
   async ngOnInit() {
+    const session = (await this.authService.getSession()) as Session;
+    const user = session.user;
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });
     // this.studentUserId = (await this.authService.getUserId()) as string;
-    this.student = await this.sharedService.getUserInfo(STUDENT_UUID);
+    this.student = await this.sharedService.getUserInfo(user.id);
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
-      STUDENT_UUID
+      user.id
     );
 
     this.currentAppeal = this.studentAppeals[0];

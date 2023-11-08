@@ -1,11 +1,11 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
-import { PROFESSOR_UUID } from 'src/app/shared/strings';
+import { Session, User } from '@supabase/supabase-js';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -14,6 +14,8 @@ import { PROFESSOR_UUID } from 'src/app/shared/strings';
 export class ProfessorAppealInboxComponent {
   @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
   //inboxAppeals: AppealInbox[];
+  session: Session;
+  user: User;
   noAppeals: boolean;
   appeals: any[];
   appeal: any;
@@ -25,7 +27,6 @@ export class ProfessorAppealInboxComponent {
   professorCourses!: Course[];
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
-  user: any;
 
   constructor(
     private router: Router,
@@ -34,16 +35,15 @@ export class ProfessorAppealInboxComponent {
   ) {}
   async ngOnInit(): Promise<void> {
     try {
-      const userId = (await this.authService.getUserId()) as string;
+      this.session = (await this.authService.getSession()) as Session;
+      this.user = this.session.user;
       this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-        PROFESSOR_UUID
+        this.user.id
       );
-      const profAppeals = this.professorAppeals;
-      console.log({ profAppeals });
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
       console.log(this.professorAppeals, 'appeals');
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        PROFESSOR_UUID
+        this.user.id
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;

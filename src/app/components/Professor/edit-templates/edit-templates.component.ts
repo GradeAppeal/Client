@@ -1,17 +1,11 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Output,
-  ViewChild,
-  EventEmitter,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { ProfessorTemplate } from 'src/app/shared/interfaces/professor.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTemplateComponent } from './add-template/add-template.component';
 import { DeleteTemplateComponent } from './delete-template/delete-template.component';
-import { PROFESSOR_UUID } from 'src/app/shared/strings';
+import { SupabaseService } from 'src/app/services/auth.service';
+import { Session, User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-edit-templates',
@@ -20,16 +14,21 @@ import { PROFESSOR_UUID } from 'src/app/shared/strings';
 })
 export class EditTemplatesComponent {
   constructor(
+    private authService: SupabaseService,
     private professorService: ProfessorService,
     private dialog: MatDialog
   ) {}
+  session: Session;
+  user: User;
   professorTemplates: ProfessorTemplate[];
   professorID = 1; //TODO make this actual user ID not just fake data
   editTemplate(template: ProfessorTemplate) {}
 
   async ngOnInit() {
+    this.session = (await this.authService.getSession()) as Session;
+    this.user = this.session.user;
     this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(PROFESSOR_UUID);
+      await this.professorService.fetchProfessorTemplates(this.user.id);
   }
 
   /**
@@ -39,7 +38,7 @@ export class EditTemplatesComponent {
     const dialogRef = this.dialog.open(AddTemplateComponent, {
       width: '80%',
       height: '80%',
-      data: { professorID: professorID },
+      data: { professorID: this.user.id },
     });
   }
 

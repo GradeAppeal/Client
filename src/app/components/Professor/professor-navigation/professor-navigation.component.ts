@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { setTitle } from 'src/app/shared/functions/general.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -11,23 +10,28 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
   styleUrls: ['./professor-navigation.component.scss'],
 })
 export class ProfessorNavigationComponent {
-  email = 'victor.norman@calvin.edu';
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
   constructor(
     private router: Router,
+    private dialog: MatDialog,
     private professorService: ProfessorService
   ) {}
-  selectTab(tabName: string): void {
-    this.selectedTab = tabName;
-  }
   navigateTo(route: string) {
     this.selectedTab = route;
+    console.log(route);
     this.router.navigate([route]);
   }
 
   async ngOnInit() {
     const students = await this.professorService.fetchStudents(1);
-    console.log({ students });
+    console.log(this.selectedTab);
+  }
+
+  logoutPopUp() {
+    this.dialog.open(SignoutComponent, {
+      width: '30%',
+      height: '25%',
+    });
   }
 }

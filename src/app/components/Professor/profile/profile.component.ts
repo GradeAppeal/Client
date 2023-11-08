@@ -8,6 +8,7 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SupabaseService } from 'src/app/services/auth.service';
+import { Session, User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +16,8 @@ import { SupabaseService } from 'src/app/services/auth.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnChanges {
+  session: Session;
+  user: User;
   courseStudents!: Student[];
   professorCourses!: Course[];
   fetchedStudents = false;
@@ -40,9 +43,10 @@ export class ProfileComponent implements OnChanges {
 
   async ngOnInit(): Promise<void> {
     try {
-      const userId = (await this.authService.getUserId()) as string;
+      this.session = (await this.authService.getSession()) as Session;
+      this.user = this.session.user;
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        userId
+        this.user.id
       );
       this.fetchedCourses = true;
     } catch (err) {

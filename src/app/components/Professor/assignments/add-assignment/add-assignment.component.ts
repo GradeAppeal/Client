@@ -18,19 +18,16 @@ export class AddAssignmentComponent {
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    private router: Router,
-    private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
-    private authService: SupabaseService,
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
-    console.log({data})
+    console.log({ data });
     this.currentCourse = data.course;
   }
 
   /**
-   * Submit student appeal to database
+   * Add new assignment to course
    */
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */

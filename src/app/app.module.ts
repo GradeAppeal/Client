@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { GravatarModule } from 'ngx-gravatar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/Auth/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
 
 /* Material Design Imports  */
@@ -34,13 +34,14 @@ import { EditStudentsPopUpComponent } from './components/Student/edit-students-p
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
-import { RegisterComponent } from './components/register/register.component';
+import { RegisterComponent } from './components/Auth/register/register.component';
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
 import { AddCourseComponent } from './components/Professor/profile/add-course/add-course.component';
 import { DeleteCourseComponent } from './components/Professor/profile/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+import { SignoutComponent } from './components/Auth/signout/signout.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { GraderInteractionHistoryComponent } from './components/Student/grader-i
     AddCourseComponent,
     DeleteCourseComponent,
     GraderInteractionHistoryComponent,
+    SignoutComponent,
   ],
   imports: [
     BrowserModule,
