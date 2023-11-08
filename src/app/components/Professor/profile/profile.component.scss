@@ -8,6 +8,18 @@
   padding-bottom: 1em;
 }
 
+.title-container {
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.delete-icon {
+  margin-right: 0.5em;
+  margin-top: -0.5em;
+}
+
 .courses {
   margin: 2%;
   width: 22vw;
@@ -26,10 +38,18 @@
   height: 700px;
 }
 
-.course-wording {
+.course-wording{
   margin-top: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
+  margin-left: 2em;
   font-size: larger;
+  flex: 1;
+  text-align: center;
+}
+
+.course-name {
+  font-size: larger;
+  padding-bottom: 2em;
 }
 
 .edit-button, .assignments-button {
@@ -71,7 +91,7 @@
 }
 
 .blue-button {
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
 }
 
 .student-input {
