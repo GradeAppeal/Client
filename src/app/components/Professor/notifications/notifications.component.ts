@@ -27,7 +27,7 @@ export class NotificationsComponent {
       console.log(err);
     }
     this.professorAppeals.forEach(appeal => {
-      if((appeal.is_open) && (appeal.grader_id != null)) {
+      if((appeal.is_open) && (appeal.grader_id == null)) {
         this.toDoAppeals.push(appeal);
       }
     });
