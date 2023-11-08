@@ -21,7 +21,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
-import { PROFESSOR_UUID, STUDENT_UUID } from 'src/app/shared/strings';
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -38,6 +38,7 @@ export class GraderInteractionHistoryComponent {
 
   session: Session;
   user: User;
+  noAppealsMessage: string = '';
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = true;
@@ -76,53 +77,60 @@ export class GraderInteractionHistoryComponent {
       this.appealId = +params['id']; // Convert the parameter to a number
       this.courseId = +params['id'];
     });
-    this.session = this.authService.session as Session;
   }
   async ngOnInit() {
+    this.session = (await this.authService.getSession()) as Session;
     // get auth user info from auth session
-    const { user } = this.session;
+    this.user = this.session.user;
 
-    // if navigated from course dashboard, only get the appeals for that course
-    if (this.courseId) {
-      this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
-        user.id,
-        this.courseId
-      );
-      this.currentCourse = await this.sharedService.getCourse(this.courseId);
-    }
-    // otherwise, get all assigned appeals from all courses the grader is grading
-    else {
-      this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
-        user.id
-      );
-    }
-
-    this.graderAppeals.forEach((item) => {
-      console.log({ item });
-    });
-    this.professors = await this.graderService.fetchProfessors();
-    const professors = this.professors;
-    console.log({ professors });
-    this.professorIds;
-    console.log(this.graderAppeals);
-    console.log(this.professors);
-
-    // show appeals if they exist, otherwise display message
-    if (this.graderAppeals.length > 0) {
-      await this.selectAppeal(this.graderAppeals[0]);
-      //select current appeal based on id from url. Otherwise, set to first appeal
-      if (this.currentAppeal) {
-        //if appeal exists, find messages for it
-        this.selectAppeal(this.currentAppeal);
-      } else {
-        this.selectAppeal(this.graderAppeals[0]);
-      }
-      this.messageCount = this.messages.length;
-
-      console.log(this.messages);
-      this.noAppeals = false;
-    } else {
+    const isGrader = await this.graderService.isGrader(this.user.id);
+    if (!isGrader) {
       this.noAppeals = true;
+      this.noAppealsMessage = 'You are not assigned as a grader to any courses';
+    } else {
+      // if navigated from course dashboard, only get the appeals for that course
+      if (this.courseId) {
+        this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
+          this.user.id,
+          this.courseId
+        );
+        this.currentCourse = await this.sharedService.getCourse(this.courseId);
+      }
+      // otherwise, get all assigned appeals from all courses the grader is grading
+      else {
+        this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
+          this.user.id
+        );
+      }
+
+      this.graderAppeals.forEach((item) => {
+        console.log({ item });
+      });
+      this.professors = await this.graderService.fetchProfessors();
+      const professors = this.professors;
+      console.log({ professors });
+      this.professorIds;
+      console.log(this.graderAppeals);
+      console.log(this.professors);
+
+      // show appeals if they exist, otherwise display message
+      if (this.graderAppeals.length > 0) {
+        await this.selectAppeal(this.graderAppeals[0]);
+        //select current appeal based on id from url. Otherwise, set to first appeal
+        if (this.currentAppeal) {
+          //if appeal exists, find messages for it
+          this.selectAppeal(this.currentAppeal);
+        } else {
+          this.selectAppeal(this.graderAppeals[0]);
+        }
+        this.messageCount = this.messages.length;
+
+        console.log(this.messages);
+        this.noAppeals = false;
+      } else {
+        this.noAppeals = true;
+        this.noAppealsMessage = `No appeals assigned for ${this.currentCourse?.prefix}-${this.currentCourse?.code}`;
+      }
     }
   }
 
@@ -157,7 +165,7 @@ export class GraderInteractionHistoryComponent {
     try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        STUDENT_UUID, //sender id: grader
+        this.user.id, //sender id: grader
         PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,

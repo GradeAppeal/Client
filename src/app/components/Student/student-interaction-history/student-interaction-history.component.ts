@@ -14,7 +14,7 @@ import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { Message, User } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
-import { STUDENT_UUID } from 'src/app/shared/strings';
+
 @Component({
   selector: 'app-student-interaction-history',
   templateUrl: './student-interaction-history.component.html',
@@ -49,18 +49,17 @@ export class StudentInteractionHistoryComponent {
     private authService: SupabaseService,
     private studentService: StudentService,
     private sharedService: SharedService
-  ) {
-    this.session = this.authService.session as Session;
-  }
+  ) {}
   async ngOnInit() {
-    const { user } = this.session;
+    const session = (await this.authService.getSession()) as Session;
+    const user = session.user;
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });
     // this.studentUserId = (await this.authService.getUserId()) as string;
-    this.student = await this.sharedService.getUserInfo(STUDENT_UUID);
+    this.student = await this.sharedService.getUserInfo(user.id);
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
-      STUDENT_UUID
+      user.id
     );
 
     this.currentAppeal = this.studentAppeals[0];
