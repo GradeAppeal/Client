@@ -12,15 +12,19 @@ import { Session } from '@supabase/supabase-js';
   styleUrls: ['./student-dashboard.component.scss'],
 })
 export class StudentDashboardComponent {
+  session: Session;
   studentUserId!: string;
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
     private readonly studentService: StudentService,
     private router: Router
-  ) {}
+  ) {
+    this.session = this.studentService.session as Session;
+  }
   async ngOnInit(): Promise<void> {
-    const { user } = this.studentService.session as Session;
+    const { user } = this.session;
+    console.log(user);
     this.studentCourses = await this.studentService.fetchStudentCourses(
       user.id
     );

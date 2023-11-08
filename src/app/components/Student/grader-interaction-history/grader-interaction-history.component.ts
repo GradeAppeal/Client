@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Session, User } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -38,7 +38,6 @@ export class GraderInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
   session: Session;
-  user: User;
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = true;
@@ -71,7 +70,8 @@ export class GraderInteractionHistoryComponent {
   async ngOnInit() {
     // get auth user info from auth session
     const { user } = this.session;
-
+    console.log(user.id);
+    this.grader = await this.sharedService.getUserInfo(user.id);
     // if navigated from course dashboard, only get the appeals for that course
     if (this.courseId) {
       this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
@@ -86,16 +86,16 @@ export class GraderInteractionHistoryComponent {
         user.id
       );
     }
+    console.log(user.id);
 
     this.graderAppeals.forEach((item) => {
       console.log({ item });
     });
-    this.professors = await this.graderService.fetchProfessors();
-    const professors = this.professors;
-    console.log({ professors });
+    //this.professors = await this.graderService.fetchProfessors();
+    //const professors = this.professors;
+    //console.log({ professors });
     this.professorIds;
     console.log(this.graderAppeals);
-    console.log(this.professors);
 
     // show appeals if they exist, otherwise display message
     if (this.graderAppeals.length > 0) {
@@ -130,6 +130,10 @@ export class GraderInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
+    if (this.messages[0].sender_id !== this.grader.id) {
+      this.professor.id = this.messages[0].sender_id as string;
+      console.log(this.professor.id);
+    }
     console.log(this.messages);
   }
 
