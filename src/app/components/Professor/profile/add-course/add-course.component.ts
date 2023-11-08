@@ -16,6 +16,7 @@ export class AddCourseComponent {
   courseYear = new Date().getFullYear();
   courseNextYear = new Date().getFullYear() + 1;
   codeString = '';
+  professorID : number; 
   course : ProfessorCourse = {
     prefix: '',
     code: 0,
@@ -35,6 +36,17 @@ export class AddCourseComponent {
     private dialogRef: MatDialogRef<AddCourseComponent>,
     private professorService: ProfessorService,
   ) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    // try {
+    //   this.professorCourses = await this.professorService.fetchProfessorCourses(
+    //     this.user.id
+    //   );
+    //   this.fetchedCourses = true;
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }
 
   /* 

@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { ProfessorService } from 'src/app/services/professor.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
-
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
@@ -17,11 +17,11 @@ export class NotificationsComponent {
   fetchedAppeals = false;
   toDoAppeals: ProfessorAppeal[] = [];
 
-  constructor(private router: Router, private supabase: SupabaseService) {}
+  constructor(private router: Router, private professorService: ProfessorService) {}
   async ngOnInit(): Promise<void> {
     try {
-      this.professorAppeals = await this.supabase.fetchProfessorAppeals(1);
-      this.professorCourses = await this.supabase.fetchProfessorCourses(1);
+      this.professorAppeals = await this.professorService.fetchProfessorAppeals(PROFESSOR_UUID);
+      this.professorCourses = await this.professorService.fetchProfessorCourses(PROFESSOR_UUID);
       this.fetchedAppeals = true;
     } catch (err) {
       console.log(err);

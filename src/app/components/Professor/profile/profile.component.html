@@ -1,11 +1,14 @@
 <div class="whole-page">
   <div *ngIf="currentPage == 'view'" class="course-wrapper">
     <mat-card class="courses" *ngFor="let course of professorCourses">
-      <mat-card-title class="course-wording"
-      >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
-      {{ course.semester }}-{{ course.year }}</mat-card-title
-    >
-      <mat-card-subtitle class="course-wording">{{
+      <div class="title-container">
+        <mat-card-title class="course-wording"
+          >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
+          {{ course.semester }}-{{ course.year }}
+        </mat-card-title 
+        ><mat-icon class="delete-icon" (click)="deleteCoursePopUp()">delete</mat-icon>
+      </div>  
+    <mat-card-subtitle class="course-name">{{
       course.name
     }}</mat-card-subtitle>
       <button

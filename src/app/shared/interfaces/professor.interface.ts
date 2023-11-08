@@ -12,7 +12,6 @@ export interface ProfessorAppeal {
   created_at: Date;
   is_open: boolean;
   prefix: string;
-  student_id: number;
   student_name: string;
   appeal_grade: number;
   appeal_complete: boolean;

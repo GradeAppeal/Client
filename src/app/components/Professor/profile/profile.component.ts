@@ -207,7 +207,7 @@ export class ProfileComponent implements OnChanges {
   /**
      * Goes to DeleteTemplate pop up component
      */
-  async deleteCoursePopUp(templateID: number): Promise<void> {
+  async deleteCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
       width: "50%",
       height: "55%",
