@@ -1,0 +1,15 @@
+<div class="container">
+  <h1 mat-dialog-title>Sign Out</h1>
+  <mat-dialog-content>Are you sure you want to sign out?</mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      class="sign-out"
+      [mat-dialog-close]="true"
+      (click)="onSignout()"
+    >
+      Sign Out
+    </button>
+    <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+  </mat-dialog-actions>
+</div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/Auth/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/Professor/profile/profile.component';
@@ -10,8 +10,11 @@ import { EditTemplatesComponent } from './components/Professor/edit-templates/ed
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
+import { RegisterComponent } from './components/Auth/register/register.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
+import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -63,14 +66,21 @@ const routes: Routes = [
         path: 'student/:id',
         component: StudentDashboardComponent,
       },
-
       {
         path: 'interaction-history',
         component: StudentInteractionHistoryComponent,
       },
       {
-        path: 'interaction-history/:id',
+        path: 'interaction-history/:appealId',
         component: StudentInteractionHistoryComponent,
+      },
+      {
+        path: 'grader/interaction-history',
+        component: GraderInteractionHistoryComponent,
+      },
+      {
+        path: 'grader/interaction-history/:id',
+        component: GraderInteractionHistoryComponent,
       },
     ],
   },
@@ -79,6 +89,26 @@ const routes: Routes = [
     component: NewAppealComponent,
   },
 
+  {
+    path: 'professor',
+    component: ProfessorNavigationComponent,
+  },
+  {
+    path: 'professor/closed-appeals',
+    component: ClosedAppealsComponent,
+  },
+  {
+    path: 'professor/profile',
+    component: ProfileComponent,
+  },
+  {
+    path: 'professor/edit-templates',
+    component: EditTemplatesComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
   {
     path: '**',
     redirectTo: '/',

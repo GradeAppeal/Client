@@ -1,0 +1,55 @@
+<div class="register-container">
+  <div class="register-info-container">
+    <h1>Instructor Registeration</h1>
+    <h2>
+      Please register below with the format <i>first.last@calvin.edu</i> format
+    </h2>
+  </div>
+
+  <form
+    class="register-form"
+    [formGroup]="registerForm"
+    (ngSubmit)="onRegister()"
+  >
+    <mat-form-field>
+      <label for="firstName">First Name</label>
+      <input
+        matInput
+        placeholder="First Name"
+        name="firstName"
+        formControlName="firstName"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <label for="lastName">Last Name</label>
+      <input
+        matInput
+        placeholder="Last Name"
+        name="lastName"
+        formControlName="lastName"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <label for="email">Email</label>
+      <input
+        matInput
+        placeholder="email@calvin.edu"
+        formControlName="email"
+        type="email"
+        name="email"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <label for="password">Password</label>
+      <input
+        matInput
+        type="password"
+        placeholder="Password"
+        name="password"
+        formControlName="password"
+      />
+    </mat-form-field>
+    <button type="submit" class="blue-button">Register</button>
+  </form>
+</div>

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SupabaseService } from './supabase.service';
+import { SupabaseService } from './auth.service';
 
 describe('SupabaseService', () => {
   let service: SupabaseService;

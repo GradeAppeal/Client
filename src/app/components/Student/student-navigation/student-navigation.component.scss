@@ -1,47 +1,65 @@
 @import "src/styles.scss";
+
+.tab-list {
+  background-color: white;
+  height: 100%;
+}
+
+.material-symbols-outlined {
+  color: $primary-blue;
+}
+.sidenav-button {
+  color: $primary-blue;
+  padding: 15px;
+  width: 100%;
+
+  &:hover {
+    background-color: darken(white, 10%);
+  }
+}
+mat-icon {
+  margin-right: 7px;
+}
+
+.selected {
+  background-color: darken(white, 15%);
+}
+
 .sidenav-container {
-    height: 100%;
-    margin: 0px;
-  }
-  
-  mat-sidenav {
-    width: 200px;
-  }
-  mat-sidenav-content {
-    height: 100%;
-  }
-
-  .tab-list {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-
-
-  .top-bar{
-    font-size: 40px;
-    color: $primary-blue;
-    height: 80px;
-    padding-top: 8px;
-  }
-
-  .left-content{
-    margin-right: auto;
-    align-items: center; 
-    display: flex;
-  }
-
-  .right-content {
-    margin-left: auto; 
-    display: flex;
-    align-items: center; 
-  }
-
-  .tab-list {
-    background-color: $secondary-blue;
-    height: 100%;
-    }
-
- .sidenav-container{
+  width: 200px; /* Set the width of the sidenav as needed */
   height: 100vh;
-  overflow: hidden; /* Hide overflow content */
- }
+  float: left;
+}
+.top-bar {
+  font-size: 40px;
+  background-color: white;
+  color: $primary-blue;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+}
+
+.right-content {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 0.5vw;
+  .material-symbols-outlined {
+    font-size: 30px;
+    font-variation-settings: "FILL" 0, "wght" 800, "GRAD" 0, "opsz" 48;
+  }
+}
+.app-container {
+  height: 100vh;
+}
+
+.content {
+  overflow: auto;
+}

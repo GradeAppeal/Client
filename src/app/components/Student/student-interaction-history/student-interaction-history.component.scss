@@ -1,9 +1,7 @@
 @import "src/styles.scss";
 
-$background: white;
-
 .card {
-  background: $background;
+  background: white;
   height: 90vh;
   min-width: 20%;
   max-width: 100%;
@@ -15,61 +13,6 @@ $background: white;
 
   ::-webkit-scrollbar {
     display: none;
-  }
-}
-
-.chat-list {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  overflow-y: scroll;
-
-  .chat-item {
-    max-width: 80%;
-    margin: 8px 0px;
-    display: flex;
-    flex-direction: row;
-
-    #message-body {
-      background: $primary-blue;
-      margin: auto 8px;
-      padding: 12px 24px;
-      border-radius: 30px;
-      color: white;
-      display: flex;
-      flex-direction: row;
-    }
-
-    #avatar {
-      height: 44px;
-      width: 44px;
-      object-fit: cover;
-      border-radius: 50%;
-      z-index: 99;
-      border: 3px solid $background;
-    }
-  }
-
-  .left {
-    margin-right: auto;
-    margin-left: 8px;
-
-    #message-body {
-      margin-left: -10px;
-      background-color: lightgray;
-      color: black;
-    }
-  }
-
-  .right {
-    margin-right: 8px;
-    margin-left: auto;
-    flex-direction: row-reverse;
-
-    #message-body {
-      margin-right: -10px;
-    }
   }
 }
 
@@ -119,37 +62,32 @@ $background: white;
 
 .inbox-item {
   //  padding-top: 60px;
-  border: solid gray 1px;
-  float: left;
+  border-top: solid gray 1px;
+  //float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   height: 100px;
   p {
     font-size: 10px;
     padding: 0px;
-    margin-right: 10px;
+    margin-left: 15px;
   }
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
+  display: relative;
+  flex: 1;
 }
 
 .inbox {
-  border: solid gray 1px;
   width: 200px;
   float: left;
-  margin-left: -10px;
-  margin-right: 0px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
   mat-nav-list {
     padding: 0px;
   }
 }
-
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 

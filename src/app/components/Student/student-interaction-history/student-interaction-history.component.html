@@ -1,33 +1,31 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
-    <mat-nav-list>
-      <mat-list-item
-        class="inbox-item"
-        *ngFor="let appeal of this.studentAppeals"
-        (click)="selectAppeal(appeal)"
-        [class.selected-appeal]="appeal === currentAppeal"
-      >
-        <p matLine class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
-        </p>
-        <p matLine>
-          <b>
-            {{ appeal?.professor_first_name }}
-          </b>
-        </p>
+    <div
+      class="inbox-item"
+      *ngFor="let appeal of this.studentAppeals"
+      (click)="selectAppeal(appeal)"
+      [class.selected-appeal]="appeal === currentAppeal"
+    >
+      <p matLine class="inbox-timestamp">
+        {{ formatTimestamp(appeal.created_at).time }}
+      </p>
+      <p matLine>
+        <b>
+          {{ appeal?.professor_first_name }}
+        </b>
+      </p>
 
-        <p matLine>{{ appeal.course_name }}</p>
-        <p matLine>{{ appeal?.assignment_name }}</p>
-      </mat-list-item>
-    </mat-nav-list>
+      <p matLine>{{ appeal.course_name }}</p>
+      <p matLine>{{ appeal?.assignment_name }}</p>
+    </div>
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
   <div class="right-pane">
     <div class="card">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
-          <img class="header-avatar" ngxGravatar [email]="user.email" />
+          <img class="header-avatar" ngxGravatar [email]="student.email" />
           <h1>
             {{ currentAppeal?.professor_first_name }}
             {{ currentAppeal?.professor_last_name }}<span>:</span>
@@ -40,16 +38,39 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id == user.id,
-              left: chat?.sender_id != user.id
+              right: chat?.sender_id == student.id,
+              left: chat?.sender_id != student.id,
+              lightblue: chat?.from_grader == true,
+              notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >
-            <!-- <img ngxGravatar [email]="user.email" /> -->
-            <img *ngIf="isUser" ngxGravatar [email]="user.email" />
-            <img *ngIf="!isUser" ngxGravatar [email]="sender.email" />
+            <p
+              class="name"
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.sender_name }}
+            </p>
+            <div *ngIf="!chat.message_text.trim().startsWith('Notification:')">
+              <!-- <img ngxGravatar [email]="user.email" /> -->
+              <img *ngIf="isUser" ngxGravatar [email]="student.email" />
+              <img *ngIf="!isUser" ngxGravatar [email]="professor.email" />
+            </div>
 
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
-            <p id="message-body">{{ chat?.message_text }}</p>
+            <p
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              id="message-body"
+            >
+              {{ chat?.message_text }}
+            </p>
+            <p
+              class="notification-text"
+              id="message-body"
+              *ngIf="chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.message_text.substring(13) }}
+              <!-- Display text after "Notification:" -->
+            </p>
           </div>
         </ng-container>
       </div>
@@ -63,7 +84,7 @@
         <button
           mat-stroked-button
           id="send-button"
-          (click)="sendMessage()"
+          (click)="sendMessage(this.chatInputMessage)"
           [disabled]="chatInputMessage === ''"
         >
           Send
@@ -71,4 +92,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="loading" *ngIf="loading">
+  <h1>Loading Appeals...</h1>
 </div>
