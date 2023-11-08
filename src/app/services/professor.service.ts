@@ -9,6 +9,7 @@ import {
 } from '../shared/interfaces/professor.interface';
 import { StudentCourse } from '../shared/interfaces/student.interface';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -36,6 +37,35 @@ export class ProfessorService {
     }
     return data;
   }
+
+  /**
+   * Writes new assignment to database
+   * @param cid course id from UI
+   * @param assignment_name name of assignment
+   */
+  async insertCourse(
+    prefix: string,
+    code: number,
+    name: string,
+    section: string,
+    semester: string,
+    year: number,
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('insert_course', {
+      prefix,
+      code,
+      name,
+      section,
+      semester,
+      year,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('insert_course');
+    }
+    return data;
+  }
+
 
   /**
    * fetch from supabase: professor appeals

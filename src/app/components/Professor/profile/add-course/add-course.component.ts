@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../../../services/auth.service';
 import { Course } from '../../../../shared/interfaces/psql.interface';
+import { ProfessorService } from 'src/app/services/professor.service';
+import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
 
 @Component({
   selector: 'app-add-course',
@@ -11,14 +13,17 @@ import { Course } from '../../../../shared/interfaces/psql.interface';
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent {
-  newCoursePrefix: string;
-  newCourseCode: number;
-  newCourseName: string;
-  newCourseSemester: string = "FA";
   courseYear = new Date().getFullYear();
   courseNextYear = new Date().getFullYear() + 1;
-
-  chosenYear: number;
+  codeString = '';
+  course : ProfessorCourse = {
+    prefix: '',
+    code: 0,
+    name: '',
+    section: '',
+    semester: 'FA',
+    year: this.courseYear,
+  };
 
   @ViewChild('mySelectSemester') mySelectSemester: MatSelect;
   @ViewChild('mySelectYear') mySelectYear: MatSelect;
@@ -28,46 +33,45 @@ export class AddCourseComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddCourseComponent>,
-    private authService: SupabaseService,
+    private professorService: ProfessorService,
   ) {
   }
-
-  async ngOnInit() {
-    
-  }
-
 
   /* 
   * Add course to database
   */
   async onAddCourse(){
-
-    this.newCourseSemester = this.mySelectSemester.value;
-    console.log('Selected Value: ', this.newCourseSemester);
-    
-    if (this.mySelectYear.value == "courseYear"){
-      this.chosenYear = this.courseYear;
-    }
-    else if (this.mySelectSemester.value == "courseNextYear"){
-      this.chosenYear = this.courseNextYear;
-    }
-
-    console.log(this.courseYear);
-    console.log(this.courseNextYear);
-
       try {
-      // await this.supabase.insertCourse(
-      //   this.newCoursePrefix,
-      //   this.newCourseCode,
-      //   this.newCourseName,
-      //   this.newCourseSemester,
-      //   this.chosenYear
-      // );
+      await this.professorService.insertCourse(
+        this.course.prefix,
+        this.course.code,
+        this.course.name,
+        this.course.section,
+        this.course.semester,
+        this.course.year
+      );
       } catch (err) {
         console.log(err);
         throw new Error('insertCourse');
       }
     /*   close pop-up */
       this.dialogRef.close();
+  }
+
+  onEditCode(codeString: string) {
+    this.course.code = parseInt(codeString, 10)
+  }
+
+  onSelectSemester(event: any) {
+    this.course.semester = event.target.value;
+  }
+
+  onSelectYear(event: any) {
+    if (event.target.value == "courseYear"){
+      this.course.year = this.courseYear;
+    }
+    else if (event.target.value == "courseNextYear"){
+      this.course.year = this.courseNextYear;
+    }
   }
 }

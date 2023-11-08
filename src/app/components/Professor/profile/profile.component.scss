@@ -22,6 +22,8 @@
   display: flex;
   flex-wrap: wrap;
   position: relative;
+  overflow: auto;
+  height: 700px;
 }
 
 .course-wording {

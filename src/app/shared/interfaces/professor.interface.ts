@@ -21,7 +21,14 @@ export interface ProfessorTemplate {
   temp_name: string;
 }
 
-export interface ProfessorCourse {}
+export interface ProfessorCourse {
+  prefix: string,
+  code: number,
+  name: string,
+  section: string,
+  semester: string,
+  year: number,
+}
 
 export interface ParsedStudent {
   first_name: string;
