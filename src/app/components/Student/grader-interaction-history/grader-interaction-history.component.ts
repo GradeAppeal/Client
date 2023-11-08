@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -36,7 +36,9 @@ export class GraderInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  session: Session;
   user: User;
+  noAppealsMessage: string = '';
   chatInputMessage: string = '';
   messageCount: number = 0;
   fromGrader = true;
@@ -77,50 +79,58 @@ export class GraderInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
+    this.session = (await this.authService.getSession()) as Session;
     // get auth user info from auth session
-    this.user = await this.authService.getUser();
+    this.user = this.session.user;
 
-    // if navigated from course dashboard, only get the appeals for that course
-    if (this.courseId) {
-      this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
-        this.user.id,
-        this.courseId
-      );
-      this.currentCourse = await this.sharedService.getCourse(this.courseId);
-    }
-    // otherwise, get all assigned appeals from all courses the grader is grading
-    else {
-      this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
-        this.user.id
-      );
-    }
-
-    this.graderAppeals.forEach((item) => {
-      console.log({ item });
-    });
-    this.professors = await this.graderService.fetchProfessors();
-    const professors = this.professors;
-    console.log({ professors });
-    this.professorIds;
-    console.log(this.graderAppeals);
-    console.log(this.professors);
-
-    // show appeals if they exist, otherwise display message
-    if (this.graderAppeals.length > 0) {
-      await this.selectAppeal(this.graderAppeals[0]);
-      //select current appeal based on id from url. Otherwise, set to first appeal
-      if (this.currentAppeal) {
-        //if appeal exists, find messages for it
-        this.selectAppeal(this.currentAppeal);
-      } else {
-        this.selectAppeal(this.graderAppeals[0]);
-      }
-      this.messageCount = this.messages.length;
-
-      console.log(this.messages);
-      this.noAppeals = false;
-    } else {
+    const isGrader = await this.graderService.isGrader(this.user.id);
+    if (!isGrader) {
       this.noAppeals = true;
+      this.noAppealsMessage = 'You are not assigned as a grader to any courses';
+    } else {
+      // if navigated from course dashboard, only get the appeals for that course
+      if (this.courseId) {
+        this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
+          this.user.id,
+          this.courseId
+        );
+        this.currentCourse = await this.sharedService.getCourse(this.courseId);
+      }
+      // otherwise, get all assigned appeals from all courses the grader is grading
+      else {
+        this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
+          this.user.id
+        );
+      }
+
+      this.graderAppeals.forEach((item) => {
+        console.log({ item });
+      });
+      this.professors = await this.graderService.fetchProfessors();
+      const professors = this.professors;
+      console.log({ professors });
+      this.professorIds;
+      console.log(this.graderAppeals);
+      console.log(this.professors);
+
+      // show appeals if they exist, otherwise display message
+      if (this.graderAppeals.length > 0) {
+        await this.selectAppeal(this.graderAppeals[0]);
+        //select current appeal based on id from url. Otherwise, set to first appeal
+        if (this.currentAppeal) {
+          //if appeal exists, find messages for it
+          this.selectAppeal(this.currentAppeal);
+        } else {
+          this.selectAppeal(this.graderAppeals[0]);
+        }
+        this.messageCount = this.messages.length;
+
+        console.log(this.messages);
+        this.noAppeals = false;
+      } else {
+        this.noAppeals = true;
+        this.noAppealsMessage = `No appeals assigned for ${this.currentCourse?.prefix}-${this.currentCourse?.code}`;
+      }
     }
   }
 

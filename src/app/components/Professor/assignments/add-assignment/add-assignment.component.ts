@@ -27,7 +27,7 @@ export class AddAssignmentComponent {
   }
 
   /**
-   * Submit student appeal to database
+   * Add new assignment to course
    */
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */

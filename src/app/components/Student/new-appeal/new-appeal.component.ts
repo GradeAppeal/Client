@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
-import { User } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
@@ -35,7 +35,8 @@ export class NewAppealComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.user = await this.authService.getUser();
+    const session = (await this.authService.getSession()) as Session;
+    this.user = session.user;
     this.courseId = this.route.snapshot.params['courseId'];
     try {
       // don't render form until course and assignment information has been fetched

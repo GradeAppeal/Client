@@ -51,7 +51,8 @@ export class StudentInteractionHistoryComponent {
     private sharedService: SharedService
   ) {}
   async ngOnInit() {
-    const user = await this.authService.getUser();
+    const session = (await this.authService.getSession()) as Session;
+    const user = session.user;
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });

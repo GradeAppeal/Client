@@ -12,6 +12,7 @@ import { Session, User } from '@supabase/supabase-js';
 })
 export class StudentDashboardComponent {
   session: Session;
+  user: User;
   studentUserId!: string;
   studentCourses!: StudentCourse[];
   course_string: string;
@@ -21,12 +22,13 @@ export class StudentDashboardComponent {
     private router: Router
   ) {}
   async ngOnInit(): Promise<void> {
-    const user = await this.authService.getUser();
+    this.session = (await this.authService.getSession()) as Session;
+    this.user = this.session.user;
     this.studentCourses = await this.studentService.fetchStudentCourses(
-      user.id
+      this.user.id
     );
     const studentAppeals = await this.studentService.fetchStudentAppeals(
-      user.id
+      this.user.id
     );
     console.log({ studentAppeals });
   }
