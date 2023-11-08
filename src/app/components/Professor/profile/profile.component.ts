@@ -38,9 +38,9 @@ export class ProfileComponent implements OnChanges {
 
   async ngOnInit(): Promise<void> {
     try {
-      const userId = (await this.authService.getUserId()) as string;
+      const user = await this.authService.getUser();
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        userId
+        user.id
       );
       this.fetchedCourses = true;
     } catch (err) {

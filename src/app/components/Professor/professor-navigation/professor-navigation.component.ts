@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { setTitle } from 'src/app/shared/functions/general.util';
-import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
+import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -14,9 +13,8 @@ export class ProfessorNavigationComponent {
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private authService: SupabaseService,
+    private dialog: MatDialog,
     private professorService: ProfessorService
   ) {}
   navigateTo(route: string) {
@@ -30,13 +28,10 @@ export class ProfessorNavigationComponent {
     console.log(this.selectedTab);
   }
 
-  async logout() {
-    try {
-      await this.authService.signOut();
-      console.log('sign out!');
-      this.navigateTo('/');
-    } catch (error) {
-      console.log({ error });
-    }
+  logoutPopUp() {
+    this.dialog.open(SignoutComponent, {
+      width: '30%',
+      height: '25%',
+    });
   }
 }

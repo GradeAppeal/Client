@@ -32,12 +32,10 @@ export class ProfessorAppealInboxComponent {
     private router: Router,
     private authService: SupabaseService,
     private professorService: ProfessorService
-  ) {
-    this.session = this.authService.session as Session;
-  }
+  ) {}
   async ngOnInit(): Promise<void> {
     try {
-      const { user } = this.session;
+      const user = await this.authService.getUser();
       this.professorAppeals = await this.professorService.fetchProfessorAppeals(
         user.id
       );

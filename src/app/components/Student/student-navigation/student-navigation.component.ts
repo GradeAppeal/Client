@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { navigate, setTitle } from 'src/app/shared/functions/general.util';
 import { SupabaseService } from 'src/app/services/auth.service';
+import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 
 @Component({
   selector: 'app-student-navigation',
@@ -9,7 +11,11 @@ import { SupabaseService } from 'src/app/services/auth.service';
   styleUrls: ['./student-navigation.component.scss'],
 })
 export class StudentNavigationComponent {
-  constructor(private router: Router, private authService: SupabaseService) {
+  constructor(
+    private router: Router,
+    private authService: SupabaseService,
+    private dialog: MatDialog
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.title = setTitle(event.url);
@@ -24,17 +30,15 @@ export class StudentNavigationComponent {
     this.selectedTab = tabName;
   }
 
-  async logout() {
-    try {
-      await this.authService.signOut();
-      console.log('sign out!');
-      this.navigateTo('/');
-    } catch (error) {
-      console.log({ error });
-    }
-  }
   navigateTo(route: string) {
     this.selectedTab = route;
     navigate(this.router, route); //use the navigate function from general.utils
+  }
+
+  logoutPopUp() {
+    this.dialog.open(SignoutComponent, {
+      width: '30%',
+      height: '25%',
+    });
   }
 }

@@ -11,7 +11,8 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTemplateComponent } from './add-template/add-template.component';
 import { DeleteTemplateComponent } from './delete-template/delete-template.component';
-import { PROFESSOR_UUID } from 'src/app/shared/strings';
+import { SupabaseService } from 'src/app/services/auth.service';
+import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-edit-templates',
@@ -20,16 +21,19 @@ import { PROFESSOR_UUID } from 'src/app/shared/strings';
 })
 export class EditTemplatesComponent {
   constructor(
+    private authService: SupabaseService,
     private professorService: ProfessorService,
     private dialog: MatDialog
   ) {}
+  user: User;
   professorTemplates: ProfessorTemplate[];
   professorID = 1; //TODO make this actual user ID not just fake data
   editTemplate(template: ProfessorTemplate) {}
 
   async ngOnInit() {
+    this.user = await this.authService.getUser();
     this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(PROFESSOR_UUID);
+      await this.professorService.fetchProfessorTemplates(this.user.id);
   }
 
   /**

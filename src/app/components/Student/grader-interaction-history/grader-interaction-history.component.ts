@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Session, User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -21,7 +21,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
-import { PROFESSOR_UUID, STUDENT_UUID } from 'src/app/shared/strings';
+import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -36,7 +36,6 @@ export class GraderInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
-  session: Session;
   user: User;
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -76,16 +75,15 @@ export class GraderInteractionHistoryComponent {
       this.appealId = +params['id']; // Convert the parameter to a number
       this.courseId = +params['id'];
     });
-    this.session = this.authService.session as Session;
   }
   async ngOnInit() {
     // get auth user info from auth session
-    const { user } = this.session;
+    this.user = await this.authService.getUser();
 
     // if navigated from course dashboard, only get the appeals for that course
     if (this.courseId) {
       this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
-        user.id,
+        this.user.id,
         this.courseId
       );
       this.currentCourse = await this.sharedService.getCourse(this.courseId);
@@ -93,7 +91,7 @@ export class GraderInteractionHistoryComponent {
     // otherwise, get all assigned appeals from all courses the grader is grading
     else {
       this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
-        user.id
+        this.user.id
       );
     }
 
@@ -157,7 +155,7 @@ export class GraderInteractionHistoryComponent {
     try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        STUDENT_UUID, //sender id: grader
+        this.user.id, //sender id: grader
         PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,

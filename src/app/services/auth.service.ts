@@ -6,6 +6,7 @@ import {
   Session,
   SupabaseClient,
   User,
+  UserResponse,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/secret_env';
 
@@ -35,16 +36,13 @@ export class SupabaseService {
     return this._session;
   }
 
-  async getUser(): Promise<User | null> {
-    const {
-      data: { user },
-      error,
-    } = await this.supabase.auth.getUser();
+  async getUser(): Promise<User> {
+    const { data, error } = await this.supabase.auth.getUser();
     if (error) {
       console.log({ error });
       throw new Error('Error getting user');
     }
-    return user;
+    return data.user;
   }
 
   async getUserId() {

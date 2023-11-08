@@ -3,8 +3,7 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
-import { STUDENT_UUID } from 'src/app/shared/strings';
-import { Session } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -12,15 +11,17 @@ import { Session } from '@supabase/supabase-js';
   styleUrls: ['./student-dashboard.component.scss'],
 })
 export class StudentDashboardComponent {
+  session: Session;
   studentUserId!: string;
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
+    private authService: SupabaseService,
     private readonly studentService: StudentService,
     private router: Router
   ) {}
   async ngOnInit(): Promise<void> {
-    const { user } = this.studentService.session as Session;
+    const user = await this.authService.getUser();
     this.studentCourses = await this.studentService.fetchStudentCourses(
       user.id
     );
