@@ -1,28 +1,32 @@
-<div *ngIf="currentPage == 'view'" class="course-wrapper">
-  <mat-card class="courses" *ngFor="let course of professorCourses">
-    <mat-card-title class="course-wording"
+<div class="whole-page">
+  <div *ngIf="currentPage == 'view'" class="course-wrapper">
+    <mat-card class="courses" *ngFor="let course of professorCourses">
+      <mat-card-title class="course-wording"
       >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
       {{ course.semester }}-{{ course.year }}</mat-card-title
     >
-    <mat-card-subtitle class="course-wording">{{
+      <mat-card-subtitle class="course-wording">{{
       course.name
     }}</mat-card-subtitle>
-    <button
+      <button
       type="submit"
       (click)="swapView('editAssignments', course.id, course)"
       class="blue-button"
     >
       View Assignments
     </button>
-    <button
+      <button
       type="submit"
       (click)="swapView('editRoster', course.id, course)"
       class="blue-button"
     >
       View Roster
     </button>
-  </mat-card>
-</div>
+    </mat-card>
+    <button mat-icon-button class="global-blue add-button" (click)="addCoursePopUp()">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
+  </div>
 
 <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
   <button

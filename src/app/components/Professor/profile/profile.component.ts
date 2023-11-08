@@ -4,6 +4,8 @@ import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-stud
 import { Course, Student } from 'src/app/shared/interfaces/psql.interface';
 import { ParsedStudent } from 'src/app/shared/interfaces/professor.interface';
 import { OnChanges } from '@angular/core';
+import { AddCourseComponent } from './add-course/add-course.component';
+import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
@@ -188,9 +190,32 @@ export class ProfileComponent implements OnChanges {
       console.log({ error });
       throw new Error('addStudents');
     }
+
   }
 
   /**
+ * Goes to AddCourse pop up component
+ */
+  async addCoursePopUp(): Promise<void> {
+    const dialogRef = this.dialog.open(AddCourseComponent, {
+      width: "80%",
+      height: "80%",
+      data: {}
+    });
+  }
+  
+  /**
+     * Goes to DeleteTemplate pop up component
+     */
+  async deleteCoursePopUp(templateID: number): Promise<void> {
+    const dialogRef = this.dialog.open(DeleteCourseComponent, {
+      width: "50%",
+      height: "55%",
+      data: {}
+    });
+  }
+
+/*
    * remove single student from course
    * @param student info of student to remove
    */

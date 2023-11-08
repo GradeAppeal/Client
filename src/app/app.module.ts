@@ -38,6 +38,8 @@ import { RegisterComponent } from './components/Auth/register/register.component
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
+import { AddCourseComponent } from './components/Professor/profile/add-course/add-course.component';
+import { DeleteCourseComponent } from './components/Professor/profile/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
 
@@ -63,6 +65,8 @@ import { SignoutComponent } from './components/Auth/signout/signout.component';
     DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
+    AddCourseComponent,
+    DeleteCourseComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
   ],
