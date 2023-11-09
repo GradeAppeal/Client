@@ -1,0 +1,17 @@
+<div class="container">
+  <h1 mat-dialog-title>Close Appeal</h1>
+  <mat-dialog-content
+    >Are you sure you want to close this appeal?</mat-dialog-content
+  >
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      class="sign-out"
+      [mat-dialog-close]="true"
+      (click)="closeAppeal()"
+    >
+      Yes
+    </button>
+    <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+  </mat-dialog-actions>
+</div>

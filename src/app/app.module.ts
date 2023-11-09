@@ -40,6 +40,7 @@ import { AddTemplateComponent } from './components/Professor/edit-templates/add-
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
+import { CloseAppealPopupComponent } from './components/Professor/close-appeal-popup/close-appeal-popup.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { SignoutComponent } from './components/Auth/signout/signout.component';
     DeleteTemplateComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
+    CloseAppealPopupComponent,
   ],
   imports: [
     BrowserModule,

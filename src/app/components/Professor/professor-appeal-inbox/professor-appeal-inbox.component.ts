@@ -6,6 +6,9 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
+import { SignoutComponent } from '../../Auth/signout/signout.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CloseAppealPopupComponent } from '../close-appeal-popup/close-appeal-popup.component';
 @Component({
   selector: 'app-professor-appeal-inbox',
   templateUrl: './professor-appeal-inbox.component.html',
@@ -31,7 +34,8 @@ export class ProfessorAppealInboxComponent {
   constructor(
     private router: Router,
     private authService: SupabaseService,
-    private professorService: ProfessorService
+    private professorService: ProfessorService,
+    private dialog: MatDialog
   ) {}
   async ngOnInit(): Promise<void> {
     try {
@@ -58,10 +62,12 @@ export class ProfessorAppealInboxComponent {
     return formatTimestamp(timestamp);
   }
 
-  compareDate() {}
-  composeMessage() {}
-  chat(appeal: ProfessorAppeal) {
-    this.isChat.emit({ professorAppeal: appeal });
+  closeAppeal() {
+    this.dialog.open(CloseAppealPopupComponent, {
+      width: '30%',
+      height: '25%',
+    });
+    //this.navigateTo('professor/closed-appeals/');
   }
   navigateTo(route: string) {
     this.router.navigate([route]);
