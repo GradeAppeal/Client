@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Session } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -16,7 +16,7 @@ import {
   Message,
   Professor,
   Course,
-  User,
+  Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -50,8 +50,8 @@ export class GraderInteractionHistoryComponent {
   messages!: Message[];
   currentProfessor: string | null = '';
   currentCourse: Course | null;
-  grader: User;
-  professor: User;
+  grader: any;
+  professor: any;
   studentAppeals!: StudentAppeal[];
   graderAppeals!: GraderAppeal[];
   professors!: Professor[];
@@ -72,6 +72,8 @@ export class GraderInteractionHistoryComponent {
     this.session = (await this.authService.getSession()) as Session;
     // get auth user info from auth session
     this.user = this.session.user;
+    this.grader = this.user;
+    console.log(this.grader);
 
     const isGrader = await this.graderService.isGrader(this.user.id);
     if (!isGrader) {
@@ -96,7 +98,7 @@ export class GraderInteractionHistoryComponent {
       this.graderAppeals.forEach((item) => {
         console.log({ item });
       });
-      this.professors = await this.graderService.fetchProfessors();
+      // this.professors = await this.graderService.fetchProfessors();
       const professors = this.professors;
       console.log({ professors });
       this.professorIds;
@@ -105,15 +107,17 @@ export class GraderInteractionHistoryComponent {
 
       // show appeals if they exist, otherwise display message
       if (this.graderAppeals.length > 0) {
-        await this.selectAppeal(this.graderAppeals[0]);
+        console.log(this.graderAppeals[0]);
+        //await this.selectAppeal(this.graderAppeals[0]);
+        this.currentAppeal = this.graderAppeals[0];
         //select current appeal based on id from url. Otherwise, set to first appeal
-        if (this.currentAppeal) {
-          //if appeal exists, find messages for it
-          this.selectAppeal(this.currentAppeal);
-        } else {
-          this.selectAppeal(this.graderAppeals[0]);
-        }
-        this.messageCount = this.messages.length;
+        // if (this.currentAppeal) {
+        //   //if appeal exists, find messages for it
+        //   this.selectAppeal(this.currentAppeal);
+        // } else {
+        //   this.selectAppeal(this.graderAppeals[0]);
+        // }
+        //this.messageCount = this.messages.length;
 
         console.log(this.messages);
         this.noAppeals = false;
@@ -133,16 +137,41 @@ export class GraderInteractionHistoryComponent {
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  async selectAppeal(appeal: any) {
-    this.currentAppeal = appeal;
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
-    );
-    if (this.messages[0].sender_id !== this.grader.id) {
-      this.professor.id = this.messages[0].sender_id as string;
-      console.log(this.professor.id);
+  async selectAppeal(appeal: GraderAppeal) {
+    try {
+      this.currentAppeal = appeal;
+      console.log(this.currentAppeal.appeal_id);
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
+      );
+
+      console.log(this.messages[0].sender_id);
+      console.log(this.grader.id);
+      // Find the first message that doesn't match the grader
+      let firstNonGraderMessage = this.messages.find(
+        (message) => message.sender_id !== this.grader.id
+      );
+
+      if (
+        firstNonGraderMessage !== undefined &&
+        firstNonGraderMessage.sender_id !== undefined
+      ) {
+        console.log('Assign prof');
+        try {
+          this.professor = await this.sharedService.getUserInfo(
+            firstNonGraderMessage.sender_id
+          );
+        } catch (e) {
+          console.log('No professor found' + e);
+        }
+      } else {
+        console.log('No non-grader messages found.');
+      }
+      console.log(this.professor);
+      console.log(this.messages);
+    } catch (e) {
+      console.log({ e });
     }
-    console.log(this.messages);
   }
 
   /**
@@ -186,21 +215,13 @@ export class GraderInteractionHistoryComponent {
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
   }
-  //checks if a professor is in the list of professors
-  professorMatch(id: number | string): boolean {
-    return this.professors.some((professor) => professor.user_id === id);
-  }
-  // set current professor
-  setProfessor(targetId: number): void {
-    const professor = this.professors.find((p) => p.id === targetId);
-    this.currentProfessor = professor ? professor.first_name : null;
-  }
+
   localSendMessage(message: string) {
     this.messages.push({
-      id: 1 + this.messageCount, //TODO make id better system
+      message_id: 1 + this.messageCount, //TODO make id better system
       created_at: getTimestampTz(new Date()),
       sender_id: this.grader.id,
-      recipient_id: 10, //todo fix... professor?
+      recipient_id: PROFESSOR_UUID, //todo fix... professor?
       appeal_id: this.currentAppeal.appeal_id,
       message_text: this.chatInputMessage,
       from_grader: this.fromGrader,

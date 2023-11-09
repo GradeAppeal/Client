@@ -135,7 +135,7 @@ export class ProfessorInteractionHistoryComponent {
         this.fromGrader
       );
       this.messages.push({
-        id: 1 + this.messageCount, //TODO make id better system
+        message_id: 1 + this.messageCount, //TODO make id better system
         created_at: now,
         sender_id: this.professor.id,
         recipient_id: this.student.id,
