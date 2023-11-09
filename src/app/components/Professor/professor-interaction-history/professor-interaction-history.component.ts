@@ -57,9 +57,8 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     const { user } = this.session;
     this.professor = await this.sharedService.getUserInfo(user.id);
-    this.professorAppeals = await this.professorService.fetchProfessorAppeals(
-      user.id
-    );
+    this.professorAppeals =
+      await this.professorService.fetchAllProfessorAppeals(user.id);
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(user.id);

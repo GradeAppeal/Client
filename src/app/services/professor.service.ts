@@ -9,7 +9,6 @@ import {
 } from '../shared/interfaces/professor.interface';
 import { StudentCourse } from '../shared/interfaces/student.interface';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +48,7 @@ export class ProfessorService {
     name: string,
     section: string,
     semester: string,
-    year: number,
+    year: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_course', {
       prefix,
@@ -66,20 +65,59 @@ export class ProfessorService {
     return data;
   }
 
-
   /**
-   * fetch from supabase: professor appeals
+   * fetch from supabase: OPEN professor appeals
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
-  async fetchProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
+  async fetchOpenProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
+    console.log(pid);
+    const { data, error } = await this.supabase.rpc(
+      'get_open_professor_appeals',
+      {
+        pid,
+      }
+    );
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchOpenProfessorAppeals');
+    }
+    return data;
+  }
+
+  /**
+   * fetch from supabase: CLOSED professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchClosedProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
+    console.log(pid);
+    const { data, error } = await this.supabase.rpc(
+      'get_closed_professor_appeals',
+      {
+        pid,
+      }
+    );
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchClosedProfessorAppeals');
+    }
+    return data;
+  }
+
+  /**
+   * fetch from supabase: ALL professor appeals
+   * @param pid professor id (later replaced with auth.id)
+   * @returns courses the prof is teaching in JSON format
+   */
+  async fetchAllProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
     console.log(pid);
     const { data, error } = await this.supabase.rpc('get_professor_appeals', {
       pid,
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchProfessorAppeals');
+      throw new Error('Error in fetchAllProfessorAppeals');
     }
     return data;
   }
@@ -433,5 +471,23 @@ export class ProfessorService {
       throw new Error('deleteTemplate');
     }
     console.log({ data });
+  }
+
+  /**
+   * Open or close appeals
+   * @param aid appeal id
+   */
+  async updateAppealOpenStatus(aid: number): Promise<number> {
+    const { data, error } = await this.supabase.rpc(
+      'update_appeal_open_status',
+      {
+        aid,
+      }
+    );
+    if (error) {
+      console.log(error);
+      throw new Error('updateAppealOpenStatus');
+    }
+    return data;
   }
 }
