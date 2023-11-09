@@ -15,6 +15,17 @@ export class GraderService {
     this.supabase = this.supabaseService.client;
     this.session = this.supabaseService.session;
   }
+
+  async isGrader(sid: string): Promise<boolean> {
+    const { data, error } = await this.supabase.rpc('is_grader', {
+      sid,
+    });
+    if (error) {
+      console.log({ error });
+      throw new Error('isGrader');
+    }
+    return data;
+  }
   /**
    * All appeals assigned to a grader
    * @param gid student grader id
@@ -26,7 +37,7 @@ export class GraderService {
     });
 
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('GetAllGraderAppeals');
     }
     return data;
@@ -49,7 +60,7 @@ export class GraderService {
     });
 
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('GetCourseGraderAppeals');
     }
     return data;
@@ -63,7 +74,7 @@ export class GraderService {
   async fetchProfessors(): Promise<Professor[]> {
     const { data, error } = await this.supabase.rpc('get_professors');
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('Error in fetchProfessors');
     }
     return data;

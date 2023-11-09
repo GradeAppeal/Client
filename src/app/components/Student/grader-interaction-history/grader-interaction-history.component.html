@@ -98,13 +98,6 @@
 </div>
 <div *ngIf="noAppeals" class="no-appeals">
   <h1>
-    No appeals have been assigned for
-    {{
-      currentCourse?.prefix +
-        "-" +
-        currentCourse?.code +
-        " - " +
-        currentCourse?.name
-    }}
+    {{ noAppealsMessage }}
   </h1>
 </div>

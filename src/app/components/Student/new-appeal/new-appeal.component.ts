@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
-import { STUDENT_UUID } from 'src/app/shared/strings';
+import { Session, User } from '@supabase/supabase-js';
+import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-appeal',
@@ -20,10 +21,12 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
+  user: User;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private authService: SupabaseService,
     private studentService: StudentService
   ) {}
 
@@ -32,6 +35,8 @@ export class NewAppealComponent implements OnInit {
   }
 
   async ngOnInit() {
+    const session = (await this.authService.getSession()) as Session;
+    this.user = session.user;
     this.courseId = this.route.snapshot.params['courseId'];
     try {
       // don't render form until course and assignment information has been fetched
@@ -77,17 +82,16 @@ export class NewAppealComponent implements OnInit {
         this.appeal,
         this.courseId,
         now,
-        STUDENT_UUID
+        this.user.id
       );
       const appealID = await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
-        STUDENT_UUID,
+        this.user.id,
         this.courseId,
         now,
         this.appeal
       );
 
-      console.log({ appealID });
       this.router.navigateByUrl(`student/interaction-history/${appealID}`);
     } catch (err) {
       console.log(err);

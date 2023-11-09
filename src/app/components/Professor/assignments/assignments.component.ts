@@ -1,8 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfileComponent } from '../profile/profile.component';
