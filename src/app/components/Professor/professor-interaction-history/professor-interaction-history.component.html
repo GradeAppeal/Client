@@ -30,7 +30,11 @@
     <div class="card" *ngIf="messageLoaded">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
-          <img class="header-avatar" ngxGravatar [email]="professor.email" />
+          <img
+            class="header-avatar"
+            ngxGravatar
+            [email]="professor.user_metadata['email']"
+          />
           <h1>
             &nbsp; {{ student.first_name + " " + student.last_name
             }}<span>: </span>{{ currentAppeal.assignment_name }}
@@ -59,7 +63,11 @@
               *ngIf="!chat.message_text.trim().startsWith('Notification:')"
             >
               <!-- <img ngxGravatar [email]="user.email" /> -->
-              <img *ngIf="isUser" ngxGravatar [email]="professor.email" />
+              <img
+                *ngIf="isUser"
+                ngxGravatar
+                [email]="professor.user_metadata['email']"
+              />
               <img *ngIf="!isUser" ngxGravatar [email]="student.email" />
             </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->

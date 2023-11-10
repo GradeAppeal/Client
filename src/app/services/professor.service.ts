@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient, User } from '@supabase/supabase-js';
 import { SupabaseService } from './auth.service';
-import { Course, Student } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Course,
+  Student,
+  StudentCourse,
+} from 'src/app/shared/interfaces/psql.interface';
 import {
   ProfessorAppeal,
   ProfessorTemplate,
   ParsedStudent,
-} from '../shared/interfaces/professor.interface';
-import { StudentCourse } from '../shared/interfaces/student.interface';
+  StudentCourseGraderInfo,
+} from 'src/app/shared/interfaces/professor.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -135,16 +139,16 @@ export class ProfessorService {
 
   /**
    * Fetch students for a particular course
-   * @param cid course id for students
+   * @param cid course id
    * @returns List of students for a course
    */
-  async fetchStudentsForClass(cid: number): Promise<Student[]> {
-    const { data, error } = await this.supabase.rpc('get_students', {
+  async fetchCourseStudents(cid: number): Promise<StudentCourseGraderInfo[]> {
+    const { data, error } = await this.supabase.rpc('get_course_students', {
       cid,
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchStudentsforNewClass');
+      throw new Error('fetchCourseStudents');
     }
     return data;
   }
@@ -154,7 +158,7 @@ export class ProfessorService {
    * @param sid student ID
    * @param cid course ID
    */
-  async updateGrader(sid: number, cid: number): Promise<void> {
+  async updateGrader(sid: string, cid: number): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_grader', {
       sid,
       cid,
@@ -174,7 +178,7 @@ export class ProfessorService {
    * @returns deleted StudentCourse row
    */
   async deleteStudentFromCourse(
-    sid: number,
+    sid: string,
     cid: number
   ): Promise<StudentCourse> {
     let { data, error } = await this.supabase.rpc('delete_student', {
@@ -487,6 +491,39 @@ export class ProfessorService {
     if (error) {
       console.log(error);
       throw new Error('updateAppealOpenStatus');
+    }
+    return data;
+  }
+
+  /**
+   * Get all the graders for the course
+   * @param cid course id
+   * @returns List of student graders
+   */
+  async getGraders(cid: number): Promise<StudentCourseGraderInfo[]> {
+    const { data, error } = await this.supabase.rpc('get_graders', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('getGraders');
+    }
+    return data;
+  }
+
+  /**
+   * Assigns a grader to an appeal
+   * @param gid grader id to assign to appeal
+   * @returns
+   */
+  async updateAppealGrader(aid: number, gid: string): Promise<string> {
+    const { data, error } = await this.supabase.rpc('update_appeal_grader', {
+      aid,
+      gid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('updateAppealGrader');
     }
     return data;
   }

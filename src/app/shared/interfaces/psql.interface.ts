@@ -35,17 +35,16 @@ export interface User {
 }
 
 export interface Student {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   email: string;
-  is_grader: boolean;
-  //role: string;
 }
+
+export interface Grader extends Student {}
 
 export interface Professor {
   id: number;
-  user_id: number;
   first_name: string;
   last_name: string;
   email: string;
@@ -55,5 +54,4 @@ export interface StudentCourse {
   student_id: string;
   course_id: number;
   is_grader: boolean;
-  //role: string;
 }

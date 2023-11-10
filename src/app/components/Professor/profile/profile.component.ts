@@ -1,8 +1,11 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
-import { Course, Student } from 'src/app/shared/interfaces/psql.interface';
-import { ParsedStudent } from 'src/app/shared/interfaces/professor.interface';
+import { Course } from 'src/app/shared/interfaces/psql.interface';
+import {
+  ParsedStudent,
+  StudentCourseGraderInfo,
+} from 'src/app/shared/interfaces/professor.interface';
 import { OnChanges } from '@angular/core';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
@@ -18,7 +21,7 @@ import { Session, User } from '@supabase/supabase-js';
 export class ProfileComponent implements OnChanges {
   session: Session;
   user: User;
-  courseStudents!: Student[];
+  courseStudents!: StudentCourseGraderInfo[];
   professorCourses!: Course[];
   fetchedStudents = false;
   fetchedCourses = false;
@@ -71,7 +74,7 @@ export class ProfileComponent implements OnChanges {
 
   async retrieveRoster(courseID: number): Promise<void> {
     try {
-      this.courseStudents = await this.professorService.fetchStudentsForClass(
+      this.courseStudents = await this.professorService.fetchCourseStudents(
         courseID
       );
       this.fetchedStudents = true;
@@ -93,19 +96,19 @@ export class ProfileComponent implements OnChanges {
     }
   }
 
-  editStudent(student: Student) {
-    console.log(student);
+  editStudent(studentCourseGrader: StudentCourseGraderInfo) {
+    console.log(studentCourseGrader);
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
       width: '250px',
-      data: { student: student },
+      data: { studentCourseGrader },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       console.log(result);
       if (result == 'grader') {
-        this.makeGrader(student);
+        await this.makeGrader(studentCourseGrader);
       } else if (result == 'remove') {
-        this.removeStudent(student);
+        await this.removeStudent(studentCourseGrader);
       }
     });
   }
@@ -114,14 +117,12 @@ export class ProfileComponent implements OnChanges {
    * toggle grader status
    * @param student student to change status
    */
-  async makeGrader(student: Student) {
+  async makeGrader(studentCourseGrader: StudentCourseGraderInfo) {
     try {
-      console.log(student.id, this.currentCourseID);
-      await this.professorService.updateGrader(
-        student.id,
-        this.currentCourseID
-      );
-      student.is_grader = !student.is_grader;
+      const { student_id, course_id } = studentCourseGrader;
+      console.log(studentCourseGrader.student_id, this.currentCourseID);
+      await this.professorService.updateGrader(student_id, course_id);
+      studentCourseGrader.is_grader = !studentCourseGrader.is_grader;
     } catch (err) {
       throw new Error('makeGrader');
     }
@@ -190,44 +191,45 @@ export class ProfileComponent implements OnChanges {
       console.log({ error });
       throw new Error('addStudents');
     }
-
   }
 
   /**
- * Goes to AddCourse pop up component
- */
+   * Goes to AddCourse pop up component
+   */
   async addCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddCourseComponent, {
-      width: "80%",
-      height: "80%",
-      data: {}
-    });
-  }
-  
-  /**
-     * Goes to DeleteTemplate pop up component
-     */
-  async deleteCoursePopUp(): Promise<void> {
-    const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      width: "50%",
-      height: "55%",
-      data: {}
+      width: '80%',
+      height: '80%',
+      data: {},
     });
   }
 
-/*
+  /**
+   * Goes to DeleteTemplate pop up component
+   */
+  async deleteCoursePopUp(): Promise<void> {
+    const dialogRef = this.dialog.open(DeleteCourseComponent, {
+      width: '50%',
+      height: '55%',
+      data: {},
+    });
+  }
+
+  /*
    * remove single student from course
    * @param student info of student to remove
    */
-  async removeStudent(student: Student) {
-    const sid = student.id;
-    const cid = this.currentCourseID;
+  async removeStudent(studentCourseGrader: StudentCourseGraderInfo) {
     try {
+      const { student_id, course_id } = studentCourseGrader;
       const deletedStudent =
-        await this.professorService.deleteStudentFromCourse(sid, cid);
-      console.log(`deleted student: ${{ deletedStudent }}`);
-      console.log(
-        `${student.first_name} ${student.last_name} has been removed`
+        await this.professorService.deleteStudentFromCourse(
+          student_id,
+          course_id
+        );
+      console.log({ deletedStudent });
+      this.courseStudents = this.courseStudents.filter(
+        (student) => student.student_id !== deletedStudent.student_id
       );
     } catch (error) {
       console.log({ error });
