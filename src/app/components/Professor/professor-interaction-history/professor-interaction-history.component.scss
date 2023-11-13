@@ -112,6 +112,10 @@ $background: white;
   padding-left: 5px;
 }
 
+.timestamp-wrapper {
+  justify-items: center;
+}
+
 // .inbox {
 //   border: solid gray 1px;
 //   width: 200px;
@@ -161,3 +165,4 @@ mat-nav-list {
     font-size: 2vh;
   }
 }
+
