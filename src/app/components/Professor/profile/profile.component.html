@@ -41,61 +41,51 @@
     </button>
     <app-assignments [course]="currentCourse"></app-assignments>
   </div>
-  <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
-    <button
-      type="submit"
-      (click)="swapView('view', currentCourseID, currentCourse)"
-      class="blue-button back-button"
-    >
-      Back
-    </button>
-    <app-assignments [course]="currentCourse"></app-assignments>
-  </div>
 
-  <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
-    <button
-      type="submit"
-      (click)="swapView('view', currentCourseID, currentCourse)"
-      class="blue-button back-button"
-    >
-      Back
+<div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
+  <button
+    type="submit"
+    (click)="swapView('view', currentCourseID, currentCourse)"
+    class="blue-button"
+  >
+    Back
+  </button>
+  <p class="course-title">{{ formatCourse(currentCourse) }}</p>
+  <div *ngIf="fetchedStudents == true">
+    <div class="roster-wrapper">
+      <table class="roster-table" *ngIf="courseStudents.length != 0">
+        <tr>
+          <th class="global-th">Name</th>
+          <th class="global-th">Role</th>
+        </tr>
+        <tr *ngFor="let student of courseStudents">
+          <td class="student-data">
+            {{ student.student_name}}
+            <button class="edit-icon" (click)="editStudent(student)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+          <td *ngIf="student.is_grader == false">Student</td>
+          <td *ngIf="student.is_grader == true">Grader</td>
+          <!-- <td>{{ student.role }}</td> -->
+        </tr>
+      </table>
+      <p *ngIf="courseStudents.length == 0">
+        There are no students in this class.
+      </p>
+    </div>
+    <button type="submit" (click)="addStudents()" class="blue-button">
+      Add Students
     </button>
-    <p class="course-title">{{ formatCourse(currentCourse) }}</p>
-    <div *ngIf="fetchedStudents == true">
-      <div class="roster-wrapper">
-        <table class="roster-table" *ngIf="courseStudents.length != 0">
-          <tr>
-            <th class="global-th">Name</th>
-            <th class="global-th">Role</th>
-          </tr>
-          <tr *ngFor="let student of courseStudents">
-            <td class="student-data">
-              {{ student.first_name }} {{ student.last_name }}
-              <button class="edit-icon" (click)="editStudent(student)">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </td>
-            <td *ngIf="student.is_grader == false">Student</td>
-            <td *ngIf="student.is_grader == true">Grader</td>
-            <!-- <td>{{ student.role }}</td> -->
-          </tr>
-        </table>
-        <p *ngIf="courseStudents.length == 0">
-          There are no students in this class.
-        </p>
-      </div>
-      <button type="submit" (click)="addStudents()" class="blue-button">
-        Add Students
-      </button>
-      <mat-form-field class="student-input">
-        <mat-label>Students to add</mat-label>
-        <textarea
-          matInput
-          class="text-area"
-          rows="6"
-          cols="1"
-          [(ngModel)]="addedStudents"
-          placeholder="Ex. Sam Hoogewind"
-        ></textarea>
-      </mat-form-field>
+    <mat-form-field class="student-input">
+      <mat-label>Students to add</mat-label>
+      <textarea
+        matInput
+        class="text-area"
+        rows="6"
+        cols="1"
+        [(ngModel)]="addedStudents"
+        placeholder="Ex. Sam Hoogewind"
+      ></textarea>
+    </mat-form-field>
   </div>
