@@ -56,8 +56,8 @@
               notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >
-            <div class="timestamp">
-              {{ localFormatTimestamp(chat.created_at).time }}
+            <div class="timestamp-wrapper">
+              <p class="timestamp">{{ localFormatTimestamp(chat.created_at).time }}</p>
               <p class="name">{{ chat.sender_name }}</p>
             </div>
             <br />

@@ -109,12 +109,14 @@ $hover-blue: #728edd;
   flex-direction: column;
   padding: 16px;
   overflow-y: scroll;
+  align-items: center;
 
   .chat-item {
     max-width: 80%;
     margin: 8px 0px;
     display: flex;
     flex-direction: row;
+    align-items: center;
 
     #message-body {
       background: $primary-blue;
@@ -148,7 +150,7 @@ $hover-blue: #728edd;
     margin-left: 8px;
 
     #message-body {
-      margin-left: -10px;
+      margin-left: 10px;
       background-color: lightgray;
       color: black;
     }
@@ -173,7 +175,7 @@ $hover-blue: #728edd;
     flex-direction: row-reverse;
 
     #message-body {
-      margin-right: -10px;
+      margin-right: 10px;
     }
   }
   .grader {

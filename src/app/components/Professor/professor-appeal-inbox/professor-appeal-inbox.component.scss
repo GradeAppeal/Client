@@ -5,7 +5,7 @@
 // }
 /* CSS for the List of Appeals */
 .appeal-container {
-  width: 200px; /* Adjust the width as needed */
+  width: 30vw; /* Adjust the width as needed */
   background-color: #f5f5f5; /* Background color for the appeal list */
 }
 // .inbox-item {
@@ -29,13 +29,16 @@
 //   }
 // }
 
+.inbox-avatar {
+  padding: 5px;
+}
+
 .appeal {
-  padding: 20px;
-  height: 700px;
+  padding: 3vh;
   .appeal-header {
-    font-size: 20px;
+    font-size: 3vh;
     font-weight: bold;
-    padding-bottom: 20px;
+    padding-bottom: 3vh;
   }
 }
 .message {
@@ -44,13 +47,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  padding: 5px;
 }
 .buttons {
-  margin-top: 450px;
+  margin-top: 50vh;
   button {
     color: white;
     background-color: blue;
   }
+}
+.button-text {
+  padding: 5px;
 }
 .close-appeal {
   float: left;
@@ -99,4 +106,15 @@ mat-nav-list {
   h2 {
     font-size: 2vh;
   }
+}
+
+.right-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.appeal-wrapper {
+  height: 80vh;
+  max-height: 20vh;
+  padding: 2vh;
 }
