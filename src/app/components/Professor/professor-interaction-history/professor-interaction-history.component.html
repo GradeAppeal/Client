@@ -4,7 +4,7 @@
     <div>
       <div
         class="inbox-item"
-        *ngFor="let appeal of this.professorAppeals"
+        *ngFor="let appeal of professorAppeals"
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
@@ -36,7 +36,11 @@
             [email]="professor.user_metadata['email']"
           />
           <h1>
-            &nbsp; {{ student.first_name + " " + student.last_name
+            &nbsp;
+            {{
+              currentAppeal.student_first_name +
+                " " +
+                currentAppeal.student_last_name
             }}<span>: </span>{{ currentAppeal.assignment_name }}
           </h1>
         </mat-toolbar-row>

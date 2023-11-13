@@ -109,6 +109,9 @@ export class ProfessorInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     //this.sender.id = this.currentAppeal.student_id;
+    const { student_id } = this.currentAppeal;
+    // TODO: adjust get appeals function to get student email
+    this.student = await this.sharedService.getStudent(student_id);
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
