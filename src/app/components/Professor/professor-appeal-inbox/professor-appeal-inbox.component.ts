@@ -15,7 +15,6 @@ import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
 import { SignoutComponent } from '../../Auth/signout/signout.component';
-import { MatDialog } from '@angular/material/dialog';
 import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-popup.component';
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -43,8 +42,7 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     private router: Router,
     private dialog: MatDialog,
     private authService: SupabaseService,
-    private professorService: ProfessorService,
-    private dialog: MatDialog
+    private professorService: ProfessorService
   ) {}
   async ngOnInit(): Promise<void> {
     try {
