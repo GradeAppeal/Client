@@ -1,24 +1,33 @@
 <!-- closed-appeals.component.html -->
 
 <mat-card>
-    <mat-card-header>
-      <mat-card-title>Closed Appeals</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <!-- Closed Appeals List -->
-      <ul class="closed-appeals-list">
-        <li *ngFor="let appeal of closedAppeals">
-          <mat-icon class="status-icon">done</mat-icon>
-          <div class="appeal-details">
-            <p class="course-name">Stats</p>
-            <p class="appeal-text">I flunked"</p>
-          </div>
-        </li>
-        <!-- If there are no closed appeals -->
-        <div *ngIf="closedAppeals.length === 0" class="no-appeals-message">
-          No closed appeals to display.
+  <mat-card-header>
+    <mat-card-title>Closed Appeals</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- Closed Appeals List -->
+
+    <mat-card
+      *ngFor="let appeal of closedAppeals; let i = index"
+      class="closed-appeal"
+    >
+      <div class="appeal-details">
+        <div class="detail-text">
+          <p class="course-name">
+            {{ appeal.course_prefix }}-{{ appeal.course_code }} -
+            {{ appeal.course_name }}
+          </p>
+          <p class="appeal-text">{{ appeal.appeal_text }}</p>
         </div>
-      </ul>
-    </mat-card-content>
-  </mat-card>
-  
+        <button mat-raised-button class="reopen" (click)="onReopenAppeal(i)">
+          Reopen
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- If there are no closed appeals -->
+    <div *ngIf="closedAppeals.length === 0" class="no-appeals-message">
+      No closed appeals to display.
+    </div>
+  </mat-card-content>
+</mat-card>

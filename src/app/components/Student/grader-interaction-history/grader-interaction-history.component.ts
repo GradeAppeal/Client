@@ -195,7 +195,7 @@ export class GraderInteractionHistoryComponent {
   }
   //checks if a professor is in the list of professors
   professorMatch(id: number | string): boolean {
-    return this.professors.some((professor) => professor.user_id === id);
+    return this.professors.some((professor) => professor.id === id);
   }
   // set current professor
   setProfessor(targetId: number): void {
