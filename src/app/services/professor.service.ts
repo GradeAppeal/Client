@@ -43,10 +43,16 @@ export class ProfessorService {
 
   /**
    * Writes new assignment to database
-   * @param cid course id from UI
-   * @param assignment_name name of assignment
+   * @param pid professor id from auth
+    @param prefix course prefix
+    @param code course code
+    @param name course name
+    @param section course section
+    @param semester course semester
+    @param year course year
    */
   async insertCourse(
+    pid: string,
     prefix: string,
     code: number,
     name: string,
@@ -55,6 +61,7 @@ export class ProfessorService {
     year: number
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_course', {
+      pid,
       prefix,
       code,
       name,
@@ -68,6 +75,24 @@ export class ProfessorService {
     }
     return data;
   }
+
+    /**
+   * delete course
+   * @param cid course id
+   * @returns deleted StudentCourse row
+   */
+    async deleteCourse(
+      cid: number
+    ): Promise<void> {
+      let { data, error } = await this.supabase.rpc('delete_course', {
+        cid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('delete_course');
+      }
+      console.log({ data });
+    }
 
   /**
    * fetch from supabase: OPEN professor appeals
@@ -213,6 +238,22 @@ export class ProfessorService {
     return data;
   }
 
+    /**
+   * Writes new assignment to database
+   * @param aid assignment id
+   */
+    async deleteAssignment(aid: number): Promise<void> {
+      const { data, error } = await this.supabase.rpc('delete_assignment', {
+        aid,
+      });
+      if (error) {
+        console.log(error);
+        throw new Error('delete_assignment');
+      }
+      console.log({ data });
+    }
+
+
   /**
    * insert student users into course (only if student is a registered user)
    * @param email student's email
@@ -238,21 +279,7 @@ export class ProfessorService {
     return data;
   }
 
-  /**
-   * Writes new assignment to database
-   * @param cid course id from UI
-   * @param assignment_name name of assignment
-   */
-  async deleteAssignment(aid: number): Promise<void> {
-    const { data, error } = await this.supabase.rpc('delete_assignment', {
-      aid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('delete_assignment');
-    }
-    console.log({ data });
-  }
+
 
   /**
    * fetch from supabase: professor appeals

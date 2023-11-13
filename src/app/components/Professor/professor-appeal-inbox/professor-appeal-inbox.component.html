@@ -15,6 +15,7 @@
       <p class="inbox-name" matLine>
         {{ appeal.student_first_name }}
         {{ appeal.student_last_name }}
+        {{ appeal.assignment_name }}
       </p>
     </div>
   </div>
@@ -25,25 +26,22 @@
       Select an appeal to view details.
     </div>
     <ng-template #elseBlock>
-      <div *ngIf="fetchedAppeals">
+      <div *ngIf="fetchedAppeals" class="appeal-wrapper">
         <mat-card class="appeal">
           <h2 class="appeal-header">
             <img class="inbox-avatar" ngxGravatar [email]="email" />
             <p>
               {{ currentAppeal.student_first_name }}
-              {{ currentAppeal.student_last_name }}: &nbsp;
+              {{ currentAppeal.student_last_name }}:
               {{ currentAppeal.assignment_name }}
             </p>
           </h2>
           <p>
-            <strong>Student Name:</strong>
-            {{
-              currentAppeal.student_first_name +
-                " " +
-                currentAppeal.student_last_name
-            }}
+            <strong>Course:</strong>
+              {{ currentAppeal.course_prefix }}-{{ currentAppeal.course_code }}-{{ currentAppeal.course_section }}
+              {{ currentAppeal.course_semester }}-{{ currentAppeal.course_year }}
+              <i>{{ currentAppeal.course_name }}</i>
           </p>
-          <p><strong>Appeal Number:</strong> {{ currentAppeal.appeal_id }}</p>
 
           <mat-card class="message-container">
             <p class="message">{{ currentAppeal.appeal_text }}</p>
@@ -60,14 +58,14 @@
               mat-stroked-button
               accent
             >
-              Chat
+              <p class="button-text">Chat</p>
             </button>
             <button
               (click)="onCloseAppeal($event)"
               class="close-appeal"
               mat-stroked-button
             >
-              Close Appeal
+              <p clas="button-text">Close Appeal</p>
             </button>
           </div>
         </mat-card>

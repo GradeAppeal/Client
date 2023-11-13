@@ -5,19 +5,21 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../../../services/auth.service';
 import { Course } from '../../../../shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { ProfessorCourse } from 'src/app/shared/interfaces/professor.interface';
-
+import { Session, User } from '@supabase/supabase-js';
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent {
+  session: Session;
+  user: User;
   courseYear = new Date().getFullYear();
   courseNextYear = new Date().getFullYear() + 1;
   codeString = '';
-  professorID : number; 
-  course : ProfessorCourse = {
+  /* initialized array with default values */
+  course : Course = {
+    id: 0,
     prefix: '',
     code: 0,
     name: '',
@@ -35,18 +37,17 @@ export class AddCourseComponent {
     private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddCourseComponent>,
     private professorService: ProfessorService,
+    private authService: SupabaseService
   ) {
   }
 
   async ngOnInit(): Promise<void> {
-    // try {
-    //   this.professorCourses = await this.professorService.fetchProfessorCourses(
-    //     this.user.id
-    //   );
-    //   this.fetchedCourses = true;
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      this.session = (await this.authService.getSession()) as Session;
+      this.user = this.session.user;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   /* 
@@ -55,12 +56,13 @@ export class AddCourseComponent {
   async onAddCourse(){
       try {
       await this.professorService.insertCourse(
+        this.user.id,
         this.course.prefix,
         this.course.code,
         this.course.name,
         this.course.section,
         this.course.semester,
-        this.course.year
+        this.course.year,
       );
       } catch (err) {
         console.log(err);
