@@ -73,6 +73,7 @@ export class StudentInteractionHistoryComponent {
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
     this.loading = false;
+    console.log(this.messages);
   }
 
   ngAfterViewChecked() {

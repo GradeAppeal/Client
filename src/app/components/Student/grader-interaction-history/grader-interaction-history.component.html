@@ -22,7 +22,7 @@
   </div>
   <!-- Right Pane (Selected Appeal Details) -->
   <div class="right-pane">
-    <div class="card">
+    <div class="card" *ngIf="messageLoaded">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
           <!-- <img class="header-avatar" ngxGravatar [email]="grader.email" /> -->
@@ -38,10 +38,10 @@
           <div
             class="chat-item"
             [ngClass]="{
-              right: chat?.sender_id === grader.id,
-              left: chat?.sender_id !== grader.id,
+              right: chat?.sender_id === user.id,
+              left: chat?.sender_id !== user.id,
               grader: chat?.from_grader === true,
-              lightblue: chat?.sender_id === this.professor.id,
+              lightblue: chat?.sender_id === professor.id,
               notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >

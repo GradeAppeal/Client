@@ -90,6 +90,7 @@ export class ProfessorInteractionHistoryComponent {
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
     }
+    console.log(this.messages);
   }
 
   ngAfterViewChecked() {
@@ -165,10 +166,6 @@ export class ProfessorInteractionHistoryComponent {
 
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
-  }
-  //checks if a professor is in the list of professors
-  professorMatch(id: number): boolean {
-    return this.professors.some((professor) => professor.id === id);
   }
 
   async sendToGrader() {

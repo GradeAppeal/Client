@@ -44,7 +44,7 @@ export interface Student {
 export interface Grader extends Student {}
 
 export interface Professor {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   email: string;
