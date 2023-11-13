@@ -58,10 +58,17 @@ mat-icon {
 }
 
 .app-container {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .content {
   padding-left: 10px;
   overflow: auto;
 }
+
+// .content {
+//   flex-grow: 1;
+//   padding-left: 10px;
+//   overflow: auto;
+//   height: 100vh;
+// }
