@@ -60,8 +60,12 @@
             >
               <p class="button-text">Chat</p>
             </button>
-            <button class="close-appeal" mat-stroked-button>
-              <p class="button-text">Close Appeal</p>
+            <button
+              (click)="onCloseAppeal($event)"
+              class="close-appeal"
+              mat-stroked-button
+            >
+              <p clas="button-text">Close Appeal</p>
             </button>
           </div>
         </mat-card>

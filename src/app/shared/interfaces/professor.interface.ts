@@ -3,6 +3,7 @@ export interface ProfessorAppeal {
   appeal_text: string;
   assignment_id: number;
   assignment_name: string;
+  course_id: number;
   course_code: number;
   course_name: string;
   course_prefix: string;
@@ -28,17 +29,17 @@ export interface ProfessorTemplate {
   temp_name: string;
 }
 
-export interface ProfessorCourse {
-  prefix: string,
-  code: number,
-  name: string,
-  section: string,
-  semester: string,
-  year: number,
-}
-
 export interface ParsedStudent {
   first_name: string;
   last_name: string;
   email: string;
+}
+
+export interface StudentCourseGraderInfo {
+  student_id: string;
+  student_name: string;
+  student_email: string;
+  course_id: number;
+  course_name: string;
+  is_grader: boolean;
 }

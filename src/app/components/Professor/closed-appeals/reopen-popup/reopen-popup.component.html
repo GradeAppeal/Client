@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <div class="container">
+    <h1 mat-dialog-title>Reopen this appeal?</h1>
+    <mat-dialog-actions>
+      <button mat-raised-button class="reopen" (click)="onReopenAppeal()">
+        Reopen
+      </button>
+      <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+    </mat-dialog-actions>
+  </div>
+</div>
