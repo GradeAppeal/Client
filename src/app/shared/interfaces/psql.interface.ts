@@ -15,15 +15,15 @@ export interface Course {
 }
 
 export interface Message {
-  id: number;
-  created_at: Date;
-  sender_id: string | number;
-  recipient_id: string | number;
   appeal_id: number;
-  message_text: string;
+  created_at: Date;
   from_grader: boolean;
-  sender_name: string;
+  message_id: number;
+  message_text: string;
+  recipient_id: string;
   recipient_name: string;
+  sender_id: string;
+  sender_name: string;
 }
 
 export interface User {
@@ -44,7 +44,7 @@ export interface Student {
 export interface Grader extends Student {}
 
 export interface Professor {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   email: string;

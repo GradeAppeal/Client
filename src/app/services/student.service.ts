@@ -33,6 +33,7 @@ export class StudentService {
       throw new Error('Error in fetchStudentCourses');
     }
     console.log('fetchStudentCourses from student.service.ts');
+    console.log(data);
     return data;
   }
 

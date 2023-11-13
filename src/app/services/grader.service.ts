@@ -40,6 +40,8 @@ export class GraderService {
       console.log({ error });
       throw new Error('GetAllGraderAppeals');
     }
+
+    console.log({ data });
     return data;
   }
 

@@ -73,6 +73,7 @@ export class StudentInteractionHistoryComponent {
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
     this.loading = false;
+    console.log(this.messages);
   }
 
   ngAfterViewChecked() {
@@ -144,7 +145,7 @@ export class StudentInteractionHistoryComponent {
   }
   localSendMessage(message: string) {
     this.messages.push({
-      id: 1 + this.messageCount, //TODO make id better system
+      message_id: 1 + this.messageCount, //TODO make id better system
       created_at: getTimestampTz(new Date()),
       sender_id: this.student.id,
       recipient_id: this.professor.id,

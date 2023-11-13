@@ -16,6 +16,7 @@ import {
   Message,
   Professor,
   Course,
+  Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -47,21 +48,11 @@ export class GraderInteractionHistoryComponent {
   appealId: number;
   courseId: number;
   messages!: Message[];
+  messageLoaded = false;
   currentProfessor: string | null = '';
   currentCourse: Course | null;
-  grader = {
-    //student
-    id: 3,
-    email: 'abc123@gmail.com',
-    name: 'Sample',
-  };
-  sender = {
-    //professor
-    id: 0,
-    email: 'ccc1233@gmail.com',
-    name: 'Sample',
-  };
-
+  grader: any;
+  professor: Professor;
   studentAppeals!: StudentAppeal[];
   graderAppeals!: GraderAppeal[];
   professors!: Professor[];
@@ -82,8 +73,16 @@ export class GraderInteractionHistoryComponent {
     this.session = (await this.authService.getSession()) as Session;
     // get auth user info from auth session
     this.user = this.session.user;
+    this.grader = this.user;
+    this.grader = {
+      id: this.user.id,
+      first_name: this.user.user_metadata['first_name'],
+      last_name: this.user.user_metadata['last_name'],
+      email: this.user.user_metadata['email'],
+    };
+    console.log(this.grader);
 
-    const isGrader = await this.graderService.isGrader(this.user.id);
+    const isGrader = await this.graderService.isGrader(this.grader.id);
     if (!isGrader) {
       this.noAppeals = true;
       this.noAppealsMessage = 'You are not assigned as a grader to any courses';
@@ -91,7 +90,7 @@ export class GraderInteractionHistoryComponent {
       // if navigated from course dashboard, only get the appeals for that course
       if (this.courseId) {
         this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
-          this.user.id,
+          this.grader.id,
           this.courseId
         );
         this.currentCourse = await this.sharedService.getCourse(this.courseId);
@@ -99,38 +98,66 @@ export class GraderInteractionHistoryComponent {
       // otherwise, get all assigned appeals from all courses the grader is grading
       else {
         this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
-          this.user.id
+          this.grader.id
         );
       }
 
       this.graderAppeals.forEach((item) => {
         console.log({ item });
       });
-      this.professors = await this.graderService.fetchProfessors();
-      const professors = this.professors;
-      console.log({ professors });
+      // this.professors = await this.graderService.fetchProfessors();
       this.professorIds;
       console.log(this.graderAppeals);
-      console.log(this.professors);
-
+      this.noAppeals = this.graderAppeals.length === 0 ? true : false;
       // show appeals if they exist, otherwise display message
-      if (this.graderAppeals.length > 0) {
-        await this.selectAppeal(this.graderAppeals[0]);
-        //select current appeal based on id from url. Otherwise, set to first appeal
-        if (this.currentAppeal) {
-          //if appeal exists, find messages for it
-          this.selectAppeal(this.currentAppeal);
-        } else {
-          this.selectAppeal(this.graderAppeals[0]);
-        }
-        this.messageCount = this.messages.length;
+      // if (this.graderAppeals.length > 0) {
+      //   console.log(this.graderAppeals[0]);
+      //   //await this.selectAppeal(this.graderAppeals[0]);
+      //   this.currentAppeal = this.graderAppeals[0];
+      //   //select current appeal based on id from url. Otherwise, set to first appeal
+      //   if (this.currentAppeal) {
+      //     //if appeal exists, find messages for it
+      //     this.selectAppeal(this.currentAppeal);
+      //   } else {
+      //     this.selectAppeal(this.graderAppeals[0]);
+      //   }
+      //   //this.messageCount = this.messages.length;
 
-        console.log(this.messages);
-        this.noAppeals = false;
-      } else {
-        this.noAppeals = true;
-        this.noAppealsMessage = `No appeals assigned for ${this.currentCourse?.prefix}-${this.currentCourse?.code}`;
+      //   console.log(this.messages);
+      //   this.noAppeals = false;
+      // } else {
+      //   this.noAppeals = true;
+      //   this.noAppealsMessage = `No appeals assigned for ${this.currentCourse?.prefix}-${this.currentCourse?.code}`;
+      // }
+      if (!this.noAppeals) {
+        this.currentAppeal =
+          this.graderAppeals.find(
+            (appeal) => appeal.appeal_id === this.appealId
+          ) || this.graderAppeals[0];
+
+        if (this.currentAppeal) {
+          // this.student = await this.sharedService.getStudent(
+          //   this.currentAppeal.student_id
+          // );
+          //this.sender.id = this.currentAppeal.student_id;
+          this.messages = await this.sharedService.fetchMessages(
+            this.currentAppeal.appeal_id
+          );
+        } else {
+          this.currentAppeal = this.graderAppeals[0];
+          this.messages = await this.sharedService.fetchMessages(
+            this.currentAppeal.appeal_id
+          );
+        }
+        this.professor = await this.sharedService.getProfessor(
+          this.messages[0].recipient_id
+        );
+        //this.professor.id = this.messages[0].recipient_id;
+        this.messageLoaded = true;
+        this.messageCount = this.messages.length;
+        console.log('hey');
       }
+      console.log(this.messages);
     }
   }
 
@@ -143,13 +170,42 @@ export class GraderInteractionHistoryComponent {
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  async selectAppeal(appeal: any) {
-    this.currentAppeal = appeal;
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
-    );
-    const messages = this.messages;
-    console.log({ messages });
+  async selectAppeal(appeal: GraderAppeal) {
+    try {
+      this.currentAppeal = appeal;
+      console.log(this.currentAppeal.appeal_id);
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
+      );
+      console.log(this.messages[0].sender_id);
+      console.log(this.messages[0].recipient_id);
+      console.log(this.grader.id);
+
+      // Find the first message that doesn't match the grader
+      // let firstNonGraderMessage = this.messages.find(
+      //   (message) => message.sender_id !== this.grader.id
+      // );
+
+      // if (
+      //   firstNonGraderMessage !== undefined &&
+      //   firstNonGraderMessage.sender_id !== undefined
+      // ) {
+      //   console.log('Assign prof');
+      //   try {
+      //     // this.professor = await this.sharedService.getProfessor(
+      //     //   firstNonGraderMessage.sender_id
+      //     // );
+      //   } catch (e) {
+      //     console.log('No professor found' + e);
+      //   }
+      // } else {
+      //   console.log('No non-grader messages found.');
+      // }
+      console.log(this.professor);
+      console.log(this.messages);
+    } catch (e) {
+      console.log({ e });
+    }
   }
 
   /**
@@ -163,9 +219,10 @@ export class GraderInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
+      console.log(this.grader.id);
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        this.user.id, //sender id: grader
+        this.grader.id, //sender id: grader
         PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
@@ -178,6 +235,7 @@ export class GraderInteractionHistoryComponent {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
+    console.log(this.messages);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
@@ -193,21 +251,13 @@ export class GraderInteractionHistoryComponent {
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
   }
-  //checks if a professor is in the list of professors
-  professorMatch(id: number | string): boolean {
-    return this.professors.some((professor) => professor.id === id);
-  }
-  // set current professor
-  setProfessor(targetId: number): void {
-    const professor = this.professors.find((p) => p.id === targetId);
-    this.currentProfessor = professor ? professor.first_name : null;
-  }
+
   localSendMessage(message: string) {
     this.messages.push({
-      id: 1 + this.messageCount, //TODO make id better system
+      message_id: 1 + this.messageCount, //TODO make id better system
       created_at: getTimestampTz(new Date()),
       sender_id: this.grader.id,
-      recipient_id: 10, //todo fix... professor?
+      recipient_id: PROFESSOR_UUID, //todo fix... professor?
       appeal_id: this.currentAppeal.appeal_id,
       message_text: this.chatInputMessage,
       from_grader: this.fromGrader,

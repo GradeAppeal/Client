@@ -20,7 +20,9 @@ export class StudentDashboardComponent {
     private authService: SupabaseService,
     private readonly studentService: StudentService,
     private router: Router
-  ) {}
+  ) {
+    this.session = this.studentService.session as Session;
+  }
   async ngOnInit(): Promise<void> {
     this.session = (await this.authService.getSession()) as Session;
     this.user = this.session.user;

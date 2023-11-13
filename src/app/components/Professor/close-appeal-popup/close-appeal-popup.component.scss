@@ -1,0 +1,21 @@
+@import "src/styles.scss";
+.container {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  padding: 2vh;
+  h1 {
+    text-align: center;
+  }
+  mat-dialog-content {
+    text-align: center;
+  }
+  mat-dialog-actions {
+    display: flex;
+    justify-content: space-around;
+    button.sign-out {
+      padding: 0.5rem 1rem;
+      background-color: $primary-blue;
+      color: white;
+    }
+  }
+}
