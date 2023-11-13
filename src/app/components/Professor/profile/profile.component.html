@@ -41,6 +41,16 @@
     </button>
     <app-assignments [course]="currentCourse"></app-assignments>
   </div>
+  <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
+    <button
+      type="submit"
+      (click)="swapView('view', currentCourseID, currentCourse)"
+      class="blue-button back-button"
+    >
+      Back
+    </button>
+    <app-assignments [course]="currentCourse"></app-assignments>
+  </div>
 
   <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
     <button

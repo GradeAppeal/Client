@@ -1,4 +1,20 @@
+@import "src/styles.scss";
+.card {
+  height: 500px;
+}
 
-.card{
-    height: 500px;
+.closed-appeal {
+  padding: 0.7rem 0rem;
+  margin: 0.7rem;
+  .appeal-details {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+
+    button.reopen {
+      padding: 0.5rem 1rem;
+      background-color: $primary-blue;
+      color: white;
+    }
+  }
 }
