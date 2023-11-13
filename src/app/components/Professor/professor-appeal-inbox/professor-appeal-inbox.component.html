@@ -13,8 +13,8 @@
         {{ localFormatTimestamp(appeal.created_at).time }}
       </p>
       <p class="inbox-name" matLine>
-        {{ currentAppeal.student_first_name }}
-        {{ currentAppeal.student_last_name }}
+        {{ appeal.student_first_name }}
+        {{ appeal.student_last_name }}
       </p>
     </div>
   </div>
@@ -63,7 +63,7 @@
               Chat
             </button>
             <button
-              (click)="closeAppeal()"
+              (click)="onCloseAppeal($event)"
               class="close-appeal"
               mat-stroked-button
             >

@@ -1,8 +1,23 @@
+@import "src/app/components/Professor/assignments/assignments.component.scss";
+
+
 .course-title {
   font-size: 2em;
   font-weight: bold;
   padding-top: 1em;
   padding-bottom: 1em;
+}
+
+.title-container {
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.delete-icon {
+  margin-right: 0.5em;
+  margin-top: -0.5em;
 }
 
 .courses {
@@ -18,12 +33,23 @@
 .course-wrapper {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+  overflow: auto;
+  height: 700px;
 }
 
-.course-wording {
+.course-wording{
   margin-top: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
+  margin-left: 2em;
   font-size: larger;
+  flex: 1;
+  text-align: center;
+}
+
+.course-name {
+  font-size: larger;
+  padding-bottom: 2em;
 }
 
 .edit-button, .assignments-button {
@@ -65,7 +91,7 @@
 }
 
 .blue-button {
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
 }
 
 .student-input {
@@ -76,4 +102,10 @@
 
 .back-button {
   margin-left: 0px;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 20px; 
+  left: 220px;
 }

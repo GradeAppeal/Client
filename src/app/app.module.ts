@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/Professor/profile/profile.component';
@@ -34,13 +35,18 @@ import { EditStudentsPopUpComponent } from './components/Student/edit-students-p
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
+import { AddCourseComponent } from './components/Professor/profile/add-course/add-course.component';
+import { DeleteCourseComponent } from './components/Professor/profile/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
-import { CloseAppealPopupComponent } from './components/Professor/close-appeal-popup/close-appeal-popup.component';
+import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
+import { ReopenPopupComponent } from './components/Professor/closed-appeals/reopen-popup/reopen-popup.component';
+import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 
 @NgModule({
   declarations: [
@@ -60,13 +66,18 @@ import { CloseAppealPopupComponent } from './components/Professor/close-appeal-p
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
+    NotificationsComponent,
     RegisterComponent,
     DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
+    AddCourseComponent,
+    DeleteCourseComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
     CloseAppealPopupComponent,
+    ReopenPopupComponent,
+    AssignGraderPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +99,7 @@ import { CloseAppealPopupComponent } from './components/Professor/close-appeal-p
     MatInputModule,
     MatDialogModule,
     MatMenuModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

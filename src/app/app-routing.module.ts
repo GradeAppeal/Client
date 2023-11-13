@@ -11,9 +11,10 @@ import { StudentNavigationComponent } from './components/Student/student-navigat
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
-
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
+import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'edit-templates',
         component: EditTemplatesComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
     ],
   },

@@ -6,6 +6,8 @@ import {
   Message,
   User,
   Course,
+  Student,
+  Professor,
 } from 'src/app/shared/interfaces/psql.interface';
 
 @Injectable({
@@ -105,6 +107,26 @@ export class SharedService {
     if (error) {
       console.log(error);
       throw new Error('getUser');
+    }
+    return data[0];
+  }
+  async getStudent(sid: string): Promise<Student> {
+    const { data, error } = await this.supabase.rpc('get_student', {
+      sid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('getStudent');
+    }
+    return data[0];
+  }
+  async getProfessor(pid: string): Promise<Professor> {
+    const { data, error } = await this.supabase.rpc('get_professor', {
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('getProfessor');
     }
     return data[0];
   }
