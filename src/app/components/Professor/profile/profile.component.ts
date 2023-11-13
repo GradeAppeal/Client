@@ -205,13 +205,15 @@ export class ProfileComponent implements OnChanges {
   }
   
   /**
-     * Goes to DeleteTemplate pop up component
+     * Goes to DeleteCourse pop up component
      */
-  async deleteCoursePopUp(): Promise<void> {
+  async deleteCoursePopUp(event: Event, course: Course): Promise<void> {
+    /* prevent navigation to different view */
+    event.stopPropagation();
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
       width: "50%",
       height: "55%",
-      data: {}
+      data: {course: course}
     });
   }
 

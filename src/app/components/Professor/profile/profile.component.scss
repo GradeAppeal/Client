@@ -1,5 +1,16 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 
+.course-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+
+  max-height: 300vh;
+  // overflow-y: auto;
+}
 
 .course-title {
   font-size: 2em;
@@ -10,38 +21,39 @@
 
 .title-container {
   display: flex;
-  // justify-content: space-between;
   align-items: center;
   width: 100%;
 }
 
 .delete-icon {
-  margin-right: 0.5em;
-  margin-top: -0.5em;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .courses {
-  margin: 2%;
-  width: 22vw;
-  min-width: 400px;
+  width: calc(33.333% - 20px);
+  margin: 10px;
+  // width: 22vw;
+  min-width: 300px;
   min-height: 250px;
   height: 35vh;
   text-align: center;
   align-items: center;
-}
-
-.course-wrapper {
-  display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
   position: relative;
-  overflow: auto;
-  height: 700px;
-}
+  // transition: background-color 0.3s ease;
 
+  &:hover {
+    background-color: #f0f0f0; /* Adjust the color as needed */
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+}
 .course-wording{
   margin-top: 15px;
   margin-bottom: 0.5em;
-  margin-left: 2em;
+  // margin-left: 2em;
   font-size: larger;
   flex: 1;
   text-align: center;
@@ -91,7 +103,7 @@
 }
 
 .blue-button {
-  // margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .student-input {
@@ -101,7 +113,15 @@
 }
 
 .back-button {
-  margin-left: 0px;
+  width: 4.5em;
+  text-align: center;
+  height: 2.5em;
+  margin-top: 5px;
+}
+
+.assignment-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .add-button {
