@@ -9,6 +9,7 @@ import {
   Student,
   Professor,
 } from 'src/app/shared/interfaces/psql.interface';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,27 @@ export class SharedService {
   constructor(private supabaseService: SupabaseService) {
     this.supabase = this.supabaseService.client;
     this.session = this.supabaseService.session;
+  }
+
+  /**
+   * Listens to @tableName changes
+   * @param tableName table to listen
+   * @returns the payload changes as observable
+   */
+  getTableChanges(tableName: string): Observable<any> {
+    const changes = new Subject();
+    this.supabase
+      .channel('subscription')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: tableName },
+        (payload) => {
+          changes.next(payload);
+        }
+      )
+      .subscribe();
+
+    return changes.asObservable();
   }
 
   async getCourse(cid: number): Promise<Course> {

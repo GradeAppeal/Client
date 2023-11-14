@@ -12,6 +12,7 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
