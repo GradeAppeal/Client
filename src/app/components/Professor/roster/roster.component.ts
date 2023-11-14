@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { ProfileComponent } from '../profile/profile.component';
+import { CoursesComponent } from '../courses/courses.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import {
@@ -27,7 +27,7 @@ export class RosterComponent {
 
   constructor(
     private professorService: ProfessorService,
-    private profile: ProfileComponent,
+    private courses: CoursesComponent,
     private dialog: MatDialog
   ) {}
 
