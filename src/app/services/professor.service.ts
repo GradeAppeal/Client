@@ -233,7 +233,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('insert_new_assignment');
     }
-    console.log({ data });
   }
 
   /**
@@ -248,7 +247,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('delete_assignment');
     }
-    console.log({ data });
   }
 
   /**
