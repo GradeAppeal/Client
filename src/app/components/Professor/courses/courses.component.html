@@ -5,9 +5,9 @@
           <mat-card-title class="course-wording"
             >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
             {{ course.semester }}-{{ course.year }}
-          </mat-card-title 
+          </mat-card-title
           ><mat-icon class="delete-icon" (click)="deleteCoursePopUp($event, course)">delete</mat-icon>
-        </div>  
+        </div>
       <mat-card-subtitle class="course-name">{{
         course.name
       }}</mat-card-subtitle>
@@ -50,42 +50,5 @@
   >
     Back
   </button>
-  <p class="course-title">{{ formatCourse(currentCourse) }}</p>
-  <div *ngIf="fetchedStudents == true">
-    <div class="roster-wrapper">
-      <table class="roster-table" *ngIf="courseStudents.length != 0">
-        <tr>
-          <th class="global-th">Name</th>
-          <th class="global-th">Role</th>
-        </tr>
-        <tr *ngFor="let student of courseStudents">
-          <td class="student-data">
-            {{ student.student_name}}
-            <button class="edit-icon" (click)="editStudent(student)">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </td>
-          <td *ngIf="student.is_grader == false">Student</td>
-          <td *ngIf="student.is_grader == true">Grader</td>
-          <!-- <td>{{ student.role }}</td> -->
-        </tr>
-      </table>
-      <p *ngIf="courseStudents.length == 0">
-        There are no students in this class.
-      </p>
-    </div>
-    <button type="submit" (click)="addStudents()" class="blue-button">
-      Add Students
-    </button>
-    <mat-form-field class="student-input">
-      <mat-label>Students to add</mat-label>
-      <textarea
-        matInput
-        class="text-area"
-        rows="6"
-        cols="1"
-        [(ngModel)]="addedStudents"
-        placeholder="Ex. Sam Hoogewind"
-      ></textarea>
-    </mat-form-field>
-  </div>
+  <app-roster [course]="currentCourse"></app-roster>
+</div>

@@ -1,0 +1,43 @@
+<p class="course-title">{{ formatCourse(course) }}</p>
+  <div *ngIf="fetchedStudents == true">
+    <div class="roster-wrapper">
+      <table class="roster-table" *ngIf="courseStudents.length != 0">
+        <tr>
+          <th class="global-th">Name</th>
+          <th class="global-th">Email</th>
+          <th class="global-th">Role</th>
+        </tr>
+        <tr *ngFor="let student of courseStudents">
+          <td class="student-data">
+            {{ student.student_name}}
+            <button class="edit-icon" (click)="editStudent(student)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+          <td>
+            {{ student.email.split("@")[0] }}
+          </td>
+          <td *ngIf="student.is_grader == false">Student</td>
+          <td *ngIf="student.is_grader == true">Grader</td>
+          <!-- <td>{{ student.role }}</td> -->
+        </tr>
+      </table>
+      <p *ngIf="courseStudents.length == 0">
+        There are no students in this class.
+      </p>
+    </div>
+    <button type="submit" (click)="addStudents()" class="blue-button">
+      Add Students
+    </button>
+    <mat-form-field class="student-input">
+      <mat-label>Students to add</mat-label>
+      <textarea
+        matInput
+        class="text-area"
+        rows="6"
+        cols="1"
+        [(ngModel)]="addedStudents"
+        placeholder="Ex. Sam Hoogewind"
+      ></textarea>
+    </mat-form-field>
+  </div>
