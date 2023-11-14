@@ -6,6 +6,7 @@ import { CoursesComponent } from '../courses/courses.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
+import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-assignments',
@@ -23,6 +24,7 @@ export class AssignmentsComponent {
 
   constructor(
     private sharedService: SharedService,
+    private authService: SupabaseService,
     private courses: CoursesComponent,
     private dialog: MatDialog
   ) {}
@@ -38,14 +40,41 @@ export class AssignmentsComponent {
         this.course.id
       );
       this.isAssignmentsFetched = true;
+
+      // listen for db inserts & updates
+      this.authService.client
+        .channel('assignment')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'Assignments' },
+          (payload) => {
+            // if new assignment added, update UI with new assignment
+            if (payload.eventType === 'INSERT') {
+              const { assignment_name, course_id, id } = payload.new;
+              const newAssignment = {
+                assignment_name,
+                course_id,
+                id,
+              };
+              // show new assignment
+              this.assignments.push(newAssignment);
+            }
+            // if existing assignment deleted, update UI with deleted assignment
+            else if (payload.eventType === 'DELETE') {
+              const { id } = payload.old;
+              // don't show deleted assignment
+              this.assignments = this.assignments.filter(
+                (assignment) => assignment.id != id
+              );
+            }
+          }
+        )
+        .subscribe();
+      //this.deleteAssignmentUpdate();
     } catch (err) {
       console.log(err);
       throw new Error('Error while fetching course information for course');
     }
-  }
-
-  deleteAssignment(index: number) {
-    console.log(this.assignments[index]);
   }
 
   /**
