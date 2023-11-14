@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+
 import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
@@ -46,6 +47,7 @@ export class ProfessorInteractionHistoryComponent {
   professor: Professor;
   student: Student;
   grader: Student;
+  talkingToGrader: Boolean = false;
 
   professorAppeals!: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -215,5 +217,8 @@ export class ProfessorInteractionHistoryComponent {
         duration: this.durationInSeconds * 1000,
       });
     }
+  }
+  talkToGrader() {
+    console.log("You're talkin to the grader now.");
   }
 }
