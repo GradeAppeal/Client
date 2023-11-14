@@ -76,23 +76,21 @@ export class ProfessorService {
     return data;
   }
 
-    /**
+  /**
    * delete course
    * @param cid course id
    * @returns deleted StudentCourse row
    */
-    async deleteCourse(
-      cid: number
-    ): Promise<void> {
-      let { data, error } = await this.supabase.rpc('delete_course', {
-        cid,
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('delete_course');
-      }
-      console.log({ data });
+  async deleteCourse(cid: number): Promise<void> {
+    let { data, error } = await this.supabase.rpc('delete_course', {
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('delete_course');
     }
+    console.log({ data });
+  }
 
   /**
    * fetch from supabase: OPEN professor appeals
@@ -227,7 +225,7 @@ export class ProfessorService {
     cid: number,
     assignment_name: string
   ): Promise<void> {
-    const { data, error } = await this.supabase.rpc('insert_new_assignment', {
+    const { data, error } = await this.supabase.rpc('insert_assignment', {
       cid,
       assignment_name,
     });
@@ -235,24 +233,23 @@ export class ProfessorService {
       console.log(error);
       throw new Error('insert_new_assignment');
     }
-    return data;
+    console.log({ data });
   }
 
-    /**
+  /**
    * Writes new assignment to database
    * @param aid assignment id
    */
-    async deleteAssignment(aid: number): Promise<void> {
-      const { data, error } = await this.supabase.rpc('delete_assignment', {
-        aid,
-      });
-      if (error) {
-        console.log(error);
-        throw new Error('delete_assignment');
-      }
-      console.log({ data });
+  async deleteAssignment(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_assignment', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('delete_assignment');
     }
-
+    console.log({ data });
+  }
 
   /**
    * insert student users into course (only if student is a registered user)
@@ -278,8 +275,6 @@ export class ProfessorService {
     }
     return data;
   }
-
-
 
   /**
    * fetch from supabase: professor appeals
