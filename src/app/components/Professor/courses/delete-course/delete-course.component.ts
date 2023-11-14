@@ -33,7 +33,7 @@ export class DeleteCourseComponent {
       }
     /*   close pop-up */
       this.dialogRef.close();
-      this.router.navigateByUrl('/professor/profile');
+      this.router.navigateByUrl('/professor/courses');
       
       //TODO MAKE IT GO BACK TO MAIN PAGE
   }
