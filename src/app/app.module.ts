@@ -32,7 +32,7 @@ import {
 /* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
-import { ProfileComponent } from './components/Professor/profile/profile.component';
+import { CoursesComponent } from './components/Professor/courses/courses.component';
 import { ProfessorInteractionHistoryComponent } from './components/Professor/professor-interaction-history/professor-interaction-history.component';
 import { EditTemplatesComponent } from './components/Professor/edit-templates/edit-templates.component';
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
@@ -47,8 +47,8 @@ import { RegisterComponent } from './components/Auth/register/register.component
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
-import { AddCourseComponent } from './components/Professor/profile/add-course/add-course.component';
-import { DeleteCourseComponent } from './components/Professor/profile/delete-course/delete-course.component';
+import { AddCourseComponent } from './components/Professor/courses/add-course/add-course.component';
+import { DeleteCourseComponent } from './components/Professor/courses/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
 import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
@@ -64,7 +64,7 @@ import { GraderAssignedSnackbarComponent } from './components/Professor/professo
     StudentDashboardComponent,
     ProfessorNavigationComponent,
     ClosedAppealsComponent,
-    ProfileComponent,
+    CoursesComponent,
     ProfessorInteractionHistoryComponent,
     ProfessorInteractionHistoryComponent,
     EditTemplatesComponent,

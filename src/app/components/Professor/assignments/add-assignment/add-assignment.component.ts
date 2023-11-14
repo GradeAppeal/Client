@@ -1,7 +1,6 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { Router, ActivatedRoute } from '@angular/router';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
@@ -19,6 +18,7 @@ export class AddAssignmentComponent {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
+    private authService: SupabaseService,
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
@@ -32,10 +32,11 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
-      await this.professorService.insertNewAssignment(
+      const data = await this.professorService.insertNewAssignment(
         this.currentCourse.id,
         this.newAssignment
       );
+      console.log({ data });
     } catch (err) {
       console.log(err);
       throw new Error('onAddAssignment');
