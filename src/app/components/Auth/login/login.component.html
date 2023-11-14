@@ -1,77 +1,62 @@
-<div class="login-wrapper">
-  <div class="logo">
-    <img class="cover-image" src="../assets/test.jpg" />
-  </div>
-  <div class="form">
-    <!-- need to code the reactive form -->
-    <p class="welcome">Welcome to</p>
-    <p class="gradeboost"><b>GradeBoost!</b></p>
+<div style="background-image: url('../assets/rocket.jpg')">
+  <div class="login-wrapper">
+    <div class="logo">
+      <!-- <img class="cover-image" src="../assets/test.jpg" /> -->
+      <!-- <img src="../assets/rocket.jpg" /> -->
+    </div>
+    <div class="form">
+      <!-- need to code the reactive form -->
+      <p class="welcome">Welcome to</p>
+      <p class="gradeboost"><b>GradeBoost!</b></p>
 
-    <div class="row flex-center flex">
-      <div class="container" aria-live="polite">
-        <p class="description">Log in using your Calvin email</p>
-        <form
-          [formGroup]="loginForm"
-          (ngSubmit)="onLogin()"
-          class="form-widget"
-        >
-          <div>
-            <label for="email">Email</label> <br />
-            <input
-              matInput
-              id="email"
-              formControlName="email"
-              class="inputField"
-              type="email"
-              placeholder="Your email"
-            />
-            <br />
-            <input
-              matInput
-              id="password"
-              formControlName="password"
-              class="inputField"
-              type="password"
-              placeholder="Password"
-            />
-          </div>
-          <div>
-            <button
-              (click)="onSignup()"
-              type="submit"
-              class="blue-button"
-              [disabled]="loading"
-            >
-              {{ loading ? "Loading" : "Submit" }}
-            </button>
-            <br /><br />
-            <button
-              (click)="onLogin()"
-              type="submit"
-              class="blue-button"
-              [disabled]="loading"
-            >
-              {{ loading ? "Loading" : "Professor" }}
-            </button>
-
-            <button
-              (click)="onStudent()"
-              type="submit"
-              class="blue-button"
-              [disabled]="loading"
-            >
-              {{ loading ? "Loading" : "Student" }}
-            </button>
-            <button
-              (click)="onRegister()"
-              type="submit"
-              class="blue-button"
-              [disabled]="loading"
-            >
-              {{ loading ? "Loading" : "Register" }}
-            </button>
-          </div>
-        </form>
+      <div class="row flex-center flex">
+        <div class="container" aria-live="polite">
+          <p class="description">Log in using your Calvin email</p>
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onLogin()"
+            class="form-widget"
+          >
+            <div>
+              <label for="email">Email</label> <br />
+              <input
+                matInput
+                id="email"
+                formControlName="email"
+                class="inputField"
+                type="email"
+                placeholder="Your email"
+              />
+              <br />
+              <input
+                matInput
+                id="password"
+                formControlName="password"
+                class="inputField"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div>
+              <button
+                (click)="onSignup()"
+                type="submit"
+                class="blue-button"
+                [disabled]="loading"
+              >
+                {{ loading ? "Loading" : "Submit" }}
+              </button>
+              <button
+                (click)="onRegister()"
+                type="submit"
+                class="blue-button"
+                [disabled]="loading"
+              >
+                {{ loading ? "Loading" : "Register" }}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

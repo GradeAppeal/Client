@@ -38,9 +38,11 @@
           </h2>
           <p>
             <strong>Course:</strong>
-              {{ currentAppeal.course_prefix }}-{{ currentAppeal.course_code }}-{{ currentAppeal.course_section }}
-              {{ currentAppeal.course_semester }}-{{ currentAppeal.course_year }}
-              <i>{{ currentAppeal.course_name }}</i>
+            {{ currentAppeal.course_prefix }}-{{ currentAppeal.course_code }}-{{
+              currentAppeal.course_section
+            }}
+            {{ currentAppeal.course_semester }}-{{ currentAppeal.course_year }}
+            <i>{{ currentAppeal.course_name }}</i>
           </p>
 
           <mat-card class="message-container">
@@ -58,7 +60,7 @@
               mat-stroked-button
               accent
             >
-              <p class="button-text">Chat</p>
+              <p class="button-text">Interaction History</p>
             </button>
             <button
               (click)="onCloseAppeal($event)"
