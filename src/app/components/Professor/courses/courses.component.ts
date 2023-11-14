@@ -14,11 +14,11 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  selector: 'app-courses',
+  templateUrl: './courses.component.html',
+  styleUrls: ['./courses.component.scss'],
 })
-export class ProfileComponent implements OnChanges {
+export class CoursesComponent implements OnChanges {
   session: Session;
   user: User;
   courseStudents!: StudentCourseGraderInfo[];

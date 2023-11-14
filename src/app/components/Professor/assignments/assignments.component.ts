@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { ProfileComponent } from '../profile/profile.component';
+import { CoursesComponent } from '../courses/courses.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
@@ -23,12 +23,12 @@ export class AssignmentsComponent {
 
   constructor(
     private sharedService: SharedService,
-    private profile: ProfileComponent,
+    private courses: CoursesComponent,
     private dialog: MatDialog
   ) {}
 
   formatCourse(course: Course): string {
-    return this.profile.formatCourse(course);
+    return this.courses.formatCourse(course);
   }
 
   async ngOnInit() {

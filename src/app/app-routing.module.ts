@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/Auth/login/login.component';
 import { StudentDashboardComponent } from './components/Student/student-dashboard/student-dashboard.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
-import { ProfileComponent } from './components/Professor/profile/profile.component';
+import { CoursesComponent } from './components/Professor/courses/courses.component';
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ProfessorInteractionHistoryComponent } from './components/Professor/professor-interaction-history/professor-interaction-history.component';
 import { EditTemplatesComponent } from './components/Professor/edit-templates/edit-templates.component';
@@ -41,8 +41,8 @@ const routes: Routes = [
         component: ClosedAppealsComponent,
       },
       {
-        path: 'profile',
-        component: ProfileComponent,
+        path: 'courses',
+        component: CoursesComponent,
       },
       {
         path: 'edit-templates',
@@ -98,8 +98,8 @@ const routes: Routes = [
     component: ClosedAppealsComponent,
   },
   {
-    path: 'professor/profile',
-    component: ProfileComponent,
+    path: 'professor/courses',
+    component: CoursesComponent,
   },
   {
     path: 'professor/edit-templates',
