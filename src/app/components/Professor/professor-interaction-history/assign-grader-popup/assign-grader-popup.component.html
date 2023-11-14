@@ -3,7 +3,10 @@
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Grader</mat-label>
-      <mat-select (selectionChange)="onSelectGrader($event.value)">
+      <mat-select
+        required="true"
+        (selectionChange)="onSelectGrader($event.value)"
+      >
         <mat-option *ngFor="let grader of graders" [value]="grader">
           {{ grader.student_name }}
         </mat-option>
@@ -13,8 +16,8 @@
       <button
         mat-raised-button
         class="assign"
-        [disabled]="selectedGrader"
         (click)="onAssignGrader()"
+        [disabled]="!selectedGrader"
       >
         Assign
       </button>

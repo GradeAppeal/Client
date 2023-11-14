@@ -30,11 +30,7 @@
     <div class="card" *ngIf="messageLoaded">
       <mat-toolbar class="top-bar">
         <mat-toolbar-row>
-          <img
-            class="header-avatar"
-            ngxGravatar
-            [email]="professor.user_metadata['email']"
-          />
+          <img class="header-avatar" ngxGravatar [email]="professor.email" />
           <h1>
             &nbsp;
             {{
@@ -46,7 +42,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
-        <ng-container *ngFor="let chat of this.messages">
+        <ng-container *ngFor="let chat of messages">
           <div
             class="chat-item"
             [ngClass]="{
@@ -57,7 +53,9 @@
             }"
           >
             <div class="timestamp-wrapper">
-              <p class="timestamp">{{ localFormatTimestamp(chat.created_at).time }}</p>
+              <p class="timestamp">
+                {{ localFormatTimestamp(chat.created_at).time }}
+              </p>
               <p class="name">{{ chat.sender_name }}</p>
             </div>
             <br />
@@ -67,11 +65,7 @@
               *ngIf="!chat.message_text.trim().startsWith('Notification:')"
             >
               <!-- <img ngxGravatar [email]="user.email" /> -->
-              <img
-                *ngIf="isUser"
-                ngxGravatar
-                [email]="professor.user_metadata['email']"
-              />
+              <img *ngIf="isUser" ngxGravatar [email]="professor.email" />
               <img *ngIf="!isUser" ngxGravatar [email]="student.email" />
             </div>
             <!-- <img id="avatar" [src]="chat?.user?.profileImageUrl">  -->
