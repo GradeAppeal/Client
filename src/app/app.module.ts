@@ -47,6 +47,7 @@ import { SignoutComponent } from './components/Auth/signout/signout.component';
 import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 import { ReopenPopupComponent } from './components/Professor/closed-appeals/reopen-popup/reopen-popup.component';
 import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
+import { RosterComponent } from './components/Professor/roster/roster.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { AssignGraderPopupComponent } from './components/Professor/professor-int
     CloseAppealPopupComponent,
     ReopenPopupComponent,
     AssignGraderPopupComponent,
+    RosterComponent,
   ],
   imports: [
     BrowserModule,
