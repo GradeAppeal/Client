@@ -97,7 +97,7 @@
             Use Template
           </button>
           <button mat-stroked-button (click)="sendToGrader()">
-            Send To Grader
+            Assign To Grader
           </button>
         </div>
         <mat-menu #menu="matMenu">
@@ -124,6 +124,11 @@
         >
           Send
         </button>
+        <mat-slide-toggle
+          checked="talkingToGrader"
+          hideIcon="true"
+          (change)="talkToGrader()"
+        ></mat-slide-toggle>
       </div>
     </div>
   </div>

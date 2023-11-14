@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
   MatSnackBar,
   MatSnackBarRef,
@@ -110,6 +111,7 @@ import { GraderAssignedSnackbarComponent } from './components/Professor/professo
     MatMenuModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
