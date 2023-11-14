@@ -23,6 +23,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatSnackBar,
+  MatSnackBarRef,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
+
+/* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
 import { ClosedAppealsComponent } from './components/Professor/closed-appeals/closed-appeals.component';
 import { ProfileComponent } from './components/Professor/profile/profile.component';
@@ -47,6 +54,7 @@ import { SignoutComponent } from './components/Auth/signout/signout.component';
 import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 import { ReopenPopupComponent } from './components/Professor/closed-appeals/reopen-popup/reopen-popup.component';
 import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
+import { GraderAssignedSnackbarComponent } from './components/Professor/professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +86,7 @@ import { AssignGraderPopupComponent } from './components/Professor/professor-int
     CloseAppealPopupComponent,
     ReopenPopupComponent,
     AssignGraderPopupComponent,
+    GraderAssignedSnackbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +109,7 @@ import { AssignGraderPopupComponent } from './components/Professor/professor-int
     MatDialogModule,
     MatMenuModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

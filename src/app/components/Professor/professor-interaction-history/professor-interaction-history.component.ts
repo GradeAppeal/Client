@@ -1,7 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Session, User } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -10,7 +10,6 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   ProfessorAppeal,
   ProfessorTemplate,
-  StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
 import {
   Professor,
@@ -18,6 +17,14 @@ import {
   Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-popup.component';
+import {
+  MatSnackBar,
+  MatSnackBarRef,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
+
 @Component({
   selector: 'app-professor-interaction-history',
   templateUrl: './professor-interaction-history.component.html',
@@ -36,7 +43,7 @@ export class ProfessorInteractionHistoryComponent {
   fromGrader = false;
   isUser: Boolean;
   messages!: Message[];
-  professor: User;
+  professor: Professor;
   student: Student;
   grader: Student;
 
@@ -45,10 +52,13 @@ export class ProfessorInteractionHistoryComponent {
   professors: Professor[];
   //template
   selectedTemplate: string = '';
+  // snackbar duration
+  durationInSeconds: number = 2;
 
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
+    private _snackBar: MatSnackBar,
     private professorService: ProfessorService,
     private sharedService: SharedService,
     private authService: SupabaseService
@@ -57,16 +67,22 @@ export class ProfessorInteractionHistoryComponent {
       this.appealId = +params['id']; // Get appeal id from url
       console.log(this.appealId);
     });
-    this.session = this.authService.session as Session;
   }
   async ngOnInit() {
+    this.session = (await this.authService.getSession()) as Session;
     const { user } = this.session;
-    this.professor = user;
+    console.log({ user });
+    this.professor = {
+      id: user.id,
+      first_name: user.user_metadata['first_name'],
+      last_name: user.user_metadata['last_name'],
+      email: user.user_metadata['email'],
+    };
     this.professorAppeals =
-      await this.professorService.fetchAllProfessorAppeals(user.id);
+      await this.professorService.fetchAllProfessorAppeals(this.professor.id);
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(user.id);
+      await this.professorService.fetchProfessorTemplates(this.professor.id);
     if (!this.noAppeals) {
       this.currentAppeal =
         this.professorAppeals.find(
@@ -90,7 +106,7 @@ export class ProfessorInteractionHistoryComponent {
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
     }
-    console.log(this.messages);
+    // console.log(this.messages);
   }
 
   ngAfterViewChecked() {
@@ -120,7 +136,9 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   /**
-   * Submit student appeal to database
+   * Send message to student/grader
+   * @param message professor's message
+   * @param notification set to false; send with Notification: prefix
    */
   async sendMessage(
     message: string,
@@ -150,7 +168,7 @@ export class ProfessorInteractionHistoryComponent {
         appeal_id: this.currentAppeal.appeal_id,
         message_text: message,
         from_grader: this.fromGrader,
-        sender_name: `${this.professor.user_metadata['first_name']} ${this.professor.user_metadata['last_name']}`,
+        sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
         recipient_name: `${this.student.first_name} ${this.student.last_name}`,
       });
       this.currentAppeal.created_at =
@@ -168,6 +186,9 @@ export class ProfessorInteractionHistoryComponent {
     return formatTimestamp(timestamp);
   }
 
+  /**
+   * send message to grader
+   */
   async sendToGrader() {
     // if the appeal not assigned to grader
     if (!this.currentAppeal.grader_id) {
@@ -176,47 +197,23 @@ export class ProfessorInteractionHistoryComponent {
       );
       console.log({ graders });
       const appealID = this.currentAppeal.appeal_id;
-      const dialogRef = this.dialog.open(AssignGraderPopupComponent, {
+      // open popup to assign grader
+      const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
         data: { graders, appealID },
       });
 
-      dialogRef.afterClosed().subscribe((result: string | boolean) => {
+      dialog.afterClosed().subscribe((result: string | boolean) => {
         result ? this.sendMessage('Sent to Grader', true) : null;
       });
     }
     // if grader already assigned
     else {
       console.log('appeal already assigned to grader');
+      this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
+        duration: this.durationInSeconds * 1000,
+      });
     }
   }
 }
-//   let student_user_id = await this.supabase.getUserId(
-//     this.currentAppeal.student_id,
-//     'student'
-//   );
-//   let message = 'Sending to Grader';
-//   await this.supabase.insertMessages(
-//     this.currentAppeal.appeal_id,
-//     this.user.id, //professor user id
-//     student_user_id, //student user id
-//     new Date(),
-//     message,
-//     this.fromGrader,
-//     'Tyler',
-//     'Justin'
-//   );
-
-//   this.messages.push({
-//     id: 1 + this.messageCount, //TODO make id better system
-//     created_at: getTimestampTz(new Date()),
-//     sender_id: this.user.id,
-//     recipient_id: student_user_id,
-//     appeal_id: this.currentAppeal.appeal_id,
-//     message_text: message,
-//     from_grader: this.fromGrader,
-//     sender_name: 'Tyler',
-//     recipient_name: 'Justin',
-//   });
-// }
