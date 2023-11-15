@@ -39,6 +39,7 @@
                 currentAppeal.student_last_name
             }}<span>: </span>{{ currentAppeal.assignment_name }}
           </h1>
+          <h3 class="grader-header">Grader: {{ currentAppeal.grader_name }}</h3>
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
@@ -115,19 +116,23 @@
           [(ngModel)]="chatInputMessage"
           required
         />
-        <button
-          mat-stroked-button
-          id="send-button"
-          (click)="sendMessage(this.chatInputMessage)"
-          [disabled]="chatInputMessage === ''"
-        >
-          Send
-        </button>
-        <mat-slide-toggle
-          checked="talkingToGrader"
-          hideIcon="true"
-          (change)="talkToGrader()"
-        ></mat-slide-toggle>
+        <div class="buttons">
+          <button
+            mat-stroked-button
+            id="send-button"
+            (click)="sendMessage(this.chatInputMessage)"
+            [disabled]="chatInputMessage === ''"
+          >
+            Send
+          </button>
+          <mat-slide-toggle
+            class="grader-toggle"
+            hideIcon="true"
+            (change)="talkToGrader()"
+          ></mat-slide-toggle>
+          <p class="grader-toggle-text">To Grader</p>
+        </div>
+        <!-- checked="talkingToGrader" -->
       </div>
     </div>
   </div>

@@ -48,6 +48,8 @@ $background: white;
   .buttons {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     button {
       border: 1px solid white;
       cursor: pointer;
@@ -165,4 +167,10 @@ mat-nav-list {
     font-size: 2vh;
   }
 }
-
+.grader-toggle-text {
+  color: white;
+  font-size: 10px;
+}
+.grader-header {
+  margin-left: auto;
+}

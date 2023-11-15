@@ -70,7 +70,6 @@ export class SharedService {
     }
     return data;
   }
-
   /**
    * Get Messages from Supabase
    * @param aid appeal id
@@ -103,6 +102,30 @@ export class SharedService {
     if (error) {
       console.log(error);
       throw new Error('Error in fetchStudentMessages');
+    }
+    console.log({ data });
+    return data;
+  }
+
+  /**
+   * Get Messages from Supabase
+   * @param aid appeal id
+   * @returns list of all interaction history
+   */
+  async fetchStudentMessages(
+    aid: number,
+    sid: string,
+    pid: string
+  ): Promise<Message[]> {
+    console.log(aid);
+    const { data, error } = await this.supabase.rpc('get_student_messages', {
+      aid,
+      sid,
+      pid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchMessages');
     }
     console.log({ data });
     return data;

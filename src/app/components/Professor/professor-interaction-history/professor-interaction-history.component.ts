@@ -103,6 +103,7 @@ export class ProfessorInteractionHistoryComponent {
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
     }
+    console.log(this.currentAppeal);
     // console.log(this.messages);
   }
 
@@ -142,8 +143,15 @@ export class ProfessorInteractionHistoryComponent {
     notification: boolean = false
   ): Promise<void> {
     const now = getTimestampTz(new Date());
+    let sender_id = this.professor.id;
+    let recipient_id = this.student.id;
+    let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
     if (notification === true) {
       message = 'Notification: ' + message;
+    }
+    if (this.talkingToGrader && this.talkingToGrader === true) {
+      recipient_id = this.currentAppeal.grader_id as string;
+      recipient_name = this.currentAppeal.grader_name as string;
     }
     try {
       console.log(this.currentAppeal);
@@ -151,30 +159,34 @@ export class ProfessorInteractionHistoryComponent {
       // console.log(student_user_id);
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        this.professor.id, //professor user id
-        this.student.id, //student user id
+        sender_id, //professor user id
+        recipient_id, //student user id
         now,
         message,
         this.fromGrader,
         `${this.professor.first_name} ${this.professor.last_name}`,
         `${this.student.first_name} ${this.student.last_name}`
+        this.fromGrader,
+        `${this.professor.first_name} ${this.professor.last_name}`,
+        recipient_name
       );
       this.messages.push({
         message_id: 1 + this.messageCount, //TODO make id better system
         created_at: now,
-        sender_id: this.professor.id,
-        recipient_id: this.student.id,
+        sender_id: sender_id,
+        recipient_id: recipient_id,
         appeal_id: this.currentAppeal.appeal_id,
         message_text: message,
         from_grader: this.fromGrader,
         sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
-        recipient_name: `${this.student.first_name} ${this.student.last_name}`,
+        recipient_name: recipient_name,
       });
       this.currentAppeal.created_at =
         this.messages[this.messages.length - 1].created_at;
 
       this.chatInputMessage = '';
       this.scrollToBottom();
+      console.log(this.messages);
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
@@ -188,6 +200,7 @@ export class ProfessorInteractionHistoryComponent {
   /**
    * send message to grader
    */
+  async assignToGrader() {
   async assignToGrader() {
     // if the appeal not assigned to grader
     if (!this.currentAppeal.grader_id) {
@@ -215,7 +228,9 @@ export class ProfessorInteractionHistoryComponent {
       });
     }
   }
+
   talkToGrader() {
-    console.log("You're talkin to the grader now.");
+    this.talkingToGrader = !this.talkingToGrader;
+    console.log(this.talkingToGrader);
   }
 }

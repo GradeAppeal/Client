@@ -71,6 +71,8 @@ export class StudentInteractionHistoryComponent {
       this.student.id,
       this.professor.id
     );
+    console.log(this.currentAppeal);
+    // Filter out messages where sender_id is equal to grader_id
 
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
@@ -158,8 +160,8 @@ export class StudentInteractionHistoryComponent {
       appeal_id: this.currentAppeal.appeal_id,
       message_text: message,
       from_grader: this.fromGrader,
-      sender_name: '',
-      recipient_name: '',
+      sender_name: `${this.student.first_name} ${this.student.last_name}`,
+      recipient_name: `${this.professor.first_name} ${this.professor.last_name}`,
     });
   }
 }
