@@ -73,7 +73,6 @@ export class GraderInteractionHistoryComponent {
     this.session = (await this.authService.getSession()) as Session;
     // get auth user info from auth session
     this.user = this.session.user;
-    this.grader = this.user;
     this.grader = {
       id: this.user.id,
       first_name: this.user.user_metadata['first_name'],
@@ -176,7 +175,9 @@ export class GraderInteractionHistoryComponent {
         PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        `${this.grader.first_name} ${this.grader.last_name}`,
+        `${this.professor.first_name} ${this.professor.last_name}`
       );
       this.localSendMessage(message);
       this.chatInputMessage = '';
@@ -212,7 +213,7 @@ export class GraderInteractionHistoryComponent {
       message_text: this.chatInputMessage,
       from_grader: this.fromGrader,
       sender_name: this.grader.first_name + ' ' + this.grader.last_name,
-      recipient_name: '',
+      recipient_name: `${this.professor.first_name} ${this.professor.last_name}`,
     });
   }
 }

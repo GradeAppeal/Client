@@ -66,9 +66,13 @@ export class StudentInteractionHistoryComponent {
     this.professor = await this.sharedService.getUserInfo(
       this.currentAppeal.professor_id
     );
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
+    this.messages = await this.sharedService.fetchStudentMessages(
+      this.currentAppeal.appeal_id,
+      this.student.id,
+      this.professor.id
     );
+    console.log(this.currentAppeal);
+    // Filter out messages where sender_id is equal to grader_id
 
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
@@ -92,8 +96,10 @@ export class StudentInteractionHistoryComponent {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
     //this.sender.id = this.currentAppeal.student_id;
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
+    this.messages = await this.sharedService.fetchStudentMessages(
+      this.currentAppeal.appeal_id,
+      this.student.id,
+      this.professor.id
     );
     console.log(this.currentAppeal);
   }
@@ -117,7 +123,9 @@ export class StudentInteractionHistoryComponent {
         professorID, //recipientid : professor
         now,
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        `${this.student.first_name} ${this.student.last_name}`,
+        `${this.professor.first_name} ${this.professor.last_name}`
       );
       console.log('Sent to database!');
       this.localSendMessage(message);
@@ -152,8 +160,8 @@ export class StudentInteractionHistoryComponent {
       appeal_id: this.currentAppeal.appeal_id,
       message_text: message,
       from_grader: this.fromGrader,
-      sender_name: '',
-      recipient_name: '',
+      sender_name: `${this.student.first_name} ${this.student.last_name}`,
+      recipient_name: `${this.professor.first_name} ${this.professor.last_name}`,
     });
   }
 }
