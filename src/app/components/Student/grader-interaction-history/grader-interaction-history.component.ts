@@ -175,7 +175,9 @@ export class GraderInteractionHistoryComponent {
         PROFESSOR_UUID, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        `${this.grader.first_name} ${this.grader.last_name}`,
+        `${this.professor.first_name} ${this.professor.last_name}`
       );
       this.localSendMessage(message);
       this.chatInputMessage = '';

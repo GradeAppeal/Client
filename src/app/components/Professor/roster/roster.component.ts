@@ -27,7 +27,6 @@ export class RosterComponent {
   splitStudent: string[];
 
   constructor(
-    private authService: SupabaseService,
     private sharedService: SharedService,
     private professorService: ProfessorService,
     private dialog: MatDialog

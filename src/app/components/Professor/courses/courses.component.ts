@@ -1,11 +1,6 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EditStudentsPopUpComponent } from 'src/app/components/Student/edit-students-pop-up/edit-students-pop-up.component';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import {
-  ParsedStudent,
-  StudentCourseGraderInfo,
-} from 'src/app/shared/interfaces/professor.interface';
 import { OnChanges } from '@angular/core';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
@@ -18,7 +13,7 @@ import { Session, User } from '@supabase/supabase-js';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnChanges {
+export class CoursesComponent {
   session: Session;
   user: User;
   professorCourses!: Course[];
@@ -33,10 +28,6 @@ export class CoursesComponent implements OnChanges {
     private professorService: ProfessorService,
     private authService: SupabaseService
   ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -66,7 +57,6 @@ export class CoursesComponent implements OnChanges {
         } - ${course.name}`;
   }
 
-
   async swapView(page: string, courseID: number, course: Course) {
     this.currentPage = page;
     this.currentCourseID = courseID;
@@ -85,15 +75,15 @@ export class CoursesComponent implements OnChanges {
   }
 
   /**
-     * Goes to DeleteCourse pop up component
-     */
+   * Goes to DeleteCourse pop up component
+   */
   async deleteCoursePopUp(event: Event, course: Course): Promise<void> {
     /* prevent navigation to different view */
     event.stopPropagation();
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      width: "50%",
-      height: "55%",
-      data: {course: course}
+      width: '50%',
+      height: '55%',
+      data: { course: course },
     });
   }
 }

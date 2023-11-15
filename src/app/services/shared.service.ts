@@ -124,7 +124,9 @@ export class SharedService {
     recipient_id: string,
     created_at: Date,
     message_text: string,
-    from_grader: boolean
+    from_grader: boolean,
+    sender_name: string,
+    recipient_name: string
   ): Promise<number> {
     const { data, error } = await this.supabase.rpc('insert_message', {
       appid,
@@ -133,6 +135,8 @@ export class SharedService {
       message_text,
       recipient_id,
       sender_id,
+      sender_name,
+      recipient_name,
     });
     if (error) {
       console.log(error);

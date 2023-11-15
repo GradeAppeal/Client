@@ -155,7 +155,9 @@ export class ProfessorInteractionHistoryComponent {
         this.student.id, //student user id
         now,
         message,
-        this.fromGrader
+        this.fromGrader,
+        `${this.professor.first_name} ${this.professor.last_name}`,
+        `${this.student.first_name} ${this.student.last_name}`
       );
       this.messages.push({
         message_id: 1 + this.messageCount, //TODO make id better system
@@ -186,7 +188,7 @@ export class ProfessorInteractionHistoryComponent {
   /**
    * send message to grader
    */
-  async sendToGrader() {
+  async assignToGrader() {
     // if the appeal not assigned to grader
     if (!this.currentAppeal.grader_id) {
       const graders = await this.professorService.getGraders(

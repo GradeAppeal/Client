@@ -121,7 +121,9 @@ export class StudentInteractionHistoryComponent {
         professorID, //recipientid : professor
         now,
         this.chatInputMessage,
-        this.fromGrader
+        this.fromGrader,
+        `${this.student.first_name} ${this.student.last_name}`,
+        `${this.professor.first_name} ${this.professor.last_name}`
       );
       console.log('Sent to database!');
       this.localSendMessage(message);
