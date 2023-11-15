@@ -20,6 +20,7 @@ export interface ProfessorAppeal {
   student_id: string;
   student_last_name?: string;
   grader_id?: string;
+  grader_name?: string;
 }
 
 export interface ProfessorTemplate {
