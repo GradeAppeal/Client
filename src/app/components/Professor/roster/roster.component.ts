@@ -39,6 +39,7 @@ export class RosterComponent {
         this.course.id
       );
       this.fetchedStudents = true;
+      // listen for database changes
       this.handleStudentUpdates();
     } catch (err) {
       console.log(err);

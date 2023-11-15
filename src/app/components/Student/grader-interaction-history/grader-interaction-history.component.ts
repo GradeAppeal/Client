@@ -16,7 +16,6 @@ import {
   Message,
   Professor,
   Course,
-  Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,

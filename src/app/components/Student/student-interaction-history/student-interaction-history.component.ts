@@ -66,8 +66,10 @@ export class StudentInteractionHistoryComponent {
     this.professor = await this.sharedService.getUserInfo(
       this.currentAppeal.professor_id
     );
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
+    this.messages = await this.sharedService.fetchStudentMessages(
+      this.currentAppeal.appeal_id,
+      this.student.id,
+      this.professor.id
     );
 
     this.loadStudentAppeals = true;
@@ -92,8 +94,10 @@ export class StudentInteractionHistoryComponent {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
     //this.sender.id = this.currentAppeal.student_id;
-    this.messages = await this.sharedService.fetchMessages(
-      this.currentAppeal.appeal_id
+    this.messages = await this.sharedService.fetchStudentMessages(
+      this.currentAppeal.appeal_id,
+      this.student.id,
+      this.professor.id
     );
     console.log(this.currentAppeal);
   }
