@@ -1,17 +1,17 @@
-<div class="editing global-blue text-white font-bold">
-  <label class="editing-label">Editing:</label>
-</div>
-<button
-  type="submit"
-  [mat-dialog-close]="'grader'"
-  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button"
->
-  Change Grader Status
-</button>
-<button
-  type="submit"
-  [mat-dialog-close]="'remove'"
-  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button"
->
-  Remove Student
-</button>
+<h2 mat-dialog-title class="editing-label">Editing:</h2>
+<mat-dialog-actions>
+  <button
+    mat-button
+    (click)="onAssignGrader()"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button"
+  >
+    Change Grader Status
+  </button>
+  <button
+    mat-button
+    (click)="onRemoveStudent()"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full edit-button"
+  >
+    Remove Student
+  </button>
+</mat-dialog-actions>

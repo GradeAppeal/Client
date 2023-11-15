@@ -52,7 +52,7 @@ export class AssignmentsComponent {
    */
   handleAssignmentUpdates(): void {
     this.sharedService
-      .getTableChanges('Assignments')
+      .getTableChanges('Assignments', 'assignments-channel')
       .subscribe((update: any) => {
         // if insert event, get new row
         // if delete event, get deleted row ID

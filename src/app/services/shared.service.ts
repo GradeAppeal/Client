@@ -28,10 +28,10 @@ export class SharedService {
    * @param tableName table to listen
    * @returns the payload changes as observable
    */
-  getTableChanges(tableName: string): Observable<any> {
+  getTableChanges(tableName: string, channelName: string): Observable<any> {
     const changes = new Subject();
     this.supabase
-      .channel('subscription')
+      .channel(channelName)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: tableName },

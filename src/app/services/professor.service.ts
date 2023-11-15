@@ -214,7 +214,7 @@ export class ProfessorService {
       console.log(error);
       throw new Error('deleteStudentFromCourse: ');
     }
-    return data;
+    return data[0];
   }
 
   /**
