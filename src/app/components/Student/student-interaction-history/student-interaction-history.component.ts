@@ -72,12 +72,11 @@ export class StudentInteractionHistoryComponent {
       this.professor.id
     );
     console.log(this.currentAppeal);
-    // Filter out messages where sender_id is equal to grader_id
-
     this.loadStudentAppeals = true;
     this.messageCount = this.messages.length;
     this.loading = false;
     console.log(this.messages);
+    this.handleMessageUpdates();
   }
 
   ngAfterViewChecked() {
@@ -91,10 +90,45 @@ export class StudentInteractionHistoryComponent {
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  // Function to select an appeal
+  /**
+   * subscription to database changes
+   * filters on appeals
+   */
+  handleMessageUpdates() {
+    console.log('current appeal is: ', this.currentAppeal.appeal_id);
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `message-channel`,
+        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe(async (update: any) => {
+        console.log({ update });
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // get new message
+          const record: Message = update.new;
+          // show new message
+          this.messages.push(record);
+        }
+      });
+  }
+
+  /**
+   * Select appeal from left
+   * @param appeal
+   */
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
+    this.handleMessageUpdates();
+
     //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.sharedService.fetchStudentMessages(
       this.currentAppeal.appeal_id,
@@ -122,16 +156,13 @@ export class StudentInteractionHistoryComponent {
         studentID, //sender id: student
         professorID, //recipientid : professor
         now,
-        this.chatInputMessage,
+        message,
         this.fromGrader,
         `${this.student.first_name} ${this.student.last_name}`,
         `${this.professor.first_name} ${this.professor.last_name}`
       );
-      console.log('Sent to database!');
-      this.localSendMessage(message);
       this.chatInputMessage = '';
       this.scrollToBottom();
-      console.log(this.messages);
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
@@ -150,18 +181,5 @@ export class StudentInteractionHistoryComponent {
       .toString()
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
-  }
-  localSendMessage(message: string) {
-    this.messages.push({
-      message_id: 1 + this.messageCount, //TODO make id better system
-      created_at: getTimestampTz(new Date()),
-      sender_id: this.student.id,
-      recipient_id: this.professor.id,
-      appeal_id: this.currentAppeal.appeal_id,
-      message_text: message,
-      from_grader: this.fromGrader,
-      sender_name: `${this.student.first_name} ${this.student.last_name}`,
-      recipient_name: `${this.professor.first_name} ${this.professor.last_name}`,
-    });
   }
 }

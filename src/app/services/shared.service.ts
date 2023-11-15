@@ -26,16 +26,24 @@ export class SharedService {
   /**
    * Listens to @tableName changes
    * @param tableName table to listen
+   * @param channelName subscription channel
+   * @param event INSERT, UPDATE, DELETE, or *
    * @returns the payload changes as observable
    */
-  getTableChanges(tableName: string, channelName: string): Observable<any> {
+  getTableChanges(
+    tableName: string,
+    channelName: string,
+    filter?: string
+  ): Observable<any> {
     const changes = new Subject();
+    console.log({ filter });
     this.supabase
       .channel(channelName)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: tableName },
+        { event: '*', schema: 'public', table: tableName, filter: filter },
         (payload) => {
+          console.log({ payload });
           changes.next(payload);
         }
       )
@@ -88,29 +96,12 @@ export class SharedService {
     return data;
   }
 
-  async fetchStudentMessages(
-    aid: number,
-    sid: string,
-    pid: string
-  ): Promise<Message[]> {
-    console.log(aid);
-    const { data, error } = await this.supabase.rpc('get_student_messages', {
-      aid,
-      sid,
-      pid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('Error in fetchStudentMessages');
-    }
-    console.log({ data });
-    return data;
-  }
-
   /**
-   * Get Messages from Supabase
+   * The student should not see messages between the professor & grader
    * @param aid appeal id
-   * @returns list of all interaction history
+   * @param sid student id
+   * @param pid professor id
+   * @returns Interactions between student and professor
    */
   async fetchStudentMessages(
     aid: number,
@@ -125,7 +116,7 @@ export class SharedService {
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchMessages');
+      throw new Error('Error in fetchStudentMessages');
     }
     console.log({ data });
     return data;
