@@ -39,7 +39,9 @@
                 currentAppeal.student_last_name
             }}<span>: </span>{{ currentAppeal.assignment_name }}
           </h1>
-          <h3 class="grader-header">Grader: {{ currentAppeal.grader_name }}</h3>
+          <h3 class="grader-header" *ngIf="currentAppeal.grader_name !== null">
+            Grader: {{ currentAppeal.grader_name }}
+          </h3>
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
@@ -50,7 +52,10 @@
               right: chat?.sender_id == professor.id,
               left: chat?.sender_id != professor.id,
               lightblue: chat?.from_grader == true,
-              notification: chat.message_text.trim().startsWith('Notification:')
+              notification: chat.message_text
+                .trim()
+                .startsWith('Notification:'),
+              toGrader: chat?.recipient_id === currentAppeal.grader_id
             }"
           >
             <div class="timestamp-wrapper">
