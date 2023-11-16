@@ -6,9 +6,8 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { EditStudentsPopUpComponent } from '../../Student/edit-students-pop-up/edit-students-pop-up.component';
+import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { SupabaseService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-roster',
@@ -99,7 +98,8 @@ export class RosterComponent {
     studentCourseGrader: StudentCourseGraderInfo
   ): Promise<void> {
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      width: '35%',
+      width: '20%',
+      height: '20%',
       data: { studentCourseGrader },
     });
   }

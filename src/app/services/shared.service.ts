@@ -43,7 +43,7 @@ export class SharedService {
         'postgres_changes',
         { event: '*', schema: 'public', table: tableName, filter: filter },
         (payload) => {
-          console.log({ payload });
+          // console.log({ payload });
           changes.next(payload);
         }
       )
@@ -52,6 +52,11 @@ export class SharedService {
     return changes.asObservable();
   }
 
+  /**
+   * Get course information
+   * @param cid course id
+   * @returns Course information
+   */
   async getCourse(cid: number): Promise<Course> {
     const { data, error } = await this.supabase.rpc('get_course', {
       cid,
@@ -78,6 +83,7 @@ export class SharedService {
     }
     return data;
   }
+
   /**
    * Get Messages from Supabase
    * @param aid appeal id
@@ -92,7 +98,7 @@ export class SharedService {
       console.log(error);
       throw new Error('Error in fetchMessages');
     }
-    console.log({ data });
+    // console.log({ data });
     return data;
   }
 
@@ -118,7 +124,7 @@ export class SharedService {
       console.log(error);
       throw new Error('Error in fetchStudentMessages');
     }
-    console.log({ data });
+    // console.log({ data });
     return data;
   }
 
@@ -174,7 +180,7 @@ export class SharedService {
       sid,
     });
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('getStudent');
     }
     return data[0];
@@ -184,7 +190,7 @@ export class SharedService {
       pid,
     });
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('getProfessor');
     }
     return data[0];

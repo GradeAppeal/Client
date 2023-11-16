@@ -1,0 +1,15 @@
+@import "src/styles.scss";
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    .assign-grader-btn {
+      &:hover {
+        background-color: $primary-blue;
+      }
+    }
+  }
+}

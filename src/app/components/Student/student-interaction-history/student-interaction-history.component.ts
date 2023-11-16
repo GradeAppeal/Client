@@ -12,7 +12,11 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
-import { Message, User } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Message,
+  Professor,
+  Student,
+} from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 
 @Component({
@@ -38,8 +42,8 @@ export class StudentInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   messages!: Message[];
-  professor: User;
-  student: User;
+  professor: Professor;
+  student: Student;
 
   studentAppeals!: StudentAppeal[];
   loadStudentAppeals = false;
@@ -57,13 +61,13 @@ export class StudentInteractionHistoryComponent {
     const appealId = this.appealId;
     console.log({ appealId });
     // this.studentUserId = (await this.authService.getUserId()) as string;
-    this.student = await this.sharedService.getUserInfo(user.id);
+    this.student = await this.sharedService.getStudent(user.id);
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       user.id
     );
 
     this.currentAppeal = this.studentAppeals[0];
-    this.professor = await this.sharedService.getUserInfo(
+    this.professor = await this.sharedService.getProfessor(
       this.currentAppeal.professor_id
     );
     this.messages = await this.sharedService.fetchStudentMessages(

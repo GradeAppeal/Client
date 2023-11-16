@@ -1,7 +1,6 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { OnChanges } from '@angular/core';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
