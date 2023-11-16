@@ -51,18 +51,16 @@
 }
 .buttons {
   margin-top: 50vh;
-  button {
-    color: white;
-    background-color: blue;
-  }
 }
-.button-text {
-  padding: 5px;
+
+.grader-button {
+  margin-left: 8px;
 }
 .close-appeal {
   float: left;
 }
-.chat {
+
+.interaction-history-button {
   float: right;
 }
 
