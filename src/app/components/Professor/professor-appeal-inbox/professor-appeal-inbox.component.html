@@ -48,26 +48,28 @@
           <mat-card class="message-container">
             <p class="message">{{ currentAppeal.appeal_text }}</p>
           </mat-card>
-          <div class="buttons">
+          <div class="buttons ">
             <button
-              class="chat"
+              class="interaction-history-button blue-button"
               (click)="
                 navigateTo(
                   'professor/interaction-history/' +
                     this.currentAppeal.appeal_id
                 )
               "
-              mat-stroked-button
               accent
             >
               <p class="button-text">Interaction History</p>
             </button>
             <button
               (click)="onCloseAppeal($event)"
-              class="close-appeal"
-              mat-stroked-button
+              class="close-appeal blue-button"
+    
             >
               <p clas="button-text">Close Appeal</p>
+            </button>
+            <button class="grader-button blue-button" (click)="onButtonClick($event)">
+              Assign To Grader
             </button>
           </div>
         </mat-card>
