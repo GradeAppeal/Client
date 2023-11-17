@@ -29,6 +29,7 @@
   <button type="submit" (click)="addStudents()" class="blue-button">
     Add Students
   </button>
+    <input type="file" (change)="onFileChange($event)">
   <mat-form-field class="student-input">
     <mat-label>Students to add</mat-label>
     <textarea
@@ -39,5 +40,5 @@
       [(ngModel)]="addedStudents"
       placeholder="Ex. Sam Hoogewind"
     ></textarea>
-  </mat-form-field>
-</div>
+  </mat-form-field></div>
+

@@ -131,6 +131,24 @@ export class RosterComponent {
     return parsedStudentsToAdd;
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.readFile(file);
+    }
+  }
+
+  readFile(file: File) {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const csvContent: string = e.target.result;
+      this.addedStudents = csvContent;
+    };
+    reader.readAsText(file);
+    }
+
   /**
    * Adds students to Course
    * separately handles registered & unregistered users
