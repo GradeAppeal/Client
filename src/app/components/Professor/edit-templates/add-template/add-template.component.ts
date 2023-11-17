@@ -1,8 +1,6 @@
 import { ProfessorTemplate } from 'src/app/shared/interfaces/professor.interface';
-import { Component, Inject, Optional, Input } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Course } from '../../../../shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 
 @Component({
@@ -12,14 +10,12 @@ import { ProfessorService } from 'src/app/services/professor.service';
 })
 export class AddTemplateComponent {
   templates: ProfessorTemplate;
-  professorID: number;
+  professorID: string;
   newTemplateName: string;
   newTemplateText: string;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    private router: Router,
-    private route: ActivatedRoute,
     private dialogRef: MatDialogRef<AddTemplateComponent>,
     private professorService: ProfessorService
   ) {

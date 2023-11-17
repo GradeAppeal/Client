@@ -46,7 +46,11 @@ export class RosterComponent {
 
   handleStudentUpdates(): void {
     this.sharedService
-      .getTableChanges('StudentCourse', 'student-course-channel')
+      .getTableChanges(
+        'StudentCourse',
+        'student-course-channel',
+        `course_id=eq.${this.course.id}`
+      )
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
         // if delete event, get deleted row ID

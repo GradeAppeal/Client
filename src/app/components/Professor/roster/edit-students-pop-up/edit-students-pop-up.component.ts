@@ -10,7 +10,7 @@ import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.int
 })
 export class EditStudentsPopUpComponent {
   student: StudentCourseGraderInfo;
-
+  color = 'primary';
   constructor(
     @Optional()
     @Inject(MAT_DIALOG_DATA)

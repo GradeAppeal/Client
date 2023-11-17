@@ -62,8 +62,7 @@ export class SharedService {
       cid,
     });
     if (error) {
-      console.log(error);
-      throw new Error('Error in getCourse');
+      throw new Error(error.message);
     }
     return data[0];
   }
