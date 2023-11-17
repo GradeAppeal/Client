@@ -6,6 +6,8 @@ import { AddTemplateComponent } from './add-template/add-template.component';
 import { DeleteTemplateComponent } from './delete-template/delete-template.component';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
+import { SharedService } from 'src/app/services/shared.service';
+import { Professor } from 'src/app/shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-edit-templates',
@@ -14,27 +16,62 @@ import { Session, User } from '@supabase/supabase-js';
 })
 export class EditTemplatesComponent {
   constructor(
+    private sharedService: SharedService,
     private authService: SupabaseService,
     private professorService: ProfessorService,
     private dialog: MatDialog
   ) {}
   session: Session;
   user: User;
+  professor: Professor;
   professorTemplates: ProfessorTemplate[];
-  professorID = 1; //TODO make this actual user ID not just fake data
-  editTemplate(template: ProfessorTemplate) {}
 
   async ngOnInit() {
     this.session = (await this.authService.getSession()) as Session;
     this.user = this.session.user;
+    this.professor = {
+      id: this.user.id,
+      first_name: this.user.user_metadata['first_name'],
+      last_name: this.user.user_metadata['last_name'],
+      email: this.user.user_metadata['email'],
+    };
     this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(this.user.id);
+      await this.professorService.fetchProfessorTemplates(this.professor.id);
+    this.handleTemplateUpdates();
+  }
+
+  handleTemplateUpdates() {
+    this.sharedService
+      .getTableChanges(
+        'Templates',
+        `template-channel`,
+        `professor_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new template inserted
+        if (event === 'INSERT') {
+          const newTemplate = { ...record };
+          this.professorTemplates.push(newTemplate);
+        }
+        // template deleted
+        else if (event === 'DELETE') {
+          this.professorTemplates = this.professorTemplates.filter(
+            (template) => template.id !== record.id
+          );
+        }
+      });
   }
 
   /**
    * Goes to AddTemplate pop up component
    */
-  async addTemplatePopUp(professorID: number): Promise<void> {
+  async addTemplatePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddTemplateComponent, {
       width: '80%',
       height: '80%',

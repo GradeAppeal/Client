@@ -11,18 +11,15 @@ import { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   Message,
   Professor,
   Course,
-  Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
-import { PROFESSOR_UUID } from 'src/app/shared/strings';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -100,9 +97,6 @@ export class GraderInteractionHistoryComponent {
         );
       }
 
-      this.graderAppeals.forEach((item) => {
-        console.log({ item });
-      });
       // this.professors = await this.graderService.fetchProfessors();
       this.professorIds;
       console.log(this.graderAppeals);
@@ -134,10 +128,37 @@ export class GraderInteractionHistoryComponent {
       }
       console.log(this.messages);
     }
+    this.handleMessageUpdates();
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+
+  handleMessageUpdates() {
+    console.log('current appeal is: ', this.currentAppeal.appeal_id);
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `message-channel`,
+        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe(async (update: any) => {
+        console.log({ update });
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // get new message
+          const record: Message = update.new;
+          // show new message
+          this.messages.push(record);
+        }
+      });
   }
 
   scrollToBottom() {
@@ -148,6 +169,8 @@ export class GraderInteractionHistoryComponent {
   async selectAppeal(appeal: GraderAppeal) {
     try {
       this.currentAppeal = appeal;
+      // change filter
+      this.handleMessageUpdates();
       console.log(this.currentAppeal.appeal_id);
       this.messages = await this.sharedService.fetchMessages(
         this.currentAppeal.appeal_id
@@ -168,18 +191,17 @@ export class GraderInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
-      console.log(this.grader.id);
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.grader.id, //sender id: grader
-        PROFESSOR_UUID, //recipientid : professor??
+        this.professor.id, //recipientid : professor??
         new Date(),
         this.chatInputMessage,
         this.fromGrader,
         `${this.grader.first_name} ${this.grader.last_name}`,
         `${this.professor.first_name} ${this.professor.last_name}`
       );
-      this.localSendMessage(message);
+
       this.chatInputMessage = '';
       this.scrollToBottom();
     } catch (err) {
@@ -201,19 +223,5 @@ export class GraderInteractionHistoryComponent {
       .toString()
       .padStart(2, '0')} ${ampm}`;
     return { date, time };
-  }
-
-  localSendMessage(message: string) {
-    this.messages.push({
-      message_id: 1 + this.messageCount, //TODO make id better system
-      created_at: getTimestampTz(new Date()),
-      sender_id: this.grader.id,
-      recipient_id: this.professor.id, //todo fix... professor?
-      appeal_id: this.currentAppeal.appeal_id,
-      message_text: this.chatInputMessage,
-      from_grader: this.fromGrader,
-      sender_name: this.grader.first_name + ' ' + this.grader.last_name,
-      recipient_name: `${this.professor.first_name} ${this.professor.last_name}`,
-    });
   }
 }

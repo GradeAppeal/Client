@@ -16,8 +16,6 @@ export class DeleteAssignmentComponent {
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    private router: Router,
-    private route: ActivatedRoute,
     private dialogRef: MatDialogRef<DeleteAssignmentComponent>,
     private professorService: ProfessorService
   ) {

@@ -12,6 +12,7 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -81,15 +82,15 @@ export class ProfessorService {
    * @param cid course id
    * @returns deleted StudentCourse row
    */
-  async deleteCourse(cid: number): Promise<void> {
+  async deleteCourse(cid: number, pid: string): Promise<void> {
     let { data, error } = await this.supabase.rpc('delete_course', {
       cid,
+      pid,
     });
     if (error) {
       console.log(error);
-      throw new Error('delete_course');
+      throw new Error('deleteCourse');
     }
-    console.log({ data });
   }
 
   /**
@@ -107,7 +108,7 @@ export class ProfessorService {
     );
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchOpenProfessorAppeals');
+      throw new Error('fetchOpenProfessorAppeals');
     }
     return data;
   }
@@ -127,7 +128,7 @@ export class ProfessorService {
     );
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchClosedProfessorAppeals');
+      throw new Error('fetchClosedProfessorAppeals');
     }
     return data;
   }
@@ -144,7 +145,7 @@ export class ProfessorService {
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchAllProfessorAppeals');
+      throw new Error('fetchAllProfessorAppeals');
     }
     return data;
   }
@@ -213,7 +214,7 @@ export class ProfessorService {
       console.log(error);
       throw new Error('deleteStudentFromCourse: ');
     }
-    return data;
+    return data[0];
   }
 
   /**
@@ -233,7 +234,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('insert_new_assignment');
     }
-    console.log({ data });
   }
 
   /**
@@ -248,7 +248,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('delete_assignment');
     }
-    console.log({ data });
   }
 
   /**
@@ -468,7 +467,7 @@ export class ProfessorService {
    * @param temp_text template text
    */
   async insertTemplate(
-    pid: number,
+    pid: string,
     temp_name: string,
     temp_text: string
   ): Promise<void> {
@@ -478,8 +477,7 @@ export class ProfessorService {
       temp_text,
     });
     if (error) {
-      console.log(error);
-      throw new Error('insert_template');
+      throw new Error(error.message);
     }
     console.log({ data });
   }

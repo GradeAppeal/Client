@@ -18,7 +18,6 @@ export class AddAssignmentComponent {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
-    private authService: SupabaseService,
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;

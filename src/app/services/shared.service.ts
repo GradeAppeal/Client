@@ -9,6 +9,7 @@ import {
   Student,
   Professor,
 } from 'src/app/shared/interfaces/psql.interface';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,13 +23,46 @@ export class SharedService {
     this.session = this.supabaseService.session;
   }
 
+  /**
+   * Listens to @tableName changes
+   * @param tableName table to listen
+   * @param channelName subscription channel
+   * @param event INSERT, UPDATE, DELETE, or *
+   * @returns the payload changes as observable
+   */
+  getTableChanges(
+    tableName: string,
+    channelName: string,
+    filter?: string
+  ): Observable<any> {
+    const changes = new Subject();
+    console.log({ filter });
+    this.supabase
+      .channel(channelName)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: tableName, filter: filter },
+        (payload) => {
+          // console.log({ payload });
+          changes.next(payload);
+        }
+      )
+      .subscribe();
+
+    return changes.asObservable();
+  }
+
+  /**
+   * Get course information
+   * @param cid course id
+   * @returns Course information
+   */
   async getCourse(cid: number): Promise<Course> {
     const { data, error } = await this.supabase.rpc('get_course', {
       cid,
     });
     if (error) {
-      console.log(error);
-      throw new Error('Error in getCourse');
+      throw new Error(error.message);
     }
     return data[0];
   }
@@ -48,6 +82,7 @@ export class SharedService {
     }
     return data;
   }
+
   /**
    * Get Messages from Supabase
    * @param aid appeal id
@@ -62,14 +97,16 @@ export class SharedService {
       console.log(error);
       throw new Error('Error in fetchMessages');
     }
-    console.log({ data });
+    // console.log({ data });
     return data;
   }
 
   /**
-   * Get Messages from Supabase
+   * The student should not see messages between the professor & grader
    * @param aid appeal id
-   * @returns list of all interaction history
+   * @param sid student id
+   * @param pid professor id
+   * @returns Interactions between student and professor
    */
   async fetchStudentMessages(
     aid: number,
@@ -84,9 +121,9 @@ export class SharedService {
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchMessages');
+      throw new Error('Error in fetchStudentMessages');
     }
-    console.log({ data });
+    // console.log({ data });
     return data;
   }
 
@@ -142,7 +179,7 @@ export class SharedService {
       sid,
     });
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('getStudent');
     }
     return data[0];
@@ -152,7 +189,7 @@ export class SharedService {
       pid,
     });
     if (error) {
-      console.log(error);
+      console.log({ error });
       throw new Error('getProfessor');
     }
     return data[0];

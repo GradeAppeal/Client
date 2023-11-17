@@ -8,33 +8,34 @@ import { ProfessorService } from 'src/app/services/professor.service';
 @Component({
   selector: 'app-delete-course',
   templateUrl: './delete-course.component.html',
-  styleUrls: ['./delete-course.component.scss']
+  styleUrls: ['./delete-course.component.scss'],
 })
 export class DeleteCourseComponent {
-  course : Course;
+  cid: number;
+  pid: string;
   constructor(
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional()
+    @Inject(MAT_DIALOG_DATA)
+    public data: { cid: number; pid: string },
     private router: Router,
-    private route: ActivatedRoute,
     private dialogRef: MatDialogRef<DeleteCourseComponent>,
     private professorService: ProfessorService
   ) {
-    this.course = data.course;
+    this.cid = data.cid;
+    this.pid = data.pid;
   }
 
-  async onDeleteCourse(){
+  async onDeleteCourse() {
     try {
-      await this.professorService.deleteCourse(
-        this.course.id,
-      );
-      } catch (err) {
-        console.log(err);
-        throw new Error('insertCourse');
-      }
+      await this.professorService.deleteCourse(this.cid, this.pid);
+    } catch (err) {
+      console.log(err);
+      throw new Error('insertCourse');
+    }
     /*   close pop-up */
-      this.dialogRef.close();
-      this.router.navigateByUrl('/professor/courses');
-      
-      //TODO MAKE IT GO BACK TO MAIN PAGE
+    this.dialogRef.close();
+    this.router.navigateByUrl('/professor/courses');
+
+    //TODO MAKE IT GO BACK TO MAIN PAGE
   }
 }

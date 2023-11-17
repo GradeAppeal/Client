@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -38,14 +38,49 @@ export class AssignmentsComponent {
         this.course.id
       );
       this.isAssignmentsFetched = true;
+
+      // listen for db inserts & updates
+      this.handleAssignmentUpdates();
     } catch (err) {
       console.log(err);
       throw new Error('Error while fetching course information for course');
     }
   }
 
-  deleteAssignment(index: number) {
-    console.log(this.assignments[index]);
+  /**
+   * Receive database changes and update UI accordingly
+   */
+  handleAssignmentUpdates(): void {
+    this.sharedService
+      .getTableChanges('Assignments', 'assignments-channel')
+      .subscribe((update: any) => {
+        // if insert event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+
+        if (!record) return;
+        // if new assignment inserted
+        if (event === 'INSERT') {
+          const { assignment_name, course_id, id } = record;
+          const newAssignment = {
+            assignment_name,
+            course_id,
+            id,
+          };
+          // show new assignment
+          this.assignments.push(newAssignment);
+        }
+        // if assignment deleted
+        else if (event === 'DELETE') {
+          const { id } = record;
+          // don't show deleted assignment
+          this.assignments = this.assignments.filter(
+            (assignment) => assignment.id != id
+          );
+        }
+      });
   }
 
   /**

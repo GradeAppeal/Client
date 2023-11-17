@@ -21,8 +21,8 @@ export interface Message {
   message_id: number;
   message_text: string;
   recipient_id: string;
-  recipient_name: string;
   sender_id: string;
+  recipient_name: string;
   sender_name: string;
 }
 

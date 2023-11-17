@@ -1,7 +1,6 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-
 import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
@@ -18,12 +17,7 @@ import {
   Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-popup.component';
-import {
-  MatSnackBar,
-  MatSnackBarRef,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
-import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
 
 @Component({
@@ -110,10 +104,37 @@ export class ProfessorInteractionHistoryComponent {
     }
     console.log(this.currentAppeal);
     // console.log(this.messages);
+    this.handleMessageUpdates();
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+
+  handleMessageUpdates() {
+    console.log('current appeal is: ', this.currentAppeal.appeal_id);
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `message-channel`,
+        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe(async (update: any) => {
+        console.log({ update });
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // get new message
+          const record: Message = update.new;
+          // show new message
+          this.messages.push(record);
+        }
+      });
   }
 
   selectTemplate(template: string) {
@@ -128,6 +149,8 @@ export class ProfessorInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
+    // update real-time filtering
+    this.handleMessageUpdates();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
     // TODO: adjust get appeals function to get student email
@@ -170,19 +193,9 @@ export class ProfessorInteractionHistoryComponent {
         message,
         this.fromGrader,
         `${this.professor.first_name} ${this.professor.last_name}`,
-        recipient_name
+        `${this.student.first_name} ${this.student.last_name}`
       );
-      this.messages.push({
-        message_id: 1 + this.messageCount, //TODO make id better system
-        created_at: now,
-        sender_id: sender_id,
-        recipient_id: recipient_id,
-        appeal_id: this.currentAppeal.appeal_id,
-        message_text: message,
-        from_grader: this.fromGrader,
-        sender_name: `${this.professor.first_name} ${this.professor.last_name}`,
-        recipient_name: recipient_name,
-      });
+
       this.currentAppeal.created_at =
         this.messages[this.messages.length - 1].created_at;
 
@@ -202,6 +215,7 @@ export class ProfessorInteractionHistoryComponent {
   /**
    * send message to grader
    */
+
   async assignToGrader() {
     // if the appeal not assigned to grader
     if (!this.currentAppeal.grader_id) {

@@ -1,18 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { CoursesComponent } from '../courses/courses.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { EditStudentsPopUpComponent } from '../../Student/edit-students-pop-up/edit-students-pop-up.component';
+import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-roster',
   templateUrl: './roster.component.html',
-  styleUrls: ['./roster.component.scss']
+  styleUrls: ['./roster.component.scss'],
 })
 export class RosterComponent {
   @Input() course: Course;
@@ -26,8 +26,8 @@ export class RosterComponent {
   splitStudent: string[];
 
   constructor(
+    private sharedService: SharedService,
     private professorService: ProfessorService,
-    private courses: CoursesComponent,
     private dialog: MatDialog
   ) {}
 
@@ -37,42 +37,75 @@ export class RosterComponent {
         this.course.id
       );
       this.fetchedStudents = true;
-      console.log(this.courseStudents);
+      // listen for database changes
+      this.handleStudentUpdates();
     } catch (err) {
       console.log(err);
     }
   }
 
-  editStudent(studentCourseGrader: StudentCourseGraderInfo) {
-    console.log(studentCourseGrader);
-    const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      width: '250px',
-      data: { studentCourseGrader },
-    });
+  handleStudentUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'StudentCourse',
+        'student-course-channel',
+        `course_id=eq.${this.course.id}`
+      )
+      .subscribe(async (update: any) => {
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // get new in
+          const record = update.new;
+          const { student_id, course_id } = record;
 
-    dialogRef.afterClosed().subscribe(async (result) => {
-      console.log(result);
-      if (result == 'grader') {
-        await this.makeGrader(studentCourseGrader);
-      } else if (result == 'remove') {
-        await this.removeStudent(studentCourseGrader);
-      }
-    });
+          // get student & course information
+          const { id, first_name, last_name, email } =
+            await this.sharedService.getStudent(student_id);
+          const course = await this.sharedService.getCourse(course_id);
+
+          // show new student
+          this.courseStudents.push({
+            student_id: id,
+            student_name: `${first_name} ${last_name}`,
+            email: email,
+            course_id: course.id,
+            course_name: course.name,
+            is_grader: false,
+          });
+        }
+        // if grader status updated
+        else if (event === 'UPDATE') {
+          const { student_id } = record;
+          // change student to grader
+          const courseStudent = this.courseStudents.find(
+            (courseStudent) => courseStudent.student_id === student_id
+          ) as StudentCourseGraderInfo;
+          courseStudent.is_grader = !courseStudent.is_grader;
+        }
+        // if assignment deleted
+        else if (event === 'DELETE') {
+          const { student_id } = record;
+          this.courseStudents = this.courseStudents.filter(
+            (student) => student.student_id !== student_id
+          );
+        }
+      });
   }
 
-  /**
-   * toggle grader status
-   * @param student student to change status
-   */
-  async makeGrader(studentCourseGrader: StudentCourseGraderInfo) {
-    try {
-      const { student_id, course_id } = studentCourseGrader;
-      console.log(studentCourseGrader.student_id, this.course.id);
-      await this.professorService.updateGrader(student_id, course_id);
-      studentCourseGrader.is_grader = !studentCourseGrader.is_grader;
-    } catch (err) {
-      throw new Error('makeGrader');
-    }
+  async editStudentPopup(
+    studentCourseGrader: StudentCourseGraderInfo
+  ): Promise<void> {
+    const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
+      width: '20%',
+      height: '20%',
+      data: { studentCourseGrader },
+    });
   }
 
   /**
@@ -132,6 +165,7 @@ export class RosterComponent {
 
       // insert students to course
       await this.professorService.insertStudentsToCourse(studentUserIds, cid);
+
       // empty out
       this.parsedStudentsToAdd = [];
     } catch (error) {
@@ -140,41 +174,18 @@ export class RosterComponent {
     }
   }
 
-    /**
+  /**
    * Formats course name information like shown in Moodle
    * @param course Course object containing course information
    * @returns formatted string of course (moodle format)
    */
-    formatCourse(course: Course): string {
-      return course.section
-        ? `${course.year - 2000}${course.semester} ${course.prefix}-${
-            course.code
-          }-${course.section} - ${course.name}`
-        : `${course.year - 2000}${course.semester} ${course.prefix}-${
-            course.code
-          } - ${course.name}`;
-    }
-
-    /*
-   * remove single student from course
-   * @param student info of student to remove
-   */
-  async removeStudent(studentCourseGrader: StudentCourseGraderInfo) {
-    try {
-      const { student_id, course_id } = studentCourseGrader;
-      const deletedStudent =
-        await this.professorService.deleteStudentFromCourse(
-          student_id,
-          course_id
-        );
-      console.log({ deletedStudent });
-      this.courseStudents = this.courseStudents.filter(
-        (student) => student.student_id !== deletedStudent.student_id
-      );
-    } catch (error) {
-      console.log({ error });
-      throw new Error('removeStudent');
-    }
+  formatCourse(course: Course): string {
+    return course.section
+      ? `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        }-${course.section} - ${course.name}`
+      : `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        } - ${course.name}`;
   }
-
 }
