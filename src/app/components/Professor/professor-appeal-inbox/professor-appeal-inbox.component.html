@@ -13,6 +13,12 @@
         {{ localFormatTimestamp(appeal.created_at).time }}
       </p>
       <p class="inbox-name" matLine>
+        <span
+          [ngClass]="{
+            'green-dot': appeal.grader_id === null,
+            'red-dot': appeal.grader_id !== null
+          }"
+        ></span>
         {{ appeal.student_first_name }}
         {{ appeal.student_last_name }}
         {{ appeal.assignment_name }}
@@ -30,11 +36,11 @@
         <mat-card class="appeal">
           <h2 class="appeal-header">
             <img class="inbox-avatar" ngxGravatar [email]="email" />
-            <p>
+            <div>
               {{ currentAppeal.student_first_name }}
               {{ currentAppeal.student_last_name }}:
               {{ currentAppeal.assignment_name }}
-            </p>
+            </div>
           </h2>
           <p>
             <strong>Course:</strong>
@@ -44,11 +50,33 @@
             {{ currentAppeal.course_semester }}-{{ currentAppeal.course_year }}
             <i>{{ currentAppeal.course_name }}</i>
           </p>
-
+          <div class="grader-assignment-container">
+            <div
+              [ngClass]="{
+                'green-dot': currentAppeal.grader_id === null,
+                'red-dot': currentAppeal.grader_id !== null
+              }"
+              class="appeal-card"
+            ></div>
+            <div class="assignment-status-container">
+              <div
+                *ngIf="currentAppeal.grader_id !== null"
+                class="assignment-status"
+              >
+                Assigned to Grader
+              </div>
+              <div
+                *ngIf="currentAppeal.grader_id === null"
+                class="assignment-status"
+              >
+                Assigned to You
+              </div>
+            </div>
+          </div>
           <mat-card class="message-container">
             <p class="message">{{ currentAppeal.appeal_text }}</p>
           </mat-card>
-          <div class="buttons ">
+          <div class="buttons">
             <button
               class="interaction-history-button blue-button"
               (click)="
@@ -64,11 +92,13 @@
             <button
               (click)="onCloseAppeal($event)"
               class="close-appeal blue-button"
-    
             >
               <p clas="button-text">Close Appeal</p>
             </button>
-            <button class="grader-button blue-button" (click)="onButtonClick($event)">
+            <button
+              class="grader-button blue-button"
+              (click)="onButtonClick($event)"
+            >
               Assign To Grader
             </button>
           </div>

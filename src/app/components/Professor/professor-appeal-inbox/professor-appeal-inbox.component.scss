@@ -116,3 +116,39 @@ mat-nav-list {
   max-height: 20vh;
   padding: 2vh;
 }
+
+.grader-assignment-container {
+  display: flex;
+  align-items: center;
+}
+.green-dot {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  &.appeal-card {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+  }
+}
+.red-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  &.appeal-card {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+  }
+}
+.assignment-status-container {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+}

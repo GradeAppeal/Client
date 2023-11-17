@@ -182,4 +182,9 @@ $hover-blue: #728edd;
     #message-body {
     }
   }
+  .toGrader {
+    #message-body {
+      background-color: darken($primary-blue, 25%);
+    }
+  }
 }
