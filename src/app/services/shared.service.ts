@@ -36,7 +36,6 @@ export class SharedService {
     filter?: string
   ): Observable<any> {
     const changes = new Subject();
-    console.log({ filter });
     this.supabase
       .channel(channelName)
       .on(

@@ -43,7 +43,7 @@ export class ProfessorInteractionHistoryComponent {
   grader: Student;
   talkingToGrader: Boolean = false;
 
-  professorAppeals!: ProfessorAppeal[];
+  professorAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
   professors: Professor[];
   //template
@@ -76,12 +76,15 @@ export class ProfessorInteractionHistoryComponent {
     };
     this.professorAppeals =
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
+
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professor.id);
 
     // appeals for professor exists
     if (!this.noAppeals) {
+      // if navigated from appeal-inbox, get the specific appeal
+      // otherwise, set to the most current appeal
       this.currentAppeal =
         this.professorAppeals.find(
           (appeal) => appeal.appeal_id === this.appealId
@@ -104,10 +107,9 @@ export class ProfessorInteractionHistoryComponent {
       }
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
+      this.handleMessageUpdates();
     }
-    console.log(this.currentAppeal);
-    // console.log(this.messages);
-    this.handleMessageUpdates();
+    // no appeals: show the no appeals message in HTML template
   }
 
   ngAfterViewChecked() {
@@ -115,7 +117,6 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   handleMessageUpdates() {
-    console.log('current appeal is: ', this.currentAppeal.appeal_id);
     this.sharedService
       .getTableChanges(
         'Messages',
@@ -123,7 +124,6 @@ export class ProfessorInteractionHistoryComponent {
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         // if insert or update event, get new row
         // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
