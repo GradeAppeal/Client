@@ -528,8 +528,7 @@ export class ProfessorService {
       cid,
     });
     if (error) {
-      console.log(error);
-      throw new Error('getGraders');
+      throw new Error(error.message);
     }
     return data;
   }
