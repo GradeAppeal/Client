@@ -47,7 +47,7 @@ export class EditTemplatesComponent {
         `template-channel`,
         `professor_id=eq.${this.professor.id}`
       )
-      .subscribe(async (update: any) => {
+      .subscribe(async (update) => {
         // if insert or update event, get new row
         // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
