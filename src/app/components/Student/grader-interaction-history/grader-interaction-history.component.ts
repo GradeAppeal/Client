@@ -92,6 +92,7 @@ export class GraderInteractionHistoryComponent {
       }
       // otherwise, get all assigned appeals from all courses the grader is grading
       else {
+        console.log(this.grader.id);
         this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
           this.grader.id
         );

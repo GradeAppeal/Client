@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -14,16 +15,24 @@ export class ProfessorNavigationComponent {
   title: string = 'Appeal Inbox';
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private professorService: ProfessorService
   ) {}
   navigateTo(route: string) {
     this.selectedTab = route;
     console.log(route);
+    console.log(this.selectedTab);
     this.router.navigate([route]);
   }
 
   async ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.selectedTab =
+          this.activatedRoute.snapshot.firstChild?.routeConfig?.path || '';
+      });
     const students = await this.professorService.fetchStudents(1);
     console.log(this.selectedTab);
   }
