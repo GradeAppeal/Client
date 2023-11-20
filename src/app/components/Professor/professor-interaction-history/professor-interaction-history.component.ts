@@ -79,6 +79,8 @@ export class ProfessorInteractionHistoryComponent {
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professor.id);
+
+    // appeals for professor exists
     if (!this.noAppeals) {
       this.currentAppeal =
         this.professorAppeals.find(
@@ -86,6 +88,7 @@ export class ProfessorInteractionHistoryComponent {
         ) || this.professorAppeals[0];
 
       if (this.currentAppeal) {
+        // get current student
         this.student = await this.sharedService.getStudent(
           this.currentAppeal.student_id
         );
@@ -216,9 +219,10 @@ export class ProfessorInteractionHistoryComponent {
    * send message to grader
    */
 
-  async assignToGrader() {
+  async onAssignToGrader() {
     // if the appeal not assigned to grader
     if (!this.currentAppeal.grader_id) {
+      console.log(this.currentAppeal);
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );

@@ -1,3 +1,8 @@
+<div class="no-appeals" *ngIf="noAppeals">
+  <h1>
+    {{ noAppealsMessage }}
+  </h1>
+</div>
 <div class="container" *ngIf="!noAppeals">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox">
@@ -94,9 +99,4 @@
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="noAppeals" class="no-appeals">
-  <h1>
-    {{ noAppealsMessage }}
-  </h1>
 </div>
