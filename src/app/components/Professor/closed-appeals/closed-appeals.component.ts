@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Session, User } from '@supabase/supabase-js';
 import { MatDialog } from '@angular/material/dialog';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
@@ -18,7 +18,7 @@ export class ClosedAppealsComponent implements OnInit {
   closedAppeals: ProfessorAppeal[] = [];
   constructor(
     private dialog: MatDialog,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private professorService: ProfessorService
   ) {}
 

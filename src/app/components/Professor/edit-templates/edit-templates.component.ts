@@ -4,7 +4,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTemplateComponent } from './add-template/add-template.component';
 import { DeleteTemplateComponent } from './delete-template/delete-template.component';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
@@ -17,7 +17,7 @@ import { Professor } from 'src/app/shared/interfaces/psql.interface';
 export class EditTemplatesComponent {
   constructor(
     private sharedService: SharedService,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private professorService: ProfessorService,
     private dialog: MatDialog
   ) {}

@@ -6,16 +6,16 @@ import {
   Session,
   SupabaseClient,
   User,
-  UserResponse,
 } from '@supabase/supabase-js';
 import { environment } from 'src/environments/secret_env';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SupabaseService {
+export class AuthService {
   private supabase: SupabaseClient;
   _session: AuthSession | null;
+  _user: User | null;
 
   constructor() {
     this.supabase = createClient(
@@ -44,14 +44,17 @@ export class SupabaseService {
     return data.session;
   }
 
-  // async getUser(): Promise<User | null> {
-  //   const { data, error } = await this.supabase.auth.getUser();
-  //   if (error) {
-  //     console.log({ error });
-  //     throw new Error('Error getting user');
-  //   }
-  //   return data.user;
-  // }
+  async isLoggedIn(): Promise<User | null> {
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.getUser();
+    if (error) {
+      console.log({ error });
+      throw new Error('Error getting user');
+    }
+    return user;
+  }
 
   authChanges(
     callback: (event: AuthChangeEvent, session: Session | null) => void

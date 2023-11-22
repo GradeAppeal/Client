@@ -5,7 +5,7 @@ import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { Session, User } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-appeal',
@@ -26,7 +26,7 @@ export class NewAppealComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private studentService: StudentService
   ) {}
 

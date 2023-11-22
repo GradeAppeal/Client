@@ -4,7 +4,7 @@ import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -29,7 +29,7 @@ export class CoursesComponent {
     private dialog: MatDialog,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: SupabaseService
+    private authService: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {

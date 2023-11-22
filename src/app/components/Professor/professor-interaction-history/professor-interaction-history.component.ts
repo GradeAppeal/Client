@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Session } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
@@ -57,7 +57,7 @@ export class ProfessorInteractionHistoryComponent {
     private _snackBar: MatSnackBar,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: SupabaseService
+    private authService: AuthService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Session, User } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {
@@ -57,7 +57,7 @@ export class GraderInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private graderService: GraderService,
     private sharedService: SharedService
   ) {

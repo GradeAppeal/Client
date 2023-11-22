@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Session } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
@@ -50,7 +50,7 @@ export class StudentInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private studentService: StudentService,
     private sharedService: SharedService
   ) {}

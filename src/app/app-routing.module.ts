@@ -14,6 +14,7 @@ import { RegisterComponent } from './components/Auth/register/register.component
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+import { professorGuard } from 'src/app/guards/professor.guard';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
   {
     path: 'professor',
     component: ProfessorNavigationComponent,
+    canActivate: [professorGuard],
     children: [
       {
         path: 'appeal-inbox',

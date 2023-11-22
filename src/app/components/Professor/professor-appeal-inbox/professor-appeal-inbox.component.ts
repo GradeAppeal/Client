@@ -8,13 +8,12 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
-import { SignoutComponent } from '../../Auth/signout/signout.component';
 import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-popup.component';
 import { AssignGraderPopupComponent } from '../professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { GraderAssignedSnackbarComponent } from '../professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
@@ -45,9 +44,9 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private professorService: ProfessorService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: MatSnackBar
   ) {}
   async ngOnInit(): Promise<void> {
     try {
@@ -86,7 +85,7 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     });
     //this.navigateTo('professor/closed-appeals/');
   }
-  
+
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
@@ -114,7 +113,7 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
-        
+
       console.log({ graders });
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
@@ -123,12 +122,11 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
         height: '35%',
         data: { graders, appealID },
       });
-    }
-    else {
-        console.log('appeal already assigned to grader');
-        this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
-          duration: this.durationInSeconds * 1000,
-        });
+    } else {
+      console.log('appeal already assigned to grader');
+      this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
+        duration: this.durationInSeconds * 1000,
+      });
     }
   }
 }

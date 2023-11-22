@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
@@ -17,7 +17,7 @@ export class StudentDashboardComponent {
   studentCourses!: StudentCourse[];
   course_string: string;
   constructor(
-    private authService: SupabaseService,
+    private authService: AuthService,
     private readonly studentService: StudentService,
     private router: Router
   ) {

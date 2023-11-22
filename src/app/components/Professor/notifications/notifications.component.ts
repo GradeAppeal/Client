@@ -3,7 +3,7 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Session } from '@supabase/supabase-js';
 @Component({
   selector: 'app-notifications',
@@ -19,7 +19,7 @@ export class NotificationsComponent {
   toDoAppeals: ProfessorAppeal[] = [];
 
   constructor(
-    private authService: SupabaseService,
+    private authService: AuthService,
     private professorService: ProfessorService
   ) {}
   async ngOnInit(): Promise<void> {
