@@ -15,6 +15,7 @@ import { StudentInteractionHistoryComponent } from './components/Student/student
 import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { professorGuard } from 'src/app/guards/professor.guard';
+import { studentGuard } from './guards/student.guard';
 
 const routes: Routes = [
   {
@@ -59,6 +60,7 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
+    canActivate: [studentGuard],
     children: [
       {
         path: 'course-dashboard',

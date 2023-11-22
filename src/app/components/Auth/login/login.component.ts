@@ -29,11 +29,9 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.value.email as string;
     const password = this.loginForm.value.password as string;
     try {
-      console.log('HI');
       const authData = await this.authService.signIn(email, password);
       const authEmail = authData.user?.email as string;
       const authUserRole = await this.authService.getRole(authEmail);
-      console.log({ authUserRole });
       if (authUserRole === 'professor') {
         this.router.navigateByUrl('/professor/appeal-inbox');
       } else if (authUserRole === 'student') {
