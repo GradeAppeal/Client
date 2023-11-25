@@ -81,7 +81,7 @@ export class ProfessorInteractionHistoryComponent {
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professor.id);
 
-    // appeals for professor exists
+    // appeals exist
     if (!this.noAppeals) {
       // if navigated from appeal-inbox, get the specific appeal
       // otherwise, set to the most current appeal
@@ -174,7 +174,7 @@ export class ProfessorInteractionHistoryComponent {
     notification: boolean = false
   ): Promise<void> {
     const now = getTimestampTz(new Date());
-    let sender_id = this.professor.id;
+    const sender_id = this.professor.id;
     let recipient_id = this.student.id;
     let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
     if (notification === true) {
@@ -226,17 +226,16 @@ export class ProfessorInteractionHistoryComponent {
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
-      console.log({ graders });
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
-        data: { graders, appealID },
-      });
-
-      dialog.afterClosed().subscribe((result: string | boolean) => {
-        result ? this.sendMessage('Sent to Grader', true) : null;
+        data: {
+          graders: graders,
+          appealID: appealID,
+          professor: this.professor,
+        },
       });
     }
     // if grader already assigned

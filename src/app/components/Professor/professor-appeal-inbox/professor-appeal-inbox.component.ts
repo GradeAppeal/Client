@@ -1,17 +1,10 @@
-import {
-  Component,
-  Output,
-  EventEmitter,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
-import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
 import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-popup.component';
@@ -24,12 +17,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './professor-appeal-inbox.component.html',
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
-export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
+export class ProfessorAppealInboxComponent implements OnInit {
   @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
-  //inboxAppeals: AppealInbox[];
   session: Session;
   user: User;
-  noAppeals: boolean;
+  professor: Professor;
+  noAppeals = true;
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
@@ -52,6 +45,12 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     try {
       this.session = (await this.authService.getSession()) as Session;
       this.user = this.session.user;
+      this.professor = {
+        id: this.user.id,
+        first_name: this.user.user_metadata['first_name'],
+        last_name: this.user.user_metadata['last_name'],
+        email: this.user.email as string,
+      };
 
       this.professorAppeals =
         await this.professorService.fetchOpenProfessorAppeals(this.user.id);
@@ -67,7 +66,6 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
       console.log(err);
     }
   }
-  ngOnChanges(): void {}
 
   selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
@@ -107,20 +105,19 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     });
   }
 
-  async onButtonClick(event: MouseEvent) {
+  async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
 
-      console.log({ graders });
-      const appealID = this.currentAppeal.appeal_id;
+      const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
-        data: { graders, appealID },
+        data: { graders, appealID, professor: this.professor },
       });
     } else {
       console.log('appeal already assigned to grader');
