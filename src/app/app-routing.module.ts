@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: 'professor',
     component: ProfessorNavigationComponent,
-    canActivate: [professorGuard],
+    // canActivateChild: [professorGuard],
     children: [
       {
         path: 'appeal-inbox',
@@ -60,7 +60,7 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
-    canActivate: [studentGuard],
+    // canActivateChild: [studentGuard],
     children: [
       {
         path: 'course-dashboard',
