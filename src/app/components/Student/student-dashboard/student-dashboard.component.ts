@@ -4,6 +4,7 @@ import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
 import { Session, User } from '@supabase/supabase-js';
+import { Student } from 'src/app/shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -11,8 +12,8 @@ import { Session, User } from '@supabase/supabase-js';
   styleUrls: ['./student-dashboard.component.scss'],
 })
 export class StudentDashboardComponent {
-  session: Session;
   user: User;
+  student: Student;
   studentUserId!: string;
   studentCourses!: StudentCourse[];
   course_string: string;
@@ -21,16 +22,24 @@ export class StudentDashboardComponent {
     private readonly studentService: StudentService,
     private router: Router
   ) {
-    this.session = this.studentService.session as Session;
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.student = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
   }
   async ngOnInit(): Promise<void> {
-    this.session = (await this.authService.getSession()) as Session;
-    this.user = this.session.user;
     this.studentCourses = await this.studentService.fetchStudentCourses(
-      this.user.id
+      this.student.id
     );
     const studentAppeals = await this.studentService.fetchStudentAppeals(
-      this.user.id
+      this.student.id
     );
     console.log({ studentAppeals });
   }
@@ -66,6 +75,6 @@ export class StudentDashboardComponent {
       ' - ' +
       course.professor_name;
     console.log({ course });
-    this.router.navigateByUrl(`/new-appeal/${course.course_id}`);
+    this.router.navigateByUrl(`/student/new-appeal/${course.course_id}`);
   }
 }

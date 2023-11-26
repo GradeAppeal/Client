@@ -3,7 +3,10 @@ import { Component, Inject, Optional, Input, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
-import { Course } from '../../../../shared/interfaces/psql.interface';
+import {
+  Course,
+  Professor,
+} from '../../../../shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { Session, User } from '@supabase/supabase-js';
 @Component({
@@ -14,6 +17,7 @@ import { Session, User } from '@supabase/supabase-js';
 export class AddCourseComponent {
   session: Session;
   user: User;
+  professor: Professor;
   courseYear = new Date().getFullYear();
   courseNextYear = new Date().getFullYear() + 1;
   codeString = '';
@@ -38,15 +42,17 @@ export class AddCourseComponent {
     private dialogRef: MatDialogRef<AddCourseComponent>,
     private professorService: ProfessorService,
     private authService: AuthService
-  ) {}
-
-  async ngOnInit(): Promise<void> {
-    try {
-      this.session = (await this.authService.getSession()) as Session;
-      this.user = this.session.user;
-    } catch (err) {
-      console.log(err);
-    }
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.professor = {
+          id: user.id,
+          first_name: user.user_metadata['first_name'],
+          last_name: user.user_metadata['last_name'],
+          email: user.user_metadata['email'],
+        };
+      }
+    });
   }
 
   /*
@@ -55,7 +61,7 @@ export class AddCourseComponent {
   async onAddCourse() {
     try {
       await this.professorService.insertCourse(
-        this.user.id,
+        this.professor.id,
         this.course.prefix,
         this.course.code,
         this.course.name,

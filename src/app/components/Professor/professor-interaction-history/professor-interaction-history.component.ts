@@ -63,17 +63,18 @@ export class ProfessorInteractionHistoryComponent {
       this.appealId = +params['id']; // Get appeal id from url
       console.log(this.appealId);
     });
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.professor = {
+          id: user.id,
+          first_name: user.user_metadata['first_name'],
+          last_name: user.user_metadata['last_name'],
+          email: user.user_metadata['email'],
+        };
+      }
+    });
   }
   async ngOnInit() {
-    this.session = (await this.authService.getSession()) as Session;
-    const { user } = this.session;
-    console.log({ user });
-    this.professor = {
-      id: user.id,
-      first_name: user.user_metadata['first_name'],
-      last_name: user.user_metadata['last_name'],
-      email: user.user_metadata['email'],
-    };
     this.professorAppeals =
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
 

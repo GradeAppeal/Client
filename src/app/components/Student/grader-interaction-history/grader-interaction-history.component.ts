@@ -15,6 +15,8 @@ import {
   Message,
   Professor,
   Course,
+  Student,
+  Grader,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -36,6 +38,7 @@ export class GraderInteractionHistoryComponent {
 
   session: Session;
   user: User;
+  grader: Grader;
   noAppealsMessage: string = '';
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -48,7 +51,7 @@ export class GraderInteractionHistoryComponent {
   messageLoaded = false;
   currentProfessor: string | null = '';
   currentCourse: Course | null;
-  grader: any;
+
   professor: Professor;
   studentAppeals!: StudentAppeal[];
   graderAppeals!: GraderAppeal[];
@@ -65,18 +68,19 @@ export class GraderInteractionHistoryComponent {
       this.appealId = +params['id']; // Convert the parameter to a number
       this.courseId = +params['id'];
     });
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.grader = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
   }
   async ngOnInit() {
-    this.session = (await this.authService.getSession()) as Session;
-    // get auth user info from auth session
-    this.user = this.session.user;
-    this.grader = {
-      id: this.user.id,
-      first_name: this.user.user_metadata['first_name'],
-      last_name: this.user.user_metadata['last_name'],
-      email: this.user.user_metadata['email'],
-    };
-
     const isGrader = await this.graderService.isGrader(this.grader.id);
     if (!isGrader) {
       this.noAppeals = true;

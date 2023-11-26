@@ -6,6 +6,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
 import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-closed-appeal-popup.component';
+import { Professor } from 'src/app/shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-closed-appeals',
@@ -13,20 +14,30 @@ import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-
   styleUrls: ['./closed-appeals.component.scss'],
 })
 export class ClosedAppealsComponent implements OnInit {
-  session: Session;
-  user: User;
+  professor: Professor;
   closedAppeals: ProfessorAppeal[] = [];
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
     private professorService: ProfessorService
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.professor = {
+          id: user.id,
+          first_name: user.user_metadata['first_name'],
+          last_name: user.user_metadata['last_name'],
+          email: user.user_metadata['email'],
+        };
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
-    this.session = (await this.authService.getSession()) as Session;
-    this.user = this.session.user;
     this.closedAppeals =
-      await this.professorService.fetchClosedProfessorAppeals(this.user.id);
+      await this.professorService.fetchClosedProfessorAppeals(
+        this.professor.id
+      );
     console.log(this.closedAppeals);
   }
 

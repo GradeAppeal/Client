@@ -1,20 +1,41 @@
-import { CanActivateChildFn, Router } from '@angular/router';
+import {
+  CanActivateChildFn,
+  CanActivateFn,
+  Router,
+  UrlTree,
+} from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Session } from '@supabase/supabase-js';
+import { filter, map, take } from 'rxjs';
 
-export const studentGuard: CanActivateChildFn = async (route, state) => {
+export const studentGuard: CanActivateChildFn | CanActivateFn = async (
+  route,
+  state
+) => {
+  const router = inject(Router);
   const authService = inject(AuthService);
-  const session = (await authService.getSession()) as Session;
-  const user = session.user;
-  if (user && user.email) {
-    const userRole = await authService.getRole(user.email);
-    const isUserLoggedIn = await authService.isLoggedIn();
-    if (isUserLoggedIn && userRole === 'student') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  return false;
+  return new Promise<boolean | UrlTree>((resolve, reject) => {
+    authService
+      .getCurrentUser()
+      .pipe(
+        filter((val) => val !== null), // Filter out initial Behavior subject value
+        take(1), // Otherwise the Observable doesn't complete!
+        map(async (authUser) => {
+          console.log('is authenticated', authUser);
+
+          if (authUser && typeof authUser !== 'boolean') {
+            const { email } = authUser;
+            const role = await authService.getRole(email);
+            // only allow access for student accounts
+            // if professor attempts to access student view, redirect to appeal inbox
+            role === 'student'
+              ? resolve(true)
+              : resolve(router.createUrlTree(['/professor/appeal-inbox']));
+          } else {
+            resolve(router.createUrlTree(['/']));
+          }
+        })
+      )
+      .subscribe();
+  });
 };

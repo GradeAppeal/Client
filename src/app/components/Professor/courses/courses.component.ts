@@ -30,18 +30,22 @@ export class CoursesComponent {
     private professorService: ProfessorService,
     private sharedService: SharedService,
     private authService: AuthService
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.professor = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     try {
-      this.session = (await this.authService.getSession()) as Session;
-      this.user = this.session.user;
-      this.professor = {
-        id: this.user.id,
-        first_name: this.user.user_metadata['first_name'],
-        last_name: this.user.user_metadata['last_name'],
-        email: this.user.user_metadata['email'],
-      };
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );

@@ -4,14 +4,14 @@ import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { AuthService } from 'src/app/services/auth.service';
-import { Session } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent {
-  session: Session;
+  user: User;
   professor: Professor;
   professorAppeals!: ProfessorAppeal[];
   professorCourses!: Course[];
@@ -21,17 +21,20 @@ export class NotificationsComponent {
   constructor(
     private authService: AuthService,
     private professorService: ProfessorService
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.professor = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
   async ngOnInit(): Promise<void> {
-    this.session = (await this.authService.getSession()) as Session;
-    const { user } = this.session;
-
-    this.professor = {
-      id: user.id,
-      first_name: user.user_metadata['first_name'],
-      last_name: user.user_metadata['last_name'],
-      email: user.user_metadata['email'],
-    };
     try {
       this.professorAppeals =
         await this.professorService.fetchOpenProfessorAppeals(

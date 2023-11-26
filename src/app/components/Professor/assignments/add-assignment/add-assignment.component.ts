@@ -21,7 +21,6 @@ export class AddAssignmentComponent {
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
-    console.log({ data });
     this.currentCourse = data.course;
   }
 

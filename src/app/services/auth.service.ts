@@ -7,6 +7,7 @@ import {
   SupabaseClient,
   User,
 } from '@supabase/supabase-js';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/secret_env';
 
 @Injectable({
@@ -14,14 +15,49 @@ import { environment } from 'src/environments/secret_env';
 })
 export class AuthService {
   private supabase: SupabaseClient;
+  private $currentUser: BehaviorSubject<User | boolean | null> =
+    new BehaviorSubject<User | boolean | null>(null);
+
   _session: AuthSession | null;
   _user: User | null;
 
+  // Code referred from: https://supabase.com/blog/authentication-in-ionic-angular#creating-the-ionic-angular-app
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
       environment.serviceRoleKey
     );
+
+    // create auth user subscription
+    this.supabase.auth.onAuthStateChange((event, session) => {
+      if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+        console.log('SET USER: ', session);
+        this.$currentUser.next(session.user);
+      } else {
+        this.$currentUser.next(false);
+      }
+    });
+
+    // Trigger initial session load
+    this.loadUser();
+  }
+
+  async loadUser() {
+    if (this.$currentUser.value) {
+      // User is already set, no need to do anything else
+      return;
+    }
+    const user = await this.supabase.auth.getUser();
+
+    if (user.data.user) {
+      this.$currentUser.next(user.data.user);
+    } else {
+      this.$currentUser.next(false);
+    }
+  }
+
+  getCurrentUser(): Observable<User | boolean | null> {
+    return this.$currentUser.asObservable();
   }
 
   // getter for supabase client in child classes
@@ -34,14 +70,6 @@ export class AuthService {
       this._session = data.session;
     });
     return this._session;
-  }
-  async getSession(): Promise<Session | null> {
-    const { data, error } = await this.supabase.auth.getSession();
-    if (error) {
-      console.log({ error });
-      throw new Error('Error getting session');
-    }
-    return data.session;
   }
 
   async isLoggedIn(): Promise<User | null> {
@@ -166,7 +194,7 @@ export class AuthService {
     return data;
   }
 
-  async getRole(email: string | null): Promise<string> {
+  async getRole(email: string | null | undefined): Promise<string> {
     if (!email) {
       throw new Error('Nonetype Email');
     }

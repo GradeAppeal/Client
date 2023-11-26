@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Course, Assignment } from 'src/app/shared/interfaces/psql.interface';
+import {
+  Course,
+  Assignment,
+  Student,
+} from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { Session, User } from '@supabase/supabase-js';
@@ -13,7 +17,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./new-appeal.component.scss'],
 })
 export class NewAppealComponent implements OnInit {
-  email = 'sth6@calvin.edu';
+  user: User;
+  student: Student;
   isCourseFetched = false;
   courseId: number;
   course: Course;
@@ -21,22 +26,31 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
-  user: User;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
     private studentService: StudentService
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.student = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
 
   navigateToHome() {
     this.router.navigate(['/']);
   }
 
   async ngOnInit() {
-    const session = (await this.authService.getSession()) as Session;
-    this.user = session.user;
     this.courseId = this.route.snapshot.params['courseId'];
     try {
       // don't render form until course and assignment information has been fetched
@@ -82,11 +96,11 @@ export class NewAppealComponent implements OnInit {
         this.appeal,
         this.courseId,
         now,
-        this.user.id
+        this.student.id
       );
       const appealID = await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
-        this.user.id,
+        this.student.id,
         this.courseId,
         now,
         this.appeal

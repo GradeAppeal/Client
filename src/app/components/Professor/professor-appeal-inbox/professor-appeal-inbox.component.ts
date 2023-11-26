@@ -40,25 +40,30 @@ export class ProfessorAppealInboxComponent implements OnInit {
     private authService: AuthService,
     private professorService: ProfessorService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.professor = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
   async ngOnInit(): Promise<void> {
     try {
-      this.session = (await this.authService.getSession()) as Session;
-      this.user = this.session.user;
-      this.professor = {
-        id: this.user.id,
-        first_name: this.user.user_metadata['first_name'],
-        last_name: this.user.user_metadata['last_name'],
-        email: this.user.email as string,
-      };
-
       this.professorAppeals =
-        await this.professorService.fetchOpenProfessorAppeals(this.user.id);
+        await this.professorService.fetchOpenProfessorAppeals(
+          this.professor.id
+        );
 
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
       console.log(this.professorAppeals, 'appeals');
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        this.user.id
+        this.professor.id
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;

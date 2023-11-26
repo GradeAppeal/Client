@@ -25,7 +25,8 @@ const routes: Routes = [
   {
     path: 'professor',
     component: ProfessorNavigationComponent,
-    // canActivateChild: [professorGuard],
+    canActivate: [professorGuard],
+    canActivateChild: [professorGuard],
     children: [
       {
         path: 'appeal-inbox',
@@ -60,7 +61,8 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
-    // canActivateChild: [studentGuard],
+    canActivate: [studentGuard],
+    canActivateChild: [studentGuard],
     children: [
       {
         path: 'course-dashboard',
@@ -86,28 +88,11 @@ const routes: Routes = [
         path: 'grader/interaction-history/:id',
         component: GraderInteractionHistoryComponent,
       },
+      {
+        path: 'new-appeal/:courseId',
+        component: NewAppealComponent,
+      },
     ],
-  },
-  {
-    path: 'new-appeal/:courseId',
-    component: NewAppealComponent,
-  },
-
-  {
-    path: 'professor',
-    component: ProfessorNavigationComponent,
-  },
-  {
-    path: 'professor/closed-appeals',
-    component: ClosedAppealsComponent,
-  },
-  {
-    path: 'professor/courses',
-    component: CoursesComponent,
-  },
-  {
-    path: 'professor/edit-templates',
-    component: EditTemplatesComponent,
   },
   {
     path: 'register',
