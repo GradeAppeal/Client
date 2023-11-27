@@ -1,6 +1,6 @@
 
-    <div *ngIf="currentPage == 'view'" class="course-wrapper">
-      <mat-card class="courses" *ngFor="let course of professorCourses" (click)="swapView('editAssignments', course.id, course)">
+    <div class="course-wrapper">
+      <mat-card class="courses" *ngFor="let course of professorCourses" (click)="onViewAssignments(course)">
         <div class="title-container">
           <mat-card-title class="course-wording"
             >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
@@ -13,14 +13,14 @@
       }}</mat-card-subtitle>
         <button
         type="submit"
-        (click)="swapView('editAssignments', course.id, course)"
+        (click)="onViewAssignments(course)"
         class="blue-button"
       >
         View Assignments
       </button>
         <button
         type="submit"
-        (click)="swapView('editRoster', course.id, course)"
+        (click)="onViewRoster(course)"
         class="blue-button"
       >
         View Roster
@@ -31,17 +31,17 @@
       </button>
     </div>
 
-  <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
+  <!-- <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
     <button
       type="submit"
-      (click)="swapView('view', currentCourseID, currentCourse)"
+      (click)="onViewAssignments(currentCourse)"
       class="blue-button back-button"
     >
       Back
     </button>
     <app-assignments [course]="currentCourse"></app-assignments>
-  </div>
-
+  </div> -->
+<!--
 <div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
   <button
     type="submit"
@@ -51,4 +51,4 @@
     Back
   </button>
   <app-roster [course]="currentCourse"></app-roster>
-</div>
+</div> -->

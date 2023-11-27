@@ -14,6 +14,8 @@ import { RegisterComponent } from './components/Auth/register/register.component
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+import { RosterComponent } from './components/Professor/roster/roster.component';
+import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 
 const routes: Routes = [
   {
@@ -35,6 +37,14 @@ const routes: Routes = [
       {
         path: 'interaction-history/:id',
         component: ProfessorInteractionHistoryComponent,
+      },
+      {
+        path: 'roster/:id',
+        component: RosterComponent,
+      },
+      {
+        path: 'assignments/:id',
+        component: AssignmentsComponent,
       },
       {
         path: 'closed-appeals',
