@@ -7,6 +7,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -21,7 +22,6 @@ export class CoursesComponent {
   professorCourses!: Course[];
   fetchedCourses = false;
   fetchedCourse = false;
-  currentPage = 'view';
   currentCourseID = -1;
   currentCourse: Course;
 
@@ -29,7 +29,8 @@ export class CoursesComponent {
     private dialog: MatDialog,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -100,11 +101,29 @@ export class CoursesComponent {
         } - ${course.name}`;
   }
 
-  async swapView(page: string, courseID: number, course: Course) {
-    this.currentPage = page;
-    this.currentCourseID = courseID;
-    this.currentCourse = course;
+  onViewRoster(course: Course) {
+    console.log({ course });
+    this.router.navigateByUrl(
+      `professor/roster/${course.id}`
+    );
   }
+
+  onViewAssignments(course: Course) {
+    console.log({ course });
+    this.router.navigateByUrl(
+      `professor/assignments/${course.id}`
+    );
+  }
+
+
+  // async swapView(page: string, courseID: number, course: Course) {
+  //   this.currentPage = page;
+  //   this.currentCourseID = courseID;
+  //   this.currentCourse = course;
+  //   this.router.navigateByUrl(
+  //     `professor/roster/${courseID}`
+  //   );
+  // }
 
   /**
    * Goes to AddCourse pop up component

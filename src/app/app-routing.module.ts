@@ -16,6 +16,8 @@ import { NotificationsComponent } from './components/Professor/notifications/not
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { professorGuard } from 'src/app/guards/professor.guard';
 import { studentGuard } from './guards/student.guard';
+import { RosterComponent } from './components/Professor/roster/roster.component';
+import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 
 const routes: Routes = [
   {
@@ -39,6 +41,14 @@ const routes: Routes = [
       {
         path: 'interaction-history/:id',
         component: ProfessorInteractionHistoryComponent,
+      },
+      {
+        path: 'roster/:id',
+        component: RosterComponent,
+      },
+      {
+        path: 'assignments/:id',
+        component: AssignmentsComponent,
       },
       {
         path: 'closed-appeals',
