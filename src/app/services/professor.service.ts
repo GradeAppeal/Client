@@ -304,7 +304,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('Error in isUser');
     }
-    console.log({ data });
     return data;
   }
 
@@ -323,7 +322,6 @@ export class ProfessorService {
           return isUser;
         })
       );
-      console.log({ userStatus });
       return userStatus;
     } catch (err) {
       console.log(err);
@@ -452,7 +450,6 @@ export class ProfessorService {
           return studentId;
         })
       );
-      console.log({ studentIds });
       return studentIds;
     } catch (err) {
       console.log(err);

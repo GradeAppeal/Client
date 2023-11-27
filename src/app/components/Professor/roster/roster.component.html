@@ -26,10 +26,12 @@
       There are no students in this class.
     </p>
   </div>
-  <button type="submit" (click)="addStudents()" class="blue-button">
+  <button type="submit" (click)="addStudents('Hey')" class="blue-button">
     Add Students
   </button>
     <input type="file" (change)="onFileChange($event)">
+    {{addedStudentsCSV}}
+    {{addedStudents}}
   <mat-form-field class="student-input">
     <mat-label>Students to add</mat-label>
     <textarea
