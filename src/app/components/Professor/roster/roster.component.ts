@@ -9,7 +9,7 @@ import {
 import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
 import * as Papa from 'papaparse';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-roster',
@@ -34,7 +34,8 @@ export class RosterComponent {
     private route: ActivatedRoute,
     private sharedService: SharedService,
     private professorService: ProfessorService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
@@ -228,4 +229,11 @@ export class RosterComponent {
           course.code
         } - ${course.name}`;
   }
+
+  onBackButton() {
+    this.router.navigateByUrl(
+      'professor/courses'
+    )
+  }
+  
 }
