@@ -42,6 +42,7 @@ export class ProfessorInteractionHistoryComponent {
   student: Student;
   grader: Student;
   talkingToGrader: Boolean = false;
+  graderValue: Boolean = true;
 
   professorAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -185,6 +186,8 @@ export class ProfessorInteractionHistoryComponent {
       recipient_id = this.currentAppeal.grader_id as string;
       recipient_name = this.currentAppeal.grader_name as string;
     }
+    console.log(this.currentAppeal.grader_id);
+    console.log(recipient_id);
     try {
       console.log(this.currentAppeal);
 
