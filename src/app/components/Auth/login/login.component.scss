@@ -6,13 +6,6 @@
   display: flex;
   flex-direction: row;
 }
-.form {
-  text-align: center;
-  display: inline;
-  width: 45vw;
-  height: 85vh;
-  // border: 1px solid darkgray;
-}
 
 .login-wrapper {
   display: flex;
@@ -22,34 +15,15 @@
   margin: 0 auto;
 }
 
-.logo {
-  //border: 5px solid red;
-  margin-left: 10vw;
-  float: left;
-}
-
-.form {
-  //border: 5px solid blue;
-  margin-right: 10vw;
-  float: right;
-}
-
-.welcome {
-  color: $primary-blue;
-  font-size: 3vw;
-  width: 20vw;
-  margin-left: 7vh;
-  margin-top: 12vh;
-  text-align: left;
-}
-
-.logo,
 .form {
   text-align: center;
   display: inline;
   width: 45vw;
   height: 85vh;
-  //border: 1px solid darkgray;
+  margin-left: 50vw;
+  // border: 1px solid darkgray;
+  // background-color: $primary-blue;
+  // border-radius: 8px;
 }
 
 .cover-image {
@@ -67,32 +41,19 @@
   margin: 0 auto;
 }
 
-.logo {
-  //border: 5px solid red;
-  margin-left: 10vw;
-}
-
-.form {
-  //border: 5px solid blue;
-  margin-right: 10vw;
-}
-
 .welcome {
   color: white;
   font-size: 3vw;
-  width: 20vw;
-  margin-left: 7vh;
   margin-top: 15vh;
-  text-align: left;
+  text-align: center;
 }
 
 .gradeboost {
   margin-bottom: 10vh;
   color: white;
   font-size: 3vw;
-  margin-left: 7vh;
-  text-align: left;
-  margin-top: 5vh;
+  text-align: center;
+  margin-top: 3vh;
 }
 
 .blue-button {
