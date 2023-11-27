@@ -14,6 +14,8 @@ import { RegisterComponent } from './components/Auth/register/register.component
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
+import { professorGuard } from 'src/app/guards/professor.guard';
+import { studentGuard } from './guards/student.guard';
 import { RosterComponent } from './components/Professor/roster/roster.component';
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 
@@ -25,6 +27,8 @@ const routes: Routes = [
   {
     path: 'professor',
     component: ProfessorNavigationComponent,
+    canActivate: [professorGuard],
+    canActivateChild: [professorGuard],
     children: [
       {
         path: 'appeal-inbox',
@@ -67,6 +71,8 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentNavigationComponent,
+    canActivate: [studentGuard],
+    canActivateChild: [studentGuard],
     children: [
       {
         path: 'course-dashboard',
@@ -92,28 +98,11 @@ const routes: Routes = [
         path: 'grader/interaction-history/:id',
         component: GraderInteractionHistoryComponent,
       },
+      {
+        path: 'new-appeal/:courseId',
+        component: NewAppealComponent,
+      },
     ],
-  },
-  {
-    path: 'new-appeal/:courseId',
-    component: NewAppealComponent,
-  },
-
-  {
-    path: 'professor',
-    component: ProfessorNavigationComponent,
-  },
-  {
-    path: 'professor/closed-appeals',
-    component: ClosedAppealsComponent,
-  },
-  {
-    path: 'professor/courses',
-    component: CoursesComponent,
-  },
-  {
-    path: 'professor/edit-templates',
-    component: EditTemplatesComponent,
   },
   {
     path: 'register',

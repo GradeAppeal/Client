@@ -26,7 +26,7 @@ export interface Message {
   sender_name: string;
 }
 
-export interface User {
+export interface Profile {
   id: string;
   role: string;
   first_name: string;

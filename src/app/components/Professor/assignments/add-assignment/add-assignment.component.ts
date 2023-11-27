@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 
@@ -21,7 +21,6 @@ export class AddAssignmentComponent {
     private professorService: ProfessorService
   ) {
     this.assignments = data.assignment;
-    console.log({ data });
     this.currentCourse = data.course;
   }
 

@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Session } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
@@ -58,23 +58,24 @@ export class ProfessorInteractionHistoryComponent {
     private _snackBar: MatSnackBar,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: SupabaseService
+    private authService: AuthService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
       console.log(this.appealId);
     });
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.professor = {
+          id: user.id,
+          first_name: user.user_metadata['first_name'],
+          last_name: user.user_metadata['last_name'],
+          email: user.user_metadata['email'],
+        };
+      }
+    });
   }
   async ngOnInit() {
-    this.session = (await this.authService.getSession()) as Session;
-    const { user } = this.session;
-    console.log({ user });
-    this.professor = {
-      id: user.id,
-      first_name: user.user_metadata['first_name'],
-      last_name: user.user_metadata['last_name'],
-      email: user.user_metadata['email'],
-    };
     this.professorAppeals =
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
 
@@ -82,7 +83,7 @@ export class ProfessorInteractionHistoryComponent {
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professor.id);
 
-    // appeals for professor exists
+    // appeals exist
     if (!this.noAppeals) {
       // if navigated from appeal-inbox, get the specific appeal
       // otherwise, set to the most current appeal
@@ -175,7 +176,7 @@ export class ProfessorInteractionHistoryComponent {
     notification: boolean = false
   ): Promise<void> {
     const now = getTimestampTz(new Date());
-    let sender_id = this.professor.id;
+    const sender_id = this.professor.id;
     let recipient_id = this.student.id;
     let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
     if (notification === true) {
@@ -229,17 +230,16 @@ export class ProfessorInteractionHistoryComponent {
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
-      console.log({ graders });
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
-        data: { graders, appealID },
-      });
-
-      dialog.afterClosed().subscribe((result: string | boolean) => {
-        result ? this.sendMessage('Sent to Grader', true) : null;
+        data: {
+          graders: graders,
+          appealID: appealID,
+          professor: this.professor,
+        },
       });
     }
     // if grader already assigned
