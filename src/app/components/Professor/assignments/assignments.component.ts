@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
-import { CoursesComponent } from '../courses/courses.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-assignments',
@@ -13,31 +13,35 @@ import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment
   styleUrls: ['./assignments.component.scss'],
 })
 export class AssignmentsComponent {
-  @Input() course: Course;
-  courseId: number;
+  courseID: number;
+  course: Course;
   isAssignmentsFetched = false;
+  courseFetched = false;
   assignments: Assignment[];
   selectedAssignmentId: number;
   editMode = false;
   newAssignment: string;
 
   constructor(
+    private route: ActivatedRoute,
     private sharedService: SharedService,
-    private courses: CoursesComponent,
     private dialog: MatDialog
-  ) {}
-
-  formatCourse(course: Course): string {
-    return this.courses.formatCourse(course);
+  ) {
+    this.route.params.subscribe((params) => {
+      this.courseID = +params['id']; // Convert the parameter to a number
+    });
   }
 
   async ngOnInit() {
     try {
       // don't render form until course and assignment information has been fetched
       this.assignments = await this.sharedService.fetchAssignmentsForNewAppeal(
-        this.course.id
+        this.courseID
       );
       this.isAssignmentsFetched = true;
+      this.course = await this.sharedService.getCourse(
+        this.courseID
+      );
 
       // listen for db inserts & updates
       this.handleAssignmentUpdates();
@@ -113,5 +117,20 @@ export class AssignmentsComponent {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+  }
+
+  /**
+   * Formats course name information like shown in Moodle
+   * @param course Course object containing course information
+   * @returns formatted string of course (moodle format)
+   */
+  formatCourse(course: Course): string {
+    return course.section
+      ? `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        }-${course.section} - ${course.name}`
+      : `${course.year - 2000}${course.semester} ${course.prefix}-${
+          course.code
+        } - ${course.name}`;
   }
 }
