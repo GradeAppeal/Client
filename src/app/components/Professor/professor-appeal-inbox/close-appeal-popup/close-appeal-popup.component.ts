@@ -27,6 +27,7 @@ export class CloseAppealPopupComponent {
 
   async onCloseAppeal(): Promise<void> {
     try {
+      const now = new Date();
       console.log(this.appeal.appeal_id);
       const closedAppealID = await this.professorService.updateAppealOpenStatus(
         this.appeal.appeal_id

@@ -92,16 +92,16 @@ export class GraderInteractionHistoryComponent {
       }
       // otherwise, get all assigned appeals from all courses the grader is grading
       else {
+        console.log(this.grader.id);
         this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
           this.grader.id
         );
+        console.log(this.graderAppeals, 'FROM GRADER IHC');
       }
-
-      // this.professors = await this.graderService.fetchProfessors();
-      this.professorIds;
       console.log(this.graderAppeals);
       this.noAppeals = this.graderAppeals.length === 0 ? true : false;
 
+      // grader has appeals
       if (!this.noAppeals) {
         this.currentAppeal =
           this.graderAppeals.find(
@@ -124,11 +124,15 @@ export class GraderInteractionHistoryComponent {
         //this.professor.id = this.messages[0].recipient_id;
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
-        console.log('hey');
+        this.handleMessageUpdates();
+      }
+      // grader has no appeals
+      else {
+        console.log("Grader doesn't have any appeals");
+        this.noAppealsMessage = 'You have not been assigned to any appeals';
       }
       console.log(this.messages);
     }
-    this.handleMessageUpdates();
   }
 
   ngAfterViewChecked() {

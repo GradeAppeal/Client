@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -9,6 +9,7 @@ import {
 import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
 import * as Papa from 'papaparse';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-roster',
@@ -16,9 +17,10 @@ import * as Papa from 'papaparse';
   styleUrls: ['./roster.component.scss'],
 })
 export class RosterComponent {
-  @Input() course: Course;
+  course: Course;
   courseStudents!: StudentCourseGraderInfo[];
   fetchedStudents = false;
+  fetchedCourse = false;
   addedStudents: string;
   addedStudentsCSV: string;
   studentsToAdd: string[];
@@ -26,19 +28,29 @@ export class RosterComponent {
   parsedStudentsToAdd: ParsedStudent[] = [];
   parsedStudent: ParsedStudent;
   splitStudent: string[];
+  courseID: number;
 
   constructor(
+    private route: ActivatedRoute,
     private sharedService: SharedService,
     private professorService: ProfessorService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.route.params.subscribe((params) => {
+      this.courseID = +params['id']; // Convert the parameter to a number
+    });
+  }
 
   async ngOnInit() {
     try {
       this.courseStudents = await this.professorService.fetchCourseStudents(
-        this.course.id
+        this.courseID
+      );
+      this.course = await this.sharedService.getCourse(
+        this.courseID
       );
       this.fetchedStudents = true;
+      this.fetchedCourse = true;
       // listen for database changes
       this.handleStudentUpdates();
     } catch (err) {
@@ -51,7 +63,7 @@ export class RosterComponent {
       .getTableChanges(
         'StudentCourse',
         'student-course-channel',
-        `course_id=eq.${this.course.id}`
+        `course_id=eq.${this.courseID}`
       )
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
@@ -165,7 +177,7 @@ export class RosterComponent {
   async addStudents(addedStudentsCSV: string): Promise<void> {
     const parsedStudentsToAdd = this.parseStudents(addedStudentsCSV);
     console.log(parsedStudentsToAdd);
-    const cid = this.course.id;
+    const cid = this.courseID;
     try {
       // Whether a student is a registered user or not
       const userStatus = await this.professorService.fetchStudentUserStatus(

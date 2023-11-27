@@ -140,9 +140,12 @@ export class ProfessorService {
    */
   async fetchAllProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
     console.log(pid);
-    const { data, error } = await this.supabase.rpc('get_professor_appeals', {
-      pid,
-    });
+    const { data, error } = await this.supabase.rpc(
+      'get_all_professor_appeals',
+      {
+        pid,
+      }
+    );
     if (error) {
       console.log(error);
       throw new Error('fetchAllProfessorAppeals');
@@ -522,8 +525,7 @@ export class ProfessorService {
       cid,
     });
     if (error) {
-      console.log(error);
-      throw new Error('getGraders');
+      throw new Error(error.message);
     }
     return data;
   }

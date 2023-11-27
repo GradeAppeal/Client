@@ -5,6 +5,7 @@ import { SupabaseService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
+import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-closed-appeal-popup.component';
 
 @Component({
   selector: 'app-closed-appeals',
@@ -26,6 +27,12 @@ export class ClosedAppealsComponent implements OnInit {
     this.user = this.session.user;
     this.closedAppeals =
       await this.professorService.fetchClosedProfessorAppeals(this.user.id);
+    console.log(this.closedAppeals);
+  }
+
+  formatLocalTimestamp(last_modified?: Date | string) {
+    const newTime = new Date(last_modified as string);
+    return newTime.toLocaleString();
   }
 
   async onReopenAppeal(i: number) {
@@ -41,6 +48,15 @@ export class ClosedAppealsComponent implements OnInit {
       this.closedAppeals = this.closedAppeals.filter(
         (appeal) => appeal.appeal_id !== reopenAppealId
       );
+    });
+  }
+
+  onViewAppeal(i: number) {
+    const closedAppeal = this.closedAppeals[i];
+    const dialogRef = this.dialog.open(ViewClosedAppealPopupComponent, {
+      width: '30%',
+      height: '25%',
+      data: { closedAppeal },
     });
   }
 }

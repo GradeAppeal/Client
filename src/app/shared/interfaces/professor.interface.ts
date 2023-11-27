@@ -21,6 +21,7 @@ export interface ProfessorAppeal {
   student_last_name?: string;
   grader_id?: string;
   grader_name?: string;
+  last_modified?: Date | string;
 }
 
 export interface ProfessorTemplate {
