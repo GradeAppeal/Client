@@ -65,3 +65,12 @@
 label {
   color: white;
 }
+
+.register {
+  color: white;
+  padding-top: 5px;
+  .register-button {
+    color: $primary-blue;
+    font-weight: bold;
+  }
+}

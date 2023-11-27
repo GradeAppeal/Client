@@ -1,6 +1,6 @@
 
     <div class="course-wrapper">
-      <mat-card class="courses" *ngFor="let course of professorCourses" (click)="onViewAssignments(course)">
+      <mat-card class="courses" *ngFor="let course of professorCourses">
         <div class="title-container">
           <mat-card-title class="course-wording"
             >{{ course.prefix }}-{{ course.code }}-{{ course.section }}

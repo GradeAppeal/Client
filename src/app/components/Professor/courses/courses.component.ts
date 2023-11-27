@@ -116,14 +116,6 @@ export class CoursesComponent {
   }
 
 
-  // async swapView(page: string, courseID: number, course: Course) {
-  //   this.currentPage = page;
-  //   this.currentCourseID = courseID;
-  //   this.currentCourse = course;
-  //   this.router.navigateByUrl(
-  //     `professor/roster/${courseID}`
-  //   );
-  // }
 
   /**
    * Goes to AddCourse pop up component

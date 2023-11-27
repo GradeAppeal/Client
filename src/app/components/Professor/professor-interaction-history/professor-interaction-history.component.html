@@ -42,6 +42,9 @@
           <h3 class="grader-header" *ngIf="currentAppeal.grader_name !== null">
             Grader: {{ currentAppeal.grader_name }}
           </h3>
+          <h3 class="grader-header" *ngIf="currentAppeal.grader_name === null">
+            Grader: Unassigned
+          </h3>
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
@@ -131,6 +134,15 @@
             Send
           </button>
           <mat-slide-toggle
+            *ngIf="currentAppeal.grader_name !== null"
+            disabled="false"
+            class="grader-toggle"
+            hideIcon="true"
+            (change)="talkToGrader()"
+          ></mat-slide-toggle>
+          <mat-slide-toggle
+            *ngIf="currentAppeal.grader_name === null"
+            disabled="true"
             class="grader-toggle"
             hideIcon="true"
             (change)="talkToGrader()"
