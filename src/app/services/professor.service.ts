@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient, User } from '@supabase/supabase-js';
-import { SupabaseService } from './auth.service';
+import { AuthService } from './auth.service';
 import {
   Course,
   Student,
@@ -21,9 +21,9 @@ export class ProfessorService {
   private supabase: SupabaseClient;
   session: AuthSession | null = null;
 
-  constructor(private supabaseService: SupabaseService) {
-    this.supabase = this.supabaseService.client;
-    this.session = this.supabaseService.session;
+  constructor(private AuthService: AuthService) {
+    this.supabase = this.AuthService.client;
+    this.session = this.AuthService.session;
   }
 
   /**

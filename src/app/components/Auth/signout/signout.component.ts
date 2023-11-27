@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-signout',
@@ -8,7 +8,7 @@ import { SupabaseService } from 'src/app/services/auth.service';
   styleUrls: ['./signout.component.scss'],
 })
 export class SignoutComponent {
-  constructor(private authService: SupabaseService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   async onSignout() {
     try {

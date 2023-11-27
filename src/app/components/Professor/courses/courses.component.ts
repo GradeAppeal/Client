@@ -4,7 +4,7 @@ import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 import { Router } from '@angular/router';
@@ -29,20 +29,24 @@ export class CoursesComponent {
     private dialog: MatDialog,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.professor = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     try {
-      this.session = (await this.authService.getSession()) as Session;
-      this.user = this.session.user;
-      this.professor = {
-        id: this.user.id,
-        first_name: this.user.user_metadata['first_name'],
-        last_name: this.user.user_metadata['last_name'],
-        email: this.user.user_metadata['email'],
-      };
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );

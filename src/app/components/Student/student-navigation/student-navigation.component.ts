@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { navigate, setTitle } from 'src/app/shared/functions/general.util';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { SignoutComponent } from 'src/app/components/Auth/signout/signout.compon
 export class StudentNavigationComponent {
   constructor(
     private router: Router,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private dialog: MatDialog
   ) {
     this.router.events.subscribe((event) => {

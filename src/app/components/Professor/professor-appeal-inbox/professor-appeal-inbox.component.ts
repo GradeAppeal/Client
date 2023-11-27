@@ -1,20 +1,12 @@
-import {
-  Component,
-  Output,
-  EventEmitter,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
-import { Course } from 'src/app/shared/interfaces/psql.interface';
+import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
-import { SignoutComponent } from '../../Auth/signout/signout.component';
 import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-popup.component';
 import { AssignGraderPopupComponent } from '../professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { GraderAssignedSnackbarComponent } from '../professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
@@ -25,12 +17,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './professor-appeal-inbox.component.html',
   styleUrls: ['./professor-appeal-inbox.component.scss'],
 })
-export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
+export class ProfessorAppealInboxComponent implements OnInit {
   @Output() isChat = new EventEmitter<{ professorAppeal: ProfessorAppeal }>();
-  //inboxAppeals: AppealInbox[];
   session: Session;
   user: User;
-  noAppeals: boolean;
+  professor: Professor;
+  noAppeals = true;
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
@@ -45,22 +37,33 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private professorService: ProfessorService,
-    private _snackBar: MatSnackBar,
-  ) {}
+    private _snackBar: MatSnackBar
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.professor = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
   async ngOnInit(): Promise<void> {
     try {
-      this.session = (await this.authService.getSession()) as Session;
-      this.user = this.session.user;
-
       this.professorAppeals =
-        await this.professorService.fetchOpenProfessorAppeals(this.user.id);
+        await this.professorService.fetchOpenProfessorAppeals(
+          this.professor.id
+        );
 
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
       console.log(this.professorAppeals, 'appeals');
       this.professorCourses = await this.professorService.fetchProfessorCourses(
-        this.user.id
+        this.professor.id
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
@@ -68,7 +71,6 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
       console.log(err);
     }
   }
-  ngOnChanges(): void {}
 
   selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
@@ -86,7 +88,7 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     });
     //this.navigateTo('professor/closed-appeals/');
   }
-  
+
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
@@ -108,27 +110,25 @@ export class ProfessorAppealInboxComponent implements OnInit, OnChanges {
     });
   }
 
-  async onButtonClick(event: MouseEvent) {
+  async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
-        
-      console.log({ graders });
-      const appealID = this.currentAppeal.appeal_id;
+
+      const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
-        data: { graders, appealID },
+        data: { graders, appealID, professor: this.professor },
       });
-    }
-    else {
-        console.log('appeal already assigned to grader');
-        this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
-          duration: this.durationInSeconds * 1000,
-        });
+    } else {
+      console.log('appeal already assigned to grader');
+      this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
+        duration: this.durationInSeconds * 1000,
+      });
     }
   }
 }
