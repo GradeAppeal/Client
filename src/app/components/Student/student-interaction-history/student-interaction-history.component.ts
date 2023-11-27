@@ -7,8 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Session } from '@supabase/supabase-js';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { User } from '@supabase/supabase-js';
+import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
@@ -33,7 +33,7 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
-  session: Session;
+  user: User;
   loading: boolean = true;
   studentUserId: string;
   chatInputMessage: string = '';
@@ -50,20 +50,29 @@ export class StudentInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: SupabaseService,
+    private authService: AuthService,
     private studentService: StudentService,
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+        this.student = {
+          id: this.user.id,
+          first_name: this.user.user_metadata['first_name'],
+          last_name: this.user.user_metadata['last_name'],
+          email: this.user.email as string,
+        };
+      }
+    });
+  }
+
   async ngOnInit() {
-    const session = (await this.authService.getSession()) as Session;
-    const user = session.user;
     this.appealId = this.route.snapshot.params['appealId'];
     const appealId = this.appealId;
     console.log({ appealId });
-    // this.studentUserId = (await this.authService.getUserId()) as string;
-    this.student = await this.sharedService.getStudent(user.id);
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
-      user.id
+      this.student.id
     );
 
     this.currentAppeal = this.studentAppeals[0];

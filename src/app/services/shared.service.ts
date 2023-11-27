@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseService } from './auth.service';
+import { AuthService } from './auth.service';
 import {
   Assignment,
   Message,
-  User,
   Course,
   Student,
   Professor,
@@ -18,9 +17,9 @@ export class SharedService {
   private supabase: SupabaseClient;
   session: AuthSession | null = null;
 
-  constructor(private supabaseService: SupabaseService) {
-    this.supabase = this.supabaseService.client;
-    this.session = this.supabaseService.session;
+  constructor(private authService: AuthService) {
+    this.supabase = this.authService.client;
+    this.session = this.authService.session;
   }
 
   /**
@@ -42,7 +41,6 @@ export class SharedService {
         'postgres_changes',
         { event: '*', schema: 'public', table: tableName, filter: filter },
         (payload) => {
-          // console.log({ payload });
           changes.next(payload);
         }
       )
@@ -163,16 +161,6 @@ export class SharedService {
     return data;
   }
 
-  async getUserInfo(uid: string): Promise<User> {
-    const { data, error } = await this.supabase.rpc('get_user_info', {
-      uid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('getUser');
-    }
-    return data[0];
-  }
   async getStudent(sid: string): Promise<Student> {
     const { data, error } = await this.supabase.rpc('get_student', {
       sid,

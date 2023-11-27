@@ -5,20 +5,6 @@
 
 <div class="main">
   <div>
-    <mat-toolbar class="top-bar">
-      <mat-toolbar-row>
-        <span class="left-content">
-          <span (click)="navigateToHome()" class="material-symbols-outlined">
-            rocket_launch
-          </span>
-          <span>New Appeal</span>
-        </span>
-        <div class="right-content">
-          <img class="header-avatar" ngxGravatar [email]="email" />
-        </div>
-      </mat-toolbar-row>
-    </mat-toolbar>
-
     <div class="card-container" *ngIf="isCourseFetched && isAssignmentsFetched">
       <mat-card class="appeal-card">
         <mat-card-title>{{ formatCourse(course) }}</mat-card-title>

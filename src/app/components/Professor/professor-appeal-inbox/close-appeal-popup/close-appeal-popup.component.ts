@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
-import { SupabaseService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-close-appeal-popup',
