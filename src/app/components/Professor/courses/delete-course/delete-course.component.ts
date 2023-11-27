@@ -30,7 +30,7 @@ export class DeleteCourseComponent {
       await this.professorService.deleteCourse(this.cid, this.pid);
     } catch (err) {
       console.log(err);
-      throw new Error('insertCourse');
+      throw new Error('deleteCourse');
     }
     /*   close pop-up */
     this.dialogRef.close();

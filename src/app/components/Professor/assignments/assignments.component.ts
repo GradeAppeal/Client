@@ -5,7 +5,7 @@ import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignments',
@@ -25,7 +25,8 @@ export class AssignmentsComponent {
   constructor(
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
@@ -132,5 +133,13 @@ export class AssignmentsComponent {
       : `${course.year - 2000}${course.semester} ${course.prefix}-${
           course.code
         } - ${course.name}`;
-  }
+ 
+      }
+
+    onBackButton() {
+      this.router.navigateByUrl(
+        'professor/courses'
+      )
+    }
+        
 }
