@@ -8,7 +8,8 @@ import {
 } from 'src/app/shared/interfaces/professor.interface';
 import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { ActivatedRoute } from '@angular/router';
+import * as Papa from 'papaparse';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-roster',
@@ -21,6 +22,7 @@ export class RosterComponent {
   fetchedStudents = false;
   fetchedCourse = false;
   addedStudents: string;
+  addedStudentsCSV: string;
   studentsToAdd: string[];
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
@@ -32,7 +34,8 @@ export class RosterComponent {
     private route: ActivatedRoute,
     private sharedService: SharedService,
     private professorService: ProfessorService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
@@ -124,15 +127,20 @@ export class RosterComponent {
    * Parse student informtion from textbox input
    * @returns paresed student from textbox input
    */
-  parseStudents(): ParsedStudent[] {
+  parseStudents(addedStudentsCSV: string): ParsedStudent[] {
     const parsedStudentsToAdd: ParsedStudent[] = [];
     // parse students added
-    this.studentsToAdd = this.addedStudents.split('\n');
-    this.addedStudents = '';
+    console.log(addedStudentsCSV);
+    this.studentsToAdd = addedStudentsCSV.split(/\r?\n/);
+    console.log(this.studentsToAdd);
+    // this.addedStudentsCSV = '';
     this.studentsToAdd.shift(); // get rid of the column names
+    console.log(this.studentsToAdd);
     this.studentsToAdd = this.studentsToAdd.filter((n) => n); // get rid of empty strings from copy pasting
     this.studentsToAdd.forEach((student) => {
-      this.splitStudent = student.split('\t');
+      this.splitStudent = student.split(',');
+      console.log(this.splitStudent);
+      console.log(this.splitStudent[2]);
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
@@ -143,12 +151,33 @@ export class RosterComponent {
     return parsedStudentsToAdd;
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.readFile(file);
+    }
+  }
+
+  readFile(file: File) {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const csvContent: string = e.target.result;
+      const csvContentTabSeparated = csvContent.replace(/,/g, '\t').replace(/\n/g, '\r\n');
+      this.addedStudentsCSV = csvContentTabSeparated;
+      this.addStudents(this.addedStudentsCSV);
+    };
+    reader.readAsText(file);
+    }
+
   /**
    * Adds students to Course
    * separately handles registered & unregistered users
    */
-  async addStudents(): Promise<void> {
-    const parsedStudentsToAdd = this.parseStudents();
+  async addStudents(addedStudentsCSV: string): Promise<void> {
+    const parsedStudentsToAdd = this.parseStudents(addedStudentsCSV);
+    console.log(parsedStudentsToAdd);
     const cid = this.courseID;
     try {
       // Whether a student is a registered user or not
@@ -200,4 +229,11 @@ export class RosterComponent {
           course.code
         } - ${course.name}`;
   }
+
+  onBackButton() {
+    this.router.navigateByUrl(
+      'professor/courses'
+    )
+  }
+  
 }
