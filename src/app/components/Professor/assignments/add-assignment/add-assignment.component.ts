@@ -1,7 +1,6 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Assignment } from 'src/app/shared/interfaces/psql.interface';
-import { AuthService } from 'src/app/services/auth.service';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 
