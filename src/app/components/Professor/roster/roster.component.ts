@@ -9,7 +9,7 @@ import {
 import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
 import * as Papa from 'papaparse';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-roster',
@@ -23,6 +23,7 @@ export class RosterComponent {
   fetchedCourse = false;
   addedStudents: string;
   addedStudentsCSV: string;
+
   studentsToAdd: string[];
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
@@ -34,7 +35,8 @@ export class RosterComponent {
     private route: ActivatedRoute,
     private sharedService: SharedService,
     private professorService: ProfessorService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
@@ -129,24 +131,23 @@ export class RosterComponent {
   parseStudents(addedStudentsCSV: string): ParsedStudent[] {
     const parsedStudentsToAdd: ParsedStudent[] = [];
     // parse students added
-    console.log(addedStudentsCSV);
-    this.studentsToAdd = addedStudentsCSV.split(/\r?\n/);
-    console.log(this.studentsToAdd);
-    // this.addedStudentsCSV = '';
+    this.studentsToAdd = this.addedStudentsCSV.split('\n');
+    this.addedStudents = '';
     this.studentsToAdd.shift(); // get rid of the column names
-    console.log(this.studentsToAdd);
-    this.studentsToAdd = this.studentsToAdd.filter((n) => n); // get rid of empty strings from copy pasting
+    
+    // const arrayOfLinesWithoutNewlines = this.studentsToAdd.map(line => line.replace(/[\r\n]/g, ''));
+    // console.log(arrayOfLinesWithoutNewlines);
     this.studentsToAdd.forEach((student) => {
-      this.splitStudent = student.split(',');
-      console.log(this.splitStudent);
-      console.log(this.splitStudent[2]);
+      this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
         email: this.splitStudent[2],
       };
+      console.log(this.parsedStudent);
       parsedStudentsToAdd.push(this.parsedStudent);
     });
+    console.log(this.parsedStudentsToAdd);
     return parsedStudentsToAdd;
   }
 
@@ -228,4 +229,11 @@ export class RosterComponent {
           course.code
         } - ${course.name}`;
   }
+
+  onBackButton() {
+    this.router.navigateByUrl(
+      'professor/courses'
+    )
+  }
+  
 }

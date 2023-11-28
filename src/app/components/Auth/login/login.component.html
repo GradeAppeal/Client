@@ -7,10 +7,6 @@
       background-size: cover;
     "
   >
-    <div class="logo">
-      <!-- <img class="cover-image" src="../assets/test.jpg" /> -->
-      <!-- <img src="../assets/rocket.jpg" /> -->
-    </div>
     <div class="form">
       <!-- need to code the reactive form -->
       <p class="welcome">Welcome to</p>
@@ -53,14 +49,12 @@
               >
                 {{ loading ? "Loading" : "Submit" }}
               </button>
-              <button
-                (click)="onRegister()"
-                type="submit"
-                class="blue-button"
-                [disabled]="loading"
-              >
-                {{ loading ? "Loading" : "Register" }}
-              </button>
+              <p class="register">
+                Not registered as an Instructor?
+                <button class="register-button" (click)="onRegister()">
+                  Sign Up
+                </button>
+              </p>
             </div>
           </form>
         </div>
