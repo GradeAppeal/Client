@@ -17,8 +17,6 @@ export const professorGuard: CanActivateChildFn | CanActivateFn = async (
         filter((val) => val !== null), // Filter out initial Behavior subject value
         take(1), // Otherwise the Observable doesn't complete!
         map(async (authUser) => {
-          console.log('is authenticated', authUser);
-
           if (authUser && typeof authUser !== 'boolean') {
             const { email } = authUser;
             const role = await authService.getRole(email);

@@ -42,7 +42,8 @@ export class AssignGraderPopupComponent {
   async onAssignGrader() {
     const assignedGraderID = await this.professorService.updateAppealGrader(
       this.appealID,
-      this.selectedGrader.student_id
+      this.selectedGrader.student_id,
+      this.selectedGrader.student_name
     );
     const now = getTimestampTz(new Date());
     await this.sharedService.insertMessage(

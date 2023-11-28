@@ -38,7 +38,6 @@ export class ClosedAppealsComponent implements OnInit {
       await this.professorService.fetchClosedProfessorAppeals(
         this.professor.id
       );
-    console.log(this.closedAppeals);
   }
 
   formatLocalTimestamp(last_modified?: Date | string) {

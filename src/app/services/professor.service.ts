@@ -532,13 +532,20 @@ export class ProfessorService {
 
   /**
    * Assigns a grader to an appeal
+   * @param aid appeal id
    * @param gid grader id to assign to appeal
-   * @returns
+   * @param gname grader name
+   * @returns updated appeal id
    */
-  async updateAppealGrader(aid: number, gid: string): Promise<string> {
+  async updateAppealGrader(
+    aid: number,
+    gid: string,
+    gname: string
+  ): Promise<string> {
     const { data, error } = await this.supabase.rpc('update_appeal_grader', {
       aid,
       gid,
+      gname,
     });
     if (error) {
       console.log(error);
