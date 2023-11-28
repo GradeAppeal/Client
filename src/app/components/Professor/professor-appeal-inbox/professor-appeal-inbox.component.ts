@@ -70,9 +70,26 @@ export class ProfessorAppealInboxComponent implements OnInit {
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
       this.handleGraderUpdates();
+      this.handleAppealUpdates();
     } catch (err) {
       console.log({ err });
     }
+  }
+
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeal-channel',
+        `id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        if (!record || event !== 'INSERT') return;
+        console.log({ record }, 'new appeal!');
+      });
   }
 
   handleGraderUpdates(): void {

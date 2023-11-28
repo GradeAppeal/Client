@@ -98,12 +98,16 @@ export class NewAppealComponent implements OnInit {
         now,
         this.student.id
       );
+      const professorID = await this.studentService.getCourseProfessor(
+        this.course.id
+      );
       const appealID = await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
         this.student.id,
         this.courseId,
         now,
-        this.appeal
+        this.appeal,
+        professorID
       );
 
       this.router.navigateByUrl(`student/interaction-history/${appealID}`);
