@@ -22,6 +22,7 @@ export class AssignGraderPopupComponent {
   appealID: number;
   professor: Professor;
   selectedGrader: StudentCourseGraderInfo;
+  message: string;
   constructor(
     @Optional()
     @Inject(MAT_DIALOG_DATA)
@@ -42,15 +43,19 @@ export class AssignGraderPopupComponent {
   async onAssignGrader() {
     const assignedGraderID = await this.professorService.updateAppealGrader(
       this.appealID,
-      this.selectedGrader.student_id
+      this.selectedGrader.student_id,
+      this.selectedGrader.student_name
     );
     const now = getTimestampTz(new Date());
+    if (!this.message) {
+      this.message = 'Notification: Sent to grader';
+    }
     await this.sharedService.insertMessage(
       this.appealID,
       this.professor.id,
       assignedGraderID,
       now,
-      'Notification: Sent to grader',
+      this.message,
       false,
       `${this.professor.first_name} ${this.professor.last_name}`,
       this.selectedGrader.student_name

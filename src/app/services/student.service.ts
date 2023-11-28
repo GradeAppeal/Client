@@ -71,6 +71,19 @@ export class StudentService {
     return data[0];
   }
 
+  async getCourseProfessor(cid: number): Promise<string> {
+    const { data, error } = await this.supabase.rpc('get_course_professor', {
+      cid,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+    console.log({ data });
+    return data;
+  }
+
   /**
    * Writes student appeal to database
    * @param aid assignment id from UI
@@ -85,7 +98,8 @@ export class StudentService {
     sid: string,
     cid: number,
     created_at: Date,
-    appeal_text: string
+    appeal_text: string,
+    pid: string
   ): Promise<number> {
     console.log();
     const { data, error } = await this.supabase.rpc('insert_appeal', {
@@ -94,6 +108,7 @@ export class StudentService {
       cid,
       created_at,
       appeal_text,
+      pid,
     });
 
     if (error) {

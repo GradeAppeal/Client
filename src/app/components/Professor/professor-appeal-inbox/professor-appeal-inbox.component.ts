@@ -11,6 +11,7 @@ import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-pop
 import { AssignGraderPopupComponent } from '../professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { GraderAssignedSnackbarComponent } from '../professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -38,6 +39,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private authService: AuthService,
+    private sharedService: SharedService,
     private professorService: ProfessorService,
     private _snackBar: MatSnackBar
   ) {
@@ -67,14 +69,49 @@ export class ProfessorAppealInboxComponent implements OnInit {
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
+      this.handleGraderUpdates();
+      this.handleAppealUpdates();
     } catch (err) {
-      console.log(err);
+      console.log({ err });
     }
+  }
+
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeal-channel',
+        `id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        if (!record || event !== 'INSERT') return;
+        console.log({ record }, 'new appeal!');
+      });
+  }
+
+  handleGraderUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeal-grader-channel',
+        `id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        if (!record || event !== 'UPDATE') return;
+        this.currentAppeal.grader_id = record.grader_id;
+      });
   }
 
   selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
+    //this.handleGraderUpdates();
   }
 
   localFormatTimestamp(timestamp: Date): { date: string; time: string } {

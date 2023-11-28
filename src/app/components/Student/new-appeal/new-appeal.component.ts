@@ -8,7 +8,7 @@ import {
 } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
-import { Session, User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -98,12 +98,16 @@ export class NewAppealComponent implements OnInit {
         now,
         this.student.id
       );
+      const professorID = await this.studentService.getCourseProfessor(
+        this.course.id
+      );
       const appealID = await this.studentService.insertNewAppeal(
         this.selectedAssignmentId,
         this.student.id,
         this.courseId,
         now,
-        this.appeal
+        this.appeal,
+        professorID
       );
 
       this.router.navigateByUrl(`student/interaction-history/${appealID}`);
