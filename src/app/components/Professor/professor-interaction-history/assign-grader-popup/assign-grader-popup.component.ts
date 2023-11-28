@@ -47,7 +47,9 @@ export class AssignGraderPopupComponent {
       this.selectedGrader.student_name
     );
     const now = getTimestampTz(new Date());
-
+    if (!this.message) {
+      this.message = 'Notification: Sent to grader';
+    }
     await this.sharedService.insertMessage(
       this.appealID,
       this.professor.id,
