@@ -93,13 +93,26 @@ export class ProfessorService {
     }
   }
 
+  async getNewProfessorAppeal(aid: number): Promise<ProfessorAppeal[]> {
+    const { data, error } = await this.supabase.rpc(
+      'get_new_professor_appeal',
+      {
+        aid,
+      }
+    );
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
   /**
    * fetch from supabase: OPEN professor appeals
    * @param pid professor id (later replaced with auth.id)
    * @returns courses the prof is teaching in JSON format
    */
   async fetchOpenProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
-    console.log(pid);
     const { data, error } = await this.supabase.rpc(
       'get_open_professor_appeals',
       {
