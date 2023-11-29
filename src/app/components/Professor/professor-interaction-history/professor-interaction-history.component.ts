@@ -19,6 +19,7 @@ import {
 import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
+import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -110,6 +111,7 @@ export class ProfessorInteractionHistoryComponent {
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
       this.handleMessageUpdates();
+      this.handleAppealUpdates();
     }
     // no appeals: show the no appeals message in HTML template
   }
@@ -220,34 +222,64 @@ export class ProfessorInteractionHistoryComponent {
     return formatTimestamp(timestamp);
   }
 
-  /**
-   * send message to grader
-   */
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeals-update-channel',
+        `professor_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        console.log({ update });
+        // get the newly updated row
+        const record = update.new;
+        if (!record) return;
+        const event = update.eventType;
+        if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        } else if (event === 'INSERT') {
+          const newAppeal = await this.professorService.getNewProfessorAppeal(
+            record.id
+          );
+          this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+      });
+  }
 
-  async onAssignToGrader() {
-    // if the appeal not assigned to grader
+  async onAssignGrader(event: MouseEvent) {
+    const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
-      console.log(this.currentAppeal);
       const graders = await this.professorService.getGraders(
         this.currentAppeal.course_id
       );
-      const appealID = this.currentAppeal.appeal_id;
+
+      const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
         width: '30%',
         height: '35%',
-        data: {
-          graders: graders,
-          appealID: appealID,
-          professor: this.professor,
-        },
+        data: { graders, appealID, professor: this.professor },
       });
-    }
-    // if grader already assigned
-    else {
+    } else {
       console.log('appeal already assigned to grader');
       this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
         duration: this.durationInSeconds * 1000,
+      });
+    }
+  }
+
+  async unassignGrader(event: MouseEvent) {
+    if (this.currentAppeal.grader_id) {
+      const graderName = this.currentAppeal.grader_name;
+      const studentID = this.currentAppeal.student_id;
+      const professorID = this.professor.id;
+      console.log(graderName);
+      const appealID = this.currentAppeal.appeal_id;
+      // open popup to assign grader
+      const dialog = this.dialog.open(UnassignGraderPopupComponent, {
+        width: '30%',
+        height: '35%',
+        data: { graderName, appealID, studentID, professorID },
       });
     }
   }
