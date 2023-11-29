@@ -12,7 +12,6 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -552,5 +551,16 @@ export class ProfessorService {
       throw new Error('updateAppealGrader');
     }
     return data;
+  }
+
+  async deleteAppeal(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('delete_appeal', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+    console.log(`appeal ${aid} deleted`);
   }
 }

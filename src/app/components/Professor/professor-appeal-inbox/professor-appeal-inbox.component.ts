@@ -81,7 +81,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
       .getTableChanges(
         'Appeals',
         'appeal-channel',
-        `id=eq.${this.professor.id}`
+        `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
         // get the newly updated row
