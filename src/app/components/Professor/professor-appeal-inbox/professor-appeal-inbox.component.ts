@@ -80,15 +80,17 @@ export class ProfessorAppealInboxComponent implements OnInit {
     this.sharedService
       .getTableChanges(
         'Appeals',
-        'appeal-channel',
+        'appeals-update-channel',
         `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
         // get the newly updated row
-        const record = update.new?.id ? update.new : update.old;
-        const event = update.eventType;
-        if (!record || event !== 'INSERT') return;
-        console.log({ record }, 'new appeal!');
+        const record = update.new;
+        if (!record) return;
+        const newAppeal = await this.professorService.getNewProfessorAppeal(
+          record.id
+        );
+        this.professorAppeals = newAppeal.concat(this.professorAppeals);
       });
   }
 
