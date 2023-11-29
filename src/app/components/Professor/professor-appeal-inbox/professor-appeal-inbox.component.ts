@@ -12,6 +12,7 @@ import { AssignGraderPopupComponent } from '../professor-interaction-history/ass
 import { GraderAssignedSnackbarComponent } from '../professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/services/shared.service';
+import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
 
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -83,6 +84,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
         `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
+        console.log({ update });
         // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
@@ -165,6 +167,22 @@ export class ProfessorAppealInboxComponent implements OnInit {
       console.log('appeal already assigned to grader');
       this._snackBar.openFromComponent(GraderAssignedSnackbarComponent, {
         duration: this.durationInSeconds * 1000,
+      });
+    }
+  }
+
+  async unassignGrader(event: MouseEvent) {
+    if (this.currentAppeal.grader_id) {
+      const graderName = this.currentAppeal.grader_name;
+      const studentID = this.currentAppeal.student_id;
+      const professorID = this.professor.id;
+      console.log(graderName);
+      const appealID = this.currentAppeal.appeal_id;
+      // open popup to assign grader
+      const dialog = this.dialog.open(UnassignGraderPopupComponent, {
+        width: '30%',
+        height: '35%',
+        data: { graderName, appealID, studentID, professorID },
       });
     }
   }

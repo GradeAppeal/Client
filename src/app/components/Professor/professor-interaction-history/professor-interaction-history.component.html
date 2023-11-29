@@ -104,8 +104,19 @@
           >
             Use Template
           </button>
-          <button mat-stroked-button (click)="onAssignToGrader()">
+          <button
+            *ngIf="currentAppeal.grader_id === null"
+            mat-stroked-button
+            (click)="onAssignGrader($event)"
+          >
             Assign To Grader
+          </button>
+          <button
+            *ngIf="currentAppeal.grader_id !== null"
+            mat-stroked-button
+            (click)="unassignGrader($event)"
+          >
+            Unassign Grader
           </button>
         </div>
         <mat-menu #menu="matMenu">

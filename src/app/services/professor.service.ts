@@ -576,4 +576,24 @@ export class ProfessorService {
     }
     console.log(`appeal ${aid} deleted`);
   }
+  /**
+   * Assigns a grader to an appeal
+   * @param aid appeal id
+   * @param gid grader id to assign to appeal
+   * @param gname grader name
+   * @returns updated appeal id
+   */
+  async updateUnassignAppealGrader(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc(
+      'update_unassign_appeal_grader',
+      {
+        aid,
+      }
+    );
+    if (error) {
+      console.log(error);
+      throw new Error('updateUnassignAppealGrader');
+    }
+    console.log({ data });
+  }
 }
