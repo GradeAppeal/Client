@@ -69,7 +69,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
-      this.handleGraderUpdates();
       this.handleAppealUpdates();
     } catch (err) {
       console.log({ err });
@@ -85,28 +84,27 @@ export class ProfessorAppealInboxComponent implements OnInit {
       )
       .subscribe(async (update: any) => {
         // get the newly updated row
-        const record = update.new;
-        if (!record) return;
-        const newAppeal = await this.professorService.getNewProfessorAppeal(
-          record.id
-        );
-        this.professorAppeals = newAppeal.concat(this.professorAppeals);
-      });
-  }
-
-  handleGraderUpdates(): void {
-    this.sharedService
-      .getTableChanges(
-        'Appeals',
-        'appeal-grader-channel',
-        `id=eq.${this.currentAppeal.appeal_id}`
-      )
-      .subscribe(async (update: any) => {
-        // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
-        if (!record || event !== 'UPDATE') return;
-        this.currentAppeal.grader_id = record.grader_id;
+        if (!record) return;
+        // insert new appeals by student
+        if (event === 'INSERT') {
+          const newAppeal = await this.professorService.getNewProfessorAppeal(
+            record.id
+          );
+          this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+        // update grader status
+        else if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        }
+        // safety delete check in case closed appeal not removed from appeal inbox
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
+        }
       });
   }
 

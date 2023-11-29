@@ -7,6 +7,7 @@ import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
 import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
 import { DeleteAppealPopupComponent } from './delete-appeal-popup/delete-appeal-popup.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-closed-appeals',
@@ -16,10 +17,10 @@ import { DeleteAppealPopupComponent } from './delete-appeal-popup/delete-appeal-
 export class ClosedAppealsComponent implements OnInit {
   professor: Professor;
   closedAppeals: ProfessorAppeal[] = [];
-  sharedService: any;
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
+    private sharedService: SharedService,
     private professorService: ProfessorService
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
@@ -35,10 +36,16 @@ export class ClosedAppealsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.closedAppeals =
-      await this.professorService.fetchClosedProfessorAppeals(
-        this.professor.id
-      );
+    try {
+      this.closedAppeals =
+        await this.professorService.fetchClosedProfessorAppeals(
+          this.professor.id
+        );
+
+      this.handleAppealDeletes();
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   handleAppealDeletes(): void {
@@ -52,8 +59,8 @@ export class ClosedAppealsComponent implements OnInit {
         // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
-        if (!record || event !== 'INSERT') return;
-        console.log({ record }, 'new appeal!');
+        //if (!record || event !== 'DELETE') return;
+        console.log({ update }, 'deleted appeal!');
       });
   }
 
