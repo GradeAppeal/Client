@@ -11,7 +11,7 @@ Supabase: Backend as a Service (BaaS) based on PostgreSQL
 GitHub Pages: Deployment platform
 
 ### Supabase
-https://supabase.com/dashboard/project/vomlpfolqgvbesksskcs
+https://supabase.com/dashboard/project/nsxdlyqbigoijypmnsqe
 ### UI
 https://mockitt.wondershare.com/proto/design/pb2lm85ei8u8u7byu
 ### Database Schema
