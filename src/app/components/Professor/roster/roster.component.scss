@@ -2,6 +2,7 @@
 
 .roster-wrapper {
   display: flex;
+  flex-direction: column;
 }
 
 .roster-table {
@@ -55,4 +56,16 @@
   font-weight: bold;
   padding-top: 1em;
   padding-bottom: 1em;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-input {
+  justify-content: center;
+  margin-left: 0.5em;
+  cursor: pointer;
+  padding: 0.6em 1em 0.6em 1em;
+  width: 120px;
 }

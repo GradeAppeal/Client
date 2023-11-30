@@ -26,22 +26,9 @@
     <p *ngIf="courseStudents.length == 0">
       There are no students in this class.
     </p>
+    <label for="file-input" class="custom-file-input blue-button">Upload CSV</label>
+    <input id="file-input" type="file" (change)="onFileChange($event)">
   </div>
-  <button type="submit" (click)="addStudents('Hey')" class="blue-button">
-    Add Students
-  </button>
-    <input type="file" (change)="onFileChange($event)">
-    {{addedStudentsCSV}}
-    {{addedStudents}}
-  <mat-form-field class="student-input">
-    <mat-label>Students to add</mat-label>
-    <textarea
-      matInput
-      class="text-area"
-      rows="6"
-      cols="1"
-      [(ngModel)]="addedStudents"
-      placeholder="Ex. Sam Hoogewind"
-    ></textarea>
-  </mat-form-field></div>
+
+</div>
 
