@@ -35,10 +35,15 @@
       <div *ngIf="fetchedAppeals" class="appeal-wrapper">
         <mat-card class="appeal">
           <h2 class="appeal-header">
-            <img class="inbox-avatar" ngxGravatar [email]="email" />
             <div>
+              <mat-icon
+                class="header-avatar"
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="account_circle"
+              ></mat-icon>
               {{ currentAppeal.student_first_name }}
-              {{ currentAppeal.student_last_name }}:
+              {{ currentAppeal.student_last_name }} |
               {{ currentAppeal.assignment_name }}
             </div>
           </h2>
@@ -73,9 +78,9 @@
               </div>
             </div>
           </div>
-          <mat-card class="message-container">
+          <div class="message-container">
             <p class="message">{{ currentAppeal.appeal_text }}</p>
-          </mat-card>
+          </div>
           <div class="buttons">
             <button
               class="interaction-history-button blue-button"

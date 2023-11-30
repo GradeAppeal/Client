@@ -29,10 +29,6 @@
 //   }
 // }
 
-.inbox-avatar {
-  padding: 5px;
-}
-
 .appeal {
   padding: 3vh;
   .appeal-header {
@@ -42,15 +38,15 @@
   }
 }
 .message-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  padding: 5px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 450px;
 }
 .buttons {
-  margin-top: 50vh;
+  // margin-top: 50vh;
 }
 
 .grader-button {
@@ -78,14 +74,6 @@
   z-index: 5;
 }
 
-.selected-appeal {
-  background-color: rgba(
-    167,
-    166,
-    166,
-    0.635
-  ); /* Set the background color to a darker shade */
-}
 mat-nav-list {
   padding: 0px;
 }

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css?family=Rubik:400,700");
 
 html,
 body {
@@ -9,7 +10,7 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Rubik", Times, serif, "Helvetica Neue", sans-serif;
 }
 
 $primary-blue: #3a62d7;
@@ -68,23 +69,29 @@ $hover-blue: #728edd;
 }
 .inbox {
   // border: solid gray 1px;
-  width: 200px;
+  width: 230px;
   float: left;
-  margin-left: -10px;
   margin-right: 20px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
 }
-
+.selected-appeal {
+  background-color: lightgray; /* Set the background color to a darker shade */
+}
 .inbox-item {
   //  padding-top: 60px;
   border-top: solid gray 1px;
+  border-right: solid gray 1px;
+  border-bottom: solid gray 1px;
+  border-left: solid gray 1px;
+  margin-top: 3px;
+  border-radius: 5px;
   float: left;
   padding-bottom: 20px;
   padding-top: 20px;
   width: 100%;
   &:hover {
-    background-color: rgb(233, 232, 232);
+    background-color: #f8f8f8;
     cursor: pointer;
   }
   p.inbox-name {

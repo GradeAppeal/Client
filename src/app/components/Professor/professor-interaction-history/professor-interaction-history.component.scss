@@ -139,15 +139,6 @@ $background: white;
   margin: 10px;
 }
 
-.selected-appeal {
-  background-color: rgba(
-    167,
-    166,
-    166,
-    0.635
-  ); /* Set the background color to a darker shade */
-}
-
 mat-nav-list {
   padding: 0px;
 }
@@ -173,4 +164,25 @@ mat-nav-list {
 }
 .grader-header {
   margin-left: auto;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.left-content {
+  display: flex;
+  align-items: center;
+}
+.right-content {
+  text-align: right;
+}
+
+.header {
+  font-size: 23px;
 }
