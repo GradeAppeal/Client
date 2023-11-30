@@ -59,6 +59,7 @@ import { RosterComponent } from './components/Professor/roster/roster.component'
 import { GraderAssignedSnackbarComponent } from './components/Professor/professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { ViewClosedAppealPopupComponent } from './components/Professor/closed-appeals/view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { UnassignGraderPopupComponent } from './components/Professor/unassign-grader-popup/unassign-grader-popup.component';
+import { DeleteAppealPopupComponent } from './components/Professor/closed-appeals/delete-appeal-popup/delete-appeal-popup.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { UnassignGraderPopupComponent } from './components/Professor/unassign-gr
     GraderAssignedSnackbarComponent,
     ViewClosedAppealPopupComponent,
     UnassignGraderPopupComponent,
+    DeleteAppealPopupComponent,
   ],
   imports: [
     BrowserModule,

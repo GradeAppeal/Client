@@ -230,18 +230,28 @@ export class ProfessorInteractionHistoryComponent {
         `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         // get the newly updated row
-        const record = update.new;
+        const record = update.new?.id ? update.new : update.old;
         if (!record) return;
         const event = update.eventType;
-        if (event === 'UPDATE') {
-          this.currentAppeal.grader_id = record.grader_id;
-        } else if (event === 'INSERT') {
+
+        // new appeal inserted
+        if (event === 'INSERT') {
           const newAppeal = await this.professorService.getNewProfessorAppeal(
             record.id
           );
           this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+        // update grader status
+        else if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        }
+        // delete
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
         }
       });
   }
