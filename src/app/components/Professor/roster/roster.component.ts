@@ -23,7 +23,6 @@ export class RosterComponent {
   fetchedCourse = false;
   addedStudents: string;
   addedStudentsCSV: string;
-  studentsToAdd: string[];
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
   parsedStudent: ParsedStudent;
@@ -84,15 +83,18 @@ export class RosterComponent {
             await this.sharedService.getStudent(student_id);
           const course = await this.sharedService.getCourse(course_id);
 
-          // show new student
-          this.courseStudents.push({
-            student_id: id,
-            student_name: `${first_name} ${last_name}`,
-            email: email,
-            course_id: course.id,
-            course_name: course.name,
-            is_grader: false,
-          });
+          // if student is not already in course, add to course
+          if (!this.courseStudents.some((student) => student_id === student.student_id)) {
+              this.courseStudents.push({
+              student_id: id,
+              student_name: `${first_name} ${last_name}`,
+              email: email,
+              course_id: course.id,
+              course_name: course.name,
+              is_grader: false,
+            });
+          }
+        console.log(this.courseStudents);
         }
         // if grader status updated
         else if (event === 'UPDATE') {
@@ -129,18 +131,13 @@ export class RosterComponent {
    */
   parseStudents(addedStudentsCSV: string): ParsedStudent[] {
     const parsedStudentsToAdd: ParsedStudent[] = [];
-    // parse students added
-    console.log(addedStudentsCSV);
-    this.studentsToAdd = addedStudentsCSV.split(/\r?\n/);
-    console.log(this.studentsToAdd);
-    // this.addedStudentsCSV = '';
-    this.studentsToAdd.shift(); // get rid of the column names
-    console.log(this.studentsToAdd);
-    this.studentsToAdd = this.studentsToAdd.filter((n) => n); // get rid of empty strings from copy pasting
-    this.studentsToAdd.forEach((student) => {
-      this.splitStudent = student.split(',');
-      console.log(this.splitStudent);
-      console.log(this.splitStudent[2]);
+    // make string have consistant formatting
+    const formattedString = addedStudentsCSV.replace(/\r\r\n/g, '\n').trimRight();
+    const studentsToAdd = formattedString.split('\n');
+    studentsToAdd.shift(); // get rid of the column names
+
+    studentsToAdd.forEach((student) => {
+      this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
@@ -148,6 +145,7 @@ export class RosterComponent {
       };
       parsedStudentsToAdd.push(this.parsedStudent);
     });
+    console.log(this.parsedStudentsToAdd);
     return parsedStudentsToAdd;
   }
 
@@ -161,9 +159,9 @@ export class RosterComponent {
 
   readFile(file: File) {
     const reader = new FileReader();
-
     reader.onload = (e: any) => {
       const csvContent: string = e.target.result;
+      // replace tabs with newlines
       const csvContentTabSeparated = csvContent.replace(/,/g, '\t').replace(/\n/g, '\r\n');
       this.addedStudentsCSV = csvContentTabSeparated;
       this.addStudents(this.addedStudentsCSV);
@@ -177,7 +175,6 @@ export class RosterComponent {
    */
   async addStudents(addedStudentsCSV: string): Promise<void> {
     const parsedStudentsToAdd = this.parseStudents(addedStudentsCSV);
-    console.log(parsedStudentsToAdd);
     const cid = this.courseID;
     try {
       // Whether a student is a registered user or not
