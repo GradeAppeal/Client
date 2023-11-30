@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Session, User } from '@supabase/supabase-js';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
@@ -7,6 +6,8 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
 import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
+import { DeleteAppealPopupComponent } from './delete-appeal-popup/delete-appeal-popup.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-closed-appeals',
@@ -19,6 +20,7 @@ export class ClosedAppealsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
+    private sharedService: SharedService,
     private professorService: ProfessorService
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
@@ -34,10 +36,32 @@ export class ClosedAppealsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.closedAppeals =
-      await this.professorService.fetchClosedProfessorAppeals(
-        this.professor.id
-      );
+    try {
+      this.closedAppeals =
+        await this.professorService.fetchClosedProfessorAppeals(
+          this.professor.id
+        );
+
+      this.handleAppealDeletes();
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  handleAppealDeletes(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'delete-appeal-channel',
+        `profesor_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        //if (!record || event !== 'DELETE') return;
+        console.log({ update }, 'deleted appeal!');
+      });
   }
 
   formatLocalTimestamp(last_modified?: Date | string) {
@@ -67,6 +91,15 @@ export class ClosedAppealsComponent implements OnInit {
       width: '30%',
       height: '25%',
       data: { closedAppeal },
+    });
+  }
+
+  onDeleteAppeal(i: number) {
+    const appealToDelete = this.closedAppeals[i];
+    const dialogRef = this.dialog.open(DeleteAppealPopupComponent, {
+      width: '30%',
+      height: '25%',
+      data: { appealToDelete },
     });
   }
 }

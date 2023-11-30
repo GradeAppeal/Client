@@ -86,16 +86,26 @@ export class ProfessorAppealInboxComponent implements OnInit {
       .subscribe(async (update: any) => {
         console.log({ update });
         // get the newly updated row
-        const record = update.new;
-        if (!record) return;
+        const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
-        if (event === 'UPDATE') {
-          this.currentAppeal.grader_id = record.grader_id;
-        } else if (event === 'INSERT') {
+        if (!record) return;
+        // insert new appeals by student
+        if (event === 'INSERT') {
           const newAppeal = await this.professorService.getNewProfessorAppeal(
             record.id
           );
           this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+        // update grader status
+        else if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        }
+        // safety delete check in case closed appeal not removed from appeal inbox
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
         }
       });
   }
