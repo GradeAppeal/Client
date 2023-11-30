@@ -120,7 +120,6 @@ export class SharedService {
       console.log(error);
       throw new Error('Error in fetchStudentMessages');
     }
-    // console.log({ data });
     return data;
   }
 
