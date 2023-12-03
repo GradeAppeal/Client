@@ -46,9 +46,7 @@ export class RosterComponent {
       this.courseStudents = await this.professorService.fetchCourseStudents(
         this.courseID
       );
-      this.course = await this.sharedService.getCourse(
-        this.courseID
-      );
+      this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedStudents = true;
       this.fetchedCourse = true;
       // listen for database changes
@@ -84,8 +82,12 @@ export class RosterComponent {
           const course = await this.sharedService.getCourse(course_id);
 
           // if student is not already in course, add to course
-          if (!this.courseStudents.some((student) => student_id === student.student_id)) {
-              this.courseStudents.push({
+          if (
+            !this.courseStudents.some(
+              (student) => student_id === student.student_id
+            )
+          ) {
+            this.courseStudents.push({
               student_id: id,
               student_name: `${first_name} ${last_name}`,
               email: email,
@@ -94,7 +96,7 @@ export class RosterComponent {
               is_grader: false,
             });
           }
-        console.log(this.courseStudents);
+          console.log(this.courseStudents);
         }
         // if grader status updated
         else if (event === 'UPDATE') {
@@ -132,7 +134,9 @@ export class RosterComponent {
   parseStudents(addedStudentsCSV: string): ParsedStudent[] {
     const parsedStudentsToAdd: ParsedStudent[] = [];
     // make string have consistant formatting
-    const formattedString = addedStudentsCSV.replace(/\r\r\n/g, '\n').trimRight();
+    const formattedString = addedStudentsCSV
+      .replace(/\r\r\n/g, '\n')
+      .trimRight();
     const studentsToAdd = formattedString.split('\n');
     studentsToAdd.shift(); // get rid of the column names
 
@@ -162,12 +166,14 @@ export class RosterComponent {
     reader.onload = (e: any) => {
       const csvContent: string = e.target.result;
       // replace tabs with newlines
-      const csvContentTabSeparated = csvContent.replace(/,/g, '\t').replace(/\n/g, '\r\n');
+      const csvContentTabSeparated = csvContent
+        .replace(/,/g, '\t')
+        .replace(/\n/g, '\r\n');
       this.addedStudentsCSV = csvContentTabSeparated;
       this.addStudents(this.addedStudentsCSV);
     };
     reader.readAsText(file);
-    }
+  }
 
   /**
    * Adds students to Course
@@ -177,16 +183,18 @@ export class RosterComponent {
     const parsedStudentsToAdd = this.parseStudents(addedStudentsCSV);
     const cid = this.courseID;
     try {
+      console.log({ parsedStudentsToAdd });
       // Whether a student is a registered user or not
       const userStatus = await this.professorService.fetchStudentUserStatus(
         parsedStudentsToAdd
       );
-
+      console.log({ userStatus });
       // split into registered & unregistered students
       const existingUsers = parsedStudentsToAdd.filter((_, i) => userStatus[i]);
       const nonExistingUsers = parsedStudentsToAdd.filter(
         (_, i) => !userStatus[i]
       );
+      console.log({ nonExistingUsers });
 
       // get student ids of registered students & store in array
       const existingUserIds = await this.professorService.fetchStudentIds(
@@ -228,9 +236,6 @@ export class RosterComponent {
   }
 
   onBackButton() {
-    this.router.navigateByUrl(
-      'professor/courses'
-    )
+    this.router.navigateByUrl('professor/courses');
   }
-  
 }

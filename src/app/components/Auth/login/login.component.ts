@@ -49,13 +49,6 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     }
   }
-  onProfessor() {
-    this.router.navigateByUrl('/professor/appeal-inbox');
-  }
-
-  onStudent() {
-    this.router.navigateByUrl('/student/course-dashboard');
-  }
 
   onRegister() {
     this.router.navigateByUrl('/register');

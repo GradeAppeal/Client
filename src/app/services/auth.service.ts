@@ -31,6 +31,7 @@ export class AuthService {
     // create auth user subscription
     this.supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+        console.log({ session });
         this.$currentUser.next(session.user);
       } else {
         this.$currentUser.next(false);
@@ -160,6 +161,29 @@ export class AuthService {
     }
 
     return data;
+  }
+
+  async verifyOtp(tokenHash: string) {
+    const { data, error } = await this.supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: 'email',
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
+  async setStudentPassword(id: string, password: string) {
+    const { data: user, error } = await this.supabase.auth.admin.updateUserById(
+      id,
+      { password }
+    );
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    return user;
   }
 
   /**

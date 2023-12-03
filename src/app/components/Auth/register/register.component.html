@@ -1,9 +1,7 @@
 <div class="register-container">
   <div class="register-info-container">
     <h1>Instructor Registeration</h1>
-    <h2>
-      Please register below with the format <i>first.last@calvin.edu</i> format
-    </h2>
+    <h2>Please register below with the format <i>first.last@calvin.edu</i></h2>
   </div>
 
   <form
@@ -18,8 +16,15 @@
         placeholder="First Name"
         name="firstName"
         formControlName="firstName"
-        required
       />
+      <mat-error
+        *ngIf="
+          registerForm.get('firstName')?.errors &&
+          registerForm.get('firstName')?.touched
+        "
+      >
+        Please enter your first name
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
       <label for="lastName">Last Name</label>
@@ -29,6 +34,14 @@
         name="lastName"
         formControlName="lastName"
       />
+      <mat-error
+        *ngIf="
+          registerForm.get('lastName')?.errors &&
+          registerForm.get('lastName')?.touched
+        "
+      >
+        Please enter your last name
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
       <label for="email">Email</label>
@@ -39,6 +52,14 @@
         type="email"
         name="email"
       />
+      <mat-error
+        *ngIf="
+          registerForm.get('email')?.hasError('invalidEmailFormat') &&
+          registerForm.get('email')?.touched
+        "
+      >
+        You must be an instructor to register using the given format above
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
       <label for="password">Password</label>
@@ -50,6 +71,8 @@
         formControlName="password"
       />
     </mat-form-field>
-    <button type="submit" class="blue-button">Register</button>
+    <button type="submit" class="blue-button" [disabled]="!registerForm.valid">
+      Register
+    </button>
   </form>
 </div>
