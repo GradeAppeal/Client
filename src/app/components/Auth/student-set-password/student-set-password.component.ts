@@ -54,6 +54,8 @@ export class StudentSetPasswordComponent implements OnInit {
         const verification = await this.authService.verifyOtp(this.tokenHash);
         // console.log({ verification });
         this.verified = true;
+      } else {
+        this.router.navigateByUrl('/');
       }
     } catch (error) {
       console.log({ error });
@@ -65,10 +67,8 @@ export class StudentSetPasswordComponent implements OnInit {
     if (this.user) {
       const id = this.user.id;
       const { newPassword } = this.passwordForm.value;
-
       try {
         await this.authService.setStudentPassword(id, newPassword as string);
-        console.log('replace with welcome snackbar');
         this.router.navigateByUrl('/student/course-dashboard');
       } catch (error) {
         alert(error);
