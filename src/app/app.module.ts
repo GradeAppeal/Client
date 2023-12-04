@@ -64,6 +64,8 @@ import { ProfessorEmailConfirmationComponent } from './components/Auth/professor
 import { CheckEmailPopupComponent } from './components/Auth/register/check-email-popup/check-email-popup.component';
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,7 +129,7 @@ import { StudentSetPasswordComponent } from './components/Auth/student-set-passw
     MatSnackBarModule,
     MatSlideToggleModule,
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
