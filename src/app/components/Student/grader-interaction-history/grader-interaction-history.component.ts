@@ -15,7 +15,6 @@ import {
   Message,
   Professor,
   Course,
-  Student,
   Grader,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
@@ -92,6 +91,7 @@ export class GraderInteractionHistoryComponent {
           this.grader.id,
           this.courseId
         );
+
         this.currentCourse = await this.sharedService.getCourse(this.courseId);
       }
       // otherwise, get all assigned appeals from all courses the grader is grading
@@ -116,16 +116,16 @@ export class GraderInteractionHistoryComponent {
           this.messages = await this.sharedService.fetchMessages(
             this.currentAppeal.appeal_id
           );
+          console.log('messages', this.messages);
         } else {
           this.currentAppeal = this.graderAppeals[0];
           this.messages = await this.sharedService.fetchMessages(
             this.currentAppeal.appeal_id
           );
         }
-        this.professor = await this.sharedService.getProfessor(
-          this.messages[0].recipient_id
-        );
-        //this.professor.id = this.messages[0].recipient_id;
+        const { sender_id, recipient_id } = this.messages[0];
+        const pid = sender_id === this.grader.id ? recipient_id : sender_id;
+        this.professor = await this.sharedService.getProfessor(pid);
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
         this.handleMessageUpdates();
