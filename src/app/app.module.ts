@@ -60,6 +60,11 @@ import { GraderAssignedSnackbarComponent } from './components/Professor/professo
 import { ViewClosedAppealPopupComponent } from './components/Professor/closed-appeals/view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { UnassignGraderPopupComponent } from './components/Professor/unassign-grader-popup/unassign-grader-popup.component';
 import { DeleteAppealPopupComponent } from './components/Professor/closed-appeals/delete-appeal-popup/delete-appeal-popup.component';
+import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
+import { CheckEmailPopupComponent } from './components/Auth/register/check-email-popup/check-email-popup.component';
+import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
+
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -96,6 +101,9 @@ import { DeleteAppealPopupComponent } from './components/Professor/closed-appeal
     ViewClosedAppealPopupComponent,
     UnassignGraderPopupComponent,
     DeleteAppealPopupComponent,
+    ProfessorEmailConfirmationComponent,
+    CheckEmailPopupComponent,
+    StudentSetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,7 +129,7 @@ import { DeleteAppealPopupComponent } from './components/Professor/closed-appeal
     MatSnackBarModule,
     MatSlideToggleModule,
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

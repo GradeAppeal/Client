@@ -198,6 +198,8 @@ export class GraderInteractionHistoryComponent {
     if (notification === true) {
       message = 'Notification:' + message;
     }
+    console.log(this.grader, 'Grader');
+    console.log(this.professor, 'Prof');
     try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,

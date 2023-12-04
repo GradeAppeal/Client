@@ -312,12 +312,12 @@ export class ProfessorService {
    * @returns true if student has an account, false otherwise
    */
   async isUser(student_email: string): Promise<boolean> {
+    console.log({ student_email });
     const { data, error } = await this.supabase.rpc('is_student_user', {
       student_email,
     });
     if (error) {
-      console.log(error);
-      throw new Error('Error in isUser');
+      throw new Error(error.message);
     }
     return data;
   }
