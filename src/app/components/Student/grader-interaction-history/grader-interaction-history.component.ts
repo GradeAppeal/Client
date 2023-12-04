@@ -122,10 +122,11 @@ export class GraderInteractionHistoryComponent {
             this.currentAppeal.appeal_id
           );
         }
-        this.professor = await this.sharedService.getProfessor(
-          this.messages[0].recipient_id
-        );
-        //this.professor.id = this.messages[0].recipient_id;
+        const profID =
+          this.messages[0].recipient_id === this.grader.id
+            ? this.messages[0].sender_id
+            : this.messages[0].recipient_id;
+        this.professor = await this.sharedService.getProfessor(profID);
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
         this.handleMessageUpdates();
@@ -198,6 +199,8 @@ export class GraderInteractionHistoryComponent {
     if (notification === true) {
       message = 'Notification:' + message;
     }
+    console.log(this.grader, 'Grader');
+    console.log(this.professor, 'Prof');
     try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
