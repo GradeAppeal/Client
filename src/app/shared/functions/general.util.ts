@@ -43,3 +43,28 @@ export const formatTimestamp = (
     .padStart(2, '0')} ${ampm}`;
   return { date, time };
 };
+
+export const isSameDate = (
+  date1: Date | string | undefined,
+  date2: Date | string | undefined
+): boolean => {
+  // Convert strings to Date objects
+  const fixedDate1 = typeof date1 === 'string' ? new Date(date1) : date1;
+  const fixedDate2 = typeof date2 === 'string' ? new Date(date2) : date2;
+
+  // Check if dates are valid Date objects
+  if (
+    !(fixedDate1 instanceof Date) ||
+    !(fixedDate2 instanceof Date) ||
+    isNaN(fixedDate1.getTime()) ||
+    isNaN(fixedDate2.getTime())
+  ) {
+    return false;
+  }
+
+  return (
+    fixedDate1.getFullYear() === fixedDate2.getFullYear() &&
+    fixedDate1.getMonth() === fixedDate2.getMonth() &&
+    fixedDate1.getDate() === fixedDate2.getDate()
+  );
+};

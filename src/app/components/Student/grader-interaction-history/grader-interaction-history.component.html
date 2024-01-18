@@ -39,7 +39,17 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="chat-list" #chatListContainer>
-        <ng-container *ngFor="let chat of messages">
+        <ng-container *ngFor="let chat of messages; let i = index">
+          <ng-container
+            *ngIf="
+              i === 0 ||
+              !isSameDate(chat.created_at, this.messages[i - 1].created_at)
+            "
+          >
+            <div class="section-date">
+              {{ formatTimestamp(chat.created_at).date }}
+            </div>
+          </ng-container>
           <div
             class="chat-item"
             [ngClass]="{
@@ -50,12 +60,19 @@
               notification: chat.message_text.trim().startsWith('Notification:')
             }"
           >
-            <p
-              class="name"
+            <div
+              class="inbox-timestamp"
               *ngIf="!chat.message_text.trim().startsWith('Notification:')"
             >
-              {{ chat.sender_name }}
-            </p>
+              <div
+                *ngIf="
+                  i === 0 || chat.sender_id !== this.messages[i - 1]?.sender_id
+                "
+              >
+                <p class="name">{{ chat.sender_name }}</p>
+              </div>
+              {{ formatTimestamp(chat.created_at).time }}
+            </div>
             <div *ngIf="!chat.message_text.trim().startsWith('Notification:')">
               <!-- need to change to name -->
               <!-- <img ngxGravatar [email]="user.email" /> -->
