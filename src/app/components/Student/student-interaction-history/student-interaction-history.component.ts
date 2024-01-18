@@ -11,6 +11,10 @@ import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { StudentService } from 'src/app/services/student.service';
+import {
+  formatTimestamp,
+  isSameDate,
+} from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   Message,
@@ -182,17 +186,15 @@ export class StudentInteractionHistoryComponent {
     }
   }
 
+  //imported functions
   formatTimestamp(timestamp: Date): { date: string; time: string } {
-    const d = new Date(timestamp);
-    const date = d.toDateString();
-    const hours = d.getHours();
-    const minutes = d.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
-
-    const time = `${formattedHours}:${minutes
-      .toString()
-      .padStart(2, '0')} ${ampm}`;
-    return { date, time };
+    return formatTimestamp(timestamp);
+  }
+  //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
+  isSameDate(
+    date1: Date | string | undefined,
+    date2: Date | string | undefined
+  ): boolean {
+    return isSameDate(date1, date2);
   }
 }
