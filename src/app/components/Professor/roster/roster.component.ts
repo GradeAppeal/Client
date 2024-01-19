@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -10,6 +10,9 @@ import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students
 import { SharedService } from 'src/app/services/shared.service';
 import * as Papa from 'papaparse';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-roster',
@@ -42,10 +45,22 @@ export class RosterComponent {
   }
 
   async ngOnInit() {
+    
     try {
+      
       this.courseStudents = await this.professorService.fetchCourseStudents(
         this.courseID
-      );
+        );
+
+      // sorts students by last name, then first name
+      this.courseStudents.sort((a, b) => {
+        const lastNameA = a.student_name.split(' ')[1];
+        const lastNameB = b.student_name.split(' ')[1];
+
+        const compareLastName = lastNameA.localeCompare(lastNameB);
+        return compareLastName === 0 ? a.student_name.localeCompare(b.student_name) : compareLastName;
+      });
+
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedStudents = true;
       this.fetchedCourse = true;
@@ -116,13 +131,22 @@ export class RosterComponent {
         }
       });
   }
+  async onAssignGrader(student: any): Promise<void> {
+    try {
+      const { student_id, course_id } = student;
+      console.log(student_id, course_id);
+      await this.professorService.updateGrader(student_id, course_id);
+    } catch (err) {
+      throw new Error('makeGrader');
+    }
+  }
 
   async editStudentPopup(
     studentCourseGrader: StudentCourseGraderInfo
   ): Promise<void> {
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      width: '20%',
-      height: '20%',
+      width: '15%',
+      height: '15%',
       data: { studentCourseGrader },
     });
   }
