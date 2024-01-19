@@ -5,7 +5,10 @@ import { Session } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { formatTimestamp } from 'src/app/shared/functions/general.util';
+import {
+  formatTimestamp,
+  isSameDate,
+} from 'src/app/shared/functions/general.util';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import {
   ProfessorAppeal,
@@ -218,7 +221,7 @@ export class ProfessorInteractionHistoryComponent {
     console.log(this.messages);
   }
 
-  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
@@ -297,5 +300,13 @@ export class ProfessorInteractionHistoryComponent {
   talkToGrader() {
     this.talkingToGrader = !this.talkingToGrader;
     console.log(this.talkingToGrader);
+  }
+
+  //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
+  isSameDate(
+    date1: Date | string | undefined,
+    date2: Date | string | undefined
+  ): boolean {
+    return isSameDate(date1, date2);
   }
 }

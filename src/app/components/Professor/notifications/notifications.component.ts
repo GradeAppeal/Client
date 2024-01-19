@@ -55,7 +55,7 @@ export class NotificationsComponent {
     console.log(this.toDoAppeals.length);
   }
 
-  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 }

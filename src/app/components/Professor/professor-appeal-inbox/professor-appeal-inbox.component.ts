@@ -116,7 +116,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
     //this.handleGraderUpdates();
   }
 
-  localFormatTimestamp(timestamp: Date): { date: string; time: string } {
+  formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
