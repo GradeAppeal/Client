@@ -24,8 +24,8 @@ export class AuthService {
   // Code referred from: https://supabase.com/blog/authentication-in-ionic-angular#creating-the-ionic-angular-app
   constructor() {
     this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.serviceRoleKey
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
     // create auth user subscription
