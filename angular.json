@@ -74,6 +74,11 @@
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.ts"
+            }
+          },
           "configurations": {
             "production": {
               "browserTarget": "GradeBoost:build:production"
@@ -91,8 +96,11 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/custom-webpack:karma",
           "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.ts"
+            },
             "polyfills": [
               "zone.js",
               "zone.js/testing"

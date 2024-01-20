@@ -1,5 +1,10 @@
 import { EnvironmentPlugin } from 'webpack';
-const Dotenv = require('dotenv-webpack');
+import { config } from 'dotenv';
+
+config();
+
 module.exports = {
-  plugins: [new Dotenv()],
+  plugins: [
+    new EnvironmentPlugin(['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']),
+  ],
 };
