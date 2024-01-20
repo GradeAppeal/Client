@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export const environment = {
   production: false,
   supabaseUrl: process.env['SUPABASE_URL'],
