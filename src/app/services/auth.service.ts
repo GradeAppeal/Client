@@ -8,7 +8,6 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { environment } from 'src/environments/secret_env';
 
 @Injectable({
   providedIn: 'root',
