@@ -9,8 +9,8 @@
       [class.selected-appeal]="appeal === currentAppeal"
     >
       <p matLine class="inbox-timestamp">
-        {{ localFormatTimestamp(appeal.created_at).date }} <br />
-        {{ localFormatTimestamp(appeal.created_at).time }}
+        {{ formatTimestamp(appeal.created_at).date }} <br />
+        {{ formatTimestamp(appeal.created_at).time }}
       </p>
       <p class="inbox-name" matLine>
         <span

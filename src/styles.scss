@@ -152,6 +152,10 @@ $hover-blue: #728edd;
   .name {
     display: none;
   }
+  .inbox-timestamp {
+    color: gray;
+    font-size: 12px;
+  }
   .left {
     margin-right: auto;
     margin-left: 8px;
@@ -165,10 +169,17 @@ $hover-blue: #728edd;
       display: block;
       color: gray;
       font-size: 12px;
-      margin-bottom: 30px;
-      padding-right: 20px;
+    }
+    .inbox-timestamp {
+      padding-right: 4px;
     }
   }
+  .right {
+    .inbox-timestamp {
+      padding-left: 4px;
+    }
+  }
+
   .lightblue {
     #message-body {
       background-color: lightblue;
@@ -193,5 +204,10 @@ $hover-blue: #728edd;
     #message-body {
       background-color: darken($primary-blue, 25%);
     }
+  }
+
+  .section-date {
+    font-size: 13px;
+    color: gray;
   }
 }

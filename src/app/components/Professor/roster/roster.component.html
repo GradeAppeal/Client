@@ -9,18 +9,18 @@
         <th class="global-th">Role</th>
       </tr>
       <tr *ngFor="let student of courseStudents">
-        <td class="student-data">
+        <td class="student-name" (click)="editStudentPopup(student)">
           {{ student.student_name }}
-          <button class="edit-icon" (click)="editStudentPopup(student)">
-            <mat-icon>edit</mat-icon>
-          </button>
         </td>
         <td>
           {{ student.email }}
         </td>
-        <td *ngIf="!student.is_grader">Student</td>
-        <td *ngIf="student.is_grader">Grader</td>
-        <!-- <td>{{ student.role }}</td> -->
+        <td>
+          <mat-select  [placeholder]="student.is_grader ? 'Grader' : 'Student'" (selectionChange)="onAssignGrader(student)">
+            <mat-option value="Student">Student</mat-option>
+            <mat-option value="Grader">Grader</mat-option>
+          </mat-select>
+        </td>
       </tr>
     </table>
     <p *ngIf="courseStudents.length == 0">
