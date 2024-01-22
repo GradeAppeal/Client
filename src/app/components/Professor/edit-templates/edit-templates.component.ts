@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
+import { UpdateTemplateComponent } from './update-template/update-template.component';
 
 @Component({
   selector: 'app-edit-templates',
@@ -89,6 +90,16 @@ export class EditTemplatesComponent {
    */
   async deleteTemplatePopUp(templateID: number): Promise<void> {
     const dialogRef = this.dialog.open(DeleteTemplateComponent, {
+      width: '50%',
+      height: '55%',
+      data: { templateID: templateID },
+    });
+  }
+  /**
+   * Goes to DeleteTemplate pop up component
+   */
+  async updateTemplatePopUp(templateID: number): Promise<void> {
+    const dialogRef = this.dialog.open(UpdateTemplateComponent, {
       width: '50%',
       height: '55%',
       data: { templateID: templateID },

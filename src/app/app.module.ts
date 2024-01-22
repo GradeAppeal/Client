@@ -65,6 +65,8 @@ import { CheckEmailPopupComponent } from './components/Auth/register/check-email
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { UpdateTemplateComponentComponent } from './components/Professor/update-template/update-template-component/update-template-component.component';
+import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,6 +105,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     ProfessorEmailConfirmationComponent,
     CheckEmailPopupComponent,
     StudentSetPasswordComponent,
+    UpdateTemplateComponentComponent,
+    UpdateTemplateComponent,
   ],
   imports: [
     BrowserModule,
