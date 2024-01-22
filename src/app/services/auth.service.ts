@@ -8,7 +8,7 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/secret_env';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +24,8 @@ export class AuthService {
   // Code referred from: https://supabase.com/blog/authentication-in-ionic-angular#creating-the-ionic-angular-app
   constructor() {
     this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.serviceRoleKey
+      environment.supabaseUrl as string,
+      environment.serviceRoleKey as string
     );
 
     // create auth user subscription

@@ -128,7 +128,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     MatSnackBarModule,
     MatSlideToggleModule,
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
