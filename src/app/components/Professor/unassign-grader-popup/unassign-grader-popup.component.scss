@@ -1,0 +1,30 @@
+@import "src/styles.scss";
+.wrapper {
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  padding: 2em 1em;
+  h1 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 2vw;
+  }
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    mat-dialog-actions {
+      display: flex;
+      justify-content: space-around;
+      button.assign {
+        padding: 0.5rem 1rem;
+        background-color: $primary-blue;
+        color: white;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        background-color: white;
+        color: black;
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@import "src/styles.scss";
+.card {
+  height: 100%;
+}
+
+mat-card-content {
+  height: 100%;
+  overflow: scroll;
+}
+
+.closed-appeal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  margin: 1rem;
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    .info-label {
+      font-weight: 600;
+    }
+  }
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .option {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0rem;
+    }
+    .reopen-button {
+      background-color: $primary-blue;
+      color: white;
+    }
+  }
+}

@@ -1,0 +1,70 @@
+@import "src/styles.scss";
+
+.roster-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.roster-table {
+  width: 95%;
+  border-collapse: collapse;
+}
+
+.roster-table tr:nth-child(even){background-color: #f2f2f2;}
+.roster-table tr:hover {background-color: #ddd;}
+
+.roster-table, .roster-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.roster-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+}
+
+.roster-table td {
+  padding: 5px;
+}
+
+.student-name:hover {
+  cursor: pointer;
+}
+
+.blue-button {
+  margin-top: 1em;
+}
+
+.student-input {
+  width: 30vw;
+  height: 30vh;
+  padding-top: 10px;
+}
+
+.back-button {
+  width: 4.5em;
+  text-align: center;
+  height: 2.5em;
+  margin-top: 5px;
+}
+
+.course-title {
+  font-size: 2em;
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-input {
+  justify-content: center;
+  margin-left: 0.5em;
+  cursor: pointer;
+  padding: 0.6em 1em 0.6em 1em;
+  width: 120px;
+}

@@ -1,0 +1,76 @@
+@import "src/styles.scss";
+
+.card {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+}
+
+.login-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.form {
+  text-align: center;
+  display: inline;
+  width: 45vw;
+  height: 85vh;
+  margin-left: 50vw;
+  // border: 1px solid darkgray;
+  // background-color: $primary-blue;
+  // border-radius: 8px;
+}
+
+.cover-image {
+  width: 100%;
+  max-width: 500px;
+  min-width: 400px;
+  height: 100%;
+}
+
+.login-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.welcome {
+  color: white;
+  font-size: 3vw;
+  margin-top: 15vh;
+  text-align: center;
+}
+
+.gradeboost {
+  margin-bottom: 10vh;
+  color: white;
+  font-size: 3vw;
+  text-align: center;
+  margin-top: 3vh;
+}
+
+.blue-button {
+  margin: 5px;
+}
+.description {
+  color: white;
+}
+label {
+  color: white;
+}
+
+.register {
+  color: white;
+  padding-top: 5px;
+  .register-button {
+    color: $primary-blue;
+    font-weight: bold;
+  }
+}

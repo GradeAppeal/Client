@@ -1,0 +1,131 @@
+@import "src/app/components/Professor/assignments/assignments.component.scss";
+
+.course-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+
+  max-height: 300vh;
+  // overflow-y: auto;
+}
+
+.course-title {
+  font-size: 2em;
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.courses {
+  width: calc(33.333% - 20px);
+  margin: 10px;
+  // width: 22vw;
+  min-width: 300px;
+  min-height: 250px;
+  height: 35vh;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  // transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #f0f0f0; /* Adjust the color as needed */
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+}
+.course-wording{
+  margin-top: 15px;
+  margin-bottom: 0.5em;
+  // margin-left: 2em;
+  font-size: larger;
+  flex: 1;
+  text-align: center;
+}
+
+.course-name {
+  font-size: larger;
+  padding-bottom: 2em;
+}
+
+.edit-button, .assignments-button {
+  margin: 10px;
+  width: 15vw;
+}
+
+.roster-wrapper {
+  display: flex;
+}
+
+.roster-table {
+  width: 95%;
+  border-collapse: collapse;
+}
+
+.roster-table tr:nth-child(even){background-color: #f2f2f2;}
+.roster-table tr:hover {background-color: #ddd;}
+
+.roster-table, .roster-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.roster-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+}
+
+.roster-table td {
+  padding: 5px;
+}
+
+.student-data {
+  justify-content: space-between;
+  display: flex;
+}
+
+.blue-button {
+  margin: 8px;
+}
+
+.student-input {
+  width: 30vw;
+  height: 30vh;
+  padding-top: 10px;
+}
+
+.back-button {
+  width: 4.5em;
+  text-align: center;
+  height: 2.5em;
+  margin-top: 5px;
+}
+
+.assignment-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 20px;
+  left: 220px;
+}

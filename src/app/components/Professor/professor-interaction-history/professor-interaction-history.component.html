@@ -1,0 +1,195 @@
+<div class="container" *ngIf="!noAppeals">
+  <!-- Left Pane (List of Appeals) -->
+  <div class="inbox">
+    <div>
+      <div
+        class="inbox-item"
+        *ngFor="let appeal of professorAppeals"
+        (click)="selectAppeal(appeal)"
+        [class.selected-appeal]="appeal === currentAppeal"
+      >
+        <div class="left-section">
+          <p matLine class="inbox-name">
+            {{ appeal.student_first_name }} {{ appeal.student_last_name }}
+          </p>
+          <p class="inbox-assignment-name">
+            {{ appeal.course_prefix }}{{ currentAppeal?.course_code }}
+            {{ appeal.course_section }}
+            {{ appeal.course_semester }}
+          </p>
+          <p class="inbox-assignment-name">{{ appeal.assignment_name }}</p>
+        </div>
+        <p class="inbox-timestamp">
+          {{ formatTimestamp(appeal.created_at).time }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- Right Pane (Selected Appeal Details) -->
+  <div class="right-pane">
+    <div class="card" *ngIf="messageLoaded">
+      <div class="top-bar">
+        <div class="left-content">
+          <!-- <img class="header-avatar" ngxGravatar [email]="professor.email" /> -->
+          <mat-icon
+            class="header-avatar"
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="account_circle"
+          ></mat-icon>
+          <h1 class="header">
+            &nbsp;
+            {{
+              currentAppeal.student_first_name +
+                " " +
+                currentAppeal.student_last_name
+            }}<span> | </span>{{ currentAppeal.assignment_name }}
+          </h1>
+        </div>
+        <div class="right-content">
+          <h3 class="grader-header" *ngIf="currentAppeal.grader_name !== null">
+            Grader: {{ currentAppeal.grader_name }}
+          </h3>
+          <h3 class="grader-header" *ngIf="currentAppeal.grader_name === null">
+            Grader: Unassigned
+          </h3>
+        </div>
+      </div>
+      <div class="chat-list" #chatListContainer>
+        <ng-container *ngFor="let chat of messages; let i = index">
+          <ng-container
+            *ngIf="
+              i === 0 ||
+              !isSameDate(chat.created_at, this.messages[i - 1].created_at)
+            "
+          >
+            <div class="section-date">
+              {{ formatTimestamp(chat.created_at).date }}
+            </div>
+          </ng-container>
+          <div
+            class="chat-item"
+            [ngClass]="{
+              right: chat?.sender_id == professor.id,
+              left: chat?.sender_id != professor.id,
+              lightblue: chat?.from_grader == true,
+              notification: chat.message_text
+                .trim()
+                .startsWith('Notification:'),
+              toGrader: chat?.recipient_id === currentAppeal.grader_id
+            }"
+          >
+            <div
+              class="inbox-timestamp"
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+            >
+              <div
+                *ngIf="
+                  i === 0 || chat.sender_id !== this.messages[i - 1]?.sender_id
+                "
+              >
+                <p class="name">{{ chat.sender_name }}</p>
+              </div>
+              {{ formatTimestamp(chat.created_at).time }}
+            </div>
+            <div
+              class="avatar-wrapper"
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+            >
+              <!-- <img ngxGravatar [email]="user.email" /> -->
+              <!-- <img *ngIf="isUser" ngxGravatar [email]="professor.email" /> -->
+              <!-- <img *ngIf="!isUser" ngxGravatar [email]="student.email" /> -->
+            </div>
+
+            <p
+              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              id="message-body"
+            >
+              {{ chat?.message_text }}
+            </p>
+            <p
+              class="notification-text"
+              id="message-body"
+              *ngIf="chat.message_text.trim().startsWith('Notification:')"
+            >
+              {{ chat.message_text.substring(13) }}
+              <!-- Display text after "Notification:" -->
+            </p>
+          </div>
+        </ng-container>
+      </div>
+      <div class="chat-footer">
+        <div class="buttons">
+          <button
+            class="use-template-button"
+            mat-stroked-button
+            [matMenuTriggerFor]="menu"
+          >
+            Use Template
+          </button>
+          <button
+            *ngIf="currentAppeal.grader_id === null"
+            mat-stroked-button
+            (click)="onAssignGrader($event)"
+          >
+            Assign To Grader
+          </button>
+          <button
+            *ngIf="currentAppeal.grader_id !== null"
+            mat-stroked-button
+            (click)="unassignGrader($event)"
+          >
+            Unassign Grader
+          </button>
+        </div>
+        <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let template of professorTemplates"
+            (click)="selectTemplate(template.temp_text)"
+          >
+            {{ template.temp_name }}
+          </button>
+        </mat-menu>
+
+        <input
+          matInput
+          id="chat-textarea"
+          [(ngModel)]="chatInputMessage"
+          required
+          (keydown.enter)="sendMessage(this.chatInputMessage)"
+        />
+        <div class="buttons">
+          <button
+            mat-stroked-button
+            id="send-button"
+            (click)="sendMessage(this.chatInputMessage)"
+            [disabled]="chatInputMessage === ''"
+          >
+            Send
+          </button>
+          <mat-slide-toggle
+            *ngIf="currentAppeal.grader_name !== null"
+            disabled="false"
+            class="grader-toggle"
+            hideIcon="true"
+            (change)="talkToGrader()"
+          ></mat-slide-toggle>
+          <mat-slide-toggle
+            *ngIf="currentAppeal.grader_name === null"
+            disabled="true"
+            class="grader-toggle"
+            hideIcon="true"
+            (change)="talkToGrader()"
+          ></mat-slide-toggle>
+          <p class="grader-toggle-text">To Grader</p>
+        </div>
+        <!-- checked="talkingToGrader" -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="empty-inbox" *ngIf="noAppeals">
+  <h1>No appeals have been initiated</h1>
+  <h2>Please check back later</h2>
+</div>

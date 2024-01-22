@@ -1,0 +1,34 @@
+<button mat-button type="submit" (click)="onBackButton()" class="blue-button"> Back</button>
+<p class="course-title"><b>{{ formatCourse(course) }}</b></p>
+<div *ngIf="fetchedStudents == true">
+  <div class="roster-wrapper">
+    <table class="roster-table" *ngIf="courseStudents.length != 0">
+      <tr>
+        <th class="global-th">Name</th>
+        <th class="global-th">Email</th>
+        <th class="global-th">Role</th>
+      </tr>
+      <tr *ngFor="let student of courseStudents">
+        <td class="student-name" (click)="editStudentPopup(student)">
+          {{ student.student_name }}
+        </td>
+        <td>
+          {{ student.email }}
+        </td>
+        <td>
+          <mat-select  [placeholder]="student.is_grader ? 'Grader' : 'Student'" (selectionChange)="onAssignGrader(student)">
+            <mat-option value="Student">Student</mat-option>
+            <mat-option value="Grader">Grader</mat-option>
+          </mat-select>
+        </td>
+      </tr>
+    </table>
+    <p *ngIf="courseStudents.length == 0">
+      There are no students in this class.
+    </p>
+    <label for="file-input" class="custom-file-input blue-button">Upload CSV</label>
+    <input id="file-input" type="file" (change)="onFileChange($event)">
+  </div>
+
+</div>
+

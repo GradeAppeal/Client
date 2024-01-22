@@ -1,40 +1,213 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css?family=Rubik:400,700");
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100vh; /* 100% of the viewport height */
+  overflow: hidden; /* Hide overflow content */
+}
+body {
+  margin: 0;
+  font-family: "Rubik", Times, serif, "Helvetica Neue", sans-serif;
+}
 
-$primary-blue: #3A62D7;
-$secondary-blue: #C1D1FF;
+$primary-blue: #3a62d7;
+$secondary-blue: #c1d1ff;
 // $hover-blue: #254394;
-$hover-blue: #728EDD;
+$hover-blue: #728edd;
 
 .material-symbols-outlined {
-    cursor: pointer;
-    color: $primary-blue;
-    font-size: 80px ;
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-  }
+  cursor: pointer;
+  color: $primary-blue;
+  font-size: 80px;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
 
 .blue-button {
-    background-color: $primary-blue;
-    color: white;
-    font-family: Roboto;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 0.5em;
-    margin: 0.5em;
-    padding-left: 1em;
-    padding-right: 1em;
-    border-radius: 1.5em;
+  background-color: $primary-blue;
+  color: white !important;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
 }
 
 .blue-button:hover {
-    background-color: $hover-blue;
+  background-color: $hover-blue;
 }
 
+.global-th {
+  background-color: $primary-blue;
+}
+
+.global-blue {
+  background-color: $primary-blue;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: white; /* color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgray; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid white; /* creates padding around scroll thumb */
+}
+
+.global-blue {
+  background-color: $primary-blue;
+}
+.inbox {
+  // border: solid gray 1px;
+  width: 230px;
+  float: left;
+  margin-right: 20px;
+  height: 90vh; /* 100% of the viewport height */
+  overflow-y: auto; /* Hide overflow content */
+}
+.selected-appeal {
+  background-color: lightgray; /* Set the background color to a darker shade */
+}
+.inbox-item {
+  //  padding-top: 60px;
+  border-top: solid gray 1px;
+  border-right: solid gray 1px;
+  border-bottom: solid gray 1px;
+  border-left: solid gray 1px;
+  margin-top: 3px;
+  border-radius: 5px;
+  float: left;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 100%;
+  &:hover {
+    background-color: #f8f8f8;
+    cursor: pointer;
+  }
+  p.inbox-name {
+    font-weight: bold;
+    float: left;
+    width: 50%;
+    font-size: 11px;
+    padding-left: 5px;
+  }
+  p.inbox-timestamp {
+    float: right;
+    width: 25%;
+    font-size: 8px;
+    padding: 0px;
+  }
+}
+
+//interaction-history styling
+.chat-list {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: scroll;
+  align-items: center;
+
+  .chat-item {
+    max-width: 80%;
+    margin: 8px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    #message-body {
+      background: $primary-blue;
+      margin: auto 8px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      display: flex;
+      flex-direction: row;
+    }
+    &.notification {
+      #message-body {
+        border-radius: 0px;
+        margin-right: 5px;
+      }
+    }
+    #avatar {
+      height: 44px;
+      width: 44px;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 99;
+      border: 3px solid white;
+    }
+  }
+  .name {
+    display: none;
+  }
+  .inbox-timestamp {
+    color: gray;
+    font-size: 12px;
+  }
+  .left {
+    margin-right: auto;
+    margin-left: 8px;
+
+    #message-body {
+      margin-left: 10px;
+      background-color: lightgray;
+      color: black;
+    }
+    .name {
+      display: block;
+      color: gray;
+      font-size: 12px;
+    }
+    .inbox-timestamp {
+      padding-right: 4px;
+    }
+  }
+  .right {
+    .inbox-timestamp {
+      padding-left: 4px;
+    }
+  }
+
+  .lightblue {
+    #message-body {
+      background-color: lightblue;
+      color: black;
+    }
+  }
+
+  .right {
+    margin-right: 8px;
+    margin-left: auto;
+    flex-direction: row-reverse;
+
+    #message-body {
+      margin-right: 10px;
+    }
+  }
+  .grader {
+    #message-body {
+    }
+  }
+  .toGrader {
+    #message-body {
+      background-color: darken($primary-blue, 25%);
+    }
+  }
+
+  .section-date {
+    font-size: 13px;
+    color: gray;
+  }
+}
