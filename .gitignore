@@ -46,3 +46,5 @@ secret_env.ts
 
 .env
 secret_env.ts
+.vercel
+.env*.local

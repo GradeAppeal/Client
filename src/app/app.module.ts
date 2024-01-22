@@ -132,7 +132,7 @@ import { UpdateTemplateComponent } from './components/Professor/edit-templates/u
     MatSnackBarModule,
     MatSlideToggleModule,
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
