@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ResetPasswordComponent {
   constructor(private authService: AuthService) {
     this.authService.getCurrentUser().subscribe((user) => {
-      console.log({ user });
+      console.log({ user }, 'resetPassword');
     });
   }
 }
