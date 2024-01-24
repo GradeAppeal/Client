@@ -33,6 +33,8 @@ export class AuthService {
       if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
         console.log({ session });
         this.$currentUser.next(session.user);
+      } else if (event === 'PASSWORD_RECOVERY') {
+        console.log('password recovery!!!');
       } else {
         this.$currentUser.next(false);
       }
@@ -288,7 +290,7 @@ export class AuthService {
       email,
       {
         redirectTo:
-          'https://gradeboost-git-ael-lockmanager-fix-grade-boost-fab339e0.vercel.app/',
+          'https://gradeboost-git-ael-lockmanager-fix-grade-boost-fab339e0.vercel.app/reset-password',
       }
     );
 
@@ -297,5 +299,17 @@ export class AuthService {
       throw new Error('sendPasswordResetLink');
     }
     console.log({ data });
+  }
+
+  async updatePassword(password: string) {
+    const { data, error } = await this.supabase.auth.updateUser({
+      password,
+    });
+
+    if (error) {
+      console.log({ error });
+      throw new Error('updatePassword');
+    }
+    return data;
   }
 }
