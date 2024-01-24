@@ -285,7 +285,11 @@ export class AuthService {
 
   async sendPasswordResetLink(email: string) {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
-      email
+      email,
+      {
+        redirectTo:
+          'https://gradeboost-git-ael-lockmanager-fix-grade-boost-fab339e0.vercel.app/',
+      }
     );
 
     if (error) {
