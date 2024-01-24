@@ -282,4 +282,16 @@ export class AuthService {
     }
     console.log({ data });
   }
+
+  async sendPasswordResetLink(email: string) {
+    const { data, error } = await this.supabase.auth.resetPasswordForEmail(
+      email
+    );
+
+    if (error) {
+      console.log({ error });
+      throw new Error('sendPasswordResetLink');
+    }
+    console.log({ data });
+  }
 }
