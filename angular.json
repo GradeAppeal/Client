@@ -75,9 +75,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "customWebpackConfig": {
-              "path": "./custom-webpack.config.ts"
-            }
+            "browserTarget": "GradeBoost:build"
           },
           "configurations": {
             "production": {
@@ -90,8 +88,11 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
           "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.ts"
+            },
             "browserTarget": "GradeBoost:build"
           }
         },
