@@ -493,6 +493,22 @@ export class ProfessorService {
     }
     console.log({ data });
   }
+  /**
+   * Insert template to database
+   * @param pid professor id
+   * @param temp_name template name
+   * @param temp_text template text
+   */
+  async updateTemplate(pid: string, temp_name: string): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_template', {
+      pid,
+      temp_name,
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    console.log({ data });
+  }
 
   /**
    * Delete template from database
