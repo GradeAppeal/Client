@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { AddStudentComponent } from './add-student/add-student.component';
 
 @Component({
   selector: 'app-roster',
@@ -31,6 +32,7 @@ export class RosterComponent {
   parsedStudent: ParsedStudent;
   splitStudent: string[];
   courseID: number;
+  is_grader: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -156,6 +158,7 @@ export class RosterComponent {
    * @returns paresed student from textbox input
    */
   parseStudents(addedStudentsCSV: string): ParsedStudent[] {
+    console.log(addedStudentsCSV);
     const parsedStudentsToAdd: ParsedStudent[] = [];
     // make string have consistant formatting
     const formattedString = addedStudentsCSV
@@ -170,6 +173,7 @@ export class RosterComponent {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
         email: this.splitStudent[2],
+        is_grader: this.is_grader
       };
       parsedStudentsToAdd.push(this.parsedStudent);
     });
@@ -177,6 +181,9 @@ export class RosterComponent {
     return parsedStudentsToAdd;
   }
 
+    /**
+   * Reads file on file change
+   */
   onFileChange(event: any) {
     const file = event.target.files[0];
 
@@ -185,6 +192,9 @@ export class RosterComponent {
     }
   }
 
+  /**
+ * Reads file and convert CSV content into string
+ */
   readFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -261,5 +271,13 @@ export class RosterComponent {
 
   onBackButton() {
     this.router.navigateByUrl('professor/courses');
+  }
+
+
+  addStudentPopUp() {
+    this.dialog.open(AddStudentComponent, {
+      width: '30%',
+      height: '25%',
+    });
   }
 }
