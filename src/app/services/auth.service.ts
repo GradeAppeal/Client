@@ -30,6 +30,7 @@ export class AuthService {
 
     // create auth user subscription
     this.supabase.auth.onAuthStateChange((event, session) => {
+      console.log({ event }, { session });
       if (
         session &&
         (event === 'SIGNED_IN' ||
