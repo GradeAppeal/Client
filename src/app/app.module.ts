@@ -65,6 +65,7 @@ import { CheckEmailPopupComponent } from './components/Auth/register/check-email
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+//import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 import { AddStudentComponent } from './components/Professor/roster/add-student/add-student.component';
 @NgModule({
   declarations: [

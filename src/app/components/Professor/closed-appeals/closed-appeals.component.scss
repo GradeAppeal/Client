@@ -7,7 +7,10 @@ mat-card-content {
   height: 100%;
   overflow: scroll;
 }
-
+.closed-appeals-container {
+  height: 90vh;
+  overflow-y: auto;
+}
 .closed-appeal {
   display: flex;
   flex-direction: row;
