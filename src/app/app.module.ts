@@ -66,8 +66,6 @@ import { StudentSetPasswordComponent } from './components/Auth/student-set-passw
 import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
-
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
 import { AboutComponent } from './components/about/about.component';
 @NgModule({
