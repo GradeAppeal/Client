@@ -499,11 +499,17 @@ export class ProfessorService {
    * @param temp_name template name
    * @param temp_text template text
    */
-  async updateTemplate(pid: string, temp_name: string): Promise<void> {
+  async updateTemplate(
+    pid: string,
+    tname: string,
+    new_temp_text: string
+  ): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_template', {
       pid,
-      temp_name,
+      tname,
+      new_temp_text,
     });
+    console.log(new_temp_text, tname);
     if (error) {
       throw new Error(error.message);
     }

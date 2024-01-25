@@ -67,6 +67,9 @@ import { RequestPasswordResetComponent } from './components/Auth/request-passwor
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
+import { AboutComponent } from './components/about/about.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -105,6 +108,8 @@ import { RequestPasswordResetSnackbarComponent } from './components/Auth/request
     ProfessorEmailConfirmationComponent,
     CheckEmailPopupComponent,
     StudentSetPasswordComponent,
+    UpdateTemplateComponent,
+    AboutComponent,
     RequestPasswordResetComponent,
     ResetPasswordComponent,
     RequestPasswordResetSnackbarComponent,

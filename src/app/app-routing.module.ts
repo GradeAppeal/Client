@@ -22,6 +22,7 @@ import { ProfessorEmailConfirmationComponent } from './components/Auth/professor
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
 import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   {
@@ -86,6 +87,10 @@ const routes: Routes = [
         path: 'notifications',
         component: NotificationsComponent,
       },
+      {
+        path: 'about',
+        component: AboutComponent,
+      },
     ],
   },
   {
@@ -121,6 +126,10 @@ const routes: Routes = [
       {
         path: 'new-appeal/:courseId',
         component: NewAppealComponent,
+      },
+      {
+        path: 'about',
+        component: AboutComponent,
       },
     ],
   },
