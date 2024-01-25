@@ -1,0 +1,40 @@
+.about-container {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  margin: 20px;
+  overflow-y: auto;
+  height: 90vh;
+}
+p {
+  color: #34495e;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li b {
+  color: #3498db;
+}
+h1 {
+  font-size: 30px;
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Team members list */
+// .team-list {
+//   display: flex;
+//   flex-wrap: wrap;
+// }
+
+// .team-member {
+//   flex-basis: calc(33.33% - 20px);
+//   margin-right: 20px;
+//   margin-bottom: 20px;
+// }

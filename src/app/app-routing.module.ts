@@ -20,6 +20,7 @@ import { RosterComponent } from './components/Professor/roster/roster.component'
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,10 @@ const routes: Routes = [
         path: 'notifications',
         component: NotificationsComponent,
       },
+      {
+        path: 'about',
+        component: AboutComponent,
+      },
     ],
   },
   {
@@ -111,6 +116,10 @@ const routes: Routes = [
       {
         path: 'new-appeal/:courseId',
         component: NewAppealComponent,
+      },
+      {
+        path: 'about',
+        component: AboutComponent,
       },
     ],
   },

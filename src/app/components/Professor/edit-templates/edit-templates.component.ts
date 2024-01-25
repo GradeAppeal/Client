@@ -61,9 +61,18 @@ export class EditTemplatesComponent {
         const event = update.eventType;
         if (!record) return;
         // new template inserted
-        if (event === 'INSERT') {
+        if (event === 'INSERT' || event === 'UPDATE') {
           const newTemplate = { ...record };
-          this.professorTemplates.push(newTemplate);
+          //check if template exists in list
+          const templateIndex = this.professorTemplates.findIndex(
+            (template) => template.id === newTemplate.id
+          );
+          if (templateIndex !== -1) {
+            // if it exists, update it. Otherwise, add to list
+            this.professorTemplates[templateIndex] = newTemplate;
+          } else {
+            this.professorTemplates.push(newTemplate);
+          }
         }
         // template deleted
         else if (event === 'DELETE') {
@@ -98,11 +107,18 @@ export class EditTemplatesComponent {
   /**
    * Goes to DeleteTemplate pop up component
    */
-  async updateTemplatePopUp(templateID: number): Promise<void> {
+  async updateTemplatePopUp(
+    templateName: string,
+    templateText: string
+  ): Promise<void> {
     const dialogRef = this.dialog.open(UpdateTemplateComponent, {
-      width: '50%',
-      height: '55%',
-      data: { templateID: templateID },
+      width: '80%',
+      height: '80%',
+      data: {
+        professorID: this.user.id,
+        templateName: templateName,
+        templateText: templateText,
+      },
     });
   }
 }
