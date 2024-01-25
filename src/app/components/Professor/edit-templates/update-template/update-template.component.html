@@ -1,1 +1,26 @@
-<p>update-template works!</p>
+<div class="page">
+  <div class="content">
+    <div class="header">
+      <h1 class="title">Edit Template</h1>
+    </div>
+    <div class="input-fields">
+      <p class="description">Rename Template Name:</p>
+      <mat-form-field class="input-box">
+        <textarea matInput [(ngModel)]="updatedTemplateName">{{
+          oldName
+        }}</textarea>
+      </mat-form-field>
+      <p class="description">New Template Text:</p>
+      <mat-form-field class="input-box">
+        <textarea matInput [(ngModel)]="updatedTemplateText">{{
+          oldText
+        }}</textarea>
+      </mat-form-field>
+    </div>
+    <div class="button-div">
+      <button mat-button class="blue-button" (click)="onUpdateTemplate()">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
