@@ -11,6 +11,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 })
 export class UpdateTemplateComponent {
   templates: ProfessorTemplate;
+  templateID: number;
   professorID: string;
   oldName: string;
   oldText: string;
@@ -22,6 +23,7 @@ export class UpdateTemplateComponent {
     private dialogRef: MatDialogRef<AddTemplateComponent>,
     private professorService: ProfessorService
   ) {
+    this.templateID = data.templateID;
     this.professorID = data.professorID;
     this.oldName = data.templateName;
     this.oldText = data.templateText;
@@ -41,6 +43,7 @@ export class UpdateTemplateComponent {
     /*  add template to database */
     try {
       await this.professorService.updateTemplate(
+        this.templateID,
         this.professorID,
         this.updatedTemplateName,
         this.updatedTemplateText

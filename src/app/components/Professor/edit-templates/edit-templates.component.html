@@ -12,7 +12,13 @@
       <td class="icon-cell">
         <mat-icon
           class="delete-icon"
-          (click)="updateTemplatePopUp(template.temp_name, template.temp_text)"
+          (click)="
+            updateTemplatePopUp(
+              template.id,
+              template.temp_name,
+              template.temp_text
+            )
+          "
           >edit</mat-icon
         >
         <mat-icon class="delete-icon" (click)="deleteTemplatePopUp(template.id)"
