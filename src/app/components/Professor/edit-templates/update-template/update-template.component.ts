@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfessorTemplate } from 'src/app/shared/interfaces/professor.interface';
 import { AddTemplateComponent } from '../add-template/add-template.component';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-update-template',
@@ -21,8 +20,7 @@ export class UpdateTemplateComponent {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddTemplateComponent>,
-    private professorService: ProfessorService,
-    private sharedService: SharedService
+    private professorService: ProfessorService
   ) {
     this.professorID = data.professorID;
     this.oldName = data.templateName;
@@ -32,41 +30,10 @@ export class UpdateTemplateComponent {
   async ngOnInit() {
     this.professorTemplates =
       await this.professorService.fetchProfessorTemplates(this.professorID);
-    this.handleTemplateUpdates();
     this.updatedTemplateName = this.oldName;
     this.updatedTemplateText = this.oldText;
   }
 
-  handleTemplateUpdates() {
-    this.sharedService
-      .getTableChanges(
-        'Templates',
-        `template-channel`,
-        `professor_id=eq.${this.professorID}`
-      )
-      .subscribe(async (update) => {
-        // if insert or update event, get new row
-        // if delete event, get deleted row ID
-        const record = update.new?.id ? update.new : update.old;
-        // INSERT or DELETE
-        const event = update.eventType;
-        if (!record) return;
-        // new template inserted
-        if (event === 'INSERT') {
-          const newTemplate = { ...record };
-          this.professorTemplates.push(newTemplate);
-        } else if (event === 'UPDATE') {
-          const newTemplate = { ...record };
-          this.professorTemplates.push(newTemplate);
-        }
-        // template deleted
-        else if (event === 'DELETE') {
-          this.professorTemplates = this.professorTemplates.filter(
-            (template) => template.id !== record.id
-          );
-        }
-      });
-  }
   /*
    * Add template to database
    */
