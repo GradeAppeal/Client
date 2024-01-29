@@ -126,29 +126,6 @@ export class AuthService {
     return data;
   }
 
-  async createStudentUser(
-    first_name: string,
-    last_name: string,
-    email: string,
-    cid: number
-  ) {
-    const { data, error } = await this.supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: 'https://example.com/welcome',
-        data: {
-          first_name,
-          last_name,
-        },
-      },
-    });
-
-    if (error) {
-      console.log({ error });
-      throw new Error('createStudentUser: ');
-    }
-  }
-
   /**
    * Log in an existing user
    * @param email student or professor @calvin.edu email
@@ -293,8 +270,7 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo:
-          'https://gradeboost-git-ael-lockmanager-fix-grade-boost-fab339e0.vercel.app/reset-password',
+        redirectTo: 'https://gradeboost.us/reset-password',
       }
     );
 
