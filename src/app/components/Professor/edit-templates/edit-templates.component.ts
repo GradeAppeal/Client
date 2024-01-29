@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
+import { UpdateTemplateComponent } from './update-template/update-template.component';
 
 @Component({
   selector: 'app-edit-templates',
@@ -60,9 +61,18 @@ export class EditTemplatesComponent {
         const event = update.eventType;
         if (!record) return;
         // new template inserted
-        if (event === 'INSERT') {
+        if (event === 'INSERT' || event === 'UPDATE') {
           const newTemplate = { ...record };
-          this.professorTemplates.push(newTemplate);
+          //check if template exists in list
+          const templateIndex = this.professorTemplates.findIndex(
+            (template) => template.id === newTemplate.id
+          );
+          if (templateIndex !== -1) {
+            // if it exists, update it. Otherwise, add to list
+            this.professorTemplates[templateIndex] = newTemplate;
+          } else {
+            this.professorTemplates.push(newTemplate);
+          }
         }
         // template deleted
         else if (event === 'DELETE') {
@@ -92,6 +102,25 @@ export class EditTemplatesComponent {
       width: '50%',
       height: '55%',
       data: { templateID: templateID },
+    });
+  }
+  /**
+   * Goes to DeleteTemplate pop up component
+   */
+  async updateTemplatePopUp(
+    templateID: number,
+    templateName: string,
+    templateText: string
+  ): Promise<void> {
+    const dialogRef = this.dialog.open(UpdateTemplateComponent, {
+      width: '80%',
+      height: '80%',
+      data: {
+        templateID: templateID,
+        professorID: this.user.id,
+        templateName: templateName,
+        templateText: templateText,
+      },
     });
   }
 }

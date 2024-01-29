@@ -79,15 +79,6 @@
   flex: 1;
 }
 
-.inbox {
-  width: 200px;
-  float: left;
-  height: 90vh; /* 100% of the viewport height */
-  overflow-y: auto; /* Hide overflow content */
-  mat-nav-list {
-    padding: 0px;
-  }
-}
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 
@@ -105,4 +96,7 @@
 
 .inbox-timestamp {
   float: right;
+  font-size: 11px;
+  padding-left: 4px;
+  padding-right: 4px;
 }

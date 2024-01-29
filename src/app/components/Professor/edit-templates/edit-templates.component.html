@@ -1,20 +1,33 @@
 <!-- Class styles taken from assignment.component.scss -->
-<table class="assignment-table">
-  <tr>
-    <th class="global-th">Template</th>
-  </tr>
-  <tr *ngFor="let template of professorTemplates" class="assignment-row">
-    <td class="assignment-name">
-      <div class="template-name">{{ template.temp_name }}</div>
-      <div class="template-text">{{ template.temp_text }}</div>
-    </td>
-    <td class="icon-cell">
-      <mat-icon class="delete-icon" (click)="deleteTemplatePopUp(template.id)"
-        >delete</mat-icon
-      >
-    </td>
-  </tr>
-</table>
+<div class="edit-templates-container">
+  <table class="assignment-table">
+    <tr>
+      <th class="global-th">Template</th>
+    </tr>
+    <tr *ngFor="let template of professorTemplates" class="assignment-row">
+      <td class="assignment-name">
+        <div class="template-name">{{ template.temp_name }}</div>
+        <div class="template-text">{{ template.temp_text }}</div>
+      </td>
+      <td class="icon-cell">
+        <mat-icon
+          class="delete-icon"
+          (click)="
+            updateTemplatePopUp(
+              template.id,
+              template.temp_name,
+              template.temp_text
+            )
+          "
+          >edit</mat-icon
+        >
+        <mat-icon class="delete-icon" (click)="deleteTemplatePopUp(template.id)"
+          >delete</mat-icon
+        >
+      </td>
+    </tr>
+  </table>
+</div>
 <button
   mat-icon-button
   class="global-blue add-button"

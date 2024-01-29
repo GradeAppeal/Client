@@ -21,16 +21,6 @@ export class EditStudentsPopUpComponent {
     this.student = data.studentCourseGrader;
   }
 
-  async onAssignGrader(): Promise<void> {
-    try {
-      const { student_id, course_id } = this.student;
-      console.log(student_id, course_id);
-      await this.professorService.updateGrader(student_id, course_id);
-    } catch (err) {
-      throw new Error('makeGrader');
-    }
-    this.dialogRef.close();
-  }
 
   async onRemoveStudent(): Promise<void> {
     try {
