@@ -126,29 +126,6 @@ export class AuthService {
     return data;
   }
 
-  async createStudentUser(
-    first_name: string,
-    last_name: string,
-    email: string,
-    cid: number
-  ) {
-    const { data, error } = await this.supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: 'https://example.com/welcome',
-        data: {
-          first_name,
-          last_name,
-        },
-      },
-    });
-
-    if (error) {
-      console.log({ error });
-      throw new Error('createStudentUser: ');
-    }
-  }
-
   /**
    * Log in an existing user
    * @param email student or professor @calvin.edu email
