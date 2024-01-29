@@ -1,9 +1,13 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 
-.template-name{
-    font-size: large;
-    font-weight: 500;
+.template-name {
+  font-size: large;
+  font-weight: 500;
 }
 .template-text {
-    color: grey;
+  color: grey;
+}
+.edit-templates-container {
+  height: 80vh;
+  overflow-y: auto;
 }

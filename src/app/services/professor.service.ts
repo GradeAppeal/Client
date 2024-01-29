@@ -397,6 +397,7 @@ export class ProfessorService {
       data: { user },
       error,
     } = await this.supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: 'https://gradeboost.us/student-verification',
       data: { first_name, last_name },
     });
     // user fails to create: return null
@@ -488,6 +489,31 @@ export class ProfessorService {
       temp_name,
       temp_text,
     });
+    if (error) {
+      throw new Error(error.message);
+    }
+    console.log({ data });
+  }
+  /**
+   * Insert template to database
+   * @param tid template id
+   * @param pid professor id
+   * @param temp_name template name
+   * @param temp_text template text
+   */
+  async updateTemplate(
+    tid: number,
+    pid: string,
+    tname: string,
+    new_temp_text: string
+  ): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_template', {
+      tid,
+      pid,
+      tname,
+      new_temp_text,
+    });
+    console.log(new_temp_text, tname);
     if (error) {
       throw new Error(error.message);
     }
