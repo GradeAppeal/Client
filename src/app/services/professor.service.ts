@@ -496,16 +496,19 @@ export class ProfessorService {
   }
   /**
    * Insert template to database
+   * @param tid template id
    * @param pid professor id
    * @param temp_name template name
    * @param temp_text template text
    */
   async updateTemplate(
+    tid: number,
     pid: string,
     tname: string,
     new_temp_text: string
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('update_template', {
+      tid,
       pid,
       tname,
       new_temp_text,
