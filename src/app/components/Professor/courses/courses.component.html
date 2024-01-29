@@ -1,54 +1,34 @@
-
-    <div class="course-wrapper">
-      <mat-card class="courses" *ngFor="let course of professorCourses">
-        <div class="title-container">
-          <mat-card-title class="course-wording"
-            >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
-            {{ course.semester }}-{{ course.year }}
-          </mat-card-title
-          ><mat-icon class="delete-icon" (click)="deleteCoursePopUp($event, course)">delete</mat-icon>
-        </div>
-      <mat-card-subtitle class="course-name">{{
-        course.name
-      }}</mat-card-subtitle>
-        <button
-        type="submit"
-        (click)="onViewAssignments(course)"
-        class="blue-button"
-      >
-        View Assignments
-      </button>
-        <button
-        type="submit"
-        (click)="onViewRoster(course)"
-        class="blue-button"
-      >
-        View Roster
-      </button>
-      </mat-card>
-      <button mat-icon-button class="global-blue add-button" (click)="addCoursePopUp()">
-        <mat-icon class="add-icon">add</mat-icon>
-      </button>
-    </div>
-
-  <!-- <div *ngIf="currentPage == 'editAssignments'" class="assignment-wrapper">
+<div class="component-wrapper">
+  <div class="course-wrapper">
+    <mat-card class="courses" *ngFor="let course of professorCourses">
+      <div class="title-container">
+        <mat-card-title class="course-wording"
+          >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
+          {{ course.semester }}-{{ course.year }}
+        </mat-card-title
+        ><mat-icon class="delete-icon" (click)="deleteCoursePopUp($event, course)">delete</mat-icon>
+      </div>
+    <mat-card-subtitle class="course-name">{{
+      course.name
+    }}
+    </mat-card-subtitle>
     <button
       type="submit"
-      (click)="onViewAssignments(currentCourse)"
-      class="blue-button back-button"
+      (click)="onViewAssignments(course)"
+      class="blue-button"
     >
-      Back
+      View Assignments
     </button>
-    <app-assignments [course]="currentCourse"></app-assignments>
-  </div> -->
-<!--
-<div *ngIf="currentPage == 'editRoster'" class="edit-wrapper">
-  <button
-    type="submit"
-    (click)="swapView('view', currentCourseID, currentCourse)"
-    class="blue-button"
-  >
-    Back
-  </button>
-  <app-roster [course]="currentCourse"></app-roster>
-</div> -->
+      <button
+      type="submit"
+      (click)="onViewRoster(course)"
+      class="blue-button"
+    >
+      View Roster
+    </button>
+    </mat-card>
+    <button mat-icon-button class="global-blue add-button" (click)="addCoursePopUp()">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
+  </div>
+</div>

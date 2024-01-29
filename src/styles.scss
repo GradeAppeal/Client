@@ -3,12 +3,14 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css?family=Rubik:400,700");
 
-html,
-body {
+html {
   height: 100vh; /* 100% of the viewport height */
-  overflow: hidden; /* Hide overflow content */
+  //overflow: hidden; /* Hide overflow content */
 }
+
 body {
+  overflow: hidden;
+  height: 100vh;
   margin: 0;
   font-family: "Rubik", Times, serif, "Helvetica Neue", sans-serif;
 }

@@ -1,5 +1,10 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 
+.component-wrapper {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .course-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -69,34 +74,6 @@
   width: 15vw;
 }
 
-.roster-wrapper {
-  display: flex;
-}
-
-.roster-table {
-  width: 95%;
-  border-collapse: collapse;
-}
-
-.roster-table tr:nth-child(even){background-color: #f2f2f2;}
-.roster-table tr:hover {background-color: #ddd;}
-
-.roster-table, .roster-table th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.roster-table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  color: white;
-}
-
-.roster-table td {
-  padding: 5px;
-}
-
 .student-data {
   justify-content: space-between;
   display: flex;
@@ -117,11 +94,6 @@
   text-align: center;
   height: 2.5em;
   margin-top: 5px;
-}
-
-.assignment-wrapper {
-  display: flex;
-  flex-direction: column;
 }
 
 .add-button {
