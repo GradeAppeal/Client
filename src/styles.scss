@@ -28,6 +28,16 @@ $hover-blue: #728edd;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
+.scroll {
+  overflow-y: auto;
+  height: 90vh;
+  &.assignments {
+    height: 60vh;
+  }
+  &.edit-templates-container {
+    height: 80vh;
+  }
+}
 .blue-button {
   background-color: $primary-blue;
   color: white !important;
@@ -70,6 +80,10 @@ $hover-blue: #728edd;
 .global-blue {
   background-color: $primary-blue;
 }
+.error-message {
+  padding-top: 10px;
+}
+
 .inbox {
   // border: solid gray 1px;
   width: 230px;

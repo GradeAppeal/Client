@@ -13,6 +13,7 @@ export class AddAssignmentComponent {
   newAssignment: string;
   assignments: Assignment[];
   currentCourse: Course;
+  errorMessage: string;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,16 +30,20 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
+      // if (this.newAssignment not in assignments){
+
+      // }
+      console.log(this.assignments);
       const data = await this.professorService.insertNewAssignment(
         this.currentCourse.id,
         this.newAssignment
       );
+      /*   close pop-up */
+      this.dialogRef.close();
       console.log({ data });
     } catch (err) {
       console.log(err);
-      throw new Error('onAddAssignment');
+      this.errorMessage = 'Cannot add duplicate assignment.';
     }
-    /*   close pop-up */
-    this.dialogRef.close();
   }
 }
