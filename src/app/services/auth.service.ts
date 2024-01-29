@@ -30,7 +30,13 @@ export class AuthService {
 
     // create auth user subscription
     this.supabase.auth.onAuthStateChange((event, session) => {
-      if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+      console.log({ event }, { session });
+      if (
+        session &&
+        (event === 'SIGNED_IN' ||
+          event === 'TOKEN_REFRESHED' ||
+          event === 'PASSWORD_RECOVERY')
+      ) {
         console.log({ session });
         this.$currentUser.next(session.user);
       } else {
@@ -281,5 +287,33 @@ export class AuthService {
       throw new Error('insertUser');
     }
     console.log({ data });
+  }
+
+  async sendPasswordResetLink(email: string) {
+    const { data, error } = await this.supabase.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo:
+          'https://gradeboost-git-ael-lockmanager-fix-grade-boost-fab339e0.vercel.app/reset-password',
+      }
+    );
+
+    if (error) {
+      console.log({ error });
+      throw new Error('sendPasswordResetLink');
+    }
+    console.log({ data });
+  }
+
+  async updatePassword(password: string) {
+    const { data, error } = await this.supabase.auth.updateUser({
+      password,
+    });
+
+    if (error) {
+      console.log({ error });
+      throw new Error('updatePassword');
+    }
+    return data;
   }
 }

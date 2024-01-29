@@ -20,6 +20,8 @@ import { RosterComponent } from './components/Professor/roster/roster.component'
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
+import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
+import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
@@ -34,6 +36,14 @@ const routes: Routes = [
   {
     path: 'student-verification',
     component: StudentSetPasswordComponent,
+  },
+  {
+    path: 'request-password-reset',
+    component: RequestPasswordResetComponent,
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
   },
   {
     path: 'professor',

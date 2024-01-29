@@ -108,6 +108,7 @@ export class EditTemplatesComponent {
    * Goes to DeleteTemplate pop up component
    */
   async updateTemplatePopUp(
+    templateID: number,
     templateName: string,
     templateText: string
   ): Promise<void> {
@@ -115,6 +116,7 @@ export class EditTemplatesComponent {
       width: '80%',
       height: '80%',
       data: {
+        templateID: templateID,
         professorID: this.user.id,
         templateName: templateName,
         templateText: templateText,
