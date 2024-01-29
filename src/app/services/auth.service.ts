@@ -293,7 +293,7 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: 'https://gradeboost.vercel.app/reset-password',
+        redirectTo: 'https://gradeboost.us/reset-password',
       }
     );
 

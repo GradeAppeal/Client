@@ -397,6 +397,7 @@ export class ProfessorService {
       data: { user },
       error,
     } = await this.supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: 'https://gradeboost.us/student-verification',
       data: { first_name, last_name },
     });
     // user fails to create: return null
