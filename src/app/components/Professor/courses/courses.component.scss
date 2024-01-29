@@ -1,5 +1,10 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 
+.component-wrapper {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .course-wrapper {
   height: 90vh;
   display: flex;
@@ -121,11 +126,6 @@
   text-align: center;
   height: 2.5em;
   margin-top: 5px;
-}
-
-.assignment-wrapper {
-  display: flex;
-  flex-direction: column;
 }
 
 .add-button {
