@@ -1,38 +1,37 @@
 @import "src/styles.scss";
 .page {
-    display:flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .content {
-    margin-top: 1em;
-    padding-left: 2em;
-    width: 60%;
-    border: 1px solid lightgrey;
-    border-radius: 5px;
+  margin-top: 1em;
+  padding-left: 2em;
+  width: 70%;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
 }
 .header {
-    display: flex;
-    justify-content: center;
-
+  display: flex;
+  justify-content: center;
 }
 .title {
-    margin: 10px 0px;
-    font-size: 2em;
-    font-weight: 500;
+  margin: 10px 0px;
+  font-size: 2em;
+  font-weight: 500;
 }
 
 .description {
-    margin: 0.5em 0px;
-    color: grey;
+  margin: 0.5em 0px;
+  color: grey;
 }
 
 textarea {
-    height: 200px;
+  height: 200px;
 }
 .input-box {
-    height: 20%;
-    width: 90%;
+  height: 20%;
+  width: 90%;
 }
 
 .input-fields {
@@ -40,11 +39,10 @@ textarea {
 }
 
 mat-form-field {
-    width: 200px;
+  width: 200px;
 }
 
 .button-div {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
-

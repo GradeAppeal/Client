@@ -1,21 +1,20 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 @import "src/styles.scss";
 
+.component-wrapper {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .course-wrapper {
-  height: 99vh;
+  height: 90vh;
   display: flex;
   flex-wrap: wrap;
   position: relative;
   width: 100%;
   align-items: center;
   justify-content: flex-start;
-
   max-height: 300vh;
-  overflow-y: auto;
-}
-.courses-wrap {
-  overflow-y: auto;
-  height: 100px;
 }
 .course-title {
   font-size: 2em;
@@ -128,11 +127,6 @@
   text-align: center;
   height: 2.5em;
   margin-top: 5px;
-}
-
-.assignment-wrapper {
-  display: flex;
-  flex-direction: column;
 }
 
 .add-button {

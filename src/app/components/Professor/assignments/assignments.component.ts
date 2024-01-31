@@ -16,7 +16,7 @@ export class AssignmentsComponent {
   courseID: number;
   course: Course;
   isAssignmentsFetched = false;
-  courseFetched = false;
+  fetchedCourse = false;
   assignments: Assignment[];
   selectedAssignmentId: number;
   editMode = false;
@@ -43,6 +43,7 @@ export class AssignmentsComponent {
       this.course = await this.sharedService.getCourse(
         this.courseID
       );
+      this.fetchedCourse = true;
 
       // listen for db inserts & updates
       this.handleAssignmentUpdates();
@@ -133,7 +134,7 @@ export class AssignmentsComponent {
       : `${course.year - 2000}${course.semester} ${course.prefix}-${
           course.code
         } - ${course.name}`;
- 
+
       }
 
     onBackButton() {
@@ -141,5 +142,5 @@ export class AssignmentsComponent {
         'professor/courses'
       )
     }
-        
+
 }

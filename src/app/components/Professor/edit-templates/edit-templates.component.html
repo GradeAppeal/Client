@@ -1,5 +1,5 @@
 <!-- Class styles taken from assignment.component.scss -->
-<div class="edit-templates-container">
+<div class="edit-templates-container scroll">
   <table class="assignment-table">
     <tr>
       <th class="global-th">Template</th>
@@ -10,6 +10,17 @@
         <div class="template-text">{{ template.temp_text }}</div>
       </td>
       <td class="icon-cell">
+        <mat-icon
+          class="delete-icon"
+          (click)="
+            updateTemplatePopUp(
+              template.id,
+              template.temp_name,
+              template.temp_text
+            )
+          "
+          >edit</mat-icon
+        >
         <mat-icon class="delete-icon" (click)="deleteTemplatePopUp(template.id)"
           >delete</mat-icon
         >

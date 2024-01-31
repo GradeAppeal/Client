@@ -63,6 +63,11 @@ import { DeleteAppealPopupComponent } from './components/Professor/closed-appeal
 import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
 import { CheckEmailPopupComponent } from './components/Auth/register/check-email-popup/check-email-popup.component';
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
+import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
+import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
+import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
+import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
+import { AboutComponent } from './components/about/about.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 //import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
@@ -104,6 +109,11 @@ import { AddStudentPopupComponent } from './components/Professor/roster/add-stud
     ProfessorEmailConfirmationComponent,
     CheckEmailPopupComponent,
     StudentSetPasswordComponent,
+    UpdateTemplateComponent,
+    AboutComponent,
+    RequestPasswordResetComponent,
+    ResetPasswordComponent,
+    RequestPasswordResetSnackbarComponent,
     AddStudentPopupComponent,
   ],
   imports: [

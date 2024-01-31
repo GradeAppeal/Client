@@ -60,12 +60,10 @@ export class RosterComponent {
   }
 
   async ngOnInit() {
-    
     try {
-      
       this.courseStudents = await this.professorService.fetchCourseStudents(
         this.courseID
-        );
+      );
 
       // sorts students by last name, then first name
       this.courseStudents.sort((a, b) => {
@@ -73,7 +71,9 @@ export class RosterComponent {
         const lastNameB = b.student_name.split(' ')[1];
 
         const compareLastName = lastNameA.localeCompare(lastNameB);
-        return compareLastName === 0 ? a.student_name.localeCompare(b.student_name) : compareLastName;
+        return compareLastName === 0
+          ? a.student_name.localeCompare(b.student_name)
+          : compareLastName;
       });
 
       // update addedStudentCSV string
@@ -225,8 +225,8 @@ export class RosterComponent {
    */
   onFileChange(event: any) {
     const file = event.target.files[0];
-
-    if (file) {
+    console.log(file.type);
+    if (file && file.type.includes('.csv')) {
       this.readFile(file);
     }
   }
