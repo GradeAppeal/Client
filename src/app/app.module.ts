@@ -64,8 +64,8 @@ import { ProfessorEmailConfirmationComponent } from './components/Auth/professor
 import { CheckEmailPopupComponent } from './components/Auth/register/check-email-popup/check-email-popup.component';
 import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 //import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
-import { AddStudentComponent } from './components/Professor/roster/add-student/add-student.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -104,7 +104,7 @@ import { AddStudentComponent } from './components/Professor/roster/add-student/a
     ProfessorEmailConfirmationComponent,
     CheckEmailPopupComponent,
     StudentSetPasswordComponent,
-    AddStudentComponent,
+    AddStudentPopupComponent,
   ],
   imports: [
     BrowserModule,

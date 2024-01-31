@@ -13,7 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { AddStudentComponent } from './add-student/add-student.component';
+import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-roster',
@@ -21,18 +22,29 @@ import { AddStudentComponent } from './add-student/add-student.component';
   styleUrls: ['./roster.component.scss'],
 })
 export class RosterComponent {
-  course: Course;
+  course: Course = {
+    id: 0,
+  prefix: "",
+  code: 0,
+  name: "",
+  section: "",
+  semester: "FA",
+  year: 0
+  };
+
+
   courseStudents!: StudentCourseGraderInfo[];
   fetchedStudents = false;
   fetchedCourse = false;
   addedStudents: string;
-  addedStudentsCSV: string;
+  addedStudentsCSV: string = "";
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
   parsedStudent: ParsedStudent;
   splitStudent: string[];
   courseID: number;
-  is_grader: boolean = false;
+  isGrader : boolean = false;
+  isNewStudent : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +56,7 @@ export class RosterComponent {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
     });
+    
   }
 
   async ngOnInit() {
@@ -63,6 +76,15 @@ export class RosterComponent {
         return compareLastName === 0 ? a.student_name.localeCompare(b.student_name) : compareLastName;
       });
 
+      // update addedStudentCSV string
+      this.addedStudentsCSV = "";
+      console.log(this.courseStudents);
+      this.addedStudentsCSV = this.addedStudentsCSV.concat("First name\tLast name\tEmail address\n")
+      this.courseStudents.forEach((student) => {
+        this.addedStudentsCSV = this.addedStudentsCSV.concat(student.student_name, " ", student.email, "\n");
+      });
+      this.addedStudentsCSV = this.addedStudentsCSV.trimRight();
+      console.log(this.addedStudentsCSV);
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedStudents = true;
       this.fetchedCourse = true;
@@ -163,22 +185,39 @@ export class RosterComponent {
     // make string have consistant formatting
     const formattedString = addedStudentsCSV
       .replace(/\r\r\n/g, '\n')
+      .replace(/\t/g, ' ')
       .trimRight();
+    console.log(formattedString);
     const studentsToAdd = formattedString.split('\n');
+    console.log(studentsToAdd);
     studentsToAdd.shift(); // get rid of the column names
 
+    // default value of isGrader = false
+    if (!this.isNewStudent){
+      this.isGrader = false;
+    }
+
     studentsToAdd.forEach((student) => {
+      
       this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
         email: this.splitStudent[2],
-        is_grader: this.is_grader
+        is_grader: this.isGrader,
       };
+
+      // set newStudent to false
+      this.isNewStudent = false;
+      console.log(this.isGrader.toString());
       parsedStudentsToAdd.push(this.parsedStudent);
     });
     console.log(this.parsedStudentsToAdd);
     return parsedStudentsToAdd;
+  }
+
+  getIsGrader(student: any) : boolean {
+    return student.is_grader;
   }
 
     /**
@@ -275,9 +314,24 @@ export class RosterComponent {
 
 
   addStudentPopUp() {
-    this.dialog.open(AddStudentComponent, {
-      width: '30%',
-      height: '25%',
+
+
+    const dialogRef = this.dialog.open(AddStudentPopupComponent, {
+      width: '60%',
+      height: "80%"
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.isGrader = result.data.is_grader;
+      const newStudentString = result.data.first_name + "\t" + result.data.last_name + "\t" + result.data.email;
+
+      // the studentsCSV file needs to be updated with the contents of the table
+      this.addedStudentsCSV = this.addedStudentsCSV.concat("\n", newStudentString);
+      console.log(this.addedStudentsCSV);
+    
+     //addStudents(studentsCSV string with added student)
+      this.isNewStudent = true;
+      this.addStudents(this.addedStudentsCSV);
+      });
   }
 }

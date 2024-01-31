@@ -80,7 +80,18 @@ input[type="file"] {
   align-items: center;
 }
 
-
 .add-button {
   margin-top: 1em;
+}
+
+.add-button:hover {
+  background-color: $hover-blue;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
