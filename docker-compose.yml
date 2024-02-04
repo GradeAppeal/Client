@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  node:
+    build: .
+    command: npm start
+    image: gradeboost:latest
+    environment:
+      - SUPABASE_URL
+      - SUPABASE_SERVICE_ROLE_KEY 
+    ports:
+      - "4200:4200"
+    volumes: 
+      - ./:/usr/src/app/
+      - exclude:/usr/src/app/node_modules/
+      - exclude:/usr/src/app/.angular/
+    secrets:
+      - supabase_service_role_key
+      - supabase_url
+    entrypoint: [ '/bin/sh', '-c', 'SUPABASE_URL=$$(cat /run/secrets/supabase_url) && SUPABASE_SERVICE_ROLE_KEY=$$(cat /run/secrets/supabase_service_role_key) && npm start']
+
+
+volumes:
+  exclude:
+
+secrets:
+  supabase_url:
+    external: true
+  supabase_service_role_key:
+    external: true
+
