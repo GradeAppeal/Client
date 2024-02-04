@@ -19,6 +19,10 @@
   font-weight: bold;
   padding-top: 1em;
   padding-bottom: 1em;
+  font-size: 2em;
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .assignment-wrapper {
@@ -29,11 +33,20 @@
   width: 95%;
   border-collapse: collapse;
 }
+.assignment-table {
+  width: 95%;
+  border-collapse: collapse;
+}
 
-.assignment-table tr:nth-child(even){background-color: #f2f2f2;}
-.assignment-table tr:hover {background-color: #ddd;}
+.assignment-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.assignment-table tr:hover {
+  background-color: #ddd;
+}
 
-.assignment-table, .assignment-table th {
+.assignment-table,
+.assignment-table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -44,11 +57,19 @@
   text-align: left;
   color: white;
 }
+.assignment-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+}
 
 .assignment-table td {
   padding: 5px;
 }
-
+.assignment-table td {
+  padding: 5px;
+}
 
 .add-button {
   margin: 5px;
@@ -66,7 +87,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .assignment-row {
   display: flex;

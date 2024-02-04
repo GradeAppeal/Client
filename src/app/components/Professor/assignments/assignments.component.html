@@ -1,19 +1,33 @@
 <div class="component-wrapper">
-  <button mat-button type="submit" (click)="onBackButton()" class="blue-button"> Back</button>
-  <p *ngIf="fetchedCourse" class="course-title">{{formatCourse(course)}}</p>
-    <table *ngIf="isAssignmentsFetched" class="assignment-table">
+  <button mat-button type="submit" (click)="onBackButton()" class="blue-button">
+    Back
+  </button>
+  <p class="course-title">{{ formatCourse(course) }}</p>
+  <div class="scroll assignments">
+    <table class="assignment-table">
       <tr>
         <th class="global-th">Assignment</th>
       </tr>
-      <tr *ngFor="let assignment of assignments; let i = index" class="assignment-row">
-        <td class="assignment-name">{{ assignment.assignment_name }}
-        </td>
+      <tr
+        *ngFor="let assignment of assignments; let i = index"
+        class="assignment-row"
+      >
+        <td class="assignment-name">{{ assignment.assignment_name }}</td>
         <td class="icon-cell">
-          <mat-icon class="delete-icon" (click)="deleteAssignmentPopUp(assignment, course)">delete</mat-icon>
+          <mat-icon
+            class="delete-icon"
+            (click)="deleteAssignmentPopUp(assignment, course)"
+            >delete</mat-icon
+          >
         </td>
       </tr>
     </table>
-  <button mat-icon-button class="global-blue add-button" (click)="addAssignmentPopUp(assignments, course)">
+  </div>
+  <button
+    mat-icon-button
+    class="global-blue add-button"
+    (click)="addAssignmentPopUp(assignments, course)"
+  >
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
