@@ -48,3 +48,5 @@ secret_env.ts
 secret_env.ts
 .vercel
 .env*.local
+
+*.txt
