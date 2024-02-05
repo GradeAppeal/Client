@@ -1,0 +1,27 @@
+<div class="page">
+    <div class="content">
+        <div class="header">
+            <h1 class="title">Add Student</h1>
+        </div>
+        <div class="input-fields">
+
+        <p class="description">First Name</p>
+        <mat-form-field class="input-box">
+            <textarea matInput [(ngModel)]="student.first_name"></textarea>
+        </mat-form-field>
+
+        <p class="description">Last Name</p>
+        <mat-form-field class="input-box">
+            <textarea matInput [(ngModel)]="student.last_name" ></textarea>
+        </mat-form-field>
+
+        <p class="description">Email</p>
+        <mat-form-field class="input-box">
+            <textarea matInput [(ngModel)]="student.email"></textarea>
+        </mat-form-field>
+        </div>
+        <div class="button-div">
+            <button mat-button class="blue-button" (click)="onSubmit()">Submit</button>
+        </div>
+    </div>
+</div>
