@@ -12,7 +12,6 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { AddStudentPopupComponent } from '../components/Professor/roster/add-student-popup/add-student-popup.component';
 import { ErrorHandlerComponent } from '../error-handler/error-handler.component';
 
 @Injectable({
@@ -409,7 +408,7 @@ export class ProfessorService {
 
       this.dialog.open(ErrorHandlerComponent, {
         width: '60%',
-        height: "80%"
+        height: '80%',
       });
       return null;
     }
@@ -600,7 +599,7 @@ export class ProfessorService {
     return data;
   }
 
-  async deleteAppeal(aid: number): Promise<void> {
+  async deleteAppeal(aid: number): Promise<number> {
     const { data, error } = await this.supabase.rpc('delete_appeal', {
       aid,
     });
@@ -609,6 +608,7 @@ export class ProfessorService {
       throw new Error(error.message);
     }
     console.log(`appeal ${aid} deleted`);
+    return aid;
   }
   /**
    * Assigns a grader to an appeal
