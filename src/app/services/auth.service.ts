@@ -36,7 +36,6 @@ export class AuthService {
           event === 'TOKEN_REFRESHED' ||
           event === 'PASSWORD_RECOVERY')
       ) {
-        console.log({ session });
         this.$currentUser.next(session.user);
       } else {
         this.$currentUser.next(false);
