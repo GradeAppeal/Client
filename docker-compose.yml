@@ -24,7 +24,7 @@ volumes:
 
 secrets:
   supabase_url:
-    external: true
+    file: supabase_url.txt
   supabase_service_role_key:
-    external: true
+    file: supabase_service_role_key.txt
 

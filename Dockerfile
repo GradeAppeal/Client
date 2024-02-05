@@ -15,5 +15,3 @@ COPY dist /usr/src/app/dist/
 # comment
 WORKDIR /usr/src/app
 EXPOSE 4200/tcp
-
-
