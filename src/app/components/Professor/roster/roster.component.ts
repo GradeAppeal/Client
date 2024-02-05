@@ -15,6 +15,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
 import { DialogRef } from '@angular/cdk/dialog';
+import { ErrorHandlerComponent } from 'src/app/error-handler/error-handler.component';
 
 @Component({
   selector: 'app-roster',
@@ -43,7 +44,6 @@ export class RosterComponent {
   parsedStudent: ParsedStudent;
   splitStudent: string[];
   courseID: number;
-  isGrader : boolean = false;
   isNewStudent : boolean = false;
 
   constructor(
@@ -185,34 +185,24 @@ export class RosterComponent {
     // make string have consistant formatting
     const formattedString = addedStudentsCSV
       .replace(/\r\r\n/g, '\n')
-      .replace(/\t/g, ' ')
       .trimRight();
     console.log(formattedString);
     const studentsToAdd = formattedString.split('\n');
     console.log(studentsToAdd);
     studentsToAdd.shift(); // get rid of the column names
 
-    // default value of isGrader = false
-    if (!this.isNewStudent){
-      this.isGrader = false;
-    }
-
     studentsToAdd.forEach((student) => {
-      
+      // format spaces into tabs
+      student = student.replace(/ /g, '\t').trimRight();  
       this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
-        email: this.splitStudent[2],
-        is_grader: this.isGrader,
+        email: this.splitStudent[2]
       };
 
-      // set newStudent to false
-      this.isNewStudent = false;
-      console.log(this.isGrader.toString());
       parsedStudentsToAdd.push(this.parsedStudent);
     });
-    console.log(this.parsedStudentsToAdd);
     return parsedStudentsToAdd;
   }
 
@@ -226,7 +216,7 @@ export class RosterComponent {
   onFileChange(event: any) {
     const file = event.target.files[0];
     console.log(file.type);
-    if (file && file.type.includes('.csv')) {
+    if (file) {
       this.readFile(file);
     }
   }
@@ -288,6 +278,11 @@ export class RosterComponent {
       // empty out
       this.parsedStudentsToAdd = [];
     } catch (error) {
+      console.log("HEYY!!");
+      this.dialog.open(ErrorHandlerComponent, {
+        width: '60%',
+        height: "80%"
+      });
       console.log({ error });
       throw new Error('addStudents');
     }
@@ -322,8 +317,7 @@ export class RosterComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.isGrader = result.data.is_grader;
-      const newStudentString = result.data.first_name + "\t" + result.data.last_name + "\t" + result.data.email;
+      const newStudentString = result.student.first_name + " " + result.student.last_name + " " + result.student.email;
 
       // the studentsCSV file needs to be updated with the contents of the table
       this.addedStudentsCSV = this.addedStudentsCSV.concat("\n", newStudentString);

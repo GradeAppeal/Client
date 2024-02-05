@@ -15,8 +15,6 @@ export class AddStudentPopupComponent {
     first_name:  "",
     last_name: "",
     email: "",
-    is_grader: false,
-
   };
 
   constructor(
@@ -26,12 +24,8 @@ export class AddStudentPopupComponent {
     private dialogRef: MatDialogRef<AddStudentPopupComponent>,
   ) {
   }
-
-  onSelectStudent(event: any) {
-    event.target.value === "Grader" ? this.student.is_grader = true : false;
-  }
   
   onSubmit() {
-    this.dialogRef.close({data: this.student })
+    this.dialogRef.close({student: this.student })
   }
 }

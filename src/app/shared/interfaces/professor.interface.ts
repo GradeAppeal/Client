@@ -35,7 +35,6 @@ export interface ParsedStudent {
   first_name: string;
   last_name: string;
   email: string;
-  is_grader: boolean;
 }
 
 export interface StudentCourseGraderInfo {
