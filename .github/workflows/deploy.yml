@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.ACR_LOGIN }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push images - SSH
+      - name: Build and push images
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}"
@@ -54,9 +54,7 @@ jobs:
       - name: Azure AKS Set Context
         uses: Azure/aks-set-context@v3
         with:
-          # Resource group name
           resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
-          # AKS cluster name
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
       - name: Run Helm Deploy
