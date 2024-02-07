@@ -73,10 +73,15 @@ export class StudentInteractionHistoryComponent {
   }
 
   async ngOnInit() {
-    this.appealId = this.route.snapshot.params['appealId'];
-    if (this.appealId) {
-      const appealId = this.appealId;
-      console.log({ appealId });
+    this.studentAppeals = await this.studentService.fetchStudentAppeals(
+      this.student.id
+    );
+    this.noAppeals = this.studentAppeals.length === 0 ? true : false;
+    // this.appealId = this.route.snapshot.params['appealId'];
+    // // if (this.appealId) {
+    // const appealId = this.appealId;
+    // console.log({ appealId });
+    if (!this.noAppeals) {
       this.studentAppeals = await this.studentService.fetchStudentAppeals(
         this.student.id
       );
