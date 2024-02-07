@@ -1,30 +1,22 @@
+# Note: this relies on Docker secrets to build, but the secrets are not stored in Git.  
+# This build script looks to the 'secrets' directory for a secrets.env file 
+# (so ./secrets/secrets.env file) that has secrets listed in the following format:
+#   VAR1="value"
+#   VAR2="value2"
+#
+# For Github actions to auto-build the container, we rely on the Github secrets - 
+# a Github secret named ENVIRONMENT_SECRETS with the same content as above
+
 version: '3.8'
 services:
   node:
-    build: .
-    command: npm start
+    build: 
+      context: .
+      secrets:
+      - ENVIRONMENT_SECRETS
     image: gradeboost:latest
-    environment:
-      - SUPABASE_URL
-      - SUPABASE_SERVICE_ROLE_KEY 
     ports:
       - "4200:4200"
-    volumes: 
-      - ./:/usr/src/app/
-      - exclude:/usr/src/app/node_modules/
-      - exclude:/usr/src/app/.angular/
-    secrets:
-      - supabase_service_role_key
-      - supabase_url
-    entrypoint: [ '/bin/sh', '-c', 'SUPABASE_URL=$$(cat /run/secrets/supabase_url) && SUPABASE_SERVICE_ROLE_KEY=$$(cat /run/secrets/supabase_service_role_key) && npm start']
-
-
-volumes:
-  exclude:
-
 secrets:
-  supabase_url:
-    file: supabase_url.txt
-  supabase_service_role_key:
-    file: supabase_service_role_key.txt
-
+  ENVIRONMENT_SECRETS:
+    file: ./secrets/secrets.env
