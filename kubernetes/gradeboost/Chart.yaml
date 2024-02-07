@@ -1,0 +1,4 @@
+apiVersion: v2
+name: gradeboost
+description: A Helm chart for Kubernetes deployment of gradeboost kubernetes services
+version: 1.0.0

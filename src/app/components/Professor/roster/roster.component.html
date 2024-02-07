@@ -1,4 +1,4 @@
-<button mat-button type="submit" (click)="onBackButton()" class="blue-button"> Back</button>
+<button mat-button type="submit" (click)="onBackButton()" class="blue-button back-button"> Back</button>
 <p class="course-title"><b>{{ formatCourse(course) }}</b></p>
 <div *ngIf="fetchedStudents == true">
   <div class="roster-wrapper">
@@ -16,7 +16,8 @@
           {{ student.email }}
         </td>
         <td>
-          <mat-select  [placeholder]="student.is_grader ? 'Grader' : 'Student'" (selectionChange)="onAssignGrader(student)">
+          <!-- <mat-select  [placeholder]="student.is_grader ? 'Grader' : 'Student'" (selectionChange)="onAssignGrader(student)"> -->
+          <mat-select  [placeholder]="getIsGrader(student) ? 'Grader' : 'Student'" (selectionChange)="onAssignGrader(student)">
             <mat-option value="Student">Student</mat-option>
             <mat-option value="Grader">Grader</mat-option>
           </mat-select>
@@ -26,8 +27,13 @@
     <p *ngIf="courseStudents.length == 0">
       There are no students in this class.
     </p>
-    <label for="file-input" class="custom-file-input blue-button">Upload CSV</label>
-    <input id="file-input" type="file" (change)="onFileChange($event)">
+    <div class="button-div">
+      <button mat-icon-button class="global-blue add-button" (click)="addStudentPopUp()">
+        <mat-icon class="add-icon">add</mat-icon>
+      </button>
+      <label for="file-input" class="custom-file-input blue-button csv-button">Upload CSV</label>
+      <input id="file-input" type="file" (change)="onFileChange($event)">
+    </div>
   </div>
 
   </div>

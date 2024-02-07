@@ -13,6 +13,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
+import { DialogRef } from '@angular/cdk/dialog';
+import { ErrorHandlerComponent } from 'src/app/error-handler/error-handler.component';
 
 @Component({
   selector: 'app-roster',
@@ -20,17 +23,28 @@ import { MatTable } from '@angular/material/table';
   styleUrls: ['./roster.component.scss'],
 })
 export class RosterComponent {
-  course: Course;
+  course: Course = {
+    id: 0,
+  prefix: "",
+  code: 0,
+  name: "",
+  section: "",
+  semester: "FA",
+  year: 0
+  };
+
+
   courseStudents!: StudentCourseGraderInfo[];
   fetchedStudents = false;
   fetchedCourse = false;
   addedStudents: string;
-  addedStudentsCSV: string;
+  addedStudentsCSV: string = "";
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
   parsedStudent: ParsedStudent;
   splitStudent: string[];
   courseID: number;
+  isNewStudent : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +56,7 @@ export class RosterComponent {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
     });
+    
   }
 
   async ngOnInit() {
@@ -61,6 +76,15 @@ export class RosterComponent {
           : compareLastName;
       });
 
+      // update addedStudentCSV string
+      this.addedStudentsCSV = "";
+      console.log(this.courseStudents);
+      this.addedStudentsCSV = this.addedStudentsCSV.concat("First name\tLast name\tEmail address\n")
+      this.courseStudents.forEach((student) => {
+        this.addedStudentsCSV = this.addedStudentsCSV.concat(student.student_name, " ", student.email, "\n");
+      });
+      this.addedStudentsCSV = this.addedStudentsCSV.trimRight();
+      console.log(this.addedStudentsCSV);
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedStudents = true;
       this.fetchedCourse = true;
@@ -156,35 +180,50 @@ export class RosterComponent {
    * @returns paresed student from textbox input
    */
   parseStudents(addedStudentsCSV: string): ParsedStudent[] {
+    console.log(addedStudentsCSV);
     const parsedStudentsToAdd: ParsedStudent[] = [];
     // make string have consistant formatting
     const formattedString = addedStudentsCSV
       .replace(/\r\r\n/g, '\n')
       .trimRight();
+    console.log(formattedString);
     const studentsToAdd = formattedString.split('\n');
+    console.log(studentsToAdd);
     studentsToAdd.shift(); // get rid of the column names
 
     studentsToAdd.forEach((student) => {
+      // format spaces into tabs
+      student = student.replace(/ /g, '\t').trimRight();  
       this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
-        email: this.splitStudent[2],
+        email: this.splitStudent[2]
       };
+
       parsedStudentsToAdd.push(this.parsedStudent);
     });
-    console.log(this.parsedStudentsToAdd);
     return parsedStudentsToAdd;
   }
 
+  getIsGrader(student: any) : boolean {
+    return student.is_grader;
+  }
+
+    /**
+   * Reads file on file change
+   */
   onFileChange(event: any) {
     const file = event.target.files[0];
     console.log(file.type);
-    if (file && file.type.includes('.csv')) {
+    if (file) {
       this.readFile(file);
     }
   }
 
+  /**
+ * Reads file and convert CSV content into string
+ */
   readFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -239,6 +278,11 @@ export class RosterComponent {
       // empty out
       this.parsedStudentsToAdd = [];
     } catch (error) {
+      console.log("HEYY!!");
+      this.dialog.open(ErrorHandlerComponent, {
+        width: '60%',
+        height: "80%"
+      });
       console.log({ error });
       throw new Error('addStudents');
     }
@@ -261,5 +305,27 @@ export class RosterComponent {
 
   onBackButton() {
     this.router.navigateByUrl('professor/courses');
+  }
+
+
+  addStudentPopUp() {
+
+
+    const dialogRef = this.dialog.open(AddStudentPopupComponent, {
+      width: '60%',
+      height: "80%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const newStudentString = result.student.first_name + " " + result.student.last_name + " " + result.student.email;
+
+      // the studentsCSV file needs to be updated with the contents of the table
+      this.addedStudentsCSV = this.addedStudentsCSV.concat("\n", newStudentString);
+      console.log(this.addedStudentsCSV);
+    
+     //addStudents(studentsCSV string with added student)
+      this.isNewStudent = true;
+      this.addStudents(this.addedStudentsCSV);
+      });
   }
 }

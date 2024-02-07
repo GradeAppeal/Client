@@ -1,0 +1,22 @@
+# Note: this relies on Docker secrets to build, but the secrets are not stored in Git.  
+# This build script looks to the 'secrets' directory for a secrets.env file 
+# (so ./secrets/secrets.env file) that has secrets listed in the following format:
+#   VAR1="value"
+#   VAR2="value2"
+#
+# For Github actions to auto-build the container, we rely on the Github secrets - 
+# a Github secret named ENVIRONMENT_SECRETS with the same content as above
+
+version: '3.8'
+services:
+  node:
+    build: 
+      context: .
+      secrets:
+      - ENVIRONMENT_SECRETS
+    image: gradeboost:latest
+    ports:
+      - "4200:4200"
+secrets:
+  ENVIRONMENT_SECRETS:
+    file: ./secrets/secrets.env
