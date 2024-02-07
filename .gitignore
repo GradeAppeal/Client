@@ -50,3 +50,9 @@ secret_env.ts
 .env*.local
 
 *.txt
+
+# secrets
+/secrets/*
+secrets/*
+secrets/
+/secrets
