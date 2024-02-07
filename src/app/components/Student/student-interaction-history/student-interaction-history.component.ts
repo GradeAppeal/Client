@@ -148,6 +148,26 @@ export class StudentInteractionHistoryComponent {
       });
   }
 
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeals-update-channel',
+        `student_id=eq.${this.student.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        if (!record) return;
+        const event = update.eventType;
+
+        // update grader status
+        if (event === 'UPDATE') {
+          this.currentAppeal.isread = record.isread;
+        }
+      });
+  }
+
   /**
    * Select appeal from left
    * @param appeal
@@ -192,6 +212,8 @@ export class StudentInteractionHistoryComponent {
       await this.sharedService.mark_appeal_as_unread(
         this.currentAppeal.appeal_id
       );
+      console.log(this.currentAppeal.appeal_id);
+      console.log(this.currentAppeal.isread);
       this.chatInputMessage = '';
       this.scrollToBottom();
     } catch (err) {

@@ -82,6 +82,7 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals =
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
+    console.log(this.professorAppeals);
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
