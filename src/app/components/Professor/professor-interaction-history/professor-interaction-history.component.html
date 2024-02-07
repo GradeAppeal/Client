@@ -129,13 +129,15 @@
       </div>
       <div class="chat-footer">
         <div class="buttons">
-          <button
-            class="use-template-button"
-            mat-stroked-button
-            [matMenuTriggerFor]="menu"
-          >
-            Use Template
-          </button>
+          <div>
+            <button
+              class="use-template-button"
+              mat-stroked-button
+              [matMenuTriggerFor]="menu"
+            >
+              Use Template
+            </button>
+          </div>
           <button
             *ngIf="currentAppeal.grader_id === null"
             mat-stroked-button

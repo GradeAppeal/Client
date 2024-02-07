@@ -159,8 +159,8 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '30%',
-        height: '35%',
+        width: '50%',
+        height: '50%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -180,8 +180,8 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '30%',
-        height: '35%',
+        width: '50%',
+        height: '50%',
         data: { graderName, appealID, studentID, professorID },
       });
     }
