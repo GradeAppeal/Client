@@ -9,7 +9,7 @@ COPY tsconfig*.json /usr/src/app/
 # Copy secrets into the container
 RUN mkdir -p /root/secrets
 RUN --mount=type=secret,id=ENVIRONMENT_SECRETS \
-    cat /run/secrets/ENVIRONMENT_SECRETS > /root/secrets/secrets.env
+    cat /run/secrets/ENVIRONMENT_SECRETS | base64 -d > /root/secrets/secrets.env
 
 # Install required npm modules
 RUN cd /usr/src/app && npm install
