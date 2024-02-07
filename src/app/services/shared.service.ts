@@ -160,6 +160,36 @@ export class SharedService {
     return data;
   }
 
+  /**
+   * Marks appeal.isread as true
+   * @param appid appeal id
+   */
+  async mark_appeal_as_read(aid: number): Promise<number> {
+    const { data, error } = await this.supabase.rpc('mark_appeal_as_read', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('mark_appeal_as_read');
+    }
+    return data;
+  }
+
+  /**
+   * Marks appeal.isread as false
+   * @param appid appeal id
+   */
+  async mark_appeal_as_unread(aid: number): Promise<number> {
+    const { data, error } = await this.supabase.rpc('mark_appeal_as_unread', {
+      aid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('mark_appeal_as_read');
+    }
+    return data;
+  }
+
   async getStudent(sid: string): Promise<Student> {
     const { data, error } = await this.supabase.rpc('get_student', {
       sid,

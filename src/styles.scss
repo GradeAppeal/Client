@@ -83,7 +83,23 @@ $hover-blue: #728edd;
 .error-message {
   padding-top: 10px;
 }
-
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: $hover-blue;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; /* Display it inline with other content */
+}
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: $hover-blue;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; /* Display it inline with other content */
+  color: red;
+}
 .inbox {
   // border: solid gray 1px;
   width: 230px;

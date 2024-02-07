@@ -159,6 +159,7 @@ export class ProfessorInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
+    console.log(this.currentAppeal);
     // update real-time filtering
     this.handleMessageUpdates();
     //this.sender.id = this.currentAppeal.student_id;
@@ -168,7 +169,34 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log(this.currentAppeal);
+
+    //console.log(this.messages[this.messages.length - 1].isread);
+    this.markMessagesAsRead(this.messages);
+    console.log(this.messages);
+  }
+  hasUnreadMessages(appeal: any) {
+    if (this.messages) {
+      const appealMessages = this.messages.filter(
+        (message) => message.appeal_id === appeal.id
+      );
+
+      // Sort messages in descending order of creation time
+      const sortedMessages = appealMessages.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
+      // Return true if there are unread messages for the appeal
+      //return sortedMessages.some((message) => !message.isread);
+    }
+    return false;
+  }
+
+  async markMessagesAsRead(messages: Message[]) {
+    console.log(messages[messages.length - 1].id);
+    console.log(this.currentAppeal.appeal_id);
+    console.log(this.currentAppeal.isread);
+    await this.sharedService.mark_appeal_as_read(this.currentAppeal.appeal_id);
   }
 
   /**
@@ -238,23 +266,9 @@ export class ProfessorInteractionHistoryComponent {
         if (!record) return;
         const event = update.eventType;
 
-        // new appeal inserted
-        if (event === 'INSERT') {
-          const newAppeal = await this.professorService.getNewProfessorAppeal(
-            record.id
-          );
-          this.professorAppeals = newAppeal.concat(this.professorAppeals);
-        }
         // update grader status
-        else if (event === 'UPDATE') {
-          this.currentAppeal.grader_id = record.grader_id;
-        }
-        // delete
-        else if (event === 'DELETE') {
-          console.log('delete', { record });
-          this.professorAppeals = this.professorAppeals.filter(
-            (appeal) => appeal !== record.id
-          );
+        if (event === 'UPDATE') {
+          this.currentAppeal.isread = record.isread;
         }
       });
   }

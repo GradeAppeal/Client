@@ -9,6 +9,15 @@
         [class.selected-appeal]="appeal === currentAppeal"
       >
         <div class="left-section">
+          <span
+            [ngClass]="{
+              'unread-dot': appeal.isread === false,
+              'no-dot': appeal.isread !== false
+            }"
+          ></span>
+          <!-- <div *ngIf="hasUnreadMessages(appeal)">
+            <div class="unread-dot"></div>
+          </div> -->
           <p matLine class="inbox-name">
             {{ appeal.student_first_name }} {{ appeal.student_last_name }}
           </p>
