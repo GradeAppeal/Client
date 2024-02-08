@@ -14,6 +14,9 @@ RUN --mount=type=secret,id=ENVIRONMENT_SECRETS \
 # Install required npm modules
 RUN cd /usr/src/app && npm install
 
+# Update the PATH to include ng from the install
+ENV PATH="${PATH}:/usr/src/app/node_modules/.bin/"
+
 # Copy the source of our application into the container
 RUN mkdir -p /usr/src/app/src
 COPY src /usr/src/app/src/
@@ -25,5 +28,5 @@ RUN mkdir -p /usr/src/app/dist
 WORKDIR /usr/src/app
 EXPOSE 4200/tcp
 
-CMD [ "set -a && source /root/secrets/secrets.env && set +a && npm start" ]
+CMD [ "set -a && source /root/secrets/secrets.env && set +a && ng serve --host 0.0.0.0 --port 4200" ]
 ENTRYPOINT [ "/bin/sh", "-c" ]
