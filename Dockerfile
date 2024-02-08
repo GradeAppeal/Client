@@ -6,6 +6,7 @@ RUN mkdir -p /usr/src/app/
 COPY package*.json /usr/src/app/
 COPY angular.json /usr/src/app/
 COPY tsconfig*.json /usr/src/app/
+COPY tailwind.config.js /usr/src/app/
 
 # Copy secrets into the container
 RUN mkdir -p /root/secrets
