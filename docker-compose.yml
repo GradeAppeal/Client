@@ -33,4 +33,8 @@ services:
       - "4200:4200"
 secrets:
   ENVIRONMENT_SECRETS:
+<<<<<<< HEAD
     file: ./secrets/secrets.b64
+=======
+    file: ./secrets/secrets.b64
+>>>>>>> 75f8a2144be9ebc2d8520fe396e5380c983b6d87
