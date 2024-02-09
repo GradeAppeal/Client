@@ -34,6 +34,7 @@ export interface StudentAppeal {
   appeal_id: number;
   created_at: Date;
   is_open: boolean;
+  is_read: boolean;
 }
 
 export interface GraderAppeal {

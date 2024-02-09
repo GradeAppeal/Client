@@ -76,6 +76,7 @@ export class StudentInteractionHistoryComponent {
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
+    console.log(this.studentAppeals[0]);
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
@@ -92,10 +93,11 @@ export class StudentInteractionHistoryComponent {
       this.loadStudentAppeals = true;
       this.messageCount = this.messages.length;
       this.loading = false;
-      this.handleMessageUpdates();
+      this.handleAppealMessageUpdates();
     } else {
       this.loading = false;
     }
+    this.handleStudentMessageUpdates();
   }
 
   ngAfterViewChecked() {
@@ -113,8 +115,7 @@ export class StudentInteractionHistoryComponent {
    * subscription to database changes
    * filters on appeals
    */
-  handleMessageUpdates() {
-    console.log('current appeal is: ', this.currentAppeal.appeal_id);
+  handleAppealMessageUpdates() {
     this.sharedService
       .getTableChanges(
         'Messages',
@@ -135,7 +136,39 @@ export class StudentInteractionHistoryComponent {
           const record: Message = update.new;
           // show new message
           this.messages.push(record);
+        } // is_read updates
+        else if (event === 'UPDATE') {
+          // console.log('update event');
+          this.currentAppeal.is_read = record.is_read;
         }
+      });
+  }
+
+  handleStudentMessageUpdates() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `message-channel`,
+        `recipient_id=eq.${this.student.id}`
+      )
+      .subscribe(async (update: any) => {
+        console.log({ update });
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // get new message
+          const record = update.new;
+          this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
+            studentAppeal.appeal_id === record.appeal_id
+              ? { ...studentAppeal, is_read: false }
+              : { ...studentAppeal }
+          );
+        } // is_read updates
       });
   }
 
@@ -146,7 +179,7 @@ export class StudentInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    this.handleMessageUpdates();
+    this.handleAppealMessageUpdates();
 
     //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.sharedService.fetchStudentMessages(
@@ -154,7 +187,7 @@ export class StudentInteractionHistoryComponent {
       this.student.id,
       this.professor.id
     );
-    console.log(this.currentAppeal);
+    await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
   }
 
   /**

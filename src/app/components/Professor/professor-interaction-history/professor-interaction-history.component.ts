@@ -201,9 +201,7 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log('is_read before function: ', this.currentAppeal.is_read);
     await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
-    console.log('is_read after function: ', this.currentAppeal.is_read);
   }
 
   /**
@@ -278,6 +276,7 @@ export class ProfessorInteractionHistoryComponent {
           const newAppeal = await this.professorService.getNewProfessorAppeal(
             record.id
           );
+          console.log(newAppeal);
           this.professorAppeals = newAppeal.concat(this.professorAppeals);
         }
         // update grader status
