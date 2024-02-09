@@ -77,32 +77,23 @@ export class StudentInteractionHistoryComponent {
       this.student.id
     );
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
-    // this.appealId = this.route.snapshot.params['appealId'];
-    // // if (this.appealId) {
-    // const appealId = this.appealId;
-    // console.log({ appealId });
     if (!this.noAppeals) {
-      this.studentAppeals = await this.studentService.fetchStudentAppeals(
-        this.student.id
-      );
-
       this.currentAppeal = this.studentAppeals[0];
       this.professor = await this.sharedService.getProfessor(
         this.currentAppeal.professor_id
       );
+      // get messages for appeal
       this.messages = await this.sharedService.fetchStudentMessages(
         this.currentAppeal.appeal_id,
         this.student.id,
         this.professor.id
       );
-      console.log(this.currentAppeal);
+      console.log(this.messages);
       this.loadStudentAppeals = true;
       this.messageCount = this.messages.length;
       this.loading = false;
-      console.log(this.messages);
       this.handleMessageUpdates();
     } else {
-      this.noAppeals = true;
       this.loading = false;
     }
   }

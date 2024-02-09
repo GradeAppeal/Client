@@ -115,6 +115,7 @@ export class ProfessorInteractionHistoryComponent {
       this.messageCount = this.messages.length;
       this.handleMessageUpdates();
       this.handleAppealUpdates();
+      this.handleNewMessageUpdates();
     }
     // no appeals: show the no appeals message in HTML template
   }
@@ -133,6 +134,7 @@ export class ProfessorInteractionHistoryComponent {
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
         // if delete event, get deleted row ID
+        console.log({ update });
         const record = update.new?.id ? update.new : update.old;
         // INSERT or DELETE
         const event = update.eventType;
@@ -143,6 +145,37 @@ export class ProfessorInteractionHistoryComponent {
           const record: Message = update.new;
           // show new message
           this.messages.push(record);
+          console.log(record);
+        }
+        // is_read updates
+        else if (event === 'UPDATE') {
+          // console.log('update event');
+          this.currentAppeal.is_read = record.is_read;
+        }
+      });
+  }
+
+  handleNewMessageUpdates() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `message-appeal-channel`,
+        `recipient_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT new message
+        const event = update.eventType;
+        if (!record) return;
+        if (event === 'INSERT') {
+          // get new message
+          const record = update.new;
+          // show new message
+          this.professorAppeals = this.professorAppeals.map((professorAppeal) =>
+            professorAppeal.appeal_id === record.appeal_id
+              ? { ...professorAppeal, is_read: false }
+              : { ...professorAppeal }
+          );
         }
       });
   }
@@ -168,7 +201,9 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-    console.log(this.currentAppeal);
+    console.log('is_read before function: ', this.currentAppeal.is_read);
+    await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
+    console.log('is_read after function: ', this.currentAppeal.is_read);
   }
 
   /**
