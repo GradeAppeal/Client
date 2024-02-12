@@ -150,7 +150,6 @@ export class StudentInteractionHistoryComponent {
         `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update }, 'handleStudentMessageUpdates');
         const record = update.new?.id ? update.new : update.old;
         // INSERT or DELETE
         const event = update.eventType;
