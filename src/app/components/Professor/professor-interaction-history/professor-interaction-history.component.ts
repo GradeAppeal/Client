@@ -84,11 +84,11 @@ export class ProfessorInteractionHistoryComponent {
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
-    this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(this.professor.id);
 
     // appeals exist
     if (!this.noAppeals) {
+      this.professorTemplates =
+        await this.professorService.fetchProfessorTemplates(this.professor.id);
       // if navigated from appeal-inbox, get the specific appeal
       // otherwise, set to the most current appeal
       this.currentAppeal =
@@ -113,9 +113,9 @@ export class ProfessorInteractionHistoryComponent {
       }
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
-      this.handleProfessorMessageUpdates();
+      this.handleAppealNewMessages();
       this.handleAppealUpdates();
-      this.handleNewMessageUpdates();
+      this.handleAllNewMessages();
     }
     // no appeals: show the no appeals message in HTML template
   }
@@ -125,13 +125,13 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   /**
-   * Listen for new messages for an appeal
+   * Listen for new messages to update RIGHT pane
    */
-  handleProfessorMessageUpdates() {
+  handleAppealNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `professor-message-channel`,
+        `professor-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
@@ -156,13 +156,13 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   /**
-   * Listen for new appeals to update the left pane
+   * Listen for new appeals to update LEFT pane
    */
-  handleNewMessageUpdates() {
+  handleAllNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `professor-message-recipient-channel`,
+        `professor-all-messages-channel`,
         `recipient_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
@@ -233,7 +233,7 @@ export class ProfessorInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     // update real-time filtering
-    this.handleProfessorMessageUpdates();
+    this.handleAppealNewMessages();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
     // TODO: adjust get appeals function to get student email

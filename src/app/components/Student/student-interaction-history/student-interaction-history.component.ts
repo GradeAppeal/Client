@@ -73,7 +73,7 @@ export class StudentInteractionHistoryComponent {
   }
 
   async ngOnInit() {
-    this.handleStudentMessageUpdates();
+    this.handleAllNewMessages();
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
@@ -94,7 +94,7 @@ export class StudentInteractionHistoryComponent {
       this.loadStudentAppeals = true;
       this.messageCount = this.messages.length;
       this.loading = false;
-      this.handleAppealMessageUpdates();
+      this.handleAppealNewMessages();
     } else {
       this.loading = false;
     }
@@ -110,13 +110,13 @@ export class StudentInteractionHistoryComponent {
   }
 
   /**
-   * Listen for new messages to update right pane with messages
+   * Listen for new messages to update RIGHT pane
    */
-  handleAppealMessageUpdates() {
+  handleAppealNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `student-message-appeal-channel`,
+        `student-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
@@ -140,24 +140,22 @@ export class StudentInteractionHistoryComponent {
   }
 
   /**
-   * Listen for new messages to label left pane with unread blue dot
+   * Listen for new messages to update LEFT pane
    */
-  handleStudentMessageUpdates() {
+  handleAllNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `student-message-recipient-channel`,
+        `student-all-messages-channel`,
         `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
+        // get the new message
         const record = update.new?.id ? update.new : update.old;
-        // INSERT or DELETE
         const event = update.eventType;
         if (!record) return;
         // new student inserted
         if (event === 'INSERT') {
-          // get new message
-          const record = update.new;
           // update left pane
           this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
             studentAppeal.appeal_id === record.appeal_id
@@ -175,7 +173,7 @@ export class StudentInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    this.handleAppealMessageUpdates();
+    this.handleAppealNewMessages();
 
     //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.sharedService.fetchStudentMessages(
