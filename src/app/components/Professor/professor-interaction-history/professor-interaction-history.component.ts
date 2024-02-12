@@ -23,6 +23,7 @@ import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
+import { CloseAppealPopupComponent } from '../professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -81,7 +82,7 @@ export class ProfessorInteractionHistoryComponent {
   }
   async ngOnInit() {
     this.professorAppeals =
-      await this.professorService.fetchAllProfessorAppeals(this.professor.id);
+      await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
     this.professorTemplates =
@@ -143,6 +144,13 @@ export class ProfessorInteractionHistoryComponent {
           const record: Message = update.new;
           // show new message
           this.messages.push(record);
+        }
+        // safety delete check in case closed appeal not removed from appeal inbox
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
         }
       });
   }
@@ -269,6 +277,8 @@ export class ProfessorInteractionHistoryComponent {
         // update grader status
         if (event === 'UPDATE') {
           this.currentAppeal.isread = record.isread;
+          this.currentAppeal.grader_id = record.grader_id;
+          this.currentAppeal.grader_name = record.grader_name;
         }
       });
   }
@@ -322,5 +332,24 @@ export class ProfessorInteractionHistoryComponent {
     date2: Date | string | undefined
   ): boolean {
     return isSameDate(date1, date2);
+  }
+
+  async onCloseAppeal(event: MouseEvent) {
+    const currentAppeal = this.currentAppeal;
+    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
+      width: '30%',
+      height: '25%',
+      data: { currentAppeal },
+    });
+    // update UI: get rid of closed appeal
+    dialogRef.afterClosed().subscribe(async (result: number) => {
+      this.professorAppeals = this.professorAppeals.filter(
+        (appeal) => appeal.appeal_id !== result
+      );
+      this.currentAppeal = this.professorAppeals[0];
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
+      );
+    });
   }
 }

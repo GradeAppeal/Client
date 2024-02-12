@@ -70,6 +70,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
       );
       this.currentAppeal = this.professorAppeals[0];
       this.fetchedAppeals = true;
+
       this.handleAppealUpdates();
     } catch (err) {
       console.log({ err });
@@ -180,8 +181,8 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '50%',
-        height: '50%',
+        width: '35%',
+        height: '35%',
         data: { graderName, appealID, studentID, professorID },
       });
     }
