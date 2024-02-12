@@ -137,7 +137,6 @@ export class ProfessorInteractionHistoryComponent {
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
         // if delete event, get deleted row ID
-        console.log({ update });
         const record = update.new?.id ? update.new : update.old;
         // INSERT or DELETE
         const event = update.eventType;
