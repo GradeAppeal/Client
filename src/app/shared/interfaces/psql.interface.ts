@@ -25,6 +25,7 @@ export interface Message {
   sender_id: string;
   recipient_name: string;
   sender_name: string;
+  is_read: boolean;
 }
 
 export interface Profile {

@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gradeboost-{{ default "staging" .Release.Namespace }}-nginx
-  labels:
-    tier: backend
   namespace: {{ default "staging" .Release.Namespace }}
 spec:
   type: ClusterIP
   ports:
-  - port: 4200
+  - name: http
+    port: 80
+    targetPort: 4200
+    protocol: TCP
   selector:
-    app: gradeboost-{{ default "staging" .Release.Namespace }}-nginx
-    tier: backend
+    app: gradeboost-{{ default "staging" .Release.Namespace }}

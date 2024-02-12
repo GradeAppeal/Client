@@ -1,10 +1,20 @@
 # GradeBoost
-### Problem 
-When it comes to assignments, most students want to get the best grades possible. One way of doing so, especially after the assignment is graded, is to make an appeal for their grade to their professors. Traditionally, this process has been done via email. However, this method led to problems on both the students’ and the professors’ end. While the the appeals were scattered everywhere and cluttered up professors’ inboxes, students’ appeals were prone to be overlooked, leading to a delay in trying to improve their grades. 
-### Description
-To address the frustration that can arise on both ends, we hope to produce GradeBoost, an web application providing a centralized and streamlined solution facilitating the submission, tracking, and resolution of grade appeals. Through the user-friendly interface, students will be able to view their courses and submit assignment-specific grade appeals. In addition, they will be able to track the the progress of their appeals, receive updates, and communicate with the professor through a discussion thread.
-Professors are able to view all their students’ appeals in a centralized dashboard. They may respond, reassign the appeal, forward appeals to graders, and use pre-written templates to help them respond to the appeal. With the development of GradeBoost, we aim to ease the process of appealing and modifying grades for students and professors of Calvin University.
+### Introducing GradeBoost – Revolutionizing the Grade Appeal Process!
+Are you tired of the traditional hassles associated with appealing grades? Look no further!
 
+### Why GradeBoost?
+*Centralized and Streamlined Process:* Say goodbye to scattered emails and cluttered inboxes! GradeBoost provides a centralized platform for students to submit, track, and resolve grade appeals effortlessly. No more lost appeals or overlooked messages.
+*User-Friendly Interface:* Our intuitive interface makes navigating through courses and submitting assignment-specific appeals a breeze. Students can easily track the progress of their appeals, receive updates, and engage in seamless communication with professors through a dedicated discussion thread.
+*Efficient Professor Dashboard:* Professors, rejoice! The centralized dashboard allows you to view all student appeals at a glance. Respond, reassign appeals, forward them to graders, and utilize pre-written templates to streamline your responses. GradeBoost is designed to make your life easier.
+*Interactive Discussion Threads:* Foster effective communication with your professors through dynamic discussion threads. Share thoughts, seek clarification, and engage in meaningful conversations to ensure your voice is heard.
+*Templates for Efficiency:* Professors, save time with our pre-written templates designed to assist you in crafting timely and effective responses. Streamline your workflow and focus on what matters most – educating and supporting your students.
+### Meet the Team
+Ael Lee
+Tyler Voss
+Justin Voss
+Sam Hoogewind
+### Our Mentor: Professor Victor Norman
+Professor Norman was not just our mentor, but our advocate and inspiration behind it! Tired of his overcrowded inbox, Professor Norman envisioned a solution that could help both students and professors. His passion for simplifying the grade appeal process fueled the development of GradeBoost.
 Our website is deployed on [gradeboost.us](https://gradeboost.us)
 
 ### Tech Stack
