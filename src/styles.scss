@@ -50,6 +50,18 @@ $hover-blue: #728edd;
   padding-bottom: 0.5em;
   border-radius: 20px;
 }
+.gray-button {
+  border: 1px solid black;
+  color: black;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
+}
 
 .blue-button:hover {
   background-color: $hover-blue;
@@ -82,8 +94,25 @@ $hover-blue: #728edd;
 }
 .error-message {
   padding-top: 10px;
+  margin: auto;
 }
-
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: $hover-blue;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; /* Display it inline with other content */
+}
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: $hover-blue;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; /* Display it inline with other content */
+  color: red;
+}
 .inbox {
   // border: solid gray 1px;
   width: 230px;

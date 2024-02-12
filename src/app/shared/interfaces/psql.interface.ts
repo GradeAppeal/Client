@@ -15,6 +15,7 @@ export interface Course {
 }
 
 export interface Message {
+  id: number;
   appeal_id: number;
   created_at: Date;
   from_grader: boolean;
