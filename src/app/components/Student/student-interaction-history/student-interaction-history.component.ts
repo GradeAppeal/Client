@@ -104,16 +104,13 @@ export class StudentInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  useTemplate() {}
-
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
   /**
-   * subscription to database changes
-   * filters on appeals
+   * Listen for new messages to update right pane with messages
    */
   handleAppealMessageUpdates() {
     this.sharedService
@@ -123,7 +120,6 @@ export class StudentInteractionHistoryComponent {
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         // if insert or update event, get new row
         // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
@@ -134,16 +130,18 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record: Message = update.new;
-          // show new message
+          // show new message on screen
           this.messages.push(record);
         } // is_read updates
         else if (event === 'UPDATE') {
-          // console.log('update event');
           this.currentAppeal.is_read = record.is_read;
         }
       });
   }
 
+  /**
+   * Listen for new messages to label left pane with unread blue dot
+   */
   handleStudentMessageUpdates() {
     this.sharedService
       .getTableChanges(
@@ -152,9 +150,6 @@ export class StudentInteractionHistoryComponent {
         `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
-        // if insert or update event, get new row
-        // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
         // INSERT or DELETE
         const event = update.eventType;
@@ -163,12 +158,13 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record = update.new;
+          // update left pane
           this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
             studentAppeal.appeal_id === record.appeal_id
               ? { ...studentAppeal, is_read: false }
               : { ...studentAppeal }
           );
-        } // is_read updates
+        }
       });
   }
 
@@ -225,6 +221,7 @@ export class StudentInteractionHistoryComponent {
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
+
   //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
   isSameDate(
     date1: Date | string | undefined,

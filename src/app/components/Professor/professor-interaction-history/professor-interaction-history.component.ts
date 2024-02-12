@@ -124,6 +124,9 @@ export class ProfessorInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
+  /**
+   * Listen for new messages for an appeal
+   */
   handleMessageUpdates() {
     this.sharedService
       .getTableChanges(
@@ -145,16 +148,17 @@ export class ProfessorInteractionHistoryComponent {
           const record: Message = update.new;
           // show new message
           this.messages.push(record);
-          console.log(record);
         }
         // is_read updates
         else if (event === 'UPDATE') {
-          // console.log('update event');
           this.currentAppeal.is_read = record.is_read;
         }
       });
   }
 
+  /**
+   * Listen for new appeals to update the left pane
+   */
   handleNewMessageUpdates() {
     this.sharedService
       .getTableChanges(
@@ -170,11 +174,48 @@ export class ProfessorInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record = update.new;
-          // show new message
+          // show new appeal/message on left pane
           this.professorAppeals = this.professorAppeals.map((professorAppeal) =>
             professorAppeal.appeal_id === record.appeal_id
               ? { ...professorAppeal, is_read: false }
               : { ...professorAppeal }
+          );
+        }
+      });
+  }
+
+  /**
+   * Listen for new appeals & grader updates
+   */
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeals-update-channel',
+        `professor_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        if (!record) return;
+        const event = update.eventType;
+
+        // new appeal
+        if (event === 'INSERT') {
+          const newAppeal = await this.professorService.getNewProfessorAppeal(
+            record.id
+          );
+          this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+        // update grader status
+        else if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        }
+        // delete
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
           );
         }
       });
@@ -256,41 +297,6 @@ export class ProfessorInteractionHistoryComponent {
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
-  }
-
-  handleAppealUpdates(): void {
-    this.sharedService
-      .getTableChanges(
-        'Appeals',
-        'appeals-update-channel',
-        `professor_id=eq.${this.professor.id}`
-      )
-      .subscribe(async (update: any) => {
-        // get the newly updated row
-        const record = update.new?.id ? update.new : update.old;
-        if (!record) return;
-        const event = update.eventType;
-
-        // new appeal inserted
-        if (event === 'INSERT') {
-          const newAppeal = await this.professorService.getNewProfessorAppeal(
-            record.id
-          );
-          console.log(newAppeal);
-          this.professorAppeals = newAppeal.concat(this.professorAppeals);
-        }
-        // update grader status
-        else if (event === 'UPDATE') {
-          this.currentAppeal.grader_id = record.grader_id;
-        }
-        // delete
-        else if (event === 'DELETE') {
-          console.log('delete', { record });
-          this.professorAppeals = this.professorAppeals.filter(
-            (appeal) => appeal !== record.id
-          );
-        }
-      });
   }
 
   async onAssignGrader(event: MouseEvent) {
