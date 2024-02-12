@@ -50,6 +50,7 @@ export class ProfessorInteractionHistoryComponent {
   graderValue: Boolean = true;
 
   professorAppeals: ProfessorAppeal[];
+  filteredAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
   professors: Professor[];
   //template
@@ -83,6 +84,7 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
+    this.filteredAppeals = this.professorAppeals;
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
 
@@ -303,6 +305,30 @@ export class ProfessorInteractionHistoryComponent {
     return formatTimestamp(timestamp);
   }
 
+  async filterResults(text: string) {
+    if (!text) {
+      this.filteredAppeals = this.professorAppeals;
+      return;
+    }
+
+    this.filteredAppeals = this.professorAppeals.filter((appeal) => {
+      return (
+        appeal?.assignment_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_code
+          .toString()
+          .toLowerCase()
+          .includes(text.toLowerCase()) ||
+        (appeal?.student_first_name as string)
+          .toLowerCase()
+          .includes(text.toLowerCase())
+      );
+    });
+    this.currentAppeal = this.filteredAppeals[0];
+    this.messages = await this.sharedService.fetchMessages(
+      this.currentAppeal.appeal_id
+    );
+  }
   async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
