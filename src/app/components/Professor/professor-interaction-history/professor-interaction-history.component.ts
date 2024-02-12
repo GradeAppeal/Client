@@ -113,7 +113,7 @@ export class ProfessorInteractionHistoryComponent {
       }
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
-      this.handleMessageUpdates();
+      this.handleProfessorMessageUpdates();
       this.handleAppealUpdates();
       this.handleNewMessageUpdates();
     }
@@ -127,11 +127,11 @@ export class ProfessorInteractionHistoryComponent {
   /**
    * Listen for new messages for an appeal
    */
-  handleMessageUpdates() {
+  handleProfessorMessageUpdates() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `professor-message-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
@@ -162,7 +162,7 @@ export class ProfessorInteractionHistoryComponent {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-appeal-channel`,
+        `professor-message-recipient-channel`,
         `recipient_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
@@ -233,7 +233,7 @@ export class ProfessorInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     // update real-time filtering
-    this.handleMessageUpdates();
+    this.handleProfessorMessageUpdates();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
     // TODO: adjust get appeals function to get student email

@@ -73,6 +73,7 @@ export class StudentInteractionHistoryComponent {
   }
 
   async ngOnInit() {
+    this.handleStudentMessageUpdates();
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
@@ -97,7 +98,6 @@ export class StudentInteractionHistoryComponent {
     } else {
       this.loading = false;
     }
-    this.handleStudentMessageUpdates();
   }
 
   ngAfterViewChecked() {
@@ -116,7 +116,7 @@ export class StudentInteractionHistoryComponent {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `student-message-appeal-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
@@ -146,10 +146,11 @@ export class StudentInteractionHistoryComponent {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `student-message-recipient-channel`,
         `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
+        console.log({ update }, 'handleStudentMessageUpdates');
         const record = update.new?.id ? update.new : update.old;
         // INSERT or DELETE
         const event = update.eventType;
