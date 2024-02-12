@@ -248,3 +248,34 @@ $hover-blue: #728edd;
     color: gray;
   }
 }
+
+.search {
+  margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+  input {
+    height: 20px;
+    margin-left: 1px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    outline: none;
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+  button {
+    height: 25px;
+    background-color: $primary-blue; /* Change to your desired color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 2px;
+
+    &:hover {
+      background-color: $hover-blue; /* Change to your desired hover color */
+    }
+  }
+}

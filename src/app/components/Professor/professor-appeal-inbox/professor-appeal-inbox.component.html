@@ -2,9 +2,30 @@
 <div class="content" *ngIf="!noAppeals">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox" *ngIf="fetchedAppeals">
+    <div class="search">
+      <input
+        type="text"
+        placeholder="Search for Appeal"
+        #filter
+        (keyup.enter)="filterResults(filter.value)"
+      />
+
+      <button
+        class="primary"
+        type="button"
+        (click)="filterResults(filter.value)"
+      >
+        <mat-icon
+          class="header-avatar"
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="search"
+        ></mat-icon>
+      </button>
+    </div>
     <div
       class="inbox-item"
-      *ngFor="let appeal of professorAppeals"
+      *ngFor="let appeal of filteredAppeals"
       (click)="selectAppeal(appeal)"
       [class.selected-appeal]="appeal === currentAppeal"
     >
