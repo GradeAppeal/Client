@@ -180,4 +180,14 @@ export class SharedService {
     }
     return data[0];
   }
+
+  async updateMessageRead(aid: number): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_messages_read', {
+      aid,
+    });
+    if (error) {
+      console.log({ error });
+      throw new Error('updateMessageRead');
+    }
+  }
 }
