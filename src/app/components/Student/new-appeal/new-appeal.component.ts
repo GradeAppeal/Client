@@ -10,6 +10,7 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
+import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 
 @Component({
   selector: 'app-new-appeal',
@@ -26,6 +27,8 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
+  studentAppeals: StudentAppeal[];
+  errorMessage: string;
 
   constructor(
     private router: Router,
@@ -53,6 +56,9 @@ export class NewAppealComponent implements OnInit {
   async ngOnInit() {
     this.courseId = this.route.snapshot.params['courseId'];
     try {
+      this.studentAppeals = await this.studentService.fetchStudentAppeals(
+        this.student.id
+      );
       // don't render form until course and assignment information has been fetched
       this.course = await this.studentService.fetchCourseForNewAppeal(
         this.courseId
@@ -101,16 +107,23 @@ export class NewAppealComponent implements OnInit {
       const professorID = await this.studentService.getCourseProfessor(
         this.course.id
       );
-      const appealID = await this.studentService.insertNewAppeal(
-        this.selectedAssignmentId,
-        this.student.id,
-        this.courseId,
-        now,
-        this.appeal,
-        professorID
+      const assignmentIds = this.studentAppeals.map(
+        (appeal) => appeal.assignment_id
       );
+      if (assignmentIds.includes(this.selectedAssignmentId)) {
+        this.errorMessage = 'Already submitted an appeal for this assignment';
+      } else {
+        const appealID = await this.studentService.insertNewAppeal(
+          this.selectedAssignmentId,
+          this.student.id,
+          this.courseId,
+          now,
+          this.appeal,
+          professorID
+        );
 
-      this.router.navigateByUrl(`student/interaction-history/${appealID}`);
+        this.router.navigateByUrl(`student/interaction-history/${appealID}`);
+      }
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');

@@ -23,6 +23,7 @@ import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
+import { CloseAppealPopupComponent } from '../professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -81,7 +82,7 @@ export class ProfessorInteractionHistoryComponent {
   }
   async ngOnInit() {
     this.professorAppeals =
-      await this.professorService.fetchAllProfessorAppeals(this.professor.id);
+      await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
 
@@ -151,6 +152,11 @@ export class ProfessorInteractionHistoryComponent {
         // is_read updates
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
+        } else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
         }
       });
   }
@@ -209,9 +215,7 @@ export class ProfessorInteractionHistoryComponent {
         // update grader status
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
-        }
-        // delete
-        else if (event === 'DELETE') {
+        } else if (event === 'DELETE') {
           console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
@@ -309,8 +313,8 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '30%',
-        height: '35%',
+        width: '50%',
+        height: '55%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -330,8 +334,8 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '30%',
-        height: '35%',
+        width: '50%',
+        height: '50%',
         data: { graderName, appealID, studentID, professorID },
       });
     }
@@ -348,5 +352,24 @@ export class ProfessorInteractionHistoryComponent {
     date2: Date | string | undefined
   ): boolean {
     return isSameDate(date1, date2);
+  }
+
+  async onCloseAppeal(event: MouseEvent) {
+    const currentAppeal = this.currentAppeal;
+    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
+      width: '30%',
+      height: '25%',
+      data: { currentAppeal },
+    });
+    // update UI: get rid of closed appeal
+    dialogRef.afterClosed().subscribe(async (result: number) => {
+      this.professorAppeals = this.professorAppeals.filter(
+        (appeal) => appeal.appeal_id !== result
+      );
+      this.currentAppeal = this.professorAppeals[0];
+      this.messages = await this.sharedService.fetchMessages(
+        this.currentAppeal.appeal_id
+      );
+    });
   }
 }

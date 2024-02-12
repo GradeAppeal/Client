@@ -64,12 +64,30 @@
           </h1>
         </div>
         <div class="right-content">
-          <h3 class="grader-header" *ngIf="currentAppeal.grader_name !== null">
+          <span
+            [ngClass]="{
+              'green-dot': currentAppeal.grader_id === null,
+              'red-dot': currentAppeal.grader_id !== null
+            }"
+          ></span>
+          <span
+            class="grader-header"
+            *ngIf="currentAppeal.grader_name !== null"
+          >
             Grader: {{ currentAppeal.grader_name }}
-          </h3>
-          <h3 class="grader-header" *ngIf="currentAppeal.grader_name === null">
+          </span>
+          <span
+            class="grader-header"
+            *ngIf="currentAppeal.grader_name === null"
+          >
             Grader: Unassigned
-          </h3>
+          </span>
+          <button
+            (click)="onCloseAppeal($event)"
+            class="close-appeal-interaction-history gray-button"
+          >
+            <p clas="button-text">Close Appeal</p>
+          </button>
         </div>
       </div>
       <div class="chat-list" #chatListContainer>
@@ -137,13 +155,15 @@
       </div>
       <div class="chat-footer">
         <div class="buttons">
-          <button
-            class="use-template-button"
-            mat-stroked-button
-            [matMenuTriggerFor]="menu"
-          >
-            Use Template
-          </button>
+          <div>
+            <button
+              class="use-template-button"
+              mat-stroked-button
+              [matMenuTriggerFor]="menu"
+            >
+              Use Template
+            </button>
+          </div>
           <button
             *ngIf="currentAppeal.grader_id === null"
             mat-stroked-button
@@ -186,14 +206,14 @@
             Send
           </button>
           <mat-slide-toggle
-            *ngIf="currentAppeal.grader_name !== null"
+            *ngIf="currentAppeal.grader_id !== null"
             disabled="false"
             class="grader-toggle"
             hideIcon="true"
             (change)="talkToGrader()"
           ></mat-slide-toggle>
           <mat-slide-toggle
-            *ngIf="currentAppeal.grader_name === null"
+            *ngIf="currentAppeal.grader_id === null"
             disabled="true"
             class="grader-toggle"
             hideIcon="true"
