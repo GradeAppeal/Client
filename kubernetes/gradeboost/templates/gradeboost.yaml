@@ -29,6 +29,7 @@ spec:
         image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ default "latest" .Values.image.tag }}
         ports:
         - containerPort: 4200
+        command: [ "/bin/sh", "-c", "set -a && source /root/secrets/secrets.env && set +a && PATH=$PATH:/usr/src/app/node_modules/.bin ng serve --host 0.0.0.0 --port 4200 --public-host gradeboost{{ if ne .Release.Namespace "production" }}-{{ default "staging" .Release.Namespace }}.cs{{- end}}.{{ .Values.dns.name }}" ]
 ---
 # {{ if eq .Release.Namespace "production" }}
 # apiVersion: autoscaling/v2

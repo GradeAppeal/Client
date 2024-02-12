@@ -23,4 +23,4 @@ spec:
           service:
             name: gradeboost-{{ default "staging" .Release.Namespace }}-nginx
             port:
-              number: 4200
+              number: 80

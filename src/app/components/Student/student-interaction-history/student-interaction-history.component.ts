@@ -73,36 +73,29 @@ export class StudentInteractionHistoryComponent {
   }
 
   async ngOnInit() {
+    this.handleAllNewMessages();
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
+    console.log(this.studentAppeals[0]);
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
-    // this.appealId = this.route.snapshot.params['appealId'];
-    // // if (this.appealId) {
-    // const appealId = this.appealId;
-    // console.log({ appealId });
     if (!this.noAppeals) {
-      this.studentAppeals = await this.studentService.fetchStudentAppeals(
-        this.student.id
-      );
-
       this.currentAppeal = this.studentAppeals[0];
       this.professor = await this.sharedService.getProfessor(
         this.currentAppeal.professor_id
       );
+      // get messages for appeal
       this.messages = await this.sharedService.fetchStudentMessages(
         this.currentAppeal.appeal_id,
         this.student.id,
         this.professor.id
       );
-      console.log(this.currentAppeal);
+      console.log(this.messages);
       this.loadStudentAppeals = true;
       this.messageCount = this.messages.length;
       this.loading = false;
-      console.log(this.messages);
-      this.handleMessageUpdates();
+      this.handleAppealNewMessages();
     } else {
-      this.noAppeals = true;
       this.loading = false;
     }
   }
@@ -111,27 +104,22 @@ export class StudentInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  useTemplate() {}
-
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
   /**
-   * subscription to database changes
-   * filters on appeals
+   * Listen for new messages to update RIGHT pane
    */
-  handleMessageUpdates() {
-    console.log('current appeal is: ', this.currentAppeal.appeal_id);
+  handleAppealNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `student-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         // if insert or update event, get new row
         // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
@@ -142,8 +130,38 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record: Message = update.new;
-          // show new message
+          // show new message on screen
           this.messages.push(record);
+        } // is_read updates
+        else if (event === 'UPDATE') {
+          this.currentAppeal.is_read = record.is_read;
+        }
+      });
+  }
+
+  /**
+   * Listen for new messages to update LEFT pane
+   */
+  handleAllNewMessages() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `student-all-messages-channel`,
+        `recipient_id=eq.${this.student.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the new message
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        if (!record) return;
+        // new student inserted
+        if (event === 'INSERT') {
+          // update left pane
+          this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
+            studentAppeal.appeal_id === record.appeal_id
+              ? { ...studentAppeal, is_read: false }
+              : { ...studentAppeal }
+          );
         }
       });
   }
@@ -155,7 +173,7 @@ export class StudentInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    this.handleMessageUpdates();
+    this.handleAppealNewMessages();
 
     //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.sharedService.fetchStudentMessages(
@@ -163,7 +181,7 @@ export class StudentInteractionHistoryComponent {
       this.student.id,
       this.professor.id
     );
-    console.log(this.currentAppeal);
+    await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
   }
 
   /**
@@ -204,6 +222,7 @@ export class StudentInteractionHistoryComponent {
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
+
   //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
   isSameDate(
     date1: Date | string | undefined,

@@ -84,11 +84,11 @@ export class ProfessorInteractionHistoryComponent {
       await this.professorService.fetchAllProfessorAppeals(this.professor.id);
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
-    this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(this.professor.id);
 
     // appeals exist
     if (!this.noAppeals) {
+      this.professorTemplates =
+        await this.professorService.fetchProfessorTemplates(this.professor.id);
       // if navigated from appeal-inbox, get the specific appeal
       // otherwise, set to the most current appeal
       this.currentAppeal =
@@ -113,8 +113,9 @@ export class ProfessorInteractionHistoryComponent {
       }
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
-      this.handleMessageUpdates();
+      this.handleAppealNewMessages();
       this.handleAppealUpdates();
+      this.handleAllNewMessages();
     }
     // no appeals: show the no appeals message in HTML template
   }
@@ -123,11 +124,14 @@ export class ProfessorInteractionHistoryComponent {
     this.scrollToBottom();
   }
 
-  handleMessageUpdates() {
+  /**
+   * Listen for new messages to update RIGHT pane
+   */
+  handleAppealNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `professor-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
@@ -143,6 +147,75 @@ export class ProfessorInteractionHistoryComponent {
           const record: Message = update.new;
           // show new message
           this.messages.push(record);
+        }
+        // is_read updates
+        else if (event === 'UPDATE') {
+          this.currentAppeal.is_read = record.is_read;
+        }
+      });
+  }
+
+  /**
+   * Listen for new appeals to update LEFT pane
+   */
+  handleAllNewMessages() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `professor-all-messages-channel`,
+        `recipient_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT new message
+        const event = update.eventType;
+        if (!record) return;
+        if (event === 'INSERT') {
+          // get new message
+          const record = update.new;
+          // show new appeal/message on left pane
+          this.professorAppeals = this.professorAppeals.map((professorAppeal) =>
+            professorAppeal.appeal_id === record.appeal_id
+              ? { ...professorAppeal, is_read: false }
+              : { ...professorAppeal }
+          );
+        }
+      });
+  }
+
+  /**
+   * Listen for new appeals & grader updates
+   */
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Appeals',
+        'appeals-update-channel',
+        `professor_id=eq.${this.professor.id}`
+      )
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        if (!record) return;
+        const event = update.eventType;
+
+        // new appeal
+        if (event === 'INSERT') {
+          const newAppeal = await this.professorService.getNewProfessorAppeal(
+            record.id
+          );
+          this.professorAppeals = newAppeal.concat(this.professorAppeals);
+        }
+        // update grader status
+        else if (event === 'UPDATE') {
+          this.currentAppeal.grader_id = record.grader_id;
+        }
+        // delete
+        else if (event === 'DELETE') {
+          console.log('delete', { record });
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal !== record.id
+          );
         }
       });
   }
@@ -161,7 +234,7 @@ export class ProfessorInteractionHistoryComponent {
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
     // update real-time filtering
-    this.handleMessageUpdates();
+    this.handleAppealNewMessages();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
     // TODO: adjust get appeals function to get student email
@@ -169,34 +242,7 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
-
-    //console.log(this.messages[this.messages.length - 1].isread);
-    this.markMessagesAsRead(this.messages);
-    console.log(this.messages);
-  }
-  hasUnreadMessages(appeal: any) {
-    if (this.messages) {
-      const appealMessages = this.messages.filter(
-        (message) => message.appeal_id === appeal.id
-      );
-
-      // Sort messages in descending order of creation time
-      const sortedMessages = appealMessages.sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-
-      // Return true if there are unread messages for the appeal
-      //return sortedMessages.some((message) => !message.isread);
-    }
-    return false;
-  }
-
-  async markMessagesAsRead(messages: Message[]) {
-    console.log(messages[messages.length - 1].id);
-    console.log(this.currentAppeal.appeal_id);
-    console.log(this.currentAppeal.isread);
-    await this.sharedService.mark_appeal_as_read(this.currentAppeal.appeal_id);
+    await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
   }
 
   /**
@@ -251,26 +297,6 @@ export class ProfessorInteractionHistoryComponent {
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
-  }
-
-  handleAppealUpdates(): void {
-    this.sharedService
-      .getTableChanges(
-        'Appeals',
-        'appeals-update-channel',
-        `professor_id=eq.${this.professor.id}`
-      )
-      .subscribe(async (update: any) => {
-        // get the newly updated row
-        const record = update.new?.id ? update.new : update.old;
-        if (!record) return;
-        const event = update.eventType;
-
-        // update grader status
-        if (event === 'UPDATE') {
-          this.currentAppeal.isread = record.isread;
-        }
-      });
   }
 
   async onAssignGrader(event: MouseEvent) {
