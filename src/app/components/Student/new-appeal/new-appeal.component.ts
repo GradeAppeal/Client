@@ -10,6 +10,7 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-new-appeal',
@@ -26,12 +27,26 @@ export class NewAppealComponent implements OnInit {
   assignments: Assignment[];
   selectedAssignmentId: number;
   appeal: string;
+  imageFile: File;
+
+  onFilechange(event: any) {
+    console.log(event.target.files[0])
+    this.imageFile = event.target.files[0]
+  }
+
+  appealForm = this.formBuilder.group({
+    selectedAssignmentId: '',
+    appeal: '',
+    imageFile: null
+  });
+
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private formBuilder: FormBuilder
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -90,13 +105,15 @@ export class NewAppealComponent implements OnInit {
    */
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
+    console.log(this.imageFile);
     try {
       console.log(
         this.selectedAssignmentId,
         this.appeal,
         this.courseId,
         now,
-        this.student.id
+        this.student.id,
+        this.imageFile
       );
       const professorID = await this.studentService.getCourseProfessor(
         this.course.id
@@ -108,6 +125,11 @@ export class NewAppealComponent implements OnInit {
         now,
         this.appeal,
         professorID
+      );
+
+      const imageID = await this.studentService.uploadFile(
+        appealID,
+        this.imageFile
       );
 
       this.router.navigateByUrl(`student/interaction-history/${appealID}`);
