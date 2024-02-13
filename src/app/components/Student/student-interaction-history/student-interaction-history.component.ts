@@ -207,6 +207,9 @@ export class StudentInteractionHistoryComponent {
         `${this.student.first_name} ${this.student.last_name}`,
         `${this.professor.first_name} ${this.professor.last_name}`
       );
+      await this.sharedService.mark_appeal_as_unread(
+        this.currentAppeal.appeal_id
+      );
       this.chatInputMessage = '';
       this.scrollToBottom();
     } catch (err) {

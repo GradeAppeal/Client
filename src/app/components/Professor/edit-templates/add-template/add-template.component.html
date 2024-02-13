@@ -1,20 +1,23 @@
 <div class="page">
-    <div class="content">
-        <div class="header">
-            <h1 class="title">Add Template</h1>
-        </div>
-        <div class="input-fields">
-        <p class="description">Enter Template Name:</p>
-        <mat-form-field class="input-box">
-            <textarea matInput [(ngModel)]="newTemplateName"></textarea>
-        </mat-form-field>
-        <p class="description">Enter Template Text:</p>
-        <mat-form-field class="input-box">
-            <textarea matInput [(ngModel)]="newTemplateText"></textarea>
-        </mat-form-field>
-        </div>
-        <div class="button-div">
-            <button mat-button class="blue-button" (click)="onAddTemplate()">Submit</button>
-        </div>
+  <div class="content">
+    <div class="header">
+      <h1 class="title">Add Template</h1>
     </div>
+    <div class="input-fields">
+      <p class="description">Enter Template Name:</p>
+      <mat-form-field class="input-box">
+        <textarea matInput [(ngModel)]="newTemplateName"></textarea>
+      </mat-form-field>
+      <p class="description">Enter Template Text:</p>
+      <mat-form-field class="input-box">
+        <textarea matInput [(ngModel)]="newTemplateText"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="button-div">
+      <button mat-button class="blue-button" (click)="onAddTemplate()">
+        Submit
+      </button>
+    </div>
+    <div class="error-message">{{ errorMessage }}</div>
+  </div>
 </div>
