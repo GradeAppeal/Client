@@ -16,7 +16,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class ClosedAppealsComponent implements OnInit {
   professor: Professor;
-  closedAppeals: ProfessorAppeal[] = [];
+  closedAppeals: ProfessorAppeal[];
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,

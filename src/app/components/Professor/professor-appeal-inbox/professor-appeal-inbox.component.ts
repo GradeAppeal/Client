@@ -59,16 +59,15 @@ export class ProfessorAppealInboxComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.professorService
-      .getOpenProfessorAppeals(this.professor.id)
-      .subscribe((res) => {
-        this.professorAppeals = res.data;
-        this.filteredAppeals = this.professorAppeals;
-        this.noAppeals = this.professorAppeals.length === 0 ? true : false;
-        this.currentAppeal = this.professorAppeals[0];
-        this.fetchedAppeals = true;
-      });
     try {
+      this.professorAppeals =
+        await this.professorService.fetchOpenProfessorAppeals(
+          this.professor.id
+        );
+      this.filteredAppeals = this.professorAppeals;
+      this.noAppeals = this.professorAppeals.length === 0 ? true : false;
+      this.currentAppeal = this.professorAppeals[0];
+      this.fetchedAppeals = true;
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );

@@ -2,9 +2,11 @@
   <button mat-button type="submit" (click)="onBackButton()" class="blue-button">
     Back
   </button>
-  <p class="course-title">{{ formatCourse(course) }}</p>
-  <div class="scroll assignments">
-    <table class="assignment-table">
+  <p class="course-title" *ngIf="course; else loadingSpinner">
+    {{ formatCourse(course) }}
+  </p>
+  <div class="scroll assignments" *ngIf="assignments; else loadingSpinner">
+    <table class="assignment-table" *ngIf="assignments.length !== 0">
       <tr>
         <th class="global-th">Assignment</th>
       </tr>
@@ -22,6 +24,10 @@
         </td>
       </tr>
     </table>
+    <div *ngIf="assignments.length === 0" class="empty">
+      <h1>There are no assignments for this class.</h1>
+      <h2>Add assignments using the button below</h2>
+    </div>
   </div>
   <button
     mat-icon-button
@@ -31,3 +37,9 @@
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
+<ng-template #loadingSpinner>
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <div class="fetch-message">Fetching Assignment Information...</div>
+  </div>
+</ng-template>
