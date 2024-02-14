@@ -3,7 +3,7 @@
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
 />
 
-<div class="main">
+<!-- <div class="main">
   <div>
     <div class="card-container" *ngIf="isCourseFetched && isAssignmentsFetched">
       <mat-card class="appeal-card">
@@ -29,4 +29,31 @@
       </mat-card>
     </div>
   </div>
+</div> -->
+
+<div class="main">
+  <form [formGroup]="appealForm" (ngSubmit)="onSubmitAppeal()">
+    <div>
+      <label for="select">
+        Select Assignment:
+      </label>
+      <input list="assignments" formControlName="selectedAssignmentId" [(ngModel)]="selectedAssignmentId">
+      <datalist id="assignments">
+        <option *ngFor="let assignment of assignments" [value]="assignment.id">{{ assignment.assignment_name }}</option>
+      </datalist>
+    </div>
+    <div>
+      <label for="appeal">
+        Enter your reason for appeal:
+      </label>
+      <input id="appeal" type="text" formControlName="appeal" [(ngModel)]="appeal">
+    </div>
+    <div>
+      <label for="image">
+        Upload an image if appropriate:
+      </label>
+      <input id="image" type="file" formControlName="imageFile" (change)="this.onFilechange($event)">
+    </div>
+    <button mat-raised-button type="submit">Submit</button>
+  </form>
 </div>
