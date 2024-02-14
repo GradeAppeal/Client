@@ -38,9 +38,6 @@ export class ProfessorNavigationComponent {
   }
 
   logoutPopUp() {
-    this.dialog.open(SignoutComponent, {
-      width: '30%',
-      height: '25%',
-    });
+    this.dialog.open(SignoutComponent, {});
   }
 }

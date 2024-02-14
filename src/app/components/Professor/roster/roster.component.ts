@@ -24,26 +24,25 @@ import { DialogRef } from '@angular/cdk/dialog';
 export class RosterComponent {
   course: Course = {
     id: 0,
-  prefix: "",
-  code: 0,
-  name: "",
-  section: "",
-  semester: "FA",
-  year: 0
+    prefix: '',
+    code: 0,
+    name: '',
+    section: '',
+    semester: 'FA',
+    year: 0,
   };
-
 
   courseStudents!: StudentCourseGraderInfo[];
   fetchedStudents = false;
   fetchedCourse = false;
   addedStudents: string;
-  addedStudentsCSV: string = "";
+  addedStudentsCSV: string = '';
   currentCourse: Course;
   parsedStudentsToAdd: ParsedStudent[] = [];
   parsedStudent: ParsedStudent;
   splitStudent: string[];
   courseID: number;
-  isNewStudent : boolean = false;
+  isNewStudent: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,7 +54,6 @@ export class RosterComponent {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
     });
-    
   }
 
   async ngOnInit() {
@@ -76,11 +74,18 @@ export class RosterComponent {
       });
 
       // update addedStudentCSV string
-      this.addedStudentsCSV = "";
+      this.addedStudentsCSV = '';
       console.log(this.courseStudents);
-      this.addedStudentsCSV = this.addedStudentsCSV.concat("First name\tLast name\tEmail address\n")
+      this.addedStudentsCSV = this.addedStudentsCSV.concat(
+        'First name\tLast name\tEmail address\n'
+      );
       this.courseStudents.forEach((student) => {
-        this.addedStudentsCSV = this.addedStudentsCSV.concat(student.student_name, " ", student.email, "\n");
+        this.addedStudentsCSV = this.addedStudentsCSV.concat(
+          student.student_name,
+          ' ',
+          student.email,
+          '\n'
+        );
       });
       this.addedStudentsCSV = this.addedStudentsCSV.trimRight();
       console.log(this.addedStudentsCSV);
@@ -168,8 +173,6 @@ export class RosterComponent {
     studentCourseGrader: StudentCourseGraderInfo
   ): Promise<void> {
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      width: '15%',
-      height: '15%',
       data: { studentCourseGrader },
     });
   }
@@ -192,12 +195,12 @@ export class RosterComponent {
 
     studentsToAdd.forEach((student) => {
       // format spaces into tabs
-      student = student.replace(/ /g, '\t').trimRight();  
+      student = student.replace(/ /g, '\t').trimRight();
       this.splitStudent = student.split('\t');
       this.parsedStudent = {
         first_name: this.splitStudent[0],
         last_name: this.splitStudent[1],
-        email: this.splitStudent[2]
+        email: this.splitStudent[2],
       };
 
       parsedStudentsToAdd.push(this.parsedStudent);
@@ -205,11 +208,11 @@ export class RosterComponent {
     return parsedStudentsToAdd;
   }
 
-  getIsGrader(student: any) : boolean {
+  getIsGrader(student: any): boolean {
     return student.is_grader;
   }
 
-    /**
+  /**
    * Reads file on file change
    */
   onFileChange(event: any) {
@@ -221,8 +224,8 @@ export class RosterComponent {
   }
 
   /**
- * Reads file and convert CSV content into string
- */
+   * Reads file and convert CSV content into string
+   */
   readFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -300,7 +303,6 @@ export class RosterComponent {
   onBackButton() {
     this.router.navigateByUrl('professor/courses');
   }
-
 
   addStudentPopUp() {
       const dialogRef = this.dialog.open(AddStudentPopupComponent, {
