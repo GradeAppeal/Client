@@ -32,9 +32,12 @@ $hover-blue: #728edd;
   overflow-y: auto;
   height: 90vh;
   &.assignments {
-    height: 60vh;
+    height: 55vh;
   }
   &.edit-templates-container {
+    height: 80vh;
+  }
+  &.about-container {
     height: 80vh;
   }
 }

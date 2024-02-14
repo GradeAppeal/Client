@@ -6,7 +6,6 @@ import {
   StudentCourse,
 } from '../shared/interfaces/student.interface';
 import { Course, Assignment } from '../shared/interfaces/psql.interface';
-import { decode } from 'base64-arraybuffer';
 
 @Injectable({
   providedIn: 'root',

@@ -10,8 +10,8 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
-import { FormBuilder } from '@angular/forms';}
-import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';}
+import { FormBuilder } from '@angular/forms';
+import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 
 @Component({
   selector: 'app-new-appeal',

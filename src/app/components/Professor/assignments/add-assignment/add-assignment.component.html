@@ -2,12 +2,13 @@
 <mat-dialog-content
   >Enter Assignment Name (e.g. Homework 1, Project 1)</mat-dialog-content
 >
-<div class="content">
+<form class="content" #myForm="ngForm">
   <mat-form-field class="input">
-    <textarea matInput [(ngModel)]="newAssignment"></textarea>
+    <input matInput [(ngModel)]="newAssignment" required name="assignment" #assignment="ngModel">
+    <p class="error-message" *ngIf="assignment.invalid && assignment.touched">Assignment name is required</p>
   </mat-form-field>
-  <button mat-button class="blue-button" (click)="onAddAssignment()">
+  <button mat-button class="blue-button" (click)="onAddAssignment()" [disabled]="myForm.invalid">
     Submit
   </button>
   <div class="error-message">{{ errorMessage }}</div>
-</div>
+</form>
