@@ -8,12 +8,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .content {
-    // margin-top: 0px;
+    // margin-top: 10px;
+    border-radius: 10px;
+    padding: 0 1em;
     background-color: white;
     height: 100%;
+    width: 80%;
+}
+
+.blank-space {
+    height: 6px;
+    width: 100%;
 }
 
 .description {
@@ -21,34 +30,16 @@
     color: grey;
   }
 
+.input-field {
+    margin: 0px;
+}
+
 .input-box {
 height: 20%;
 width: 90%;
 }
 
 
-.top-bar{
-    font-size: 40px;
-    color: $primary-blue;
-    height: 80px;
-    padding-top: 8px;
-  }
-
-  .left-content{
-    margin-right: auto;
-    align-items: center; 
-    display: flex;
-  }
-
-.right-content {
-    margin-left: auto; 
-    display: flex;
-    align-items: center; 
-}
-
-.input-fields {
-    margin-left: 0px;
-}
 
 mat-form-field {
     width: 70%;
@@ -59,7 +50,7 @@ mat-form-field {
 }
 
 .image-input-section {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .image-description {
@@ -80,3 +71,4 @@ align-items: center;
 cursor: pointer;
 // padding: 0.6em 1em 0.6em 1em;
 }
+
