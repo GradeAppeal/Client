@@ -61,6 +61,19 @@
         ></mat-icon>
         &ensp;Interaction History
       </button>
+      <div class="grader-divider"></div>
+      <button
+        class="tab-text sidenav-button"
+        [routerLink]="['/student/grader/course-dashboard']"
+        routerLinkActive="selected"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="dashboard"
+        ></mat-icon>
+        &ensp;Grader Dashboard
+      </button>
       <button
         class="sidenav-button"
         [routerLink]="['/student/grader/interaction-history']"

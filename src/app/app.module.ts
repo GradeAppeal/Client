@@ -71,6 +71,7 @@ import { AboutComponent } from './components/about/about.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
+import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 //import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     RequestPasswordResetSnackbarComponent,
     AddStudentPopupComponent,
     ErrorHandlerComponent,
+    GraderDashboardComponent,
   ],
   imports: [
     BrowserModule,

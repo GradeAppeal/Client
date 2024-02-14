@@ -10,8 +10,8 @@ import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
-import { FormBuilder } from '@angular/forms';}
-import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';}
+import { FormBuilder } from '@angular/forms';
+import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 
 @Component({
   selector: 'app-new-appeal',
@@ -33,14 +33,14 @@ export class NewAppealComponent implements OnInit {
   imageFile: File;
 
   onFilechange(event: any) {
-    console.log(event.target.files[0])
-    this.imageFile = event.target.files[0]
+    console.log(event.target.files[0]);
+    this.imageFile = event.target.files[0];
   }
 
   appealForm = this.formBuilder.group({
     selectedAssignmentId: '',
     appeal: '',
-    imageFile: null
+    imageFile: null,
   });
 
   constructor(

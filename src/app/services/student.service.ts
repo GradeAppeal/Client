@@ -39,6 +39,24 @@ export class StudentService {
   }
 
   /**
+   * Fetches the student's courses (both enrolled and grading)
+   * @param sid student id
+   * @returns
+   */
+  async fetchGraderCourses(sid: string): Promise<StudentCourse[]> {
+    const { data, error } = await this.supabase.rpc('get_grader_courses', {
+      sid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error('Error in fetchStudentCourses');
+    }
+    console.log('fetchStudentCourses from student.service.ts');
+    console.log(data);
+    return data;
+  }
+
+  /**
    *
    * @param sid student id
    * @returns All the appeals made by the student
@@ -137,11 +155,11 @@ export class StudentService {
 
   async uploadFile(aid: number, imagePath: File) {
     const { data, error } = await this.supabase.storage
-    .from('appeal.images')
-    .upload(`appeal${aid}`, imagePath, {
-      cacheControl: '3600',
-      upsert: false
-    })
+      .from('appeal.images')
+      .upload(`appeal${aid}`, imagePath, {
+        cacheControl: '3600',
+        upsert: false,
+      });
     if (error) {
       console.log(error);
       throw new Error('Error in uploadFile');
