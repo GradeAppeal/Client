@@ -1,5 +1,5 @@
 <!-- Main Content Section -->
-<div class="content" *ngIf="!noAppeals">
+<div class="content scroll" *ngIf="!noAppeals">
   <!-- Left Pane (List of Appeals) -->
   <div class="inbox" *ngIf="fetchedAppeals">
     <div class="search">
@@ -54,7 +54,7 @@
     </div>
     <ng-template #elseBlock>
       <div *ngIf="fetchedAppeals" class="appeal-wrapper">
-        <mat-card class="appeal">
+        <div class="appeal">
           <h2 class="appeal-header">
             <div>
               <mat-icon
@@ -99,7 +99,7 @@
               </div>
             </div>
           </div>
-          <div class="message-container">
+          <div class="message-container scroll">
             <p class="message">{{ currentAppeal.appeal_text }}</p>
           </div>
           <div class="buttons">
@@ -137,7 +137,7 @@
               Unassign Grader
             </button>
           </div>
-        </mat-card>
+        </div>
       </div>
     </ng-template>
   </div>

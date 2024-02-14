@@ -406,10 +406,7 @@ export class ProfessorService {
     if (error) {
       console.log({ error });
 
-      this.dialog.open(ErrorHandlerComponent, {
-        width: '60%',
-        height: '80%',
-      });
+      this.dialog.open(ErrorHandlerComponent, {});
       return null;
     }
     // user created: return the User object
