@@ -339,8 +339,6 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '50%',
-        height: '55%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -360,8 +358,6 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '50%',
-        height: '50%',
         data: { graderName, appealID, studentID, professorID },
       });
     }
@@ -383,8 +379,6 @@ export class ProfessorInteractionHistoryComponent {
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { currentAppeal },
     });
     // update UI: get rid of closed appeal

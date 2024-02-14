@@ -103,27 +103,19 @@ export class CoursesComponent {
 
   onViewRoster(course: Course) {
     console.log({ course });
-    this.router.navigateByUrl(
-      `professor/roster/${course.id}`
-    );
+    this.router.navigateByUrl(`professor/roster/${course.id}`);
   }
 
   onViewAssignments(course: Course) {
     console.log({ course });
-    this.router.navigateByUrl(
-      `professor/assignments/${course.id}`
-    );
+    this.router.navigateByUrl(`professor/assignments/${course.id}`);
   }
-
-
 
   /**
    * Goes to AddCourse pop up component
    */
   async addCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddCourseComponent, {
-      width: '80%',
-      height: '80%',
       data: {},
     });
   }
@@ -135,8 +127,6 @@ export class CoursesComponent {
     /* prevent navigation to different view */
     event.stopPropagation();
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      width: '50%',
-      height: '55%',
       data: { cid: course.id, pid: this.professor.id },
     });
   }
