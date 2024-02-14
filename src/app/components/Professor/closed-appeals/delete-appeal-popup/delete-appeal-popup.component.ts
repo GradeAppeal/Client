@@ -22,7 +22,10 @@ export class DeleteAppealPopupComponent {
 
   async onDeleteAppeal() {
     try {
-      await this.professorService.deleteAppeal(this.appeal.appeal_id);
+      const deletedAppealID = await this.professorService.deleteAppeal(
+        this.appeal.appeal_id
+      );
+      this.dialogRef.close(deletedAppealID);
     } catch (err) {
       console.log({ err });
     }

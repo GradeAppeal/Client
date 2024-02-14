@@ -22,6 +22,8 @@ export interface ProfessorAppeal {
   grader_id?: string;
   grader_name?: string;
   last_modified?: Date | string;
+  isread: boolean;
+  is_read: boolean;
 }
 
 export interface ProfessorTemplate {

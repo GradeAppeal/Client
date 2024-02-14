@@ -101,5 +101,10 @@ export class ClosedAppealsComponent implements OnInit {
       height: '25%',
       data: { appealToDelete },
     });
+    dialogRef.afterClosed().subscribe((deletedAppealId: number) => {
+      this.closedAppeals = this.closedAppeals.filter(
+        (appeal) => appeal.appeal_id !== deletedAppealId
+      );
+    });
   }
 }

@@ -53,6 +53,18 @@ $hover-blue: #728edd;
   padding-bottom: 0.5em;
   border-radius: 20px;
 }
+.gray-button {
+  border: 1px solid black;
+  color: black;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
+}
 
 .blue-button:hover {
   background-color: $hover-blue;
@@ -85,8 +97,16 @@ $hover-blue: #728edd;
 }
 .error-message {
   padding-top: 10px;
+  margin: auto;
 }
-
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: $hover-blue;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; /* Display it inline with other content */
+}
 .inbox {
   // border: solid gray 1px;
   width: 230px;
@@ -229,5 +249,36 @@ $hover-blue: #728edd;
   .section-date {
     font-size: 13px;
     color: gray;
+  }
+}
+
+.search {
+  margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+  input {
+    height: 20px;
+    margin-left: 1px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    outline: none;
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+  button {
+    height: 25px;
+    background-color: $primary-blue; /* Change to your desired color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 2px;
+
+    &:hover {
+      background-color: $hover-blue; /* Change to your desired hover color */
+    }
   }
 }

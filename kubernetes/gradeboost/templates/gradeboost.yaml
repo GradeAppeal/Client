@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradeboost-{{ default "staging" .Release.Namespace }}
+  namespace: {{ default "staging" .Release.Namespace }}
+  labels:
+    app: gradeboost-{{ default "staging" .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradeboost-{{ default "staging" .Release.Namespace }}
+  template:
+    metadata:
+      annotations:
+        releaseTime: {{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}
+      labels:
+        app: gradeboost-{{ default "staging" .Release.Namespace }}
+        {{ if ne .Release.Namespace "production" }}name: gradeboost-{{ .Release.Namespace }}{{- else }}hostname: gradeboost{{- end }}
+    spec:
+      {{ if ne .Release.Namespace "production" }}hostname: gradeboost-{{ .Release.Namespace }}{{- else }}hostname: gradeboost{{- end }} 
+      dnsPolicy: Default
+      dnsConfig:
+        searches:
+          - cs.calvin.edu
+      containers:
+      - name: gradeboost-{{ default "staging" .Release.Namespace }}
+        image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ default "latest" .Values.image.tag }}
+        ports:
+        - containerPort: 4200
+        command: [ "/bin/sh", "-c", "set -a && source /root/secrets/secrets.env && set +a && PATH=$PATH:/usr/src/app/node_modules/.bin ng serve --host 0.0.0.0 --port 4200 --public-host gradeboost{{ if ne .Release.Namespace "production" }}-{{ default "staging" .Release.Namespace }}.cs{{- end}}.{{ .Values.dns.name }}" ]
+---
+# {{ if eq .Release.Namespace "production" }}
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: gradeboost-{{ default "staging" .Release.Namespace }}
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: gradeboost-{{ default "staging" .Release.Namespace }}
+#   minReplicas: 1
+#   maxReplicas: 2
+#   #targetCPUUtilizationPercentage: 90
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 90
+#   - type: Resource
+#     resource:
+#       name: memory
+#       target:
+#         type: Utilization
+#         averageUtilization: 90
+# {{- end }}

@@ -43,10 +43,11 @@ Thumbs.db
 
 .env
 secret_env.ts
-
-.env
-secret_env.ts
 .vercel
 .env*.local
 
 *.txt
+
+# secrets
+secrets/
+!secrets/base64-encode-secrets.sh

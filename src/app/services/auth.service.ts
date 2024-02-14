@@ -30,14 +30,12 @@ export class AuthService {
 
     // create auth user subscription
     this.supabase.auth.onAuthStateChange((event, session) => {
-      console.log('event: ', event);
       if (
         session &&
         (event === 'SIGNED_IN' ||
           event === 'TOKEN_REFRESHED' ||
           event === 'PASSWORD_RECOVERY')
       ) {
-        console.log({ session });
         this.$currentUser.next(session.user);
       } else {
         this.$currentUser.next(false);
@@ -270,7 +268,7 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: 'https://gradeboost.us/reset-password',
+        redirectTo: 'https://gradeboost.cs.calvin.edu/reset-password',
       }
     );
 

@@ -7,17 +7,26 @@
       (click)="selectAppeal(appeal)"
       [class.selected-appeal]="appeal === currentAppeal"
     >
-      <p matLine class="inbox-timestamp">
-        {{ formatTimestamp(appeal.created_at).time }}
-      </p>
-      <p matLine>
-        <b>
-          {{ appeal?.professor_first_name }}
-        </b>
-      </p>
-
-      <p matLine>{{ appeal.course_name }}</p>
-      <p matLine>{{ appeal?.assignment_name }}</p>
+      <div class="inbox-left">
+        <p matLine>
+          <b>
+            {{ appeal?.professor_first_name }} {{ appeal?.professor_last_name }}
+          </b>
+        </p>
+        <p matLine>{{ appeal.course_name }}</p>
+        <p matLine>{{ appeal?.assignment_name }}</p>
+      </div>
+      <div class="inbox-right">
+        <p class="inbox-timestamp">
+          {{ formatTimestamp(appeal.created_at).time }}
+        </p>
+        <div
+          [ngClass]="{
+            'unread-dot': appeal.is_read === false,
+            'no-dot': appeal.is_read !== false
+          }"
+        ></div>
+      </div>
     </div>
   </div>
   <!-- Right Pane (Selected Appeal Details) -->

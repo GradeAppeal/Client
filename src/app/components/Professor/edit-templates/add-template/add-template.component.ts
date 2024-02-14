@@ -13,6 +13,8 @@ export class AddTemplateComponent {
   professorID: string;
   newTemplateName: string;
   newTemplateText: string;
+  professorTemplates: ProfessorTemplate[];
+  errorMessage: string;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,6 +23,10 @@ export class AddTemplateComponent {
   ) {
     this.professorID = data.professorID;
   }
+  async ngOnInit() {
+    this.professorTemplates =
+      await this.professorService.fetchProfessorTemplates(this.professorID);
+  }
 
   /*
    * Add template to database
@@ -28,16 +34,26 @@ export class AddTemplateComponent {
   async onAddTemplate() {
     /*  add template to database */
     try {
-      await this.professorService.insertTemplate(
-        this.professorID,
-        this.newTemplateName,
-        this.newTemplateText
-      );
+      if (this.checkTemplates(this.newTemplateName, this.professorTemplates)) {
+        console.log('You gotta change this name');
+        this.errorMessage =
+          'Already have template with that name. Please change name.';
+      } else {
+        await this.professorService.insertTemplate(
+          this.professorID,
+          this.newTemplateName,
+          this.newTemplateText
+        );
+        /*   close pop-up */
+        this.dialogRef.close();
+      }
     } catch (err) {
       console.log(err);
       throw new Error('insertTemplate');
     }
-    /*   close pop-up */
-    this.dialogRef.close();
+  }
+
+  checkTemplates(templateName: string, templateList: ProfessorTemplate[]) {
+    return templateList.some((template) => template.temp_name === templateName);
   }
 }

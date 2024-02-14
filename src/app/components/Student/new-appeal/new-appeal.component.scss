@@ -3,14 +3,16 @@
 
 .page {
     background-color: $primary-blue;
-    margin: 0;
     padding: 0;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .content {
+    // margin-top: 0px;
     background-color: white;
-    margin-top: 0px;
     height: 100%;
 }
 
@@ -54,4 +56,27 @@ mat-form-field {
 
 .mat-raised-button.mat-primary .mat-button-focus-overlay {
     // background-color: blue;
+}
+
+.image-input-section {
+    margin-bottom: 2em;
+}
+
+.image-description {
+    padding-right: 1em;
+}
+
+input[type="file"] {
+    display: none;
+}
+  
+.custom-file-input {
+// background-color: grey;
+margin: 0.5em 0px;
+justify-content: center;
+align-items: center;
+// font-size: 10px;
+// margin-left: 0.5em;
+cursor: pointer;
+// padding: 0.6em 1em 0.6em 1em;
 }

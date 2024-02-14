@@ -3,12 +3,7 @@
     <h1 mat-dialog-title>Delete this appeal?</h1>
     <p>This action is irreversible!</p>
     <mat-dialog-actions>
-      <button
-        mat-raised-button
-        [mat-dialog-close]="true"
-        class="delete"
-        (click)="onDeleteAppeal()"
-      >
+      <button mat-raised-button class="delete" (click)="onDeleteAppeal()">
         Delete
       </button>
       <button mat-raised-button [mat-dialog-close]="false">Cancel</button>

@@ -1,30 +1,40 @@
+# Note: this relies on Docker secrets to build, but the secrets are not stored in Git.  
+# This build script looks to the 'secrets' directory for a secrets.env file 
+# (so ./secrets/secrets.env file) that has secrets listed in the following format:
+#   VAR1="value"
+#   VAR2="value2"
+# Multi-line Github secrets are a PAIN, so while that is good-enough for local Docker builds,
+# we have to do a few extra steps for Github secrets to work -- mainly, converting the secrets
+# into base64. So we need two files here:
+#   secrets.env -- the plaintext key-pair values for the secrets
+#   secrets.b64 -- the base64 encoded version of secrets.env
+# Because I can't remember the commands I need to use, I wrote a script to help convert secrets.env
+# over to secrets.b64. So assuming you have secrets.b64, you should be able to do:
+#   cd secrets
+#   ./base64-encode-secrets.sh
+# This will create in the 'secrets' directory a secrets.b64 file ( so ./secrets/secrets.b64 ) that 
+# we then use to import our secrets into the container. The manual way of doing this would be:
+# (cat secrets.env | base64 -w 0 > secrets.b64). Decode the secret when 
+# building the container by doing: (cat <secret> | base64 -d > <file>)
+#
+# For Github actions to auto-build the container, we rely on the Github secrets - 
+# a Github secret named ENVIRONMENT_SECRETS with the same content as secrets.b64 file!
+# If you add more secrets, regenerate secrets.b64 and update the Github secret as well!
+
 version: '3.8'
 services:
   node:
-    build: .
-    command: npm start
+    build: 
+      context: .
+      secrets:
+      - ENVIRONMENT_SECRETS
     image: gradeboost:latest
-    environment:
-      - SUPABASE_URL
-      - SUPABASE_SERVICE_ROLE_KEY 
     ports:
       - "4200:4200"
-    volumes: 
-      - ./:/usr/src/app/
-      - exclude:/usr/src/app/node_modules/
-      - exclude:/usr/src/app/.angular/
-    secrets:
-      - supabase_service_role_key
-      - supabase_url
-    entrypoint: [ '/bin/sh', '-c', 'SUPABASE_URL=$$(cat /run/secrets/supabase_url) && SUPABASE_SERVICE_ROLE_KEY=$$(cat /run/secrets/supabase_service_role_key) && npm start']
-
-
-volumes:
-  exclude:
-
 secrets:
-  supabase_url:
-    file: supabase_url.txt
-  supabase_service_role_key:
-    file: supabase_service_role_key.txt
-
+  ENVIRONMENT_SECRETS:
+<<<<<<< HEAD
+    file: ./secrets/secrets.b64
+=======
+    file: ./secrets/secrets.b64
+>>>>>>> 75f8a2144be9ebc2d8520fe396e5380c983b6d87
