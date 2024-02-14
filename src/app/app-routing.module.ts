@@ -23,6 +23,7 @@ import { StudentSetPasswordComponent } from './components/Auth/student-set-passw
 import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { AboutComponent } from './components/about/about.component';
+import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 
 const routes: Routes = [
   {
@@ -122,6 +123,10 @@ const routes: Routes = [
       {
         path: 'grader/interaction-history/:id',
         component: GraderInteractionHistoryComponent,
+      },
+      {
+        path: 'grader/course-dashboard',
+        component: GraderDashboardComponent,
       },
       {
         path: 'new-appeal/:courseId',
