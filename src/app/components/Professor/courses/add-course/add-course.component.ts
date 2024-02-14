@@ -58,6 +58,22 @@ export class AddCourseComponent {
   /*
    * Add course to database
    */
+  
+  onEditCode(codeString: string) {
+    this.course.code = parseInt(codeString, 10);
+  }
+  
+  onSelectSemester(event: any) {
+    this.course.semester = event.target.value;
+  }
+  
+  onSelectYear(event: any) {
+    if (event.target.value == 'courseYear') {
+      this.course.year = this.courseYear;
+    } else if (event.target.value == 'courseNextYear') {
+      this.course.year = this.courseNextYear;
+    }
+  }
   async onAddCourse() {
     try {
       await this.professorService.insertCourse(
@@ -69,27 +85,12 @@ export class AddCourseComponent {
         this.course.semester,
         this.course.year
       );
+
     } catch (err) {
       console.log(err);
       throw new Error('insertCourse');
     }
     /*   close pop-up */
     this.dialogRef.close();
-  }
-
-  onEditCode(codeString: string) {
-    this.course.code = parseInt(codeString, 10);
-  }
-
-  onSelectSemester(event: any) {
-    this.course.semester = event.target.value;
-  }
-
-  onSelectYear(event: any) {
-    if (event.target.value == 'courseYear') {
-      this.course.year = this.courseYear;
-    } else if (event.target.value == 'courseNextYear') {
-      this.course.year = this.courseNextYear;
-    }
   }
 }

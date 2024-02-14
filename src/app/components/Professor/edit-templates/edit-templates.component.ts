@@ -88,6 +88,8 @@ export class EditTemplatesComponent {
    */
   async addTemplatePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddTemplateComponent, {
+      width: '80%',
+      height: '100%',
       data: { professorID: this.user.id },
     });
   }

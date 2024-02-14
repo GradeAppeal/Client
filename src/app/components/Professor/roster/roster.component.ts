@@ -15,7 +15,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
 import { DialogRef } from '@angular/cdk/dialog';
-import { ErrorHandlerComponent } from 'src/app/error-handler/error-handler.component';
 
 @Component({
   selector: 'app-roster',
@@ -281,8 +280,6 @@ export class RosterComponent {
       // empty out
       this.parsedStudentsToAdd = [];
     } catch (error) {
-      console.log('HEYY!!');
-      this.dialog.open(ErrorHandlerComponent, {});
       console.log({ error });
       throw new Error('addStudents');
     }
@@ -308,26 +305,20 @@ export class RosterComponent {
   }
 
   addStudentPopUp() {
-    const dialogRef = this.dialog.open(AddStudentPopupComponent, {});
+      const dialogRef = this.dialog.open(AddStudentPopupComponent, {
+        width: '60%',
+        height: "100%"
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        const newStudentString = result.student.first_name + " " + result.student.last_name + " " + result.student.email;
 
-    dialogRef.afterClosed().subscribe((result) => {
-      const newStudentString =
-        result.student.first_name +
-        ' ' +
-        result.student.last_name +
-        ' ' +
-        result.student.email;
-
-      // the studentsCSV file needs to be updated with the contents of the table
-      this.addedStudentsCSV = this.addedStudentsCSV.concat(
-        '\n',
-        newStudentString
-      );
-      console.log(this.addedStudentsCSV);
-
+        // the studentsCSV file needs to be updated with the contents of the table
+        this.addedStudentsCSV = this.addedStudentsCSV.concat("\n", newStudentString);
+        console.log(this.addedStudentsCSV);
+      
       //addStudents(studentsCSV string with added student)
-      this.isNewStudent = true;
-      this.addStudents(this.addedStudentsCSV);
-    });
+        this.isNewStudent = true;
+        this.addStudents(this.addedStudentsCSV);
+        });
   }
 }

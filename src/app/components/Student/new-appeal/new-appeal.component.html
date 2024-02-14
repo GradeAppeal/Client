@@ -1,59 +1,39 @@
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-/>
+<div class="page" >
+  <div class="blank-space"></div>
+  <div class="content" *ngIf="isCourseFetched && isAssignmentsFetched">
+      <div class="header">
+        <h1 class="title">{{ formatCourse(course) }}</h1>
+      </div>
+      <div class="input-fields">
+      <p class="description">Select Assignment:</p>
 
-<!-- <div class="main">
-  <div>
-    <div class="card-container" *ngIf="isCourseFetched && isAssignmentsFetched">
-      <mat-card class="appeal-card">
-        <mat-card-title>{{ formatCourse(course) }}</mat-card-title>
-        <div class="input-area">
-          <mat-form-field>
-            <mat-label>Select Assignment:</mat-label>
-            <mat-select [(ngModel)]="selectedAssignmentId">
-              <mat-option
-                *ngFor="let assignment of assignments"
-                [value]="assignment.id"
-                >{{ assignment.assignment_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Enter your reason for appeal:</mat-label>
-            <textarea matInput [(ngModel)]="appeal"></textarea>
-          </mat-form-field>
-          <button mat-raised-button (click)="onSubmitAppeal()">Submit</button>
-        </div>
-        <div class="error-message">{{ errorMessage }}</div>
-      </mat-card>
-    </div>
+      <mat-form-field class="input-box">
+        <select matNativeControl [(ngModel)]="selectedAssignmentId">
+          <option required
+            *ngFor="let assignment of assignments"
+            [value]="assignment.id"
+            >{{ assignment.assignment_name }}</option
+          >
+        </select>
+      </mat-form-field>
+      <p class="description">Enter your reason for appeal:</p>
+      <mat-form-field class="input-box">
+          <textarea matInput [(ngModel)]="appeal" required name="appeal" #courseCode="ngModel"></textarea>
+          <p class="error-message" *ngIf="courseCode.invalid && courseCode.touched">Appeal description is required</p>
+      </mat-form-field>
+
+      <div class="image-input-section">
+        <p class="description image-description">
+          Upload an image if appropriate:
+        </p>
+        <label for="image" class="blue-button custom-file-input">Choose File</label>
+        <input id="image" type="file" formControlName="imageFile" (change)="this.onFilechange($event)">
+      </div>
+
+      </div>
+
+      <div class="button-div">
+          <button mat-button class="blue-button" (click)="onSubmitAppeal()">Submit</button>
+      </div>
   </div>
-</div> -->
-
-<div class="main">
-  <form [formGroup]="appealForm" (ngSubmit)="onSubmitAppeal()">
-    <div>
-      <label for="select">
-        Select Assignment:
-      </label>
-      <input list="assignments" formControlName="selectedAssignmentId" [(ngModel)]="selectedAssignmentId">
-      <datalist id="assignments">
-        <option *ngFor="let assignment of assignments" [value]="assignment.id">{{ assignment.assignment_name }}</option>
-      </datalist>
-    </div>
-    <div>
-      <label for="appeal">
-        Enter your reason for appeal:
-      </label>
-      <input id="appeal" type="text" formControlName="appeal" [(ngModel)]="appeal">
-    </div>
-    <div>
-      <label for="image">
-        Upload an image if appropriate:
-      </label>
-      <input id="image" type="file" formControlName="imageFile" (change)="this.onFilechange($event)">
-    </div>
-    <button mat-raised-button type="submit">Submit</button>
-  </form>
 </div>
