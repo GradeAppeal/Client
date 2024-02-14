@@ -30,7 +30,6 @@
 }
 
 .assignment-table {
-  width: 95%;
   border-collapse: collapse;
 }
 .assignment-table {
@@ -58,6 +57,7 @@
   color: white;
 }
 .assignment-table th {
+  
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
@@ -101,3 +101,4 @@
   cursor: pointer;
   color: red;
 }
+

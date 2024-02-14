@@ -133,4 +133,17 @@ export class StudentService {
     }
     return data;
   }
+
+  async uploadFile(aid: number, imagePath: File) {
+    const { data, error } = await this.supabase.storage
+    .from('appeal.images')
+    .upload(`appeal${aid}`, imagePath, {
+      cacheControl: '3600',
+      upsert: false
+    })
+    if (error) {
+      console.log(error);
+      throw new Error('Error in uploadFile');
+    }
+  }
 }

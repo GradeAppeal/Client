@@ -1,1 +1,56 @@
-@import "src/app/components/Professor/edit-templates/add-template/add-template.component.scss"; 
+//@import "src/app/components/Professor/edit-templates/add-template/add-template.component.scss";
+@import "src/styles.scss";
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content {
+  // margin-top: 1em;
+  // padding-left: 2em;
+  // width: 70%;
+  // border: 1px solid lightgrey;
+  // border-radius: 5px;
+  height: 80vh;
+}
+.header {
+  display: flex;
+  justify-content: center;
+}
+.title {
+  margin: 10px 0px;
+  font-size: 2em;
+  font-weight: 500;
+}
+
+.description {
+  margin: 0.5em 0px;
+  color: grey;
+}
+
+textarea {
+  height: 200px;
+}
+.input-box {
+  height: 20%;
+  width: 40vw;
+}
+
+.input-fields {
+  // margin-left: 1em;
+  //display: flex;
+  // align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Center-align the input fields horizontally
+}
+
+mat-form-field {
+  width: 200px;
+}
+
+.button-div {
+  display: flex;
+  justify-content: center;
+}
+

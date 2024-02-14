@@ -72,8 +72,6 @@ export class ClosedAppealsComponent implements OnInit {
   async onReopenAppeal(i: number) {
     const reopenAppeal = this.closedAppeals[i];
     const dialogRef = this.dialog.open(ReopenPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { reopenAppeal },
     });
 
@@ -88,8 +86,6 @@ export class ClosedAppealsComponent implements OnInit {
   onViewAppeal(i: number) {
     const closedAppeal = this.closedAppeals[i];
     const dialogRef = this.dialog.open(ViewClosedAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { closedAppeal },
     });
   }
@@ -97,8 +93,6 @@ export class ClosedAppealsComponent implements OnInit {
   onDeleteAppeal(i: number) {
     const appealToDelete = this.closedAppeals[i];
     const dialogRef = this.dialog.open(DeleteAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { appealToDelete },
     });
     dialogRef.afterClosed().subscribe((deletedAppealId: number) => {

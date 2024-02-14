@@ -66,7 +66,7 @@ import { RequestPasswordResetSnackbarComponent } from './components/Auth/request
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
 import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
-import { ErrorHandlerComponent } from './error-handler/error-handler.component';
+//import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -111,7 +111,6 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     ResetPasswordComponent,
     RequestPasswordResetSnackbarComponent,
     AddStudentPopupComponent,
-    ErrorHandlerComponent,
   ],
   imports: [
     BrowserModule,

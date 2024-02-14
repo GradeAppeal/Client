@@ -10,7 +10,7 @@ import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students
 import { SharedService } from 'src/app/services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
-import { ErrorHandlerComponent } from 'src/app/error-handler/error-handler.component';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-roster',
@@ -18,7 +18,16 @@ import { ErrorHandlerComponent } from 'src/app/error-handler/error-handler.compo
   styleUrls: ['./roster.component.scss'],
 })
 export class RosterComponent {
-  course: Course;
+  course: Course = {
+    id: 0,
+    prefix: '',
+    code: 0,
+    name: '',
+    section: '',
+    semester: 'FA',
+    year: 0,
+  };
+
   courseStudents!: StudentCourseGraderInfo[];
   fetchedStudents = false;
   fetchedCourse = false;
@@ -63,6 +72,7 @@ export class RosterComponent {
 
       // update addedStudentCSV string
       this.addedStudentsCSV = '';
+      console.log(this.courseStudents);
       this.addedStudentsCSV = this.addedStudentsCSV.concat(
         'First name\tLast name\tEmail address\n'
       );
@@ -159,8 +169,6 @@ export class RosterComponent {
     studentCourseGrader: StudentCourseGraderInfo
   ): Promise<void> {
     const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      width: '15%',
-      height: '15%',
       data: { studentCourseGrader },
     });
   }

@@ -94,8 +94,6 @@ export class AssignmentsComponent {
     course: Course
   ): Promise<void> {
     const dialogRef = this.dialog.open(AddAssignmentComponent, {
-      width: '50%',
-      height: '55%',
       data: { assignments: assignments, course: course },
     });
   }
@@ -108,8 +106,6 @@ export class AssignmentsComponent {
     course: Course
   ): Promise<void> {
     const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
-      width: '35%',
-      height: '35%',
       data: { assignment: assignment, course: course },
     });
   }

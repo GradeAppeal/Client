@@ -1,33 +1,35 @@
 @import "src/styles.scss";
+.page {
+  width: 500px;
+}
 .wrapper {
   display: grid;
   grid-template-rows: 1fr 2fr;
   padding: 3em 1em;
-  width: 100%;
-  height: 100%;
+  width: 50vw;
+  height: 50vh;
   h1 {
     text-align: center;
-    font-weight: 600;
     font-size: 2vw;
-  }
-  mat-dialog-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    mat-dialog-actions {
-      display: flex;
-      justify-content: space-around;
-      button.assign {
-        padding: 0.5rem 1rem;
-        background-color: $primary-blue;
-        color: white;
-      }
-      button {
-        padding: 0.5rem 1rem;
-        background-color: white;
-        color: black;
-      }
+    &.title {
+      margin-bottom: 20px;
     }
+  }
+
+  button.assign {
+    background-color: $primary-blue;
+    color: white;
+  }
+  button {
+    padding: 0.5rem 1rem;
+    margin: 5px;
+    background-color: white;
+    color: black;
+  }
+
+  .button-div {
+    display: flex;
+    justify-content: center;
   }
   .input {
     // width: 50%;

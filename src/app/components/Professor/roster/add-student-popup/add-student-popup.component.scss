@@ -1,1 +1,6 @@
 @import "src/app/components/Professor/edit-templates/add-template/add-template.component.scss"; 
+
+.error-message {
+    color: red;
+    font-size: 0.75em;
+}

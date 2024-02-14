@@ -123,10 +123,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
   }
 
   closeAppeal() {
-    this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
-    });
+    this.dialog.open(CloseAppealPopupComponent);
     //this.navigateTo('professor/closed-appeals/');
   }
 
@@ -158,8 +155,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { currentAppeal },
     });
 
@@ -182,8 +177,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '50%',
-        height: '50%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -203,8 +196,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '35%',
-        height: '35%',
         data: { graderName, appealID, studentID, professorID },
       });
     }

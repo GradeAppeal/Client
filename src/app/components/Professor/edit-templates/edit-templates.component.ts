@@ -95,7 +95,7 @@ export class EditTemplatesComponent {
   async addTemplatePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddTemplateComponent, {
       width: '80%',
-      height: '80%',
+      height: '100%',
       data: { professorID: this.user.id },
     });
   }
@@ -105,8 +105,6 @@ export class EditTemplatesComponent {
    */
   async deleteTemplatePopUp(templateID: number): Promise<void> {
     const dialogRef = this.dialog.open(DeleteTemplateComponent, {
-      width: '50%',
-      height: '55%',
       data: { templateID: templateID },
     });
   }
@@ -119,8 +117,6 @@ export class EditTemplatesComponent {
     templateText: string
   ): Promise<void> {
     const dialogRef = this.dialog.open(UpdateTemplateComponent, {
-      width: '80%',
-      height: '80%',
       data: {
         templateID: templateID,
         professorID: this.user.id,

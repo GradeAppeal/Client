@@ -118,8 +118,9 @@ export class CoursesComponent {
   async addCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddCourseComponent, {
       width: '80%',
-      height: '80%',
-      data: {},
+      height: '100%',
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
@@ -130,8 +131,6 @@ export class CoursesComponent {
     /* prevent navigation to different view */
     event.stopPropagation();
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      width: '50%',
-      height: '55%',
       data: { cid: course.id, pid: this.professor.id },
     });
   }

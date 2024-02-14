@@ -1,3 +1,5 @@
+@import "src/styles.scss";
+
 p {
   color: #34495e;
 }
@@ -12,11 +14,11 @@ li {
 }
 
 li b {
-  color: #3498db;
+  color: $primary-blue;
 }
 h1 {
   font-size: 30px;
-  color: #3498db;
+  color: $primary-blue;
   font-weight: bold;
 }
 
