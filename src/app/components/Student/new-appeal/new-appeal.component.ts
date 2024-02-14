@@ -33,14 +33,14 @@ export class NewAppealComponent implements OnInit {
   imageFile: File;
 
   onFilechange(event: any) {
-    console.log(event.target.files[0])
-    this.imageFile = event.target.files[0]
+    console.log(event.target.files[0]);
+    this.imageFile = event.target.files[0];
   }
 
   appealForm = this.formBuilder.group({
     selectedAssignmentId: '',
     appeal: '',
-    imageFile: null
+    imageFile: null,
   });
 
   constructor(

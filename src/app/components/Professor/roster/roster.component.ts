@@ -276,11 +276,6 @@ export class RosterComponent {
       // empty out
       this.parsedStudentsToAdd = [];
     } catch (error) {
-      console.log('HEYY!!');
-      this.dialog.open(ErrorHandlerComponent, {
-        width: '60%',
-        height: '80%',
-      });
       console.log({ error });
       throw new Error('addStudents');
     }

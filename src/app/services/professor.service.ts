@@ -12,7 +12,6 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { ErrorHandlerComponent } from '../error-handler/error-handler.component';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 
 @Injectable({
