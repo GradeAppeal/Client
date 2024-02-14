@@ -38,7 +38,9 @@ $hover-blue: #728edd;
   &.roster-wrapper {
     height: 60vh;
   }
-  &.edit-templates-container,
+  &.edit-templates-container {
+    height: 80vh;
+  }
   &.course-wrapper {
     height: 80vh;
   }
