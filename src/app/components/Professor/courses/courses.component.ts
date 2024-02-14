@@ -123,8 +123,9 @@ export class CoursesComponent {
   async addCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddCourseComponent, {
       width: '80%',
-      height: '80%',
-      data: {},
+      height: '100%',
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 

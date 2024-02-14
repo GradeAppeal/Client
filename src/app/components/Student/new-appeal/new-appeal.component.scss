@@ -1,29 +1,29 @@
 @import "src/styles.scss";
-.main {
+@import "src/app/components/Professor/edit-templates/add-template/add-template.component.scss"; 
+
+.page {
     background-color: $primary-blue;
-    min-height: 100vh;
-    width: 100%;
-    flex-direction: column;
     margin: 0;
     padding: 0;
-}
-.card-container {
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-}
-
-.appeal-card {
-    // min-height: 350px;
     height: 100%;
-    width: 70%;
 }
 
-mat-card-title {
-    text-align: center;
-    font-size: 40px;
-    padding-top: 2%;
+.content {
+    background-color: white;
+    margin-top: 0px;
+    height: 100%;
 }
+
+.description {
+    margin: 0.5em 0px;
+    color: grey;
+  }
+
+.input-box {
+height: 20%;
+width: 90%;
+}
+
 
 .top-bar{
     font-size: 40px;
@@ -44,11 +44,8 @@ mat-card-title {
     align-items: center; 
 }
 
-.input-area {
-    padding-top: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.input-fields {
+    margin-left: 0px;
 }
 
 mat-form-field {

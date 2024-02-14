@@ -3,25 +3,27 @@
         <div class="header">
             <h1 class="title">Add Student</h1>
         </div>
-        <div class="input-fields">
+        <form #myForm="ngForm" class="input-fields">
 
-        <p class="description">First Name</p>
-        <mat-form-field class="input-box">
-            <textarea matInput [(ngModel)]="student.first_name"></textarea>
-        </mat-form-field>
+            <p class="description">First Name</p>
+            <mat-form-field class="input-box">
+                <input required matInput [(ngModel)]="student.first_name" name="firstName" #firstName="ngModel">
+                <p class="error-message" *ngIf="firstName.invalid && firstName.touched">First Name is required</p>    
+            </mat-form-field>
+            <p class="description">Last Name</p>
+            <mat-form-field class="input-box">
+                <input required matInput [(ngModel)]="student.last_name" name="lastName" #lastName="ngModel" >
+                <p class="error-message" *ngIf="lastName.invalid && lastName.touched">Last Name is required</p>
+            </mat-form-field>
 
-        <p class="description">Last Name</p>
-        <mat-form-field class="input-box">
-            <textarea matInput [(ngModel)]="student.last_name" ></textarea>
-        </mat-form-field>
-
-        <p class="description">Email</p>
-        <mat-form-field class="input-box">
-            <textarea matInput [(ngModel)]="student.email"></textarea>
-        </mat-form-field>
-        </div>
+            <p class="description">Email</p>
+            <mat-form-field class="input-box">
+                <input required matInput [(ngModel)]="student.email" name="email" #email="ngModel" autocomplete="email">
+                <p class="error-message" *ngIf="email.invalid && email.touched">Email is required</p>
+            </mat-form-field>
+        </form>
         <div class="button-div">
-            <button mat-button class="blue-button" (click)="onSubmit()">Submit</button>
+            <button mat-button class="blue-button" (click)="onSubmit()" [disabled]="myForm.invalid">Submit</button>
         </div>
     </div>
 </div>

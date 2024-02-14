@@ -1,4 +1,4 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient, User } from '@supabase/supabase-js';
 import { AuthService } from './auth.service';
 import {
@@ -13,7 +13,6 @@ import {
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
 import { AddStudentPopupComponent } from '../components/Professor/roster/add-student-popup/add-student-popup.component';
-import { ErrorHandlerComponent } from '../error-handler/error-handler.component';
 
 @Injectable({
   providedIn: 'root',
@@ -406,11 +405,6 @@ export class ProfessorService {
     // user fails to create: return null
     if (error) {
       console.log({ error });
-
-      this.dialog.open(ErrorHandlerComponent, {
-        width: '60%',
-        height: "80%"
-      });
       return null;
     }
     // user created: return the User object
