@@ -1,4 +1,4 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient, User } from '@supabase/supabase-js';
 import { AuthService } from './auth.service';
 import {
@@ -13,6 +13,7 @@ import {
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
 import { ErrorHandlerComponent } from '../error-handler/error-handler.component';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,9 @@ export class ProfessorService {
   private supabase: SupabaseClient;
   session: AuthSession | null = null;
   dialog: any;
+  $openProfessorAppeals = new BehaviorSubject<
+    ProfessorAppeal[] | null | undefined
+  >(undefined);
 
   constructor(private AuthService: AuthService) {
     this.supabase = this.AuthService.client;
@@ -125,6 +129,14 @@ export class ProfessorService {
       throw new Error('fetchOpenProfessorAppeals');
     }
     return data;
+  }
+
+  getOpenProfessorAppeals(pid: string): Observable<any> {
+    return from(
+      this.supabase.rpc('get_open_professor_appeals', {
+        pid,
+      })
+    );
   }
 
   /**

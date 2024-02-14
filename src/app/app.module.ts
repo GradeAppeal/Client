@@ -24,11 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {
-  MatSnackBar,
-  MatSnackBarRef,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
@@ -68,10 +65,8 @@ import { ResetPasswordComponent } from './components/Auth/reset-password/reset-p
 import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
 import { AboutComponent } from './components/about/about.component';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
-//import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -141,6 +136,7 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     MatCheckboxModule,
     MatSnackBarModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
