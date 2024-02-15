@@ -4,7 +4,7 @@
     *ngIf="professorAppeals && messages; else loadingSpinner"
   >
     <!-- Left Pane (List of Appeals) -->
-    <div class="inbox">
+    <div class="inbox" *ngIf="professorAppeals.length > 0">
       <div class="search">
         <input
           type="text"
@@ -66,8 +66,8 @@
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
-    <div class="right-pane">
-      <div class="card" *ngIf="messageLoaded">
+    <div class="right-pane" *ngIf="messages.length > 0">
+      <div class="card">
         <div class="top-bar">
           <div class="left-content">
             <!-- <img class="header-avatar" ngxGravatar [email]="professor.email" /> -->
@@ -154,11 +154,7 @@
               <div
                 class="avatar-wrapper"
                 *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-              >
-                <!-- <img ngxGravatar [email]="user.email" /> -->
-                <!-- <img *ngIf="isUser" ngxGravatar [email]="professor.email" /> -->
-                <!-- <img *ngIf="!isUser" ngxGravatar [email]="student.email" /> -->
-              </div>
+              ></div>
 
               <p
                 *ngIf="!chat.message_text.trim().startsWith('Notification:')"
@@ -251,10 +247,9 @@
     </div>
   </div>
   <ng-template #loadingSpinner>
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-      <div class="fetch-message">Fetching Interaction History...</div>
-    </div>
+    <app-loading-spinner
+      [fetchMessage]="'Fetching Interaction History...'"
+    ></app-loading-spinner>
   </ng-template>
 </div>
 

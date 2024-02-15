@@ -53,8 +53,9 @@
         </mat-card>
       </div>
       <ng-template #loadingSpinner>
-        <mat-spinner></mat-spinner>
-        <div>Loading Closed Appeals...</div>
+        <app-loading-spinner
+          [fetchMessage]="'Fetching Closed Appeals...'"
+        ></app-loading-spinner>
       </ng-template>
 
       <!-- If there are no closed appeals -->
@@ -64,9 +65,8 @@
     </mat-card-content>
   </mat-card>
   <ng-template #loadingSpinner>
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-      <div class="fetch-message">Fetching Closed Appeals...</div>
-    </div>
+    <app-loading-spinner
+      [fetchMessage]="'Fetching Closed Appeals...'"
+    ></app-loading-spinner>
   </ng-template>
 </div>

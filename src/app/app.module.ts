@@ -68,6 +68,7 @@ import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 //import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 //import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { GraderDashboardComponent } from './components/Student/grader-dashboard/
     AddStudentPopupComponent,
     //ErrorHandlerComponent,
     GraderDashboardComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

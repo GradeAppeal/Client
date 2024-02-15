@@ -1,6 +1,9 @@
 <div class="page">
   <div class="blank-space"></div>
-  <div class="content" *ngIf="isCourseFetched && isAssignmentsFetched">
+  <div
+    class="content"
+    *ngIf="isCourseFetched && isAssignmentsFetched; else loadingSpinner"
+  >
     <div class="header">
       <h1 class="title">{{ formatCourse(course) }}</h1>
     </div>
@@ -57,4 +60,10 @@
       </button>
     </div>
   </div>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner
+      fetchMessage="Fetching Assignments..."
+      spinnerColor="white-spinner"
+    ></app-loading-spinner>
+  </ng-template>
 </div>

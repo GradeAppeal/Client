@@ -45,8 +45,7 @@
 </button>
 
 <ng-template #loadingSpinner>
-  <div class="loading-spinner">
-    <mat-spinner></mat-spinner>
-    <div class="fetch-message">Fetching Templates...</div>
-  </div>
+  <app-loading-spinner
+    [fetchMessage]="'Fetching Templates...'"
+  ></app-loading-spinner>
 </ng-template>

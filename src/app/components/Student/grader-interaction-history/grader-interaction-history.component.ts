@@ -50,7 +50,7 @@ export class GraderInteractionHistoryComponent {
   isUser: Boolean;
   appealId: number;
   courseId: number;
-  messages!: Message[];
+  messages: Message[];
   messageLoaded = false;
   currentProfessor: string | null = '';
   currentCourse: Course | null;
@@ -83,12 +83,18 @@ export class GraderInteractionHistoryComponent {
       }
     });
   }
+
   async ngOnInit() {
     const isGrader = await this.graderService.isGrader(this.grader.id);
+
+    // student is not a grader
     if (!isGrader) {
       this.noAppeals = true;
-      this.noAppealsMessage = 'You are not assigned as a grader to any courses';
-    } else {
+      this.noAppealsMessage =
+        'You have not been assigned as a grader to any courses';
+    }
+    // student is a grader
+    else {
       // if navigated from course dashboard, only get the appeals for that course
       if (this.courseId) {
         this.graderAppeals = await this.graderService.fetchCourseGraderAppeals(
@@ -100,15 +106,13 @@ export class GraderInteractionHistoryComponent {
       }
       // otherwise, get all assigned appeals from all courses the grader is grading
       else {
-        console.log(this.grader.id);
         this.graderAppeals = await this.graderService.fetchAllGraderAppeals(
           this.grader.id
         );
-        console.log(this.graderAppeals, 'FROM GRADER IHC');
       }
-      console.log(this.graderAppeals);
-      this.noAppeals = this.graderAppeals.length === 0 ? true : false;
 
+      this.noAppeals = this.graderAppeals.length === 0 ? true : false;
+      console.log('no appeal status: ', this.noAppeals);
       // grader has appeals
       if (!this.noAppeals) {
         this.currentAppeal =
@@ -120,7 +124,6 @@ export class GraderInteractionHistoryComponent {
           this.messages = await this.sharedService.fetchMessages(
             this.currentAppeal.appeal_id
           );
-          console.log('messages', this.messages);
         } else {
           this.currentAppeal = this.graderAppeals[0];
           this.messages = await this.sharedService.fetchMessages(
@@ -137,6 +140,7 @@ export class GraderInteractionHistoryComponent {
       // grader has no appeals
       else {
         console.log("Grader doesn't have any appeals");
+        this.messages = [];
         this.noAppealsMessage = 'You have not been assigned to any appeals';
       }
       console.log(this.messages);

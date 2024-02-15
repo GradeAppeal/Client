@@ -56,8 +56,7 @@
   </div>
 </div>
 <ng-template #loadingSpinner>
-  <div class="loading-spinner">
-    <mat-spinner></mat-spinner>
-    <div class="fetch-message">Fetching Course Information...</div>
-  </div>
+  <app-loading-spinner
+    [fetchMessage]="'Fetching Course Information...'"
+  ></app-loading-spinner>
 </ng-template>
