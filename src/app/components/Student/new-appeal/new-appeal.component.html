@@ -1,39 +1,69 @@
-<div class="page" >
+<div class="page">
   <div class="blank-space"></div>
-  <div class="content" *ngIf="isCourseFetched && isAssignmentsFetched">
-      <div class="header">
-        <h1 class="title">{{ formatCourse(course) }}</h1>
-      </div>
-      <div class="input-fields">
+  <div
+    class="content"
+    *ngIf="isCourseFetched && isAssignmentsFetched; else loadingSpinner"
+  >
+    <div class="header">
+      <h1 class="title">{{ formatCourse(course) }}</h1>
+    </div>
+    <div class="input-fields">
       <p class="description">Select Assignment:</p>
 
       <mat-form-field class="input-box">
         <select matNativeControl [(ngModel)]="selectedAssignmentId">
-          <option required
+          <option
+            required
             *ngFor="let assignment of assignments"
             [value]="assignment.id"
-            >{{ assignment.assignment_name }}</option
           >
+            {{ assignment.assignment_name }}
+          </option>
         </select>
       </mat-form-field>
       <p class="description">Enter your reason for appeal:</p>
       <mat-form-field class="input-box">
-          <textarea matInput [(ngModel)]="appeal" required name="appeal" #courseCode="ngModel"></textarea>
-          <p class="error-message" *ngIf="courseCode.invalid && courseCode.touched">Appeal description is required</p>
+        <textarea
+          matInput
+          [(ngModel)]="appeal"
+          required
+          name="appeal"
+          #courseCode="ngModel"
+        ></textarea>
+        <p
+          class="error-message"
+          *ngIf="courseCode.invalid && courseCode.touched"
+        >
+          Appeal description is required
+        </p>
       </mat-form-field>
 
       <div class="image-input-section">
         <p class="description image-description">
           Upload an image if appropriate:
         </p>
-        <label for="image" class="blue-button custom-file-input">Choose File</label>
-        <input id="image" type="file" formControlName="imageFile" (change)="this.onFilechange($event)">
+        <label for="image" class="blue-button custom-file-input"
+          >Choose File</label
+        >
+        <input
+          id="image"
+          type="file"
+          formControlName="imageFile"
+          (change)="this.onFilechange($event)"
+        />
       </div>
+    </div>
 
-      </div>
-
-      <div class="button-div">
-          <button mat-button class="blue-button" (click)="onSubmitAppeal()">Submit</button>
-      </div>
+    <div class="button-div">
+      <button mat-button class="blue-button" (click)="onSubmitAppeal()">
+        Submit
+      </button>
+    </div>
   </div>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner
+      fetchMessage="Fetching Assignments..."
+      spinnerColor="white-spinner"
+    ></app-loading-spinner>
+  </ng-template>
 </div>

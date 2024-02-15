@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AssignmentsComponent {
   courseID: number;
   course: Course;
-  isAssignmentsFetched = false;
   fetchedCourse = false;
   assignments: Assignment[];
   selectedAssignmentId: number;
@@ -39,7 +38,7 @@ export class AssignmentsComponent {
       this.assignments = await this.sharedService.fetchAssignmentsForNewAppeal(
         this.courseID
       );
-      this.isAssignmentsFetched = true;
+
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedCourse = true;
 

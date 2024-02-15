@@ -1,4 +1,7 @@
-<div class="course-wrapper scroll">
+<div
+  class="course-wrapper scroll"
+  *ngIf="professorCourses; else loadingSpinner"
+>
   <mat-card class="courses" *ngFor="let course of professorCourses">
     <div class="title-container">
       <mat-card-title class="course-wording"
@@ -20,6 +23,10 @@
       View Roster
     </button>
   </mat-card>
+  <div class="empty" *ngIf="noCourses">
+    <h1>No courses to display</h1>
+    <h2>Add a course using the button below</h2>
+  </div>
   <button
     mat-icon-button
     class="global-blue add-button"
@@ -28,3 +35,9 @@
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
+
+<ng-template #loadingSpinner>
+  <app-loading-spinner
+    [fetchMessage]="'Fetching Courses...'"
+  ></app-loading-spinner>
+</ng-template>

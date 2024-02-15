@@ -24,7 +24,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
   session: Session;
   user: User;
   professor: Professor;
-  noAppeals = true;
+  noAppeals: boolean;
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
@@ -57,6 +57,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
       }
     });
   }
+
   async ngOnInit(): Promise<void> {
     try {
       this.professorAppeals =
@@ -64,14 +65,12 @@ export class ProfessorAppealInboxComponent implements OnInit {
           this.professor.id
         );
       this.filteredAppeals = this.professorAppeals;
-
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
-      console.log(this.professorAppeals, 'appeals');
+      this.currentAppeal = this.professorAppeals[0];
+      this.fetchedAppeals = true;
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );
-      this.currentAppeal = this.professorAppeals[0];
-      this.fetchedAppeals = true;
 
       this.handleAppealUpdates();
     } catch (err) {

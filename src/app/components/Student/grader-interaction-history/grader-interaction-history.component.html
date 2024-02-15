@@ -1,119 +1,130 @@
-<div class="no-appeals" *ngIf="noAppeals">
-  <h1>
-    {{ noAppealsMessage }}
-  </h1>
-</div>
-<div class="container" *ngIf="!noAppeals">
-  <!-- Left Pane (List of Appeals) -->
-  <div class="inbox">
-    <div
-      class="inbox-item"
-      *ngFor="let appeal of graderAppeals"
-      (click)="selectAppeal(appeal)"
-      [class.selected-appeal]="appeal === currentAppeal"
-    >
-      <p matLine class="inbox-timestamp">
-        {{ formatTimestamp(appeal.created_at).time }}
-      </p>
-      <p matLine>
-        <b>
-          {{ appeal?.professor_first_name + " " + appeal?.professor_last_name }}
-        </b>
-      </p>
+<div class="wrapper">
+  <div class="container" *ngIf="graderAppeals && messages; else loadingSpinner">
+    <!-- Left Pane (List of Appeals) -->
+    <div class="inbox" *ngIf="!noAppeals">
+      <div
+        class="inbox-item"
+        *ngFor="let appeal of graderAppeals"
+        (click)="selectAppeal(appeal)"
+        [class.selected-appeal]="appeal === currentAppeal"
+      >
+        <p matLine class="inbox-timestamp">
+          {{ formatTimestamp(appeal.created_at).time }}
+        </p>
+        <p matLine>
+          <b>
+            {{
+              appeal?.professor_first_name + " " + appeal?.professor_last_name
+            }}
+          </b>
+        </p>
 
-      <p matLine>{{ appeal.course_name }}</p>
-      <p matLine>{{ appeal?.assignment_name }}</p>
+        <p matLine>{{ appeal.course_name }}</p>
+        <p matLine>{{ appeal?.assignment_name }}</p>
+      </div>
     </div>
-  </div>
-  <!-- Right Pane (Selected Appeal Details) -->
-  <div class="right-pane">
-    <div class="card" *ngIf="messageLoaded">
-      <mat-toolbar class="top-bar">
-        <mat-toolbar-row>
-          <!-- <img class="header-avatar" ngxGravatar [email]="grader.email" /> -->
-          <h1>
-            <!-- {{ currentAppeal?.professor_first_name }}
-            {{ currentAppeal?.professor_last_name }}<span>:</span> -->
-            {{ currentAppeal?.assignment_name }}
-          </h1>
-        </mat-toolbar-row>
-      </mat-toolbar>
-      <div class="chat-list" #chatListContainer>
-        <ng-container *ngFor="let chat of messages; let i = index">
-          <ng-container
-            *ngIf="
-              i === 0 ||
-              !isSameDate(chat.created_at, this.messages[i - 1].created_at)
-            "
-          >
-            <div class="section-date">
-              {{ formatTimestamp(chat.created_at).date }}
-            </div>
-          </ng-container>
-          <div
-            class="chat-item"
-            [ngClass]="{
-              right: chat?.sender_id === user.id,
-              left: chat?.sender_id !== user.id,
-              grader: chat?.from_grader === true,
-              lightblue: chat?.sender_id === professor.id,
-              notification: chat.message_text.trim().startsWith('Notification:')
-            }"
-          >
+    <!-- Right Pane (Selected Appeal Details) -->
+    <div class="right-pane" *ngIf="messages.length > 0">
+      <div class="card">
+        <mat-toolbar class="top-bar">
+          <mat-toolbar-row>
+            <h1>
+              {{ currentAppeal?.assignment_name }}
+            </h1>
+          </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="chat-list" #chatListContainer>
+          <ng-container *ngFor="let chat of messages; let i = index">
+            <ng-container
+              *ngIf="
+                i === 0 ||
+                !isSameDate(chat.created_at, this.messages[i - 1].created_at)
+              "
+            >
+              <div class="section-date">
+                {{ formatTimestamp(chat.created_at).date }}
+              </div>
+            </ng-container>
             <div
-              class="inbox-timestamp"
-              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              class="chat-item"
+              [ngClass]="{
+                right: chat?.sender_id === user.id,
+                left: chat?.sender_id !== user.id,
+                grader: chat?.from_grader === true,
+                lightblue: chat?.sender_id === professor.id,
+                notification: chat.message_text
+                  .trim()
+                  .startsWith('Notification:')
+              }"
             >
               <div
-                *ngIf="
-                  i === 0 || chat.sender_id !== this.messages[i - 1]?.sender_id
-                "
+                class="inbox-timestamp"
+                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
               >
-                <p class="name">{{ chat.sender_name }}</p>
+                <div
+                  *ngIf="
+                    i === 0 ||
+                    chat.sender_id !== this.messages[i - 1]?.sender_id
+                  "
+                >
+                  <p class="name">{{ chat.sender_name }}</p>
+                </div>
+                {{ formatTimestamp(chat.created_at).time }}
               </div>
-              {{ formatTimestamp(chat.created_at).time }}
-            </div>
-            <div *ngIf="!chat.message_text.trim().startsWith('Notification:')">
-              <!-- need to change to name -->
-              <!-- <img ngxGravatar [email]="user.email" /> -->
-              <!-- <img *ngIf="isUser" ngxGravatar [email]="grader.email" /> -->
-              <!-- <img *ngIf="!isUser" ngxGravatar [email]="professor.email" /> -->
-            </div>
+              <div
+                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+              >
+                <!-- need to change to name -->
+                <!-- <img ngxGravatar [email]="user.email" /> -->
+                <!-- <img *ngIf="isUser" ngxGravatar [email]="grader.email" /> -->
+                <!-- <img *ngIf="!isUser" ngxGravatar [email]="professor.email" /> -->
+              </div>
 
-            <p
-              *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-              id="message-body"
-            >
-              {{ chat?.message_text }}
-            </p>
-            <p
-              class="notification-text"
-              id="message-body"
-              *ngIf="chat.message_text.trim().startsWith('Notification:')"
-            >
-              {{ chat.message_text.substring(13) }}
-              <!-- Display text after "Notification:" -->
-            </p>
-          </div>
-        </ng-container>
-      </div>
-      <div class="chat-footer">
-        <input
-          matInput
-          id="chat-textarea"
-          [(ngModel)]="chatInputMessage"
-          required
-          (keydown.enter)="sendMessage(this.chatInputMessage)"
-        />
-        <button
-          mat-stroked-button
-          id="send-button"
-          (click)="sendMessage(this.chatInputMessage)"
-          [disabled]="chatInputMessage === ''"
-        >
-          Send
-        </button>
+              <p
+                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+                id="message-body"
+              >
+                {{ chat?.message_text }}
+              </p>
+              <p
+                class="notification-text"
+                id="message-body"
+                *ngIf="chat.message_text.trim().startsWith('Notification:')"
+              >
+                {{ chat.message_text.substring(13) }}
+                <!-- Display text after "Notification:" -->
+              </p>
+            </div>
+          </ng-container>
+        </div>
+        <div class="chat-footer">
+          <input
+            matInput
+            id="chat-textarea"
+            [(ngModel)]="chatInputMessage"
+            required
+            (keydown.enter)="sendMessage(this.chatInputMessage)"
+          />
+          <button
+            mat-stroked-button
+            id="send-button"
+            (click)="sendMessage(this.chatInputMessage)"
+            [disabled]="chatInputMessage === ''"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   </div>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner
+      fetchMessage="Fetching Interaction History..."
+    ></app-loading-spinner>
+  </ng-template>
+</div>
+
+<div class="empty" *ngIf="noAppeals">
+  <h1>{{ noAppealsMessage }}</h1>
+  <h2>Please check back later</h2>
 </div>

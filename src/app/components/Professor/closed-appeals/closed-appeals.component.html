@@ -1,59 +1,72 @@
 <!-- closed-appeals.component.html -->
+<div class="wrapper">
+  <mat-card class="card" *ngIf="closedAppeals; else loadingSpinner">
+    <mat-card-header>
+      <mat-card-title>Closed Appeals</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Closed Appeals List -->
 
-<mat-card class="card">
-  <mat-card-header>
-    <mat-card-title>Closed Appeals</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <!-- Closed Appeals List -->
-    <div class="scroll">
-      <mat-card
-        *ngFor="let appeal of closedAppeals; let i = index"
-        class="closed-appeal"
-      >
-        <div class="text-container">
-          <p class="student-name">
-            <span class="info-label">Student: </span>
-            {{ appeal.student_first_name }} {{ appeal.student_last_name }}
-          </p>
-          <p class="course-name">
-            <span class="info-label">Course: </span>
-            {{ appeal.course_prefix }}-{{ appeal.course_code }} -
-            {{ appeal.course_name }}
-          </p>
-          <p class="closed-time">
-            <span class="info-label">Closed: </span>
-            {{ formatLocalTimestamp(appeal.last_modified) }}
-          </p>
-        </div>
-        <div class="button-container">
-          <button
-            mat-raised-button
-            class="option reopen-button"
-            (click)="onReopenAppeal(i)"
-          >
-            Reopen
-          </button>
-          <button
-            mat-raised-button
-            class="option view-button"
-            (click)="onViewAppeal(i)"
-          >
-            View
-          </button>
-          <button
-            mat-raised-button
-            class="option delete-button"
-            (click)="onDeleteAppeal(i)"
-          >
-            Delete
-          </button>
-        </div>
-      </mat-card>
-    </div>
-    <!-- If there are no closed appeals -->
-    <div *ngIf="closedAppeals.length === 0" class="no-appeals-message">
-      No closed appeals to display.
-    </div>
-  </mat-card-content>
-</mat-card>
+      <div class="scroll" *ngIf="closedAppeals; else loadingSpinner">
+        <mat-card
+          *ngFor="let appeal of closedAppeals; let i = index"
+          class="closed-appeal"
+        >
+          <div class="text-container">
+            <p class="student-name">
+              <span class="info-label">Student: </span>
+              {{ appeal.student_first_name }} {{ appeal.student_last_name }}
+            </p>
+            <p class="course-name">
+              <span class="info-label">Course: </span>
+              {{ appeal.course_prefix }}-{{ appeal.course_code }} -
+              {{ appeal.course_name }}
+            </p>
+            <p class="closed-time">
+              <span class="info-label">Closed: </span>
+              {{ formatLocalTimestamp(appeal.last_modified) }}
+            </p>
+          </div>
+          <div class="button-container">
+            <button
+              mat-raised-button
+              class="option reopen-button"
+              (click)="onReopenAppeal(i)"
+            >
+              Reopen
+            </button>
+            <button
+              mat-raised-button
+              class="option view-button"
+              (click)="onViewAppeal(i)"
+            >
+              View
+            </button>
+            <button
+              mat-raised-button
+              class="option delete-button"
+              (click)="onDeleteAppeal(i)"
+            >
+              Delete
+            </button>
+          </div>
+        </mat-card>
+      </div>
+      <ng-template #loadingSpinner>
+        <app-loading-spinner
+          [fetchMessage]="'Fetching Closed Appeals...'"
+        ></app-loading-spinner>
+      </ng-template>
+
+      <!-- If there are no closed appeals -->
+      <div *ngIf="closedAppeals.length === 0" class="no-appeals-message">
+        No closed appeals to display.
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner
+      [fetchMessage]="'Fetching Closed Appeals...'"
+    ></app-loading-spinner>
+  </ng-template>
+</div>

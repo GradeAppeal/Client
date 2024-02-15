@@ -19,8 +19,8 @@ export class CoursesComponent {
   session: Session;
   user: User;
   professor: Professor;
-  professorCourses!: Course[];
-  fetchedCourses = false;
+  professorCourses: Course[];
+  noCourses: boolean;
   fetchedCourse = false;
   currentCourseID = -1;
   currentCourse: Course;
@@ -50,7 +50,8 @@ export class CoursesComponent {
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );
-      this.fetchedCourses = true;
+      this.noCourses = this.professorCourses.length === 0 ? true : false;
+      console.log(this.noCourses);
       this.handleCourseUpdates();
     } catch (err) {
       console.log(err);
