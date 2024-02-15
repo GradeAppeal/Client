@@ -14,10 +14,15 @@
   border-collapse: collapse;
 }
 
-.roster-table tr:nth-child(even){background-color: #f2f2f2;}
-.roster-table tr:hover {background-color: #ddd;}
+.roster-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.roster-table tr:hover {
+  background-color: #ddd;
+}
 
-.roster-table, .roster-table th {
+.roster-table,
+.roster-table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -82,6 +87,7 @@ input[type="file"] {
   display: flex;
   flex-direction: row;
   align-items: center;
+  float: left;
 }
 
 .add-button {
