@@ -85,20 +85,25 @@ $hover-blue: #728edd;
   background-color: $primary-blue;
 }
 
+/* width */
 ::-webkit-scrollbar {
-  width: 12px; /* width of the entire scrollbar */
+  width: 10px;
 }
 
+/* Track */
 ::-webkit-scrollbar-track {
-  background: white; /* color of the tracking area */
+  background: #f1f1f1;
 }
 
+/* Handle */
 ::-webkit-scrollbar-thumb {
-  background-color: darkgray; /* color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid white; /* creates padding around scroll thumb */
+  background: #888;
 }
 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 .global-blue {
   background-color: $primary-blue;
 }
@@ -119,6 +124,7 @@ $hover-blue: #728edd;
   width: 230px;
   float: left;
   margin-right: 20px;
+  padding-right: 4px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
 }
@@ -258,7 +264,10 @@ $hover-blue: #728edd;
     color: gray;
   }
 }
-
+.button-div {
+  display: flex;
+  justify-content: center;
+}
 .search {
   margin-top: 5px;
 
