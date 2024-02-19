@@ -6,7 +6,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -54,7 +53,6 @@ export class StudentInteractionHistoryComponent {
   loadStudentAppeals = false;
 
   constructor(
-    private route: ActivatedRoute,
     private authService: AuthService,
     private studentService: StudentService,
     private sharedService: SharedService
