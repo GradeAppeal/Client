@@ -40,7 +40,6 @@ import { EditStudentsPopUpComponent } from './components/Professor/roster/edit-s
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
-import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
 import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
@@ -66,10 +65,8 @@ import { RequestPasswordResetSnackbarComponent } from './components/Auth/request
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
 import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
-//import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
-//import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template/update-template.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +85,6 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
-    NotificationsComponent,
     RegisterComponent,
     DeleteAssignmentComponent,
     AddTemplateComponent,
@@ -114,7 +110,6 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     ResetPasswordComponent,
     RequestPasswordResetSnackbarComponent,
     AddStudentPopupComponent,
-    //ErrorHandlerComponent,
     GraderDashboardComponent,
     LoadingSpinnerComponent,
   ],
