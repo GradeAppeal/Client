@@ -73,7 +73,6 @@ export class StudentInteractionHistoryComponent {
   }
 
   async ngOnInit() {
-    this.handleAllNewMessages();
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
@@ -95,6 +94,7 @@ export class StudentInteractionHistoryComponent {
       this.messageCount = this.messages.length;
       this.loading = false;
       this.handleAppealNewMessages();
+      this.handleAllNewMessages();
     } else {
       this.loading = false;
     }
@@ -117,7 +117,7 @@ export class StudentInteractionHistoryComponent {
       .getTableChanges(
         'Messages',
         `student-appeal-messages-channel`,
-        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+        `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
@@ -130,8 +130,11 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record: Message = update.new;
+          console.log({ record });
           // show new message on screen
-          this.messages.push(record);
+          if (record.appeal_id === this.currentAppeal.appeal_id) {
+            this.messages.push(record);
+          }
         } // is_read updates
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
@@ -162,6 +165,11 @@ export class StudentInteractionHistoryComponent {
               ? { ...studentAppeal, is_read: false }
               : { ...studentAppeal }
           );
+          this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
+            studentAppeal.appeal_id === this.currentAppeal.appeal_id
+              ? { ...studentAppeal, is_read: true }
+              : { ...studentAppeal }
+          );
         }
       });
   }
@@ -173,7 +181,6 @@ export class StudentInteractionHistoryComponent {
   async selectAppeal(appeal: any) {
     // Copy the selected appeal's data into the form fields
     this.currentAppeal = appeal;
-    this.handleAppealNewMessages();
 
     //this.sender.id = this.currentAppeal.student_id;
     this.messages = await this.sharedService.fetchStudentMessages(
