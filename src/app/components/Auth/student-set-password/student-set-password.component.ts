@@ -51,8 +51,10 @@ export class StudentSetPasswordComponent implements OnInit {
     // verify user with token hash
     try {
       if (this.tokenHash) {
-        const verification = await this.authService.verifyOtp(this.tokenHash);
-        // console.log({ verification });
+        const verification = await this.authService.verifyOtpReset(
+          this.tokenHash
+        );
+        console.log({ verification });
         this.verified = true;
       } else {
         this.router.navigateByUrl('/');

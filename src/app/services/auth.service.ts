@@ -279,6 +279,17 @@ export class AuthService {
     console.log({ data });
   }
 
+  async verifyOtpReset(tokenHash: string) {
+    const { data, error } = await this.supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: 'recovery',
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
   async updatePassword(password: string) {
     const { data, error } = await this.supabase.auth.updateUser({
       password,
