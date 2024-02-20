@@ -62,4 +62,11 @@ mat-icon {
 
 .content {
   overflow: auto;
+  height: 100%;
+}
+
+.grader-divider {
+  background-color: $primary-blue;
+  height: 5px;
+  width: 100%;
 }

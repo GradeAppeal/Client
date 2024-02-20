@@ -50,6 +50,7 @@ export class ProfessorInteractionHistoryComponent {
   graderValue: Boolean = true;
 
   professorAppeals: ProfessorAppeal[];
+  filteredAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
   professors: Professor[];
   //template
@@ -67,7 +68,6 @@ export class ProfessorInteractionHistoryComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
-      console.log(this.appealId);
     });
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -83,6 +83,7 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
+    this.filteredAppeals = this.professorAppeals;
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
 
@@ -216,7 +217,6 @@ export class ProfessorInteractionHistoryComponent {
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
         } else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -260,30 +260,31 @@ export class ProfessorInteractionHistoryComponent {
   ): Promise<void> {
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
-    let recipient_id = this.student.id;
-    let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
     if (notification === true) {
       message = 'Notification: ' + message;
     }
-    if (this.talkingToGrader && this.talkingToGrader === true) {
-      recipient_id = this.currentAppeal.grader_id as string;
-      recipient_name = this.currentAppeal.grader_name as string;
-    }
-    console.log(this.currentAppeal.grader_id);
-    console.log(recipient_id);
-    try {
-      console.log(this.currentAppeal);
 
-      // console.log(student_user_id);
+    const recipient_id = this.talkingToGrader
+      ? (this.currentAppeal.grader_id as string)
+      : this.student.id;
+    const recipient_name = this.talkingToGrader
+      ? (this.currentAppeal.grader_name as string)
+      : `${this.student.first_name} ${this.student.last_name}`;
+    // console.log(
+    //   'grader status: ',
+    //   this.currentAppeal.grader_id === recipient_id
+    // );
+    // console.log({ recipient_id }, { recipient_name });
+    try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        sender_id, //professor user id
-        recipient_id, //student user id
+        sender_id, //sender id
+        recipient_id, //student or grader id
         now,
         message,
         this.fromGrader,
         `${this.professor.first_name} ${this.professor.last_name}`,
-        `${this.student.first_name} ${this.student.last_name}`
+        recipient_name
       );
 
       this.currentAppeal.created_at =
@@ -291,18 +292,40 @@ export class ProfessorInteractionHistoryComponent {
 
       this.chatInputMessage = '';
       this.scrollToBottom();
-      console.log(this.messages);
     } catch (err) {
       console.log(err);
-      throw new Error('onSubmitAppeal');
+      throw new Error('sendMessage');
     }
-    console.log(this.messages);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
+  async filterResults(text: string) {
+    if (!text) {
+      this.filteredAppeals = this.professorAppeals;
+      return;
+    }
+
+    this.filteredAppeals = this.professorAppeals.filter((appeal) => {
+      return (
+        appeal?.assignment_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_code
+          .toString()
+          .toLowerCase()
+          .includes(text.toLowerCase()) ||
+        (appeal?.student_first_name as string)
+          .toLowerCase()
+          .includes(text.toLowerCase())
+      );
+    });
+    this.currentAppeal = this.filteredAppeals[0];
+    this.messages = await this.sharedService.fetchMessages(
+      this.currentAppeal.appeal_id
+    );
+  }
   async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
@@ -313,8 +336,6 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '50%',
-        height: '55%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -334,8 +355,6 @@ export class ProfessorInteractionHistoryComponent {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '50%',
-        height: '50%',
         data: { graderName, appealID, studentID, professorID },
       });
     }
@@ -357,8 +376,6 @@ export class ProfessorInteractionHistoryComponent {
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { currentAppeal },
     });
     // update UI: get rid of closed appeal

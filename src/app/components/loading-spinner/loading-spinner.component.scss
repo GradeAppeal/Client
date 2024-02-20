@@ -1,0 +1,13 @@
+@import "src/styles.scss";
+
+// Used for spinner while waiting to fetch data
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  .fetch-message {
+    margin-top: 2em;
+  }
+}

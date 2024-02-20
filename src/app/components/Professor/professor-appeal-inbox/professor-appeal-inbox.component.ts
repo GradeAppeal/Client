@@ -24,7 +24,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
   session: Session;
   user: User;
   professor: Professor;
-  noAppeals = true;
+  noAppeals: boolean;
   appeals: any[];
   appeal: any;
   email = 'abc123@gmail.com';
@@ -32,6 +32,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
   date = new Date();
 
   professorAppeals!: ProfessorAppeal[];
+  filteredAppeals: ProfessorAppeal[];
   professorCourses!: Course[];
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
@@ -56,20 +57,20 @@ export class ProfessorAppealInboxComponent implements OnInit {
       }
     });
   }
+
   async ngOnInit(): Promise<void> {
     try {
       this.professorAppeals =
         await this.professorService.fetchOpenProfessorAppeals(
           this.professor.id
         );
-
+      this.filteredAppeals = this.professorAppeals;
       this.noAppeals = this.professorAppeals.length === 0 ? true : false;
-      console.log(this.professorAppeals, 'appeals');
+      this.currentAppeal = this.professorAppeals[0];
+      this.fetchedAppeals = true;
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );
-      this.currentAppeal = this.professorAppeals[0];
-      this.fetchedAppeals = true;
 
       this.handleAppealUpdates();
     } catch (err) {
@@ -122,22 +123,38 @@ export class ProfessorAppealInboxComponent implements OnInit {
   }
 
   closeAppeal() {
-    this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
-    });
+    this.dialog.open(CloseAppealPopupComponent);
     //this.navigateTo('professor/closed-appeals/');
   }
 
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredAppeals = this.professorAppeals;
+      return;
+    }
+
+    this.filteredAppeals = this.professorAppeals.filter((appeal) => {
+      return (
+        appeal?.assignment_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_code
+          .toString()
+          .toLowerCase()
+          .includes(text.toLowerCase()) ||
+        (appeal?.student_first_name as string)
+          .toLowerCase()
+          .includes(text.toLowerCase())
+      );
+    });
+    this.currentAppeal = this.filteredAppeals[0];
+  }
 
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      width: '30%',
-      height: '25%',
       data: { currentAppeal },
     });
 
@@ -160,8 +177,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(AssignGraderPopupComponent, {
-        width: '50%',
-        height: '50%',
         data: { graders, appealID, professor: this.professor },
       });
     } else {
@@ -181,8 +196,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        width: '35%',
-        height: '35%',
         data: { graderName, appealID, studentID, professorID },
       });
     }

@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AssignmentsComponent {
   courseID: number;
   course: Course;
-  isAssignmentsFetched = false;
   fetchedCourse = false;
   assignments: Assignment[];
   selectedAssignmentId: number;
@@ -39,10 +38,8 @@ export class AssignmentsComponent {
       this.assignments = await this.sharedService.fetchAssignmentsForNewAppeal(
         this.courseID
       );
-      this.isAssignmentsFetched = true;
-      this.course = await this.sharedService.getCourse(
-        this.courseID
-      );
+
+      this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedCourse = true;
 
       // listen for db inserts & updates
@@ -97,8 +94,6 @@ export class AssignmentsComponent {
     course: Course
   ): Promise<void> {
     const dialogRef = this.dialog.open(AddAssignmentComponent, {
-      width: '50%',
-      height: '55%',
       data: { assignments: assignments, course: course },
     });
   }
@@ -111,8 +106,6 @@ export class AssignmentsComponent {
     course: Course
   ): Promise<void> {
     const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
-      width: '35%',
-      height: '35%',
       data: { assignment: assignment, course: course },
     });
   }
@@ -134,13 +127,9 @@ export class AssignmentsComponent {
       : `${course.year - 2000}${course.semester} ${course.prefix}-${
           course.code
         } - ${course.name}`;
+  }
 
-      }
-
-    onBackButton() {
-      this.router.navigateByUrl(
-        'professor/courses'
-      )
-    }
-
+  onBackButton() {
+    this.router.navigateByUrl('professor/courses');
+  }
 }

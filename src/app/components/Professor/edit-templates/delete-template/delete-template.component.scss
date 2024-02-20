@@ -1,0 +1,50 @@
+@import "src/styles.scss";
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.content {
+  // margin-top: 1em;
+  // padding-left: 2em;
+  // width: 100%;
+  // border: 1px solid lightgrey;
+  // border-radius: 5px;
+  //display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  display: flex;
+  justify-content: center;
+}
+.title {
+  margin: 10px 0px;
+  font-size: 2em;
+  font-weight: 500;
+}
+
+.description {
+  margin: 0.5em 0px;
+  color: grey;
+}
+
+textarea {
+  height: 200px;
+}
+.input-box {
+  height: 20%;
+  width: 40vw;
+}
+
+.input-fields {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  margin-left: 1em;
+}
+
+mat-form-field {
+  width: 200px;
+}

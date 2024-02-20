@@ -1,6 +1,9 @@
 <!-- Class styles taken from assignment.component.scss -->
-<div class="edit-templates-container scroll">
-  <table class="assignment-table">
+<div
+  class="edit-templates-container scroll"
+  *ngIf="professorTemplates; else loadingSpinner"
+>
+  <table class="assignment-table" *ngIf="professorTemplates && !noTemplates">
     <tr>
       <th class="global-th">Template</th>
     </tr>
@@ -27,7 +30,12 @@
       </td>
     </tr>
   </table>
+  <div class="empty" *ngIf="noTemplates">
+    <h1>No templates to display</h1>
+    <h2>Add a template using the button below</h2>
+  </div>
 </div>
+
 <button
   mat-icon-button
   class="global-blue add-button"
@@ -35,3 +43,9 @@
 >
   <mat-icon class="add-icon">add</mat-icon>
 </button>
+
+<ng-template #loadingSpinner>
+  <app-loading-spinner
+    [fetchMessage]="'Fetching Templates...'"
+  ></app-loading-spinner>
+</ng-template>

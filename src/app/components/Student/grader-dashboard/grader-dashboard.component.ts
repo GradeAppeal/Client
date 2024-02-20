@@ -3,15 +3,15 @@ import { AuthService } from 'src/app/services/auth.service';
 import { StudentCourse } from 'src/app/shared/interfaces/student.interface';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
-import { User } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { Student } from 'src/app/shared/interfaces/psql.interface';
 
 @Component({
   selector: 'app-student-dashboard',
-  templateUrl: './student-dashboard.component.html',
-  styleUrls: ['./student-dashboard.component.scss'],
+  templateUrl: './grader-dashboard.component.html',
+  styleUrls: ['./grader-dashboard.component.scss'],
 })
-export class StudentDashboardComponent {
+export class GraderDashboardComponent {
   user: User;
   student: Student;
   studentUserId!: string;
@@ -35,13 +35,13 @@ export class StudentDashboardComponent {
     });
   }
   async ngOnInit(): Promise<void> {
-    try {
-      this.studentCourses = await this.studentService.fetchStudentCourses(
-        this.student.id
-      );
-    } catch (err) {
-      console.log({ err });
-    }
+    this.studentCourses = await this.studentService.fetchGraderCourses(
+      this.student.id
+    );
+    const studentAppeals = await this.studentService.fetchStudentAppeals(
+      this.student.id
+    );
+    console.log({ studentAppeals });
   }
 
   /**

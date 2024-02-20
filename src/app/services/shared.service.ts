@@ -22,6 +22,10 @@ export class SharedService {
     this.session = this.authService.session;
   }
 
+  get supabaseClient() {
+    return this.supabase;
+  }
+
   /**
    * Listens to @tableName changes
    * @param tableName table to listen

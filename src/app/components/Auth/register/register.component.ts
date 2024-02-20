@@ -42,8 +42,6 @@ export class RegisterComponent {
         this.router.navigateByUrl('/admin');
       } else if (authUserRole === 'professor') {
         const dialogRef = this.dialog.open(CheckEmailPopupComponent, {
-          width: '50%',
-          height: '50%',
           data: { firstName, lastName, email },
         });
 
@@ -53,8 +51,6 @@ export class RegisterComponent {
         // this.router.navigateByUrl('/professor/appeal-inbox');
       } else if (authUserRole === 'student') {
         const dialogRef = this.dialog.open(CheckEmailPopupComponent, {
-          width: '50%',
-          height: '50%',
           data: { firstName, lastName, email },
         });
 

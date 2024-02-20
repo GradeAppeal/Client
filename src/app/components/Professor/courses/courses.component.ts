@@ -19,8 +19,8 @@ export class CoursesComponent {
   session: Session;
   user: User;
   professor: Professor;
-  professorCourses!: Course[];
-  fetchedCourses = false;
+  professorCourses: Course[];
+  noCourses: boolean;
   fetchedCourse = false;
   currentCourseID = -1;
   currentCourse: Course;
@@ -50,7 +50,8 @@ export class CoursesComponent {
       this.professorCourses = await this.professorService.fetchProfessorCourses(
         this.professor.id
       );
-      this.fetchedCourses = true;
+      this.noCourses = this.professorCourses.length === 0 ? true : false;
+      console.log(this.noCourses);
       this.handleCourseUpdates();
     } catch (err) {
       console.log(err);
@@ -103,19 +104,13 @@ export class CoursesComponent {
 
   onViewRoster(course: Course) {
     console.log({ course });
-    this.router.navigateByUrl(
-      `professor/roster/${course.id}`
-    );
+    this.router.navigateByUrl(`professor/roster/${course.id}`);
   }
 
   onViewAssignments(course: Course) {
     console.log({ course });
-    this.router.navigateByUrl(
-      `professor/assignments/${course.id}`
-    );
+    this.router.navigateByUrl(`professor/assignments/${course.id}`);
   }
-
-
 
   /**
    * Goes to AddCourse pop up component
@@ -123,8 +118,9 @@ export class CoursesComponent {
   async addCoursePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddCourseComponent, {
       width: '80%',
-      height: '80%',
-      data: {},
+      height: '100%',
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
@@ -135,8 +131,6 @@ export class CoursesComponent {
     /* prevent navigation to different view */
     event.stopPropagation();
     const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      width: '50%',
-      height: '55%',
       data: { cid: course.id, pid: this.professor.id },
     });
   }

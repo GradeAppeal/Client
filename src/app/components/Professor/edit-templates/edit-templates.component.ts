@@ -20,6 +20,7 @@ export class EditTemplatesComponent {
   user: User;
   professor: Professor;
   professorTemplates: ProfessorTemplate[];
+  noTemplates: boolean;
 
   constructor(
     private sharedService: SharedService,
@@ -41,9 +42,14 @@ export class EditTemplatesComponent {
   }
 
   async ngOnInit() {
-    this.professorTemplates =
-      await this.professorService.fetchProfessorTemplates(this.professor.id);
-    this.handleTemplateUpdates();
+    try {
+      this.professorTemplates =
+        await this.professorService.fetchProfessorTemplates(this.professor.id);
+      this.noTemplates = this.professorTemplates.length === 0 ? true : false;
+      this.handleTemplateUpdates();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   handleTemplateUpdates() {
@@ -89,7 +95,7 @@ export class EditTemplatesComponent {
   async addTemplatePopUp(): Promise<void> {
     const dialogRef = this.dialog.open(AddTemplateComponent, {
       width: '80%',
-      height: '80%',
+      height: '100%',
       data: { professorID: this.user.id },
     });
   }
@@ -99,8 +105,6 @@ export class EditTemplatesComponent {
    */
   async deleteTemplatePopUp(templateID: number): Promise<void> {
     const dialogRef = this.dialog.open(DeleteTemplateComponent, {
-      width: '50%',
-      height: '55%',
       data: { templateID: templateID },
     });
   }
@@ -113,8 +117,6 @@ export class EditTemplatesComponent {
     templateText: string
   ): Promise<void> {
     const dialogRef = this.dialog.open(UpdateTemplateComponent, {
-      width: '80%',
-      height: '80%',
       data: {
         templateID: templateID,
         professorID: this.user.id,

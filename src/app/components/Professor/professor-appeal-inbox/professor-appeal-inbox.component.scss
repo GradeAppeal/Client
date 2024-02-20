@@ -10,7 +10,7 @@
 }
 
 .appeal {
-  padding: 3vh;
+  padding: 20px;
   .appeal-header {
     font-size: 3vh;
     font-weight: bold;
@@ -18,12 +18,12 @@
   }
 }
 .message-container {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  height: 450px;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  height: 50vh;
 }
 .buttons {
   // margin-top: 50vh;
@@ -48,6 +48,7 @@
 .content {
   position: relative;
   z-index: 1;
+  overflow-y: auto;
 }
 .navigation {
   position: relative;
@@ -80,8 +81,8 @@ mat-nav-list {
 }
 
 .appeal-wrapper {
-  height: 80vh;
-  max-height: 20vh;
+  // height: 80vh;
+  // max-height: 20vh;
   padding: 2vh;
 }
 

@@ -1,29 +1,27 @@
 <div class="wrapper">
-  <h1>Select a Grader</h1>
-  <mat-dialog-content>
-    <mat-form-field>
-      <mat-label>Grader</mat-label>
-      <mat-select
-        required="true"
-        (selectionChange)="onSelectGrader($event.value)"
-      >
-        <mat-option *ngFor="let grader of graders" [value]="grader">
-          {{ grader.student_name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <p>Message to grader:</p>
-    <input class="input" [(ngModel)]="message" />
-    <mat-dialog-actions>
-      <button
-        mat-raised-button
-        class="assign"
-        (click)="onAssignGrader()"
-        [disabled]="!selectedGrader"
-      >
-        Assign
-      </button>
-      <button mat-raised-button (click)="onCancel()">Cancel</button>
-    </mat-dialog-actions>
-  </mat-dialog-content>
+  <h1 class="title">Select a Grader</h1>
+  <mat-form-field>
+    <mat-label>Grader</mat-label>
+    <mat-select
+      required="true"
+      (selectionChange)="onSelectGrader($event.value)"
+    >
+      <mat-option *ngFor="let grader of graders" [value]="grader">
+        {{ grader.student_name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>Message to grader:</p>
+  <input class="input" [(ngModel)]="message" />
+  <div class="button-div">
+    <button
+      mat-raised-button
+      class="assign"
+      (click)="onAssignGrader()"
+      [disabled]="!selectedGrader"
+    >
+      Assign
+    </button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+  </div>
 </div>
