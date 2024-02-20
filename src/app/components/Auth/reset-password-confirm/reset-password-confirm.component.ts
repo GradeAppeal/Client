@@ -11,6 +11,7 @@ export class ResetPasswordConfirmComponent {
   constructor(private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params: Params) => {
       this.resetURL = params['confirmation_url'] || null;
+      this.resetURL = decodeURIComponent(this.resetURL as string);
       // You can then use this.confirmationUrl as needed in your component
       const resetURL = this.resetURL;
       console.log({ resetURL });
