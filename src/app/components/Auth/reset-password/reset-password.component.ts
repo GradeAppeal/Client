@@ -20,13 +20,6 @@ export class ResetPasswordComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Get token hash value
-    this.route.queryParams.subscribe((params: Params) => {
-      this.tokenHash = params['token_hash'] || null;
-      const tokenHash = this.tokenHash;
-      console.log({ tokenHash });
-    });
-
     // initialize password form
     this.passwordForm = new FormGroup(
       {
@@ -41,19 +34,11 @@ export class ResetPasswordComponent {
   }
 
   async ngOnInit() {
-    // verify user with token hash
-    try {
-      if (this.tokenHash) {
-        const verification = await this.authService.verifyOtp(this.tokenHash);
-        // console.log({ verification });
-        this.verified = true;
-      } else {
-        this.router.navigateByUrl('/');
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
       }
-    } catch (error) {
-      console.log({ error });
-      this.router.navigateByUrl('/');
-    }
+    });
   }
 
   async onResetPassword() {
@@ -67,6 +52,8 @@ export class ResetPasswordComponent {
         alert(error);
         this.router.navigateByUrl('/');
       }
+    } else {
+      alert('user undefined');
     }
   }
 }
