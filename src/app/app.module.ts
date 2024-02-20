@@ -67,6 +67,7 @@ import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { ResetPasswordConfirmComponent } from './components/Auth/reset-password-confirm/reset-password-confirm.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -112,6 +113,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     AddStudentPopupComponent,
     GraderDashboardComponent,
     LoadingSpinnerComponent,
+    ResetPasswordConfirmComponent,
   ],
   imports: [
     BrowserModule,
