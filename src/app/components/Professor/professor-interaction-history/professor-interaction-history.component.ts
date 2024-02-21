@@ -299,8 +299,6 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
     const hasImage = this.imageFile == null ? false : true;
-    let recipient_id = this.student.id;
-    let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
     if (notification === true) {
       message = 'Notification: ' + message;
     }
