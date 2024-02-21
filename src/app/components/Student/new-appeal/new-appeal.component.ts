@@ -8,6 +8,7 @@ import {
 } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder } from '@angular/forms';
@@ -48,7 +49,8 @@ export class NewAppealComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private studentService: StudentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sharedService: SharedService
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -138,9 +140,10 @@ export class NewAppealComponent implements OnInit {
           professorID
         );
 
-        const imageID = await this.studentService.uploadFile(
+        const imageID = await this.sharedService.uploadFile(
           appealID,
-          this.imageFile
+          this.imageFile,
+          0
         );
 
         this.router.navigateByUrl(`student/interaction-history/${appealID}`);

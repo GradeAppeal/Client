@@ -26,6 +26,23 @@ export interface Message {
   recipient_name: string;
   sender_name: string;
   is_read: boolean;
+  has_image: boolean;
+}
+
+export interface ImageMessage {
+  id: number;
+  appeal_id: number;
+  created_at: Date;
+  from_grader: boolean;
+  message_id: number;
+  message_text: string;
+  recipient_id: string;
+  sender_id: string;
+  recipient_name: string;
+  sender_name: string;
+  is_read: boolean;
+  has_image: boolean;
+  image?: Blob;
 }
 
 export interface Profile {

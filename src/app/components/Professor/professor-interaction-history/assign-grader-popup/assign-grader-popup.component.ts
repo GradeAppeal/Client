@@ -58,7 +58,8 @@ export class AssignGraderPopupComponent {
       this.message,
       false,
       `${this.professor.first_name} ${this.professor.last_name}`,
-      this.selectedGrader.student_name
+      this.selectedGrader.student_name,
+      false
     );
     this.dialogRef.close(assignedGraderID);
   }
