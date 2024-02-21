@@ -76,32 +76,6 @@
   border-radius: 6px;
 }
 
-.inbox-item {
-  //  padding-top: 60px;
-  border-top: solid gray 1px;
-  //float: left;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  height: 100px;
-  p {
-    font-size: 10px;
-    padding: 0px;
-    margin-left: 15px;
-  }
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  .inbox-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    p {
-      width: 100%;
-      margin-bottom: 5px;
-    }
-  }
-}
-
 .container {
   display: relative;
   flex: 1;
@@ -111,15 +85,6 @@
   flex: 1; /* Let the right pane grow to take available space */
 
   margin: 10px;
-}
-
-.selected-appeal {
-  background-color: rgba(
-    167,
-    166,
-    166,
-    0.635
-  ); /* Set the background color to a darker shade */
 }
 
 .inbox-timestamp {
