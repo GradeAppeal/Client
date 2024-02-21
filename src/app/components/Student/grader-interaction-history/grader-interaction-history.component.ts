@@ -217,7 +217,8 @@ export class GraderInteractionHistoryComponent {
         this.chatInputMessage,
         this.fromGrader,
         `${this.grader.first_name} ${this.grader.last_name}`,
-        `${this.professor.first_name} ${this.professor.last_name}`
+        `${this.professor.first_name} ${this.professor.last_name}`,
+        false
       );
 
       this.chatInputMessage = '';

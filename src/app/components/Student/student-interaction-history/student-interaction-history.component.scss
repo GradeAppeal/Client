@@ -1,5 +1,12 @@
 @import "src/styles.scss";
 
+.message-image {
+  position: relative;
+  display: block;
+  height: 15vw;
+  padding: 10px;
+}
+
 .card {
   background: white;
   height: 90vh;
