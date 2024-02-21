@@ -72,23 +72,6 @@ $background: white;
 }
 
 .inbox-item {
-  //  padding-top: 60px;
-  border-top: solid gray 1px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: rgb(233, 232, 232);
-    cursor: pointer;
-  }
-  .left-section {
-    // flex-grow: 1;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
-    // align-items: flex-start;
-  }
   .inbox-item-timestamp-dot-container {
     width: 30%;
     display: flex;

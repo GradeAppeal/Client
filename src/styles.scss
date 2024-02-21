@@ -128,23 +128,26 @@ $hover-blue: #728edd;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
 }
-.selected-appeal {
-  background-color: lightgray; /* Set the background color to a darker shade */
-}
+
 .inbox-item {
   //  padding-top: 60px;
-  border-top: solid gray 1px;
-  border-right: solid gray 1px;
-  border-bottom: solid gray 1px;
-  border-left: solid gray 1px;
+  // border-top: solid gray 1px;
+  // border-right: solid gray 1px;
+  // border-bottom: solid gray 1px;
+  // border-left: solid gray 1px;
+  background-color: whitesmoke;
   margin-top: 3px;
   border-radius: 5px;
   float: left;
   padding-bottom: 20px;
   padding-top: 20px;
+  padding-left: 8px;
   width: 100%;
+  .selected-appeal {
+    background-color: gray; /* Set the background color to a darker shade */
+  }
   &:hover {
-    background-color: #f8f8f8;
+    background-color: rgba(235, 232, 232);
     cursor: pointer;
   }
   p.inbox-name {

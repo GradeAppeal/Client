@@ -13,6 +13,12 @@
 
 .material-symbols-outlined {
   color: white;
+  font-size: 35px;
+}
+.page-title {
+  padding-left: 4px;
+  font-size: 25px;
+  font-weight: bold;
 }
 .sidenav-button {
   color: white;
@@ -68,7 +74,7 @@ mat-icon {
 }
 
 .content {
-  padding-left: 10px;
+  // padding-left: 10px;
   overflow: auto;
 }
 
