@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div
     class="container"
-    *ngIf="professorAppeals && messages; else loadingSpinner"
+    *ngIf="professorAppeals && imageMessages; else loadingSpinner"
   >
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox" *ngIf="professorAppeals.length > 0">
@@ -66,7 +66,7 @@
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
-    <div class="right-pane" *ngIf="messages.length > 0">
+    <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
         <div class="top-bar">
           <div class="left-content">
@@ -114,11 +114,11 @@
           </div>
         </div>
         <div class="chat-list" #chatListContainer>
-          <ng-container *ngFor="let chat of messages; let i = index">
+          <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="
                 i === 0 ||
-                !isSameDate(chat.created_at, this.messages[i - 1].created_at)
+                !isSameDate(chat.created_at, this.imageMessages[i - 1].created_at)
               "
             >
               <div class="section-date">
@@ -144,7 +144,7 @@
                 <div
                   *ngIf="
                     i === 0 ||
-                    chat.sender_id !== this.messages[i - 1]?.sender_id
+                    chat.sender_id !== this.imageMessages[i - 1]?.sender_id
                   "
                 >
                   <p class="name">{{ chat.sender_name }}</p>
@@ -155,13 +155,14 @@
                 class="avatar-wrapper"
                 *ngIf="!chat.message_text.trim().startsWith('Notification:')"
               ></div>
-
-              <p
-                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-                id="message-body"
-              >
-                {{ chat?.message_text }}
-              </p>
+              <div *ngIf="!chat.message_text.trim().startsWith('Notification:')" id="message-body">
+                <p>
+                  {{ chat?.message_text }}
+                </p>
+                <div class="image-wrapper">
+                  <img *ngIf="chat.image" class="message-image" id="message-image" [src]="displayImage(chat?.image)">
+                </div>
+              </div>
               <p
                 class="notification-text"
                 id="message-body"

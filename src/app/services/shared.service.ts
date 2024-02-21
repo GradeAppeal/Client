@@ -141,7 +141,8 @@ export class SharedService {
     message_text: string,
     from_grader: boolean,
     sender_name: string,
-    recipient_name: string
+    recipient_name: string,
+    has_image: boolean
   ): Promise<number> {
     const { data, error } = await this.supabase.rpc('insert_message', {
       appid,
@@ -152,6 +153,7 @@ export class SharedService {
       sender_id,
       sender_name,
       recipient_name,
+      has_image
     });
     if (error) {
       console.log(error);
@@ -219,5 +221,26 @@ export class SharedService {
       console.log({ error });
       throw new Error('updateMessageRead');
     }
+  }
+
+  async uploadFile(aid: number, imagePath: File, mid: number) {
+    const { data, error } = await this.supabase.storage
+      .from('appeal.images')
+      .upload(`/appeal${aid}/${mid}`, imagePath);
+    if (error) {
+      console.log(error);
+      throw new Error('Error in uploadFile');
+    }
+  }
+
+  async getFile(aid: number, mid: number) {
+    const { data, error } = await this.supabase.storage
+    .from('appeal.images')
+    .download(`/appeal${aid}/${mid}`);
+    if (error) {
+      console.log(error);
+      throw new Error('Error in getFile');
+    }
+    return data;
   }
 }
