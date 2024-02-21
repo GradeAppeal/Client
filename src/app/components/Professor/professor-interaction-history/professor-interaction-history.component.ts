@@ -75,7 +75,6 @@ export class ProfessorInteractionHistoryComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
-      console.log(this.appealId);
     });
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -254,7 +253,6 @@ export class ProfessorInteractionHistoryComponent {
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
         } else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -306,25 +304,28 @@ export class ProfessorInteractionHistoryComponent {
     if (notification === true) {
       message = 'Notification: ' + message;
     }
-    if (this.talkingToGrader && this.talkingToGrader === true) {
-      recipient_id = this.currentAppeal.grader_id as string;
-      recipient_name = this.currentAppeal.grader_name as string;
-    }
-    console.log(this.currentAppeal.grader_id);
-    console.log(recipient_id);
-    try {
-      console.log(this.currentAppeal);
 
-      // console.log(student_user_id);
+    const recipient_id = this.talkingToGrader
+      ? (this.currentAppeal.grader_id as string)
+      : this.student.id;
+    const recipient_name = this.talkingToGrader
+      ? (this.currentAppeal.grader_name as string)
+      : `${this.student.first_name} ${this.student.last_name}`;
+    // console.log(
+    //   'grader status: ',
+    //   this.currentAppeal.grader_id === recipient_id
+    // );
+    // console.log({ recipient_id }, { recipient_name });
+    try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        sender_id, //professor user id
-        recipient_id, //student user id
+        sender_id, //sender id
+        recipient_id, //student or grader id
         now,
         message,
         this.fromGrader,
         `${this.professor.first_name} ${this.professor.last_name}`,
-        `${this.student.first_name} ${this.student.last_name}`,
+        recipient_name,
         hasImage
       );
 
@@ -347,9 +348,8 @@ export class ProfessorInteractionHistoryComponent {
       console.log(this.messages);
     } catch (err) {
       console.log(err);
-      throw new Error('onSubmitAppeal');
+      throw new Error('sendMessage');
     }
-    console.log(this.messages);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
