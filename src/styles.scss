@@ -48,6 +48,7 @@ $hover-blue: #728edd;
     height: 80vh;
   }
 }
+
 .blue-button {
   background-color: $primary-blue;
   color: white !important;
@@ -60,8 +61,9 @@ $hover-blue: #728edd;
   padding-bottom: 0.5em;
   border-radius: 20px;
 }
+
 .gray-button {
-  border: 1px solid black;
+  // border: 1px solid black;
   color: black;
   font-family: Roboto;
   font-size: 1em;

@@ -34,15 +34,8 @@ export class RequestPasswordResetComponent {
    */
   async onRequestPasswordReset() {
     const { email } = this.passwordRequestForm.value;
-    const authenticated = await this.professorService.isUser(email);
-    let message: string;
-    if (authenticated) {
-      console.log({ email });
-      await this.authService.sendPasswordResetLink(email);
-      message = `Reset link sent to ${email}. Redirecting...`;
-    } else {
-      message = `${email} is NOT an authenticated user. Redirecting...`;
-    }
+    await this.authService.sendPasswordResetVerification(email);
+    const message = `Reset link sent to ${email}. Redirecting...`;
     const snackbarRef = this.snackBar.openFromComponent(
       RequestPasswordResetSnackbarComponent,
       {

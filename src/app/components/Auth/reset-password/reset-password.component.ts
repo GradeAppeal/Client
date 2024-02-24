@@ -12,7 +12,7 @@ import { passwordMatchValidator } from 'src/app/shared/functions/form.validator.
 })
 export class ResetPasswordComponent {
   user: User | null = null;
-  tokenHash: string | null;
+  type: string;
   verified: boolean = false;
   passwordForm: FormGroup;
   constructor(
@@ -20,13 +20,6 @@ export class ResetPasswordComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Get token hash value
-    this.route.queryParams.subscribe((params: Params) => {
-      this.tokenHash = params['token_hash'] || null;
-      const tokenHash = this.tokenHash;
-      console.log({ tokenHash });
-    });
-
     // initialize password form
     this.passwordForm = new FormGroup(
       {
@@ -42,16 +35,8 @@ export class ResetPasswordComponent {
 
   async ngOnInit() {
     // verify user with token hash
-    try {
-      if (this.tokenHash) {
-        const verification = await this.authService.verifyOtp(this.tokenHash);
-        // console.log({ verification });
-        this.verified = true;
-      } else {
-        this.router.navigateByUrl('/');
-      }
-    } catch (error) {
-      console.log({ error });
+    this.verified = this.authService.session ? true : false;
+    if (!this.verified) {
       this.router.navigateByUrl('/');
     }
   }

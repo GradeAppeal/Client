@@ -56,18 +56,18 @@ import { GraderAssignedSnackbarComponent } from './components/Professor/professo
 import { ViewClosedAppealPopupComponent } from './components/Professor/closed-appeals/view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { UnassignGraderPopupComponent } from './components/Professor/unassign-grader-popup/unassign-grader-popup.component';
 import { DeleteAppealPopupComponent } from './components/Professor/closed-appeals/delete-appeal-popup/delete-appeal-popup.component';
-import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
-import { CheckEmailPopupComponent } from './components/Auth/register/check-email-popup/check-email-popup.component';
-import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
-import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
+import { RegisterConfirmationPopupComponent } from './components/Auth/register/register-confirmation-popup/register-confirmation-popup.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
-import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
 import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
-import { ResetPasswordConfirmComponent } from './components/Auth/reset-password-confirm/reset-password-confirm.component';
+import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
+import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
+import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
+import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,18 +102,17 @@ import { ResetPasswordConfirmComponent } from './components/Auth/reset-password-
     ViewClosedAppealPopupComponent,
     UnassignGraderPopupComponent,
     DeleteAppealPopupComponent,
-    ProfessorEmailConfirmationComponent,
-    CheckEmailPopupComponent,
-    StudentSetPasswordComponent,
+    RegisterConfirmationPopupComponent,
     UpdateTemplateComponent,
     AboutComponent,
-    RequestPasswordResetComponent,
     ResetPasswordComponent,
-    RequestPasswordResetSnackbarComponent,
     AddStudentPopupComponent,
     GraderDashboardComponent,
     LoadingSpinnerComponent,
-    ResetPasswordConfirmComponent,
+    RequestTokenComponent,
+    ConfirmationComponent,
+    RequestPasswordResetComponent,
+    RequestPasswordResetSnackbarComponent,
   ],
   imports: [
     BrowserModule,

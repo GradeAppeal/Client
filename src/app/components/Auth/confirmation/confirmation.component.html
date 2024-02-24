@@ -1,0 +1,33 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      formControlName="email"
+      type="email"
+      placeholder="example@calvin.edu"
+    />
+    <mat-error
+      *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+    >
+      Please enter a valid email address
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>One-Time Password</mat-label>
+    <input
+      matInput
+      formControlName="token"
+      type="password"
+      placeholder="Enter token"
+    />
+    <mat-error
+      *ngIf="loginForm.get('token')?.invalid && loginForm.get('token')?.touched"
+    >
+      Please enter a valid one-time password (at least 6 characters)
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>

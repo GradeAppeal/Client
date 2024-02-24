@@ -23,7 +23,7 @@
           registerForm.get('firstName')?.touched
         "
       >
-        Please enter your first name
+        This field is required
       </mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -40,7 +40,7 @@
           registerForm.get('lastName')?.touched
         "
       >
-        Please enter your last name
+        This field is required
       </mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -52,26 +52,25 @@
         type="email"
         name="email"
       />
+      <mat-error *ngIf="registerForm.get('email')?.invalid">
+        Enter a valid @calvin.edu email
+      </mat-error>
       <mat-error
         *ngIf="
           registerForm.get('email')?.hasError('invalidEmailFormat') &&
           registerForm.get('email')?.touched
         "
       >
-        You must be an instructor to register using the given format above
+        You must be an instructor to register
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <label for="password">Password</label>
-      <input
-        matInput
-        type="password"
-        placeholder="Password"
-        name="password"
-        formControlName="password"
-      />
-    </mat-form-field>
-    <button type="submit" class="blue-button" [disabled]="!registerForm.valid">
+
+    <button
+      mat-button
+      type="submit"
+      [ngClass]="registerForm.valid ? 'valid' : 'invalid'"
+      [disabled]="!registerForm.valid"
+    >
       Register
     </button>
   </form>

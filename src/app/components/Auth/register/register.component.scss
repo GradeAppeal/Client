@@ -27,3 +27,28 @@
     width: 30%;
   }
 }
+.valid {
+  background-color: $primary-blue;
+  color: white !important;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
+}
+
+.invalid {
+  background-color: lightgray;
+  color: black;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
+}
