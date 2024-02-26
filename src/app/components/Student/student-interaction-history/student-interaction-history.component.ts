@@ -272,6 +272,7 @@ export class StudentInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        location.reload();
       }
 
       // clear the file input
