@@ -21,7 +21,7 @@ import {
   Message,
   Professor,
   Student,
-  ImageMessage
+  ImageMessage,
 } from 'src/app/shared/interfaces/psql.interface';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
 
@@ -57,6 +57,7 @@ export class StudentInteractionHistoryComponent {
   imageMessages!: ImageMessage[];
 
   studentAppeals!: StudentAppeal[];
+  filteredAppeals: StudentAppeal[];
   loadStudentAppeals = false;
 
   constructor(
@@ -87,6 +88,7 @@ export class StudentInteractionHistoryComponent {
     this.studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
+    this.filteredAppeals = this.studentAppeals;
     console.log(this.studentAppeals[0]);
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
     if (!this.noAppeals) {
@@ -139,8 +141,7 @@ export class StudentInteractionHistoryComponent {
         // imgElement.src = imageUrl;
         // document.getElementById("chat")!.appendChild(imgElement);
       });
-    }
-    catch {
+    } catch {
       //do nothing
     }
   }
@@ -274,8 +275,7 @@ export class StudentInteractionHistoryComponent {
       }
 
       // clear the file input
-      (<HTMLInputElement>document.getElementById("image")).value = "";
-
+      (<HTMLInputElement>document.getElementById('image')).value = '';
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
@@ -293,5 +293,38 @@ export class StudentInteractionHistoryComponent {
     date2: Date | string | undefined
   ): boolean {
     return isSameDate(date1, date2);
+  }
+
+  async filterResults(text: string) {
+    if (!text) {
+      this.filteredAppeals = this.studentAppeals;
+      return;
+    }
+
+    this.filteredAppeals = this.studentAppeals.filter((appeal) => {
+      return (
+        appeal?.assignment_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_name.toLowerCase().includes(text.toLowerCase()) ||
+        appeal?.course_code
+          .toString()
+          .toLowerCase()
+          .includes(text.toLowerCase()) ||
+        (appeal?.professor_first_name as string)
+          .toLowerCase()
+          .includes(text.toLowerCase())
+      );
+    });
+    this.currentAppeal = this.filteredAppeals[0];
+    this.messages = await this.sharedService.fetchStudentMessages(
+      this.currentAppeal.appeal_id,
+      this.student.id,
+      this.professor.id
+    );
+  }
+  onInputChange(filterValue: string): void {
+    //if input is blank, just show all appeals
+    if (filterValue.trim() === '') {
+      this.filteredAppeals = this.studentAppeals;
+    }
   }
 }
