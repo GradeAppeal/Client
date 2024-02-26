@@ -18,60 +18,6 @@ $background: white;
   }
 }
 
-.chat-footer {
-  display: flex;
-  flex-direction: row;
-  padding: 16px;
-  background: transparent;
-  border-radius: 6px;
-
-  #chat-textarea {
-    flex: 1;
-    margin: 0 8px;
-    //padding: 16px;
-    border-radius: 8px;
-    border: 1px solid lightgray;
-    &:focus {
-      outline: 0px !important;
-      -webkit-appearance: none;
-      box-shadow: none !important;
-    }
-    &::placeholder {
-      color: #aaa;
-    }
-  }
-
-  .use-template-button {
-    margin-bottom: 5px;
-  }
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    //align-items: center;
-
-    justify-content: space-between;
-    button {
-      cursor: pointer;
-      float: right;
-      padding: 6px;
-      font-size: 14px;
-      background-color: $primary-blue;
-      color: white;
-      &:hover {
-        background-color: darken($primary-blue, 5%);
-      }
-      .send {
-        padding: 2px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: auto;
-        justify-content: space-between;
-      }
-    }
-  }
-}
-
 #clear-button {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);

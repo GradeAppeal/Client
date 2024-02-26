@@ -309,21 +309,62 @@ $hover-blue: #728edd;
       color: #aaa;
     }
   }
-  button {
-    height: 25px;
-    background-color: $primary-blue; /* Change to your desired color */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 2px;
+}
+.chat-footer {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  background: transparent;
+  border-radius: 6px;
 
-    &:hover {
-      background-color: $hover-blue; /* Change to your desired hover color */
+  #chat-textarea {
+    flex: 1;
+    margin: 0 8px;
+    //padding: 16px;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    &:focus {
+      outline: 0px !important;
+      -webkit-appearance: none;
+      box-shadow: none !important;
+    }
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+
+  .use-template-button {
+    margin-bottom: 5px;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+
+    justify-content: space-between;
+    button {
+      cursor: pointer;
+      float: right;
+      padding: 6px;
+      font-size: 14px;
+      background-color: $primary-blue;
+      color: white;
+      border-radius: 20px;
+      &:hover {
+        background-color: darken($primary-blue, 5%);
+      }
+      &.send {
+        float: left;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 10px;
+      }
     }
   }
 }
-
 .blue-spinner circle {
   stroke: $primary-blue !important;
 }
