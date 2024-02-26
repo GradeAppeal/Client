@@ -18,7 +18,7 @@ import {
   Professor,
   Message,
   Student,
-  ImageMessage
+  ImageMessage,
 } from 'src/app/shared/interfaces/psql.interface';
 import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -151,8 +151,7 @@ export class ProfessorInteractionHistoryComponent {
         // imgElement.src = imageUrl;
         // document.getElementById("chat")!.appendChild(imgElement);
       });
-    }
-    catch {
+    } catch {
       //do nothing
     }
   }
@@ -342,7 +341,7 @@ export class ProfessorInteractionHistoryComponent {
       }
 
       // clear the file input
-      (<HTMLInputElement>document.getElementById("image")).value = "";
+      (<HTMLInputElement>document.getElementById('image')).value = '';
       console.log(this.messages);
     } catch (err) {
       console.log(err);
@@ -377,6 +376,12 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
+  }
+  onInputChange(filterValue: string): void {
+    //if input is blank, just show all appeals
+    if (filterValue.trim() === '') {
+      this.filteredAppeals = this.professorAppeals;
+    }
   }
   async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
@@ -446,5 +451,4 @@ export class ProfessorInteractionHistoryComponent {
     console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
   }
-
 }
