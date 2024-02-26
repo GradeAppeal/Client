@@ -117,7 +117,8 @@ export class StudentService {
     cid: number,
     created_at: Date,
     appeal_text: string,
-    pid: string
+    pid: string,
+    has_image: boolean
   ): Promise<number> {
     console.log();
     const { data, error } = await this.supabase.rpc('insert_appeal', {
@@ -127,6 +128,7 @@ export class StudentService {
       created_at,
       appeal_text,
       pid,
+      has_image
     });
 
     if (error) {
