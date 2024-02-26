@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Session, User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
@@ -20,6 +21,7 @@ import {
   Professor,
   Course,
   Grader,
+  ImageMessage
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -61,11 +63,17 @@ export class GraderInteractionHistoryComponent {
   professors!: Professor[];
   professorIds: [];
 
+  imageFile: File | undefined;
+  messageID: number;
+  image: Blob;
+  imageMessages!: ImageMessage[];
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private graderService: GraderService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private sanitizer: DomSanitizer
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
@@ -82,6 +90,11 @@ export class GraderInteractionHistoryComponent {
         };
       }
     });
+  }
+
+  onFilechange(event: any) {
+    console.log(event.target.files[0]);
+    this.imageFile = event.target.files[0];
   }
 
   async ngOnInit() {
@@ -130,6 +143,10 @@ export class GraderInteractionHistoryComponent {
             this.currentAppeal.appeal_id
           );
         }
+
+        this.imageMessages = this.messages;
+        await this.getImages();
+
         const { sender_id, recipient_id } = this.messages[0];
         const pid = sender_id === this.grader.id ? recipient_id : sender_id;
         this.professor = await this.sharedService.getProfessor(pid);
@@ -149,6 +166,33 @@ export class GraderInteractionHistoryComponent {
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+
+  // get images associated with the appeal
+  async getImages() {
+    try {
+      this.imageMessages.forEach(async (message) => {
+        if (message.has_image) {
+          this.image = await this.sharedService.getFile(
+            this.currentAppeal.appeal_id,
+            message.message_id
+          );
+          message.image = this.image;
+        }
+        // const imageUrl = URL.createObjectURL(this.image);
+        // const imgElement = document.createElement('img');
+        // imgElement.src = imageUrl;
+        // document.getElementById("chat")!.appendChild(imgElement);
+      });
+    }
+    catch {
+      //do nothing
+    }
+  }
+
+  displayImage(image: Blob | undefined): SafeUrl {
+    const imageUrl = URL.createObjectURL(image as Blob);
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
   handleMessageUpdates() {
@@ -191,6 +235,8 @@ export class GraderInteractionHistoryComponent {
       this.messages = await this.sharedService.fetchMessages(
         this.currentAppeal.appeal_id
       );
+      this.imageMessages = this.messages;
+      await this.getImages();
     } catch (e) {
       console.log({ e });
     }
@@ -209,7 +255,8 @@ export class GraderInteractionHistoryComponent {
     console.log(this.grader, 'Grader');
     console.log(this.professor, 'Prof');
     try {
-      await this.sharedService.insertMessage(
+      const hasImage = this.imageFile == null ? false : true;
+      this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.grader.id, //sender id: grader
         this.professor.id, //recipientid : professor??
@@ -218,11 +265,23 @@ export class GraderInteractionHistoryComponent {
         this.fromGrader,
         `${this.grader.first_name} ${this.grader.last_name}`,
         `${this.professor.first_name} ${this.professor.last_name}`,
-        false
+        hasImage
       );
 
       this.chatInputMessage = '';
       this.scrollToBottom();
+
+      if (hasImage) {
+        const imageID = await this.sharedService.uploadFile(
+          this.currentAppeal.appeal_id,
+          this.imageFile!,
+          this.messageID
+        );
+      }
+
+      // clear the file input
+      (<HTMLInputElement>document.getElementById("image")).value = "";
+
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
