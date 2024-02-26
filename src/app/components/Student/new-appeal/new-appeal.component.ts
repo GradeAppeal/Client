@@ -31,7 +31,7 @@ export class NewAppealComponent implements OnInit {
   appeal: string;
   studentAppeals: StudentAppeal[];
   errorMessage: string;
-  imageFile: File;
+  imageFile: File | undefined;
 
   onFilechange(event: any) {
     console.log(event.target.files[0]);
@@ -40,8 +40,7 @@ export class NewAppealComponent implements OnInit {
 
   appealForm = this.formBuilder.group({
     selectedAssignmentId: '',
-    appeal: '',
-    imageFile: null,
+    appeal: ''
   });
 
   constructor(
@@ -114,6 +113,7 @@ export class NewAppealComponent implements OnInit {
     const now = getTimestampTz(new Date());
     console.log(this.imageFile);
     try {
+      const hasImage = this.imageFile == null ? false : true;
       console.log(
         this.selectedAssignmentId,
         this.appeal,
@@ -137,13 +137,17 @@ export class NewAppealComponent implements OnInit {
           this.courseId,
           now,
           this.appeal,
-          professorID
+          professorID,
+          hasImage
         );
+
+        const appealMessages = await this.sharedService.fetchMessages(appealID);
+        const messageID = appealMessages[0].message_id;
 
         const imageID = await this.sharedService.uploadFile(
           appealID,
-          this.imageFile,
-          0
+          this.imageFile!,
+          messageID
         );
 
         this.router.navigateByUrl(`student/interaction-history/${appealID}`);

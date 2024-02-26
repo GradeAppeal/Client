@@ -142,10 +142,9 @@
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
           <input
-            id="image"
-            type="file"
-            [(ngModel)]="imageFile"
-            (change)="this.onFilechange($event)"
+          id="image"
+          type="file"
+          (change)="this.onFilechange($event)"
           />
           <button
             mat-stroked-button
