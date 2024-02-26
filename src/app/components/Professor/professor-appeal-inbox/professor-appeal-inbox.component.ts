@@ -151,6 +151,12 @@ export class ProfessorAppealInboxComponent implements OnInit {
     });
     this.currentAppeal = this.filteredAppeals[0];
   }
+  onInputChange(filterValue: string): void {
+    //if input is blank, just show all appeals
+    if (filterValue.trim() === '') {
+      this.filteredAppeals = this.professorAppeals;
+    }
+  }
 
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;

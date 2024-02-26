@@ -5,9 +5,27 @@
   >
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox" *ngIf="studentAppeals.length > 0">
+      <div class="search">
+        <button type="button" (click)="filterResults(filter.value)">
+          <mat-icon
+            class="search-icon"
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="search"
+          ></mat-icon>
+        </button>
+
+        <input
+          type="text"
+          placeholder="Search for Appeal"
+          #filter
+          (keyup.enter)="filterResults(filter.value)"
+          (input)="onInputChange(filter.value)"
+        />
+      </div>
       <div
         class="inbox-item"
-        *ngFor="let appeal of studentAppeals"
+        *ngFor="let appeal of filteredAppeals"
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
@@ -18,7 +36,9 @@
               {{ appeal?.professor_last_name }}
             </b>
           </p>
-          <p matLine>{{ appeal.course_name }}</p>
+          <p matLine>
+            <i>{{ appeal.course_name }}</i>
+          </p>
           <p matLine>{{ appeal?.assignment_name }}</p>
         </div>
         <div class="inbox-right">
@@ -94,9 +114,14 @@
               >
                 <p class="message-text">{{ chat?.message_text }}</p>
                 <div class="image-wrapper">
-                  <img *ngIf="chat.image" class="message-image" id="message-image" [src]="displayImage(chat?.image)">
+                  <img
+                    *ngIf="chat.image"
+                    class="message-image"
+                    id="message-image"
+                    [src]="displayImage(chat?.image)"
+                  />
                 </div>
-            </div>
+              </div>
               <p
                 class="notification-text"
                 id="message-body"
