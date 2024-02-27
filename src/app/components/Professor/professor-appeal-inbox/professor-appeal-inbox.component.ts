@@ -101,12 +101,25 @@ export class ProfessorAppealInboxComponent implements OnInit {
         // update grader status
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
+
+          this.professorAppeals = this.professorAppeals.filter(
+            (appeal) => appeal.appeal_id !== record.id
+          );
+          this.filteredAppeals = this.filteredAppeals.filter(
+            (appeal) => appeal.appeal_id !== record.id
+          );
+          this.currentAppeal =
+            this.currentAppeal.appeal_id !== record.id
+              ? this.currentAppeal
+              : this.filteredAppeals[0];
         }
         // safety delete check in case closed appeal not removed from appeal inbox
         else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
-            (appeal) => appeal !== record.id
+            (appeal) => appeal.appeal_id !== record.id
+          );
+          this.filteredAppeals = this.filteredAppeals.filter(
+            (appeal) => appeal.appeal_id !== record.id
           );
         }
       });
@@ -115,7 +128,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
   selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     console.log(this.currentAppeal);
-    //this.handleGraderUpdates();
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
@@ -130,7 +142,12 @@ export class ProfessorAppealInboxComponent implements OnInit {
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
-  filterResults(text: string) {
+
+  /**
+   * Filters appeals based on search
+   * @param text search query
+   */
+  filterResults(text: string): void {
     if (!text) {
       this.filteredAppeals = this.professorAppeals;
       return;
@@ -151,6 +168,11 @@ export class ProfessorAppealInboxComponent implements OnInit {
     });
     this.currentAppeal = this.filteredAppeals[0];
   }
+
+  /**
+   * update appeal list based on search
+   * @param filterValue search query
+   */
   onInputChange(filterValue: string): void {
     //if input is blank, just show all appeals
     if (filterValue.trim() === '') {
@@ -158,19 +180,23 @@ export class ProfessorAppealInboxComponent implements OnInit {
     }
   }
 
+  /**
+   * Close appeal event function
+   * @param event
+   */
   async onCloseAppeal(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
       data: { currentAppeal },
     });
 
-    // update UI: get rid of closed appeal
-    dialogRef.afterClosed().subscribe((result: number) => {
-      this.professorAppeals = this.professorAppeals.filter(
-        (appeal) => appeal.appeal_id !== result
-      );
-      this.currentAppeal = this.professorAppeals[0];
-    });
+    // // update UI: get rid of closed appeal
+    // dialogRef.afterClosed().subscribe((result: number) => {
+    //   this.professorAppeals = this.professorAppeals.filter(
+    //     (appeal) => appeal.appeal_id !== result
+    //   );
+    //   this.currentAppeal = this.professorAppeals[0];
+    // });
   }
 
   async onAssignGrader(event: MouseEvent) {
