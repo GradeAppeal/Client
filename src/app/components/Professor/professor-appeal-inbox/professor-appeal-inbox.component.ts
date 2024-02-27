@@ -96,7 +96,8 @@ export class ProfessorAppealInboxComponent implements OnInit {
           const newAppeal = await this.professorService.getNewProfessorAppeal(
             record.id
           );
-          this.professorAppeals = newAppeal.concat(this.professorAppeals);
+          // latest appeal floats to the top
+          this.professorAppeals.unshift(...newAppeal);
         }
         // update grader status
         else if (event === 'UPDATE') {
