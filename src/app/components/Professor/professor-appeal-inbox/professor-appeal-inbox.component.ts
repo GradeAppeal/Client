@@ -86,7 +86,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
         `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
@@ -128,7 +127,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
 
   selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    console.log(this.currentAppeal);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
