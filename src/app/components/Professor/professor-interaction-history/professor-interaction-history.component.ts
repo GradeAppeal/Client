@@ -18,12 +18,14 @@ import {
   Professor,
   Message,
   Student,
+  ImageMessage,
 } from 'src/app/shared/interfaces/psql.interface';
 import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
 import { CloseAppealPopupComponent } from '../professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -48,6 +50,10 @@ export class ProfessorInteractionHistoryComponent {
   grader: Student;
   talkingToGrader: Boolean = false;
   graderValue: Boolean = true;
+  imageFile: File | undefined;
+  messageID: number;
+  image: Blob;
+  imageMessages!: ImageMessage[];
 
   professorAppeals: ProfessorAppeal[];
   filteredAppeals: ProfessorAppeal[];
@@ -64,11 +70,11 @@ export class ProfessorInteractionHistoryComponent {
     private _snackBar: MatSnackBar,
     private professorService: ProfessorService,
     private sharedService: SharedService,
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
-      console.log(this.appealId);
     });
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -114,6 +120,8 @@ export class ProfessorInteractionHistoryComponent {
           this.currentAppeal.appeal_id
         );
       }
+      this.imageMessages = this.messages;
+      await this.getImages();
       this.messageLoaded = true;
       this.messageCount = this.messages.length;
       this.handleAppealNewMessages();
@@ -125,6 +133,32 @@ export class ProfessorInteractionHistoryComponent {
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+
+  // get images associated with the appeal
+  async getImages() {
+    try {
+      this.imageMessages.forEach(async (message) => {
+        if (message.has_image) {
+          this.image = await this.sharedService.getFile(
+            this.currentAppeal.appeal_id,
+            message.message_id
+          );
+          message.image = this.image;
+        }
+        // const imageUrl = URL.createObjectURL(this.image);
+        // const imgElement = document.createElement('img');
+        // imgElement.src = imageUrl;
+        // document.getElementById("chat")!.appendChild(imgElement);
+      });
+    } catch {
+      //do nothing
+    }
+  }
+
+  displayImage(image: Blob | undefined): SafeUrl {
+    const imageUrl = URL.createObjectURL(image as Blob);
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
   /**
@@ -218,7 +252,6 @@ export class ProfessorInteractionHistoryComponent {
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
         } else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -248,6 +281,8 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
+    this.imageMessages = this.messages;
+    await this.getImages();
     await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
   }
 
@@ -262,30 +297,33 @@ export class ProfessorInteractionHistoryComponent {
   ): Promise<void> {
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
-    let recipient_id = this.student.id;
-    let recipient_name = `${this.student.first_name} ${this.student.last_name}`;
+    const hasImage = this.imageFile == null ? false : true;
     if (notification === true) {
       message = 'Notification: ' + message;
     }
-    if (this.talkingToGrader && this.talkingToGrader === true) {
-      recipient_id = this.currentAppeal.grader_id as string;
-      recipient_name = this.currentAppeal.grader_name as string;
-    }
-    console.log(this.currentAppeal.grader_id);
-    console.log(recipient_id);
-    try {
-      console.log(this.currentAppeal);
 
-      // console.log(student_user_id);
+    const recipient_id = this.talkingToGrader
+      ? (this.currentAppeal.grader_id as string)
+      : this.student.id;
+    const recipient_name = this.talkingToGrader
+      ? (this.currentAppeal.grader_name as string)
+      : `${this.student.first_name} ${this.student.last_name}`;
+    // console.log(
+    //   'grader status: ',
+    //   this.currentAppeal.grader_id === recipient_id
+    // );
+    // console.log({ recipient_id }, { recipient_name });
+    try {
       await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
-        sender_id, //professor user id
-        recipient_id, //student user id
+        sender_id, //sender id
+        recipient_id, //student or grader id
         now,
         message,
         this.fromGrader,
         `${this.professor.first_name} ${this.professor.last_name}`,
-        `${this.student.first_name} ${this.student.last_name}`
+        recipient_name,
+        hasImage
       );
 
       this.currentAppeal.created_at =
@@ -293,12 +331,22 @@ export class ProfessorInteractionHistoryComponent {
 
       this.chatInputMessage = '';
       this.scrollToBottom();
+
+      if (hasImage) {
+        const imageID = await this.sharedService.uploadFile(
+          this.currentAppeal.appeal_id,
+          this.imageFile!,
+          this.messageID
+        );
+      }
+
+      // clear the file input
+      (<HTMLInputElement>document.getElementById('image')).value = '';
       console.log(this.messages);
     } catch (err) {
       console.log(err);
-      throw new Error('onSubmitAppeal');
+      throw new Error('sendMessage');
     }
-    console.log(this.messages);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
@@ -328,6 +376,12 @@ export class ProfessorInteractionHistoryComponent {
     this.messages = await this.sharedService.fetchMessages(
       this.currentAppeal.appeal_id
     );
+  }
+  onInputChange(filterValue: string): void {
+    //if input is blank, just show all appeals
+    if (filterValue.trim() === '') {
+      this.filteredAppeals = this.professorAppeals;
+    }
   }
   async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
@@ -391,5 +445,10 @@ export class ProfessorInteractionHistoryComponent {
         this.currentAppeal.appeal_id
       );
     });
+  }
+
+  onFilechange(event: any) {
+    console.log(event.target.files[0]);
+    this.imageFile = event.target.files[0];
   }
 }

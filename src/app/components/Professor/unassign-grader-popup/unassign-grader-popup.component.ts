@@ -51,7 +51,8 @@ export class UnassignGraderPopupComponent {
       this.message,
       false,
       '',
-      ''
+      '',
+      false
     );
     this.dialogRef.close();
   }

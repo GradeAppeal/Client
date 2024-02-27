@@ -1,5 +1,32 @@
 @import "src/styles.scss";
 
+.tab-list {
+  background-color: white;
+  height: 100%;
+}
+
+.sidenav-button {
+  color: $primary-blue;
+  padding: 15px;
+  width: 100%;
+
+  &:hover {
+    background-color: darken(white, 10%);
+  }
+}
+mat-icon {
+  margin-right: 7px;
+}
+
+.selected {
+  background-color: darken(white, 15%);
+}
+
+.sidenav-container {
+  width: 200px; /* Set the width of the sidenav as needed */
+  height: 100vh;
+  float: left;
+}
 .top-bar {
   font-size: 40px;
   background-color: white;
@@ -39,6 +66,7 @@
 
 .about-icon {
   font-size: 20px;
+  margin: 0px;
   color: $primary-blue;
   font-weight: bolder;
   display: flex;
@@ -196,3 +224,17 @@
   height: 100%;
 }
 
+.grader-divider {
+  background-color: $primary-blue;
+  height: 5px;
+  width: 100%;
+}
+.material-symbols-outlined {
+  color: $primary-blue;
+  font-size: 35px;
+}
+.page-title {
+  padding-left: 4px;
+  font-size: 25px;
+  font-weight: bold;
+}

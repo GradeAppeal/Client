@@ -8,6 +8,7 @@ import {
 } from 'src/app/shared/interfaces/psql.interface';
 import { getTimestampTz } from 'src/app/shared/functions/time.util';
 import { StudentService } from 'src/app/services/student.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder } from '@angular/forms';
@@ -30,7 +31,7 @@ export class NewAppealComponent implements OnInit {
   appeal: string;
   studentAppeals: StudentAppeal[];
   errorMessage: string;
-  imageFile: File;
+  imageFile: File | undefined;
 
   onFilechange(event: any) {
     console.log(event.target.files[0]);
@@ -39,8 +40,7 @@ export class NewAppealComponent implements OnInit {
 
   appealForm = this.formBuilder.group({
     selectedAssignmentId: '',
-    appeal: '',
-    imageFile: null,
+    appeal: ''
   });
 
   constructor(
@@ -48,7 +48,8 @@ export class NewAppealComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private studentService: StudentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sharedService: SharedService
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -112,6 +113,7 @@ export class NewAppealComponent implements OnInit {
     const now = getTimestampTz(new Date());
     console.log(this.imageFile);
     try {
+      const hasImage = this.imageFile == null ? false : true;
       console.log(
         this.selectedAssignmentId,
         this.appeal,
@@ -135,12 +137,17 @@ export class NewAppealComponent implements OnInit {
           this.courseId,
           now,
           this.appeal,
-          professorID
+          professorID,
+          hasImage
         );
 
-        const imageID = await this.studentService.uploadFile(
+        const appealMessages = await this.sharedService.fetchMessages(appealID);
+        const messageID = appealMessages[0].message_id;
+
+        const imageID = await this.sharedService.uploadFile(
           appealID,
-          this.imageFile
+          this.imageFile!,
+          messageID
         );
 
         this.router.navigateByUrl(`student/interaction-history/${appealID}`);

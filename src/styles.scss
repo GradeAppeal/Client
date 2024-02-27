@@ -60,8 +60,9 @@ $hover-blue: #728edd;
   border-radius: 20px;
 }
 .gray-button {
-  border: 1px solid black;
   color: black;
+  background-color: whitesmoke;
+  margin-left: 20px;
   font-family: Roboto;
   font-size: 1em;
   font-weight: 500;
@@ -127,23 +128,26 @@ $hover-blue: #728edd;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
 }
-.selected-appeal {
-  background-color: lightgray; /* Set the background color to a darker shade */
-}
+
 .inbox-item {
   //  padding-top: 60px;
-  border-top: solid gray 1px;
-  border-right: solid gray 1px;
-  border-bottom: solid gray 1px;
-  border-left: solid gray 1px;
+  // border-top: solid gray 1px;
+  // border-right: solid gray 1px;
+  // border-bottom: solid gray 1px;
+  // border-left: solid gray 1px;
+  background-color: whitesmoke;
   margin-top: 3px;
   border-radius: 5px;
   float: left;
   padding-bottom: 20px;
   padding-top: 20px;
+  padding-left: 8px;
   width: 100%;
+  .selected-appeal {
+    background-color: gray; /* Set the background color to a darker shade */
+  }
   &:hover {
-    background-color: #f8f8f8;
+    background-color: rgba(235, 232, 232);
     cursor: pointer;
   }
   p.inbox-name {
@@ -169,14 +173,16 @@ $hover-blue: #728edd;
   padding: 16px;
   overflow-y: scroll;
   align-items: center;
-
   .chat-item {
-    max-width: 80%;
     margin: 8px 0px;
     display: flex;
     flex-direction: row;
     align-items: center;
 
+    p.message-body {
+      overflow-wrap: break-word;
+      max-width: 55vw;
+    }
     #message-body {
       background: $primary-blue;
       margin: auto 8px;
@@ -185,6 +191,8 @@ $hover-blue: #728edd;
       color: white;
       display: flex;
       flex-direction: row;
+      overflow-wrap: break-word;
+      max-width: 100%;
     }
     &.notification {
       #message-body {
@@ -216,6 +224,7 @@ $hover-blue: #728edd;
       margin-left: 10px;
       background-color: lightgray;
       color: black;
+      overflow-wrap: break-word;
     }
     .name {
       display: block;
@@ -269,35 +278,92 @@ $hover-blue: #728edd;
 }
 .search {
   margin-top: 5px;
-
+  background-color: whitesmoke;
   display: flex;
   align-items: center;
+  border-radius: 5px;
+  button {
+    background-color: transparent !important;
+    align-items: center;
+    .search-icon {
+      margin-left: 10px;
+      color: gray;
+    }
+  }
+
   input {
     height: 20px;
     margin-left: 1px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+
     font-size: 12px;
     outline: none;
+    &:focus {
+      outline: 0px !important;
+      -webkit-appearance: none;
+      box-shadow: none !important;
+    }
     &::placeholder {
       color: #aaa;
     }
   }
-  button {
-    height: 25px;
-    background-color: $primary-blue; /* Change to your desired color */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 2px;
+}
+.chat-footer {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  background: transparent;
+  border-radius: 6px;
 
-    &:hover {
-      background-color: $hover-blue; /* Change to your desired hover color */
+  #chat-textarea {
+    flex: 1;
+    margin: 0 8px;
+    //padding: 16px;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    &:focus {
+      outline: 0px !important;
+      -webkit-appearance: none;
+      box-shadow: none !important;
+    }
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+
+  .use-template-button {
+    margin-bottom: 5px;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+
+    justify-content: space-between;
+    button {
+      cursor: pointer;
+      float: right;
+      padding: 6px;
+      font-size: 14px;
+      background-color: $primary-blue;
+      color: white;
+      border-radius: 20px;
+      &:hover {
+        background-color: darken($primary-blue, 5%);
+      }
+      &.send {
+        float: left;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 10px;
+      }
     }
   }
 }
-
 .blue-spinner circle {
   stroke: $primary-blue !important;
 }
@@ -321,4 +387,9 @@ $hover-blue: #728edd;
   h2 {
     font-size: 2vh;
   }
+}
+
+//body of message for interaction history
+.message-body {
+  overflow-wrap: break-word;
 }

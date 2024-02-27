@@ -1,13 +1,31 @@
 <div class="wrapper">
   <div
     class="container"
-    *ngIf="studentAppeals && messages; else loadingSpinner"
+    *ngIf="studentAppeals && imageMessages; else loadingSpinner"
   >
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox" *ngIf="studentAppeals.length > 0">
+      <div class="search">
+        <button type="button" (click)="filterResults(filter.value)">
+          <mat-icon
+            class="search-icon"
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="search"
+          ></mat-icon>
+        </button>
+
+        <input
+          type="text"
+          placeholder="Search for Appeal"
+          #filter
+          (keyup.enter)="filterResults(filter.value)"
+          (input)="onInputChange(filter.value)"
+        />
+      </div>
       <div
         class="inbox-item"
-        *ngFor="let appeal of studentAppeals"
+        *ngFor="let appeal of filteredAppeals"
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
@@ -18,7 +36,9 @@
               {{ appeal?.professor_last_name }}
             </b>
           </p>
-          <p matLine>{{ appeal.course_name }}</p>
+          <p matLine>
+            <i>{{ appeal.course_name }}</i>
+          </p>
           <p matLine>{{ appeal?.assignment_name }}</p>
         </div>
         <div class="inbox-right">
@@ -35,7 +55,7 @@
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
-    <div class="right-pane" *ngIf="messages.length > 0">
+    <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
         <mat-toolbar class="top-bar">
           <mat-toolbar-row>
@@ -48,11 +68,11 @@
           </mat-toolbar-row>
         </mat-toolbar>
         <div class="chat-list" #chatListContainer>
-          <ng-container *ngFor="let chat of messages; let i = index">
+          <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="
                 i === 0 ||
-                !isSameDate(chat.created_at, messages[i - 1].created_at)
+                !isSameDate(chat.created_at, imageMessages[i - 1].created_at)
               "
             >
               <div class="section-date">
@@ -77,7 +97,7 @@
                 <div
                   *ngIf="
                     i === 0 ||
-                    chat.sender_id !== this.messages[i - 1]?.sender_id
+                    chat.sender_id !== this.imageMessages[i - 1]?.sender_id
                   "
                 >
                   <p class="name">{{ chat.sender_name }}</p>
@@ -88,12 +108,20 @@
                 *ngIf="!chat.message_text.trim().startsWith('Notification:')"
               ></div>
 
-              <p
+              <div
                 *ngIf="!chat.message_text.trim().startsWith('Notification:')"
                 id="message-body"
               >
-                {{ chat?.message_text }}
-              </p>
+                <p class="message-text">{{ chat?.message_text }}</p>
+                <div class="image-wrapper">
+                  <img
+                    *ngIf="chat.image"
+                    class="message-image"
+                    id="message-image"
+                    [src]="displayImage(chat?.image)"
+                  />
+                </div>
+              </div>
               <p
                 class="notification-text"
                 id="message-body"
@@ -106,21 +134,36 @@
           </ng-container>
         </div>
         <div class="chat-footer">
+          <div class="image-container">
+            <input
+              id="image"
+              type="file"
+              title=" a"
+              [(ngModel)]="imageFile"
+              (change)="this.onFilechange($event)"
+            />
+          </div>
           <input
-            matInput
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
-          <button
-            mat-stroked-button
-            id="send-button"
-            (click)="sendMessage(this.chatInputMessage)"
-            [disabled]="chatInputMessage === ''"
-          >
-            Send
-          </button>
+
+          <div class="buttons">
+            <button
+              class="send"
+              (click)="sendMessage(this.chatInputMessage)"
+              [disabled]="chatInputMessage === ''"
+            >
+              <mat-icon
+                class="search-icon"
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="send"
+              ></mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
       >
         rocket_launch
       </span>
-      <span>{{ title }}</span>
+      <span class="page-title">{{ title }}</span>
     </span>
     <div class="right-content">
       <span class="material-symbols-outlined" (click)="logoutPopUp()">
@@ -68,18 +68,6 @@
           fontIcon="person"
         ></mat-icon>
         &ensp;Courses
-      </button>
-      <button
-        class="sidenav-button"
-        [routerLink]="['/professor/notifications']"
-        routerLinkActive="selected"
-      >
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Example home icon"
-          fontIcon="notifications"
-        ></mat-icon>
-        &ensp;Notifications
       </button>
       <button
         class="sidenav-button"

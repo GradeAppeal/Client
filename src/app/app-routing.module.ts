@@ -12,7 +12,6 @@ import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.c
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
-import { NotificationsComponent } from './components/Professor/notifications/notifications.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { professorGuard } from 'src/app/guards/professor.guard';
 import { studentGuard } from './guards/student.guard';
@@ -24,6 +23,7 @@ import { RequestPasswordResetComponent } from './components/Auth/request-passwor
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { AboutComponent } from './components/about/about.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
+import { ResetPasswordConfirmComponent } from './components/Auth/reset-password-confirm/reset-password-confirm.component';
 
 const routes: Routes = [
   {
@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'confirmation',
     component: ProfessorEmailConfirmationComponent,
+  },
+  {
+    path: 'reset-confirmation',
+    component: ResetPasswordConfirmComponent,
   },
   {
     path: 'student-verification',
@@ -83,10 +87,6 @@ const routes: Routes = [
       {
         path: 'edit-templates',
         component: EditTemplatesComponent,
-      },
-      {
-        path: 'notifications',
-        component: NotificationsComponent,
       },
       {
         path: 'about',

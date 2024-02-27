@@ -117,7 +117,8 @@ export class StudentService {
     cid: number,
     created_at: Date,
     appeal_text: string,
-    pid: string
+    pid: string,
+    has_image: boolean
   ): Promise<number> {
     console.log();
     const { data, error } = await this.supabase.rpc('insert_appeal', {
@@ -127,6 +128,7 @@ export class StudentService {
       created_at,
       appeal_text,
       pid,
+      has_image
     });
 
     if (error) {
@@ -150,18 +152,5 @@ export class StudentService {
       throw new Error('Error in fetchAssignmentsForNewAppeal');
     }
     return data;
-  }
-
-  async uploadFile(aid: number, imagePath: File) {
-    const { data, error } = await this.supabase.storage
-      .from('appeal.images')
-      .upload(`appeal${aid}`, imagePath, {
-        cacheControl: '3600',
-        upsert: false,
-      });
-    if (error) {
-      console.log(error);
-      throw new Error('Error in uploadFile');
-    }
   }
 }
