@@ -30,6 +30,12 @@ export class StudentNavigationComponent {
       .subscribe(() => {
         this.selectedTab =
           this.activatedRoute.snapshot.firstChild?.routeConfig?.path || '';
+        let segments = this.selectedTab.split('/');
+        this.title = segments[segments.length - 1].replace('-', ' ');
+        //capitalize each first letter of the word
+        this.title = this.title.replace(/\b\w/g, function (match) {
+          return match.toUpperCase();
+        });
       });
     console.log(this.selectedTab);
   }
