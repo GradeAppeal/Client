@@ -38,6 +38,26 @@ export class StudentService {
   }
 
   /**
+   * Get single course with id of cid
+   * @param sid student id
+   * @param cid course id
+   * @returns single course
+   */
+  async getStudentCourse(sid: string, cid: number): Promise<StudentCourse[]> {
+    const { data, error } = await this.supabase.rpc('get_student_course', {
+      sid,
+      cid,
+    });
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+
+    console.log('getStudentCourse: ', { data });
+    return data;
+  }
+
+  /**
    * Fetches the student's courses (both enrolled and grading)
    * @param sid student id
    * @returns
@@ -128,7 +148,7 @@ export class StudentService {
       created_at,
       appeal_text,
       pid,
-      has_image
+      has_image,
     });
 
     if (error) {
