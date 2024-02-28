@@ -314,7 +314,7 @@ export class ProfessorInteractionHistoryComponent {
     // );
     // console.log({ recipient_id }, { recipient_name });
     try {
-      await this.sharedService.insertMessage(
+      this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         sender_id, //sender id
         recipient_id, //student or grader id

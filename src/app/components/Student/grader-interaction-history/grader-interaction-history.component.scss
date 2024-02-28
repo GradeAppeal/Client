@@ -2,6 +2,13 @@
 
 $background: white;
 
+.message-image {
+  position: relative;
+  display: block;
+  height: 15vw;
+  padding: 10px;
+}
+
 .card {
   background: $background;
   height: 90vh;
@@ -16,6 +23,15 @@ $background: white;
   ::-webkit-scrollbar {
     display: none;
   }
+}
+
+#image {
+  width: 100%;
+  color: transparent;
+}
+
+.image-container {
+  width: 120px;
 }
 
 .chat-footer {
