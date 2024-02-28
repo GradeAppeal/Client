@@ -62,11 +62,11 @@ import { UpdateTemplateComponent } from './components/Professor/edit-templates/u
 import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
-import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from './components/util-components/loading-spinner/loading-spinner.component';
 import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
-import { RequestPasswordResetSnackbarComponent } from './components/Auth/request-password-reset/request-password-reset-snackbar/request-password-reset-snackbar.component';
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
+import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +112,7 @@ import { ConfirmationComponent } from './components/Auth/confirmation/confirmati
     RequestTokenComponent,
     ConfirmationComponent,
     RequestPasswordResetComponent,
-    RequestPasswordResetSnackbarComponent,
+    RedirectSnackbarComponent,
   ],
   imports: [
     BrowserModule,

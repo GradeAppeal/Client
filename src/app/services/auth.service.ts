@@ -187,7 +187,7 @@ export class AuthService {
     } = await this.supabase.auth.verifyOtp({
       email,
       token,
-      type: 'invite',
+      type: 'email',
     });
     if (error) {
       throw new Error(error.message);

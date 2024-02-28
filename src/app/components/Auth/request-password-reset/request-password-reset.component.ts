@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RequestPasswordResetSnackbarComponent } from './request-password-reset-snackbar/request-password-reset-snackbar.component';
 import { Router } from '@angular/router';
+import { RedirectSnackbarComponent } from '../../util-components/redirect-snackbar/redirect-snackbar.component';
 
 @Component({
   selector: 'app-request-password-reset',
@@ -37,7 +37,7 @@ export class RequestPasswordResetComponent {
     await this.authService.sendPasswordResetVerification(email);
     const message = `Reset link sent to ${email}. Redirecting...`;
     const snackbarRef = this.snackBar.openFromComponent(
-      RequestPasswordResetSnackbarComponent,
+      RedirectSnackbarComponent,
       {
         duration: this.durationInSeconds * 1000,
         data: message,
