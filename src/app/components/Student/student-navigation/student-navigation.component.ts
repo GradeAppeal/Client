@@ -5,6 +5,9 @@ import { navigate, setTitle } from 'src/app/shared/functions/general.util';
 import { AuthService } from 'src/app/services/auth.service';
 import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 import { filter } from 'rxjs/operators';
+import { User } from '@supabase/supabase-js';
+import { Grader, Student } from 'src/app/shared/interfaces/psql.interface';
+import { GraderService } from 'src/app/services/grader.service';
 
 @Component({
   selector: 'app-student-navigation',
@@ -12,11 +15,29 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./student-navigation.component.scss'],
 })
 export class StudentNavigationComponent {
+  user : User;
+  isGrader : boolean;
+  showStudent : boolean = true;
+  showGrader : boolean = false;
+  expandMoreS : boolean = true;
+  expandMoreG : boolean = false;
+
+  
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog
-  ) {}
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private graderService: GraderService,
+  ) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+      }
+    });
+    
+  }
+
   navigateTo(route: string) {
     this.selectedTab = route;
     console.log(route);
@@ -38,12 +59,14 @@ export class StudentNavigationComponent {
         });
       });
     console.log(this.selectedTab);
+
+    this.isGrader = await this.graderService.isGrader(this.user.id);
   }
 
   grader = false;
   email = 'sth6@calvin.edu';
   selectedTab: string = '/student/course-dashboard';
-  title: string = 'Course Dashboard';
+  title: string = 'Courses';
   selectTab(tabName: string): void {
     this.selectedTab = tabName;
   }
