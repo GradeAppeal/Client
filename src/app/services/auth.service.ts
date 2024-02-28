@@ -25,7 +25,13 @@ export class AuthService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl as string,
-      environment.serviceRoleKey as string
+      environment.serviceRoleKey as string,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
     );
 
     // create auth user subscription
@@ -144,27 +150,49 @@ export class AuthService {
     return data;
   }
 
+  async signInWithOtp(email: string, first_name: string, last_name: string) {
+    const { data, error } = await this.supabase.auth.signInWithOtp({
+      email: email,
+      options: {
+        data: { first_name, last_name },
+      },
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+
   async verifyOtp(tokenHash: string) {
-    const { data, error } = await this.supabase.auth.verifyOtp({
+    const {
+      data: { session },
+      error,
+    } = await this.supabase.auth.verifyOtp({
       token_hash: tokenHash,
       type: 'email',
     });
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+    return session;
   }
 
-  async setStudentPassword(id: string, password: string) {
-    const { data: user, error } = await this.supabase.auth.admin.updateUserById(
-      id,
-      { password }
-    );
-
+  async verifyAccount(email: string, token: string) {
+    const {
+      data: { session },
+      error,
+    } = await this.supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    });
     if (error) {
       throw new Error(error.message);
     }
-    return user;
+    return session;
   }
 
   /**
@@ -198,6 +226,11 @@ export class AuthService {
     return data;
   }
 
+  /**
+   * Get user type: "professor" or "student"
+   * @param email user email
+   * @returns
+   */
   async getRole(email: string | null | undefined): Promise<string> {
     if (!email) {
       throw new Error('Nonetype Email');
@@ -264,21 +297,30 @@ export class AuthService {
     console.log({ data });
   }
 
-  async sendPasswordResetLink(email: string) {
+  /**
+   * Send verification for resetting email
+   * @param email user's email
+   */
+  async sendPasswordResetVerification(email: string) {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: 'https://gradeboost.cs.calvin.edu/reset-password',
+        redirectTo: 'http://localhost:4200/confirmation',
       }
     );
 
     if (error) {
       console.log({ error });
-      throw new Error('sendPasswordResetLink');
+      throw new Error(error.message);
     }
     console.log({ data });
   }
 
+  /**
+   * (Re)Set user password
+   * @param password new password
+   * @returns
+   */
   async updatePassword(password: string) {
     const { data, error } = await this.supabase.auth.updateUser({
       password,
@@ -286,8 +328,35 @@ export class AuthService {
 
     if (error) {
       console.log({ error });
-      throw new Error('updatePassword');
+      throw new Error(error.message);
     }
+    return data;
+  }
+
+  /**
+   * Check if user is a student
+   * @param sid student id
+   * @returns true if student
+   */
+  async isStudent(sid: string) {
+    const { data, error } = await this.supabase.rpc('is_student', { sid });
+    if (error) {
+      console.log({ error });
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+
+  /**
+   * Check if user is a professor
+   * @param pid professor id
+   * @returns true if student
+   */
+  async isProfessor(pid: string) {
+    const { data, error } = await this.supabase.rpc('is_professor', { pid });
+    if (error) throw new Error(error.message);
+
     return data;
   }
 }

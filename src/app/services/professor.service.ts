@@ -406,21 +406,25 @@ export class ProfessorService {
   async inviteStudent(parsedStudent: ParsedStudent): Promise<User | null> {
     const { first_name, last_name, email } = parsedStudent;
     // get user field of supabase.User type
-    const {
-      data: { user },
-      error,
-    } = await this.supabase.auth.admin.inviteUserByEmail(email, {
-      redirectTo: 'https://gradeboost.us/student-verification',
-      data: { first_name, last_name },
-    });
+    const { data, error } = await this.supabase.auth.admin.inviteUserByEmail(
+      email,
+      {
+        data: { first_name, last_name },
+      }
+    );
+    // await this.supabase.auth.admin.inviteUserByEmail(email, {
+    //   redirectTo: 'https://gradeboost.us/student-verification',
+    //   data: { first_name, last_name },
+    // });
+
     // user fails to create: return null
     if (error) {
       console.log({ error });
       return null;
     }
     // user created: return the User object
-    console.log({ user });
-    return user;
+    console.log({ data });
+    return data.user;
   }
 
   /**
@@ -432,13 +436,15 @@ export class ProfessorService {
     parsedStudentstoInvite: ParsedStudent[]
   ): Promise<(string | null)[]> {
     try {
-      const newStudentIds = await Promise.all(
+      const newStudents = await Promise.all(
         // create a user every non-registered student
         parsedStudentstoInvite.map(async (student) => {
-          const user = await this.inviteStudent(student);
-          return user ? user.id : null;
+          await this.inviteStudent(student);
+          return student;
         })
       );
+      console.log({ newStudents });
+      const newStudentIds = await this.fetchStudentIds(newStudents);
       console.log({ newStudentIds });
       return newStudentIds;
     } catch (err) {
@@ -456,6 +462,7 @@ export class ProfessorService {
     const { data, error } = await this.supabase.rpc('get_student_id', {
       student_email: email,
     });
+    console.log(data, error);
     if (error) {
       console.log({ error });
       return null;
@@ -476,6 +483,7 @@ export class ProfessorService {
         // create a user every non-registered student
         parsedStudents.map(async (student) => {
           const studentId = await this.fetchStudentId(student);
+          console.log({ studentId }, 'from fetchStudentIds');
           return studentId;
         })
       );

@@ -1,78 +1,88 @@
-<div class="register-container">
-  <div class="register-info-container">
-    <h1>Instructor Registeration</h1>
-    <h2>Please register below with the format <i>first.last@calvin.edu</i></h2>
-  </div>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+<div class="wrapper">
+  <div class="container">
+    <div class="content">
+      <div class="logo">
+        <span class="material-symbols-outlined"> rocket_launch </span>
+      </div>
+      <div class="text-container">
+        <h1>Instructor Registeration</h1>
+        <p>
+          Please register below with the format <i>first.last@calvin.edu</i>
+        </p>
+      </div>
+      <div class="form-container">
+        <form
+          class="register-form"
+          [formGroup]="registerForm"
+          (ngSubmit)="onRegister()"
+        >
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="First Name"
+              name="firstName"
+              formControlName="firstName"
+            />
+            <mat-error
+              *ngIf="
+                registerForm.get('firstName')?.errors &&
+                registerForm.get('firstName')?.touched
+              "
+            >
+              This field is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Last Name"
+              name="lastName"
+              formControlName="lastName"
+            />
+            <mat-error
+              *ngIf="
+                registerForm.get('lastName')?.errors &&
+                registerForm.get('lastName')?.touched
+              "
+            >
+              This field is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="email@calvin.edu"
+              formControlName="email"
+              type="email"
+              name="email"
+            />
+            <mat-error *ngIf="registerForm.get('email')?.invalid">
+              Enter a valid @calvin.edu email
+            </mat-error>
+            <mat-error
+              *ngIf="
+                registerForm.get('email')?.hasError('invalidEmailFormat') &&
+                registerForm.get('email')?.touched
+              "
+            >
+              You must be an instructor to register
+            </mat-error>
+          </mat-form-field>
 
-  <form
-    class="register-form"
-    [formGroup]="registerForm"
-    (ngSubmit)="onRegister()"
-  >
-    <mat-form-field>
-      <label for="firstName">First Name</label>
-      <input
-        matInput
-        placeholder="First Name"
-        name="firstName"
-        formControlName="firstName"
-      />
-      <mat-error
-        *ngIf="
-          registerForm.get('firstName')?.errors &&
-          registerForm.get('firstName')?.touched
-        "
-      >
-        Please enter your first name
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <label for="lastName">Last Name</label>
-      <input
-        matInput
-        placeholder="Last Name"
-        name="lastName"
-        formControlName="lastName"
-      />
-      <mat-error
-        *ngIf="
-          registerForm.get('lastName')?.errors &&
-          registerForm.get('lastName')?.touched
-        "
-      >
-        Please enter your last name
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <label for="email">Email</label>
-      <input
-        matInput
-        placeholder="email@calvin.edu"
-        formControlName="email"
-        type="email"
-        name="email"
-      />
-      <mat-error
-        *ngIf="
-          registerForm.get('email')?.hasError('invalidEmailFormat') &&
-          registerForm.get('email')?.touched
-        "
-      >
-        You must be an instructor to register using the given format above
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <label for="password">Password</label>
-      <input
-        matInput
-        type="password"
-        placeholder="Password"
-        name="password"
-        formControlName="password"
-      />
-    </mat-form-field>
-    <button type="submit" class="blue-button" [disabled]="!registerForm.valid">
-      Register
-    </button>
-  </form>
+          <button
+            mat-button
+            type="submit"
+            [ngClass]="registerForm.valid ? 'valid' : 'invalid'"
+            [disabled]="!registerForm.valid"
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
