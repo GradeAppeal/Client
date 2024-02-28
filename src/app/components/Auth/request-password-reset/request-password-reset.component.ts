@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { ProfessorService } from 'src/app/services/professor.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RedirectSnackbarComponent } from '../../util-components/redirect-snackbar/redirect-snackbar.component';
@@ -16,7 +15,6 @@ export class RequestPasswordResetComponent {
   durationInSeconds: number = 2;
 
   constructor(
-    private professorService: ProfessorService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router

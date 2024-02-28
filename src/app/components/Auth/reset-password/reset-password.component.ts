@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { passwordMatchValidator } from 'src/app/shared/functions/form.validator.util';
+import { RedirectSnackbarComponent } from '../../util-components/redirect-snackbar/redirect-snackbar.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -14,7 +16,11 @@ export class ResetPasswordComponent {
   user: User | null = null;
   type: string;
   passwordForm: FormGroup;
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
     // check for user
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -22,7 +28,7 @@ export class ResetPasswordComponent {
       }
       // navigate to home if auth session not initialized
       else {
-        // this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/');
       }
     });
   }
@@ -45,10 +51,22 @@ export class ResetPasswordComponent {
     const { newPassword } = this.passwordForm.value;
     try {
       await this.authService.updatePassword(newPassword as string);
-      this.router.navigateByUrl('/');
+      this.activateSnackbar('Update successful. Redirecting...');
     } catch (error) {
-      alert(error);
-      this.router.navigateByUrl('/');
+      this.activateSnackbar(`${error}. Redirecting...`);
     }
+  }
+
+  private activateSnackbar(message: string) {
+    const snackbarRef = this.snackBar.openFromComponent(
+      RedirectSnackbarComponent,
+      {
+        duration: 2000,
+        data: message,
+      }
+    );
+    snackbarRef.afterDismissed().subscribe(() => {
+      this.router.navigateByUrl('/');
+    });
   }
 }
