@@ -21,7 +21,7 @@ import {
   Professor,
   Course,
   Grader,
-  ImageMessage
+  ImageMessage,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
@@ -103,8 +103,7 @@ export class GraderInteractionHistoryComponent {
     // student is not a grader
     if (!isGrader) {
       this.noAppeals = true;
-      this.noAppealsMessage =
-        'You have not been assigned as a grader to any courses';
+      this.noAppealsMessage = 'You are not a grader';
     }
     // student is a grader
     else {
@@ -125,7 +124,6 @@ export class GraderInteractionHistoryComponent {
       }
 
       this.noAppeals = this.graderAppeals.length === 0 ? true : false;
-      console.log('no appeal status: ', this.noAppeals);
       // grader has appeals
       if (!this.noAppeals) {
         this.currentAppeal =
@@ -156,9 +154,8 @@ export class GraderInteractionHistoryComponent {
       }
       // grader has no appeals
       else {
-        console.log("Grader doesn't have any appeals");
         this.messages = [];
-        this.noAppealsMessage = 'You have not been assigned to any appeals';
+        this.noAppealsMessage = 'You have no appeals assigned to you';
       }
       console.log(this.messages);
     }
@@ -184,8 +181,7 @@ export class GraderInteractionHistoryComponent {
         // imgElement.src = imageUrl;
         // document.getElementById("chat")!.appendChild(imgElement);
       });
-    }
-    catch {
+    } catch {
       //do nothing
     }
   }
@@ -203,7 +199,7 @@ export class GraderInteractionHistoryComponent {
         `message-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
-      .subscribe(async (update: any) => {
+      .subscribe((update: any) => {
         console.log({ update });
         // if insert or update event, get new row
         // if delete event, get deleted row ID
@@ -280,8 +276,7 @@ export class GraderInteractionHistoryComponent {
       }
 
       // clear the file input
-      (<HTMLInputElement>document.getElementById("image")).value = "";
-
+      (<HTMLInputElement>document.getElementById('image')).value = '';
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
