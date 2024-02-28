@@ -103,6 +103,13 @@
           </ng-container>
         </div>
         <div class="chat-footer">
+         <div class="image-container">
+            <input
+              id="image"
+              type="file"
+              (change)="this.onFilechange($event)"
+            />
+          </div>
           <input
             matInput
             id="chat-textarea"
