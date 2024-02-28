@@ -18,8 +18,8 @@ body {
 
 $primary-blue: #3a62d7;
 $secondary-blue: #c1d1ff;
-// $hover-blue: #254394;
 $hover-blue: #728edd;
+$form-white: #f8f7f4;
 
 .material-symbols-outlined {
   cursor: pointer;
@@ -48,6 +48,7 @@ $hover-blue: #728edd;
     height: 80vh;
   }
 }
+
 .blue-button {
   background-color: $primary-blue;
   color: white !important;
@@ -60,6 +61,7 @@ $hover-blue: #728edd;
   padding-bottom: 0.5em;
   border-radius: 20px;
 }
+
 .gray-button {
   color: black;
   background-color: whitesmoke;

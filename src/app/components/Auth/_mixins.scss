@@ -1,0 +1,63 @@
+@import "src/styles.scss";
+@mixin auth-input($container-height: auto) {
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: $primary-blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .container {
+      background-color: $form-white;
+      width: 40%;
+      height: $container-height;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .content {
+        width: 100%;
+        height: 80%;
+        display: grid;
+        grid-template-rows: auto;
+        justify-items: center;
+        .logo {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          span.material-symbols-outlined {
+            color: $primary-blue;
+            font-size: 3.5em;
+          }
+        }
+        .text-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          h1 {
+            color: $primary-blue;
+            font-size: 2em;
+          }
+          p {
+            font-size: 0.75em;
+          }
+        }
+        .form-container {
+          width: 80%;
+          form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+
+          button {
+            color: white;
+            background-color: $primary-blue !important;
+          }
+          margin-bottom: 4em;
+        }
+      }
+    }
+  }
+}

@@ -21,7 +21,6 @@
             class="form-widget"
           >
             <div>
-              <label for="email">Email</label> <br />
               <input
                 matInput
                 id="email"
@@ -47,10 +46,10 @@
                 class="blue-button"
                 [disabled]="loading"
               >
-                {{ loading ? "Loading" : "Submit" }}
+                {{ loading ? "Loading" : "Log In" }}
               </button>
               <p class="register">
-                Not registered as an Instructor?
+                Not registered as an instructor?
                 <button class="register-button" (click)="onRegister()">
                   Sign Up
                 </button>
@@ -58,7 +57,7 @@
               <p class="register">
                 Forgot your password?
                 <button class="register-button" (click)="onResetPassword()">
-                  reset
+                  Reset Password
                 </button>
               </p>
             </div>

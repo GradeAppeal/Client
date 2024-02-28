@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  />
+
+  <div class="logo">
+    <span class="material-symbols-outlined"> rocket_launch </span>
+  </div>
+
+  <div class="container">
+    <div class="header-container">
+      <h1>Enter your email</h1>
+    </div>
+    <div class="description-container">
+      <p>You will receive an email with a 6-digit verification token</p>
+    </div>
+
+    <div class="form-container">
+      <form [formGroup]="otpRequestForm" (ngSubmit)="onRequestOtp()">
+        <mat-form-field>
+          <label for="email">Email</label>
+          <input
+            matInput
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="example@calvin.edu"
+          />
+          <mat-error
+            *ngIf="
+                otpRequestForm.errors?.['required'] &&
+                (otpRequestForm.dirty || otpRequestForm.touched)
+              "
+          >
+            Please enter a valid @calvin.edu Email
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          type="submit"
+          [disabled]="otpRequestForm.invalid"
+        >
+          Request Token
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
