@@ -44,12 +44,14 @@ export class ProfessorInteractionHistoryComponent {
   messageLoaded = false;
   fromGrader = false;
   isUser: Boolean;
+  menu: any;
   messages!: Message[];
   professor: Professor;
   student: Student;
   grader: Student;
   talkingToGrader: Boolean = false;
   graderValue: Boolean = true;
+  showOptions: Boolean = false;
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
@@ -262,6 +264,10 @@ export class ProfessorInteractionHistoryComponent {
   selectTemplate(template: string) {
     this.selectedTemplate = template;
     this.chatInputMessage = template;
+  }
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+    console.log(this.showOptions);
   }
 
   scrollToBottom() {

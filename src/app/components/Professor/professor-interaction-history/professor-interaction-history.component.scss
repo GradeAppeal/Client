@@ -18,6 +18,46 @@ $background: white;
   }
 }
 
+.chat-footer {
+  .buttons {
+    .custom-popup {
+      position: absolute;
+      // top: 30px; /* Adjust the top position as needed */
+      left: 20px;
+      bottom: 120px;
+      background-color: whitesmoke;
+      //border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 10px;
+      z-index: 1;
+    }
+
+    float: left;
+    .popup-button {
+      background-color: transparent;
+      padding: 5px;
+      color: black;
+      &:hover {
+        background-color: lightgray;
+      }
+    }
+    .circle-button {
+    }
+
+    .plus {
+      color: white; /* Color of the plus icon */
+      width: 40px; /* Adjust the width and height for your desired button size */
+      height: 40px;
+      font-size: 30px;
+      padding: 10px;
+      border-radius: 50%; /* Makes the button circular */
+      background-color: $primary-blue; /* Background color of the button */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
 #clear-button {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);

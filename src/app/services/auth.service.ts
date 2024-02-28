@@ -26,12 +26,7 @@ export class AuthService {
     this.supabase = createClient(
       environment.supabaseUrl as string,
       environment.serviceRoleKey as string,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
+      {}
     );
 
     // create auth user subscription
