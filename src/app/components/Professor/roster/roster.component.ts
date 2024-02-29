@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -6,11 +6,12 @@ import {
   ParsedStudent,
   StudentCourseGraderInfo,
 } from 'src/app/shared/interfaces/professor.interface';
-import { EditStudentsPopUpComponent } from './edit-students-pop-up/edit-students-pop-up.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
-import { DialogRef } from '@angular/cdk/dialog';
+import { DeleteStudentPopupComponent } from './delete-student-popup/delete-student-popup.component';
+import { ResetStudentPasswordPopupComponent } from './reset-student-password-popup/reset-student-password-popup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-roster',
@@ -39,13 +40,17 @@ export class RosterComponent {
   splitStudent: string[];
   courseID: number;
   isNewStudent: boolean = false;
+  ROSTER_DATA: { name: string; email: string; role: string }[] = [];
+  rosterDataSource = this.ROSTER_DATA;
+  displayedColumns: string[] = ['name', 'email', 'role', 'options'];
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sharedService: SharedService,
     private professorService: ProfessorService,
     private dialog: MatDialog,
-    private router: Router
+    private snackBar: MatSnackBar
   ) {
     this.route.params.subscribe((params) => {
       this.courseID = +params['id']; // Convert the parameter to a number
@@ -69,6 +74,9 @@ export class RosterComponent {
           ? a.student_name.localeCompare(b.student_name)
           : compareLastName;
       });
+
+      // update material table
+      this.setRoster();
 
       // update addedStudentCSV string
       this.addedStudentsCSV = '';
@@ -131,16 +139,16 @@ export class RosterComponent {
               student_name: `${first_name} ${last_name}`,
               email: email,
               course_id: course.id,
-              course_name: course.name,
+              course: course.name,
               is_grader: false,
             });
           }
-          console.log(this.courseStudents);
         }
         // if grader status updated
         else if (event === 'UPDATE') {
           const { student_id } = record;
           // change student to grader
+          this.courseStudents;
           const courseStudent = this.courseStudents.find(
             (courseStudent) => courseStudent.student_id === student_id
           ) as StudentCourseGraderInfo;
@@ -153,10 +161,26 @@ export class RosterComponent {
             (student) => student.student_id !== student_id
           );
         }
+        this.setRoster();
       });
   }
-  async onAssignGrader(student: any): Promise<void> {
+
+  private setRoster() {
+    this.ROSTER_DATA = this.courseStudents.map((student) => {
+      return {
+        name: student.student_name,
+        email: student.email,
+        role: student.is_grader ? 'Grader' : 'Student',
+        options: null,
+      };
+    });
+
+    this.rosterDataSource = this.ROSTER_DATA;
+  }
+
+  async onAssignGrader(student: StudentCourseGraderInfo): Promise<void> {
     try {
+      console.log({ student });
       const { student_id, course_id } = student;
       console.log(student_id, course_id);
       await this.professorService.updateGrader(student_id, course_id);
@@ -165,11 +189,34 @@ export class RosterComponent {
     }
   }
 
-  async editStudentPopup(
-    studentCourseGrader: StudentCourseGraderInfo
-  ): Promise<void> {
-    const dialogRef = this.dialog.open(EditStudentsPopUpComponent, {
-      data: { studentCourseGrader },
+  onResetPassword(student: StudentCourseGraderInfo): void {
+    const dialogRef = this.dialog.open(ResetStudentPasswordPopupComponent, {
+      data: { student },
+    });
+    dialogRef.afterClosed().subscribe((status) => {
+      console.log(status);
+      if (status === 'success') {
+        this.snackBar.open('Success!', '', {
+          panelClass: ['blue-snackbar'],
+          duration: 2500,
+        });
+      } else if (status === 'cancel') {
+        this.snackBar.open('Canceled', '', {
+          panelClass: ['blue-snackbar'],
+          duration: 2500,
+        });
+      } else if (status === 'error') {
+        this.snackBar.open('Error. Try Again.', '', {
+          panelClass: ['blue-snackbar'],
+          duration: 2500,
+        });
+      }
+    });
+  }
+
+  onDeleteStudent(student: StudentCourseGraderInfo): void {
+    this.dialog.open(DeleteStudentPopupComponent, {
+      data: { student },
     });
   }
 
