@@ -18,46 +18,6 @@ $background: white;
   }
 }
 
-.chat-footer {
-  .buttons {
-    .custom-popup {
-      position: absolute;
-      // top: 30px; /* Adjust the top position as needed */
-      left: 20px;
-      bottom: 120px;
-      background-color: whitesmoke;
-      //border: 1px solid #ccc;
-      border-radius: 20px;
-      padding: 10px;
-      z-index: 1;
-    }
-
-    float: left;
-    .popup-button {
-      background-color: transparent;
-      padding: 5px;
-      color: black;
-      &:hover {
-        background-color: lightgray;
-      }
-    }
-    .circle-button {
-    }
-
-    .plus {
-      color: white; /* Color of the plus icon */
-      width: 40px; /* Adjust the width and height for your desired button size */
-      height: 40px;
-      font-size: 30px;
-      padding: 10px;
-      border-radius: 50%; /* Makes the button circular */
-      background-color: $primary-blue; /* Background color of the button */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-}
 #clear-button {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -150,6 +110,46 @@ mat-nav-list {
 .grader-header {
   margin-left: auto;
 }
+.custom-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  input {
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+}
 
 .top-bar {
   display: flex;
@@ -170,20 +170,4 @@ mat-nav-list {
 
 .header {
   font-size: 23px;
-}
-
-.message-image {
-  position: relative;
-  display: block;
-  height: 15vw;
-  padding: 10px;
-}
-
-#image {
-  width: 100%;
-  color: transparent;
-}
-
-.image-container {
-  width: 120px;
 }

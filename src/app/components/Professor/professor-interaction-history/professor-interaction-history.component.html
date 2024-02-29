@@ -151,17 +151,15 @@
                 </div>
                 {{ formatTimestamp(chat.created_at).time }}
               </div>
-              <div
-                class="avatar-wrapper"
-                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-              ></div>
-              <div
-                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-                id="message-body"
-              >
-                <p class="message-body">
-                  {{ chat?.message_text }}
-                </p>
+              <div class="message-content">
+                <div
+                  *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+                  id="message-body"
+                >
+                  <p class="message-body">
+                    {{ chat?.message_text }}
+                  </p>
+                </div>
                 <div class="image-wrapper">
                   <img
                     *ngIf="chat.image"
@@ -170,16 +168,17 @@
                     [src]="displayImage(chat?.image)"
                   />
                 </div>
+
+                <p
+                  class="message-body"
+                  class="notification-text"
+                  id="message-body"
+                  *ngIf="chat.message_text.trim().startsWith('Notification:')"
+                >
+                  {{ chat.message_text.substring(13) }}
+                  <!-- Display text after "Notification:" -->
+                </p>
               </div>
-              <p
-                class="message-body"
-                class="notification-text"
-                id="message-body"
-                *ngIf="chat.message_text.trim().startsWith('Notification:')"
-              >
-                {{ chat.message_text.substring(13) }}
-                <!-- Display text after "Notification:" -->
-              </p>
             </div>
           </ng-container>
         </div>
@@ -196,20 +195,24 @@
                   Templates
                 </button>
               </div>
-              <button
-                class="popup-button"
-                *ngIf="currentAppeal.grader_id === null"
-                (click)="onAssignGrader($event)"
-              >
-                Assign Grader
-              </button>
-              <button
-                class="popup-button"
-                *ngIf="currentAppeal.grader_id !== null"
-                (click)="unassignGrader($event)"
-              >
-                Unassign Grader
-              </button>
+              <div>
+                <button
+                  class="popup-button"
+                  *ngIf="currentAppeal.grader_id === null"
+                  (click)="onAssignGrader($event)"
+                >
+                  Assign Grader
+                </button>
+              </div>
+              <div>
+                <button
+                  class="popup-button"
+                  *ngIf="currentAppeal.grader_id !== null"
+                  (click)="unassignGrader($event)"
+                >
+                  Unassign Grader
+                </button>
+              </div>
               <mat-menu #menu="matMenu">
                 <button
                   mat-menu-item
@@ -219,16 +222,19 @@
                   {{ template.temp_name }}
                 </button>
               </mat-menu>
+              <div class="image-container">
+                <input
+                  id="image"
+                  type="file"
+                  (change)="this.onFilechange($event)"
+                  hidden
+                />
+                <label for="image">Choose File</label>
+              </div>
+              <div id="file-chosen">(No file chosen)</div>
             </div>
           </div>
 
-          <div class="image-container">
-            <input
-              id="image"
-              type="file"
-              (change)="this.onFilechange($event)"
-            />
-          </div>
           <input
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
@@ -263,6 +269,7 @@
               hideIcon="true"
               (change)="talkToGrader()"
             ></mat-slide-toggle>
+
             <p class="grader-toggle-text">To Grader</p>
           </div>
           <!-- checked="talkingToGrader" -->

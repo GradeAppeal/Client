@@ -104,15 +104,18 @@
                 </div>
                 {{ formatTimestamp(chat.created_at).time }}
               </div>
-              <div
-                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-              ></div>
+              <div class="message-content">
+                <div
+                  *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+                ></div>
 
-              <div
-                *ngIf="!chat.message_text.trim().startsWith('Notification:')"
-                id="message-body"
-              >
-                <p class="message-text">{{ chat?.message_text }}</p>
+                <div
+                  *ngIf="!chat.message_text.trim().startsWith('Notification:')"
+                  id="message-body"
+                >
+                  <p class="message-text">{{ chat?.message_text }}</p>
+                </div>
+
                 <div class="image-wrapper">
                   <img
                     *ngIf="chat.image"
@@ -121,25 +124,30 @@
                     [src]="displayImage(chat?.image)"
                   />
                 </div>
+                <p
+                  class="notification-text"
+                  id="message-body"
+                  *ngIf="chat.message_text.trim().startsWith('Notification:')"
+                >
+                  {{ chat.message_text.substring(13) }}
+                  <!-- Display text after "Notification:" -->
+                </p>
               </div>
-              <p
-                class="notification-text"
-                id="message-body"
-                *ngIf="chat.message_text.trim().startsWith('Notification:')"
-              >
-                {{ chat.message_text.substring(13) }}
-                <!-- Display text after "Notification:" -->
-              </p>
             </div>
           </ng-container>
         </div>
         <div class="chat-footer">
-          <div class="image-container">
-            <input
-              id="image"
-              type="file"
-              (change)="this.onFilechange($event)"
-            />
+          <div class="file-container">
+            <div class="image-container">
+              <input
+                id="image"
+                type="file"
+                (change)="this.onFilechange($event)"
+                hidden
+              />
+              <label for="image">Choose File</label>
+            </div>
+            <div id="file-chosen">(No file chosen)</div>
           </div>
           <input
             id="chat-textarea"
