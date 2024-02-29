@@ -44,6 +44,6 @@ export interface StudentCourseGraderInfo {
   student_name: string;
   email: string;
   course_id: number;
-  course_name: string;
+  course: string;
   is_grader: boolean;
 }

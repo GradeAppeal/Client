@@ -396,3 +396,8 @@ $form-white: #f8f7f4;
 .message-body {
   overflow-wrap: break-word;
 }
+
+.blue-snackbar {
+  --mdc-snackbar-container-color: #f8f7f4;
+  --mdc-snackbar-supporting-text-color: #3a62d7;
+}

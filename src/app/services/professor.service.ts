@@ -412,10 +412,6 @@ export class ProfessorService {
         data: { first_name, last_name },
       }
     );
-    // await this.supabase.auth.admin.inviteUserByEmail(email, {
-    //   redirectTo: 'https://gradeboost.us/student-verification',
-    //   data: { first_name, last_name },
-    // });
 
     // user fails to create: return null
     if (error) {
@@ -643,5 +639,21 @@ export class ProfessorService {
       throw new Error('updateUnassignAppealGrader');
     }
     console.log({ data });
+  }
+
+  async updateStudentPassword(
+    sid: string,
+    password: string
+  ): Promise<User | null> {
+    console.log({ sid });
+    console.log({ password });
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.admin.updateUserById(sid, { password });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return user;
   }
 }
