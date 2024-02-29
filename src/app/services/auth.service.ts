@@ -25,8 +25,7 @@ export class AuthService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl as string,
-      environment.serviceRoleKey as string,
-      {}
+      environment.serviceRoleKey as string
     );
 
     // create auth user subscription

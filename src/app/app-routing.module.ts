@@ -21,7 +21,6 @@ import { ResetPasswordComponent } from './components/Auth/reset-password/reset-p
 import { AboutComponent } from './components/about/about.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
-import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 
 const routes: Routes = [
@@ -34,8 +33,8 @@ const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: 'request-password-reset',
-    component: RequestPasswordResetComponent,
+    path: 'request-token',
+    component: RequestTokenComponent,
   },
   {
     path: 'reset-password',
@@ -44,10 +43,6 @@ const routes: Routes = [
   {
     path: 'confirmation',
     component: ConfirmationComponent,
-  },
-  {
-    path: 'request-token',
-    component: RequestTokenComponent,
   },
   {
     path: 'professor',
