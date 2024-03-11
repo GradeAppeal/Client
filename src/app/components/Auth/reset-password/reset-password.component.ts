@@ -51,22 +51,29 @@ export class ResetPasswordComponent {
     const { newPassword } = this.passwordForm.value;
     try {
       await this.authService.updatePassword(newPassword as string);
-      this.activateSnackbar('Update successful. Redirecting...');
+      const message = 'Update successful. Redirecting...';
+      const snackbarRef = this.snackBar.openFromComponent(
+        RedirectSnackbarComponent,
+        {
+          duration: 2000,
+          data: message,
+        }
+      );
+      snackbarRef.afterDismissed().subscribe(() => {
+        this.router.navigateByUrl('/');
+      });
     } catch (error) {
-      this.activateSnackbar(`${error}. Redirecting...`);
+      const message = `${error}. Redirecting...`;
+      const snackbarRef = this.snackBar.openFromComponent(
+        RedirectSnackbarComponent,
+        {
+          duration: 2000,
+          data: message,
+        }
+      );
+      snackbarRef.afterDismissed().subscribe(() => {
+        this.router.navigateByUrl('/');
+      });
     }
-  }
-
-  private activateSnackbar(message: string) {
-    const snackbarRef = this.snackBar.openFromComponent(
-      RedirectSnackbarComponent,
-      {
-        duration: 2000,
-        data: message,
-      }
-    );
-    snackbarRef.afterDismissed().subscribe(() => {
-      this.router.navigateByUrl('/');
-    });
   }
 }

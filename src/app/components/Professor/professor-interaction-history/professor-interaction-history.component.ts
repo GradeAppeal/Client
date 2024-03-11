@@ -186,7 +186,6 @@ export class ProfessorInteractionHistoryComponent {
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
         } else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -262,7 +261,6 @@ export class ProfessorInteractionHistoryComponent {
   }
   toggleOptions() {
     this.showOptions = !this.showOptions;
-    console.log(this.showOptions);
   }
 
   scrollToBottom() {
@@ -272,7 +270,6 @@ export class ProfessorInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    console.log(this.currentAppeal);
     // update real-time filtering
     this.handleAppealNewMessages();
     //this.sender.id = this.currentAppeal.student_id;
@@ -339,7 +336,6 @@ export class ProfessorInteractionHistoryComponent {
 
       // clear the file input
       (<HTMLInputElement>document.getElementById('image')).value = '';
-      console.log(this.messages);
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
@@ -405,7 +401,6 @@ export class ProfessorInteractionHistoryComponent {
       const graderName = this.currentAppeal.grader_name;
       const studentID = this.currentAppeal.student_id;
       const professorID = this.professor.id;
-      console.log(graderName);
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
@@ -416,7 +411,6 @@ export class ProfessorInteractionHistoryComponent {
 
   talkToGrader() {
     this.talkingToGrader = !this.talkingToGrader;
-    console.log(this.talkingToGrader);
   }
 
   //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
@@ -445,7 +439,6 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   onFilechange(event: any) {
-    console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
     let fileChosen = document.getElementById('file-chosen') as HTMLElement;
     fileChosen.textContent = event.target.files[0].name;

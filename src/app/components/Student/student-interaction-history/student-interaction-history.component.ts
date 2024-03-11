@@ -80,7 +80,6 @@ export class StudentInteractionHistoryComponent {
   }
 
   onFilechange(event: any) {
-    console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
     let fileChosen = document.getElementById('file-chosen') as HTMLElement;
     fileChosen.textContent = event.target.files[0].name;
@@ -95,7 +94,6 @@ export class StudentInteractionHistoryComponent {
       this.student.id
     );
     this.filteredAppeals = this.studentAppeals;
-    console.log(this.studentAppeals[0]);
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
@@ -111,7 +109,6 @@ export class StudentInteractionHistoryComponent {
       this.imageMessages = this.messages;
       await this.getImages();
 
-      console.log(this.messages);
       this.loadStudentAppeals = true;
       this.messageCount = this.messages.length;
       this.loading = false;
@@ -178,7 +175,6 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // get new message
           const record: Message = update.new;
-          console.log({ record });
           // show new message on screen
           if (record.appeal_id === this.currentAppeal.appeal_id) {
             this.messages.push(record);

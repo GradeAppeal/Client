@@ -21,8 +21,6 @@ export class ProfessorNavigationComponent {
   ) {}
   navigateTo(route: string) {
     this.selectedTab = route;
-    console.log(route);
-    console.log(this.selectedTab);
     this.router.navigate([route]);
   }
 
@@ -39,10 +37,6 @@ export class ProfessorNavigationComponent {
           return match.toUpperCase();
         });
       });
-
-    console.log(this.title);
-    const students = await this.professorService.fetchStudents(1);
-    console.log(this.selectedTab);
   }
 
   logoutPopUp() {

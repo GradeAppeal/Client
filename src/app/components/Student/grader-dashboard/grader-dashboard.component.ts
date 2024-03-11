@@ -41,7 +41,6 @@ export class GraderDashboardComponent {
     const studentAppeals = await this.studentService.fetchStudentAppeals(
       this.student.id
     );
-    console.log({ studentAppeals });
   }
 
   /**
@@ -56,7 +55,6 @@ export class GraderDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    console.log({ course });
     this.router.navigateByUrl(
       `student/grader/interaction-history/${course.course_id}`
     );
@@ -74,7 +72,6 @@ export class GraderDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    console.log({ course });
     this.router.navigateByUrl(`/student/new-appeal/${course.course_id}`);
   }
 }
