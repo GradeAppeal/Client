@@ -652,10 +652,33 @@ export class ProfessorService {
     return user;
   }
 
+  async getStudentInfo(sid: string): Promise<string | undefined | null> {
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.admin.getUserById(sid);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return user?.confirmed_at;
+  }
+
+  /**
+   * Professor can verify student's account if he/she does not receive invitation email
+   * @param sid student ID
+   * @returns student user
+   */
   async verifyStudent(sid: string) {
-    const { data: user, error } = await this.supabase.auth.admin.updateUserById(
-      sid,
-      { email_confirm: true }
-    );
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.admin.updateUserById(sid, {
+      email_confirm: true,
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return user;
   }
 }

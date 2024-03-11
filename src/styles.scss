@@ -521,3 +521,13 @@ label {
   --mdc-snackbar-container-color: #f8f7f4;
   --mdc-snackbar-supporting-text-color: #3a62d7;
 }
+
+.green-snackbar {
+  --mdc-snackbar-container-color: #f8f7f4;
+  --mdc-snackbar-supporting-text-color: #2ecc71;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #f8f7f4;
+  --mdc-snackbar-supporting-text-color: #f44336;
+}
