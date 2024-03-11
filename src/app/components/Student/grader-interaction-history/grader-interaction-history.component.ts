@@ -95,6 +95,12 @@ export class GraderInteractionHistoryComponent {
   onFilechange(event: any) {
     console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
+    let fileChosen = document.getElementById('file-chosen') as HTMLElement;
+    fileChosen.textContent = event.target.files[0].name;
+
+    if (this.chatInputMessage.trim() === '' && this.imageFile) {
+      this.chatInputMessage = event.target.files[0].name; // Set message to a space character
+    }
   }
 
   async ngOnInit() {
@@ -273,6 +279,7 @@ export class GraderInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        window.location.reload();
       }
 
       // clear the file input

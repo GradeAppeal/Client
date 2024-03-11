@@ -133,11 +133,6 @@ $form-white: #f8f7f4;
 }
 
 .inbox-item {
-  //  padding-top: 60px;
-  // border-top: solid gray 1px;
-  // border-right: solid gray 1px;
-  // border-bottom: solid gray 1px;
-  // border-left: solid gray 1px;
   background-color: whitesmoke;
   margin-top: 3px;
   border-radius: 5px;
@@ -146,8 +141,8 @@ $form-white: #f8f7f4;
   padding-top: 20px;
   padding-left: 8px;
   width: 100%;
-  .selected-appeal {
-    background-color: gray; /* Set the background color to a darker shade */
+  &.selected-appeal {
+    background-color: lightgray;
   }
   &:hover {
     background-color: rgba(235, 232, 232);
@@ -341,7 +336,6 @@ $form-white: #f8f7f4;
   .buttons {
     display: flex;
     flex-direction: column;
-    //align-items: center;
 
     justify-content: space-between;
     button {
@@ -349,11 +343,11 @@ $form-white: #f8f7f4;
       float: right;
       padding: 6px;
       font-size: 14px;
-      background-color: $primary-blue;
+      //background-color: $primary-blue;
       color: white;
       border-radius: 20px;
       &:hover {
-        background-color: darken($primary-blue, 5%);
+        //background-color: darken($primary-blue, 5%);
       }
       &.send {
         float: left;
@@ -367,6 +361,51 @@ $form-white: #f8f7f4;
     }
   }
 }
+.chat-footer {
+  .buttons {
+    .custom-popup {
+      position: absolute;
+      // top: 30px; /* Adjust the top position as needed */
+      left: 20px;
+      bottom: 120px;
+      background-color: whitesmoke;
+      //border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 10px;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .popup-button,
+    label {
+      border-radius: 20px;
+      float: left;
+      background-color: transparent;
+      padding: 5px;
+      color: black;
+      font-size: 15px;
+      &:hover {
+        background-color: lightgray;
+      }
+    }
+
+    .plus {
+      color: white; /* Color of the plus icon */
+      width: 40px; /* Adjust the width and height for your desired button size */
+      height: 40px;
+      font-size: 30px;
+      padding: 10px;
+      border-radius: 50%; /* Makes the button circular */
+      background-color: $primary-blue; /* Background color of the button */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
 .blue-spinner circle {
   stroke: $primary-blue !important;
 }
@@ -395,6 +434,88 @@ $form-white: #f8f7f4;
 //body of message for interaction history
 .message-body {
   overflow-wrap: break-word;
+}
+
+.custom-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  input {
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+}
+.message-image {
+  position: relative;
+  display: block;
+  height: 15vw;
+  padding: 10px;
+  max-width: 30vw;
+}
+.message-content {
+  display: flex;
+  flex-direction: column;
+}
+#image {
+  width: 100%;
+  // color: transparent;
+}
+
+.image-container {
+  width: 120px;
+}
+
+label {
+  border-radius: 20px;
+  float: left;
+  background-color: whitesmoke;
+  padding: 5px;
+  color: black;
+  font-size: 15px;
+  &:hover {
+    background-color: lightgray;
+  }
+}
+#file-chosen {
+  padding-left: 5px;
+  font-size: 12px;
+  color: gray;
+}
+
+.file-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .blue-snackbar {

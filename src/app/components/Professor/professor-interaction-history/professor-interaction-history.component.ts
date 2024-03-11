@@ -44,17 +44,18 @@ export class ProfessorInteractionHistoryComponent {
   messageLoaded = false;
   fromGrader = false;
   isUser: Boolean;
+  menu: any;
   messages!: Message[];
   professor: Professor;
   student: Student;
   grader: Student;
   talkingToGrader: Boolean = false;
   graderValue: Boolean = true;
+  showOptions: Boolean = false;
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
   imageMessages!: ImageMessage[];
-
   professorAppeals: ProfessorAppeal[];
   filteredAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -263,6 +264,10 @@ export class ProfessorInteractionHistoryComponent {
     this.selectedTemplate = template;
     this.chatInputMessage = template;
   }
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+    console.log(this.showOptions);
+  }
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
@@ -298,6 +303,7 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
     const hasImage = this.imageFile == null ? false : true;
+
     if (notification === true) {
       message = 'Notification: ' + message;
     }
@@ -338,6 +344,7 @@ export class ProfessorInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        window.location.reload();
       }
 
       // clear the file input
@@ -450,5 +457,11 @@ export class ProfessorInteractionHistoryComponent {
   onFilechange(event: any) {
     console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
+    let fileChosen = document.getElementById('file-chosen') as HTMLElement;
+    fileChosen.textContent = event.target.files[0].name;
+
+    if (this.chatInputMessage.trim() === '' && this.imageFile) {
+      this.chatInputMessage = event.target.files[0].name; // Set message to a space character
+    }
   }
 }
