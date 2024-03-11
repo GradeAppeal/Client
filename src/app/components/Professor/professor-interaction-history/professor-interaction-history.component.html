@@ -49,16 +49,19 @@
           </p>
           <p class="inbox-assignment-name">{{ appeal.assignment_name }}</p>
         </div>
-        <div class="inbox-item-timestamp-dot-container">
-          <p class="inbox-timestamp">
-            {{ formatTimestamp(appeal.created_at).time }}
-          </p>
-          <div
-            [ngClass]="{
-              'unread-dot': appeal.is_read === false,
-              'no-dot': appeal.is_read !== false
-            }"
-          ></div>
+        <div class="right-side">
+          <div class="inbox-item-timestamp-dot-container">
+            <p matLine class="inbox-timestamp">
+              {{ formatTimestamp(appeal.created_at).date }} <br />
+              {{ formatTimestamp(appeal.created_at).time }}
+            </p>
+            <div
+              [ngClass]="{
+                'unread-dot': appeal.is_read === false,
+                'no-dot': appeal.is_read !== false
+              }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
