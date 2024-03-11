@@ -32,8 +32,6 @@ export class StudentService {
       console.log(error);
       throw new Error('Error in fetchStudentCourses');
     }
-    console.log('fetchStudentCourses from student.service.ts');
-    console.log(data);
     return data;
   }
 
@@ -52,8 +50,6 @@ export class StudentService {
       console.log(error);
       throw new Error(error.message);
     }
-
-    console.log('getStudentCourse: ', { data });
     return data;
   }
 
@@ -70,8 +66,6 @@ export class StudentService {
       console.log(error);
       throw new Error('Error in fetchStudentCourses');
     }
-    console.log('fetchStudentCourses from student.service.ts');
-    console.log(data);
     return data;
   }
 
@@ -81,7 +75,6 @@ export class StudentService {
    * @returns All the appeals made by the student
    */
   async fetchStudentAppeals(sid: string): Promise<StudentAppeal[]> {
-    console.log({ sid }, 'From fetchStudentappeals');
     const { data, error } = await this.supabase.rpc('get_student_appeals', {
       sid,
     });
@@ -118,7 +111,6 @@ export class StudentService {
       console.log(error);
       throw new Error(error.message);
     }
-    console.log({ data });
     return data;
   }
 
@@ -140,7 +132,6 @@ export class StudentService {
     pid: string,
     has_image: boolean
   ): Promise<number> {
-    console.log();
     const { data, error } = await this.supabase.rpc('insert_appeal', {
       aid,
       sid,
@@ -155,7 +146,6 @@ export class StudentService {
       console.log(error);
       throw new Error('insertNewAppeal');
     }
-    console.log({ data });
     return data;
   }
   /**

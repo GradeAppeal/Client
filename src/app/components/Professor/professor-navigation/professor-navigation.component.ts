@@ -21,8 +21,6 @@ export class ProfessorNavigationComponent {
   ) {}
   navigateTo(route: string) {
     this.selectedTab = route;
-    console.log(route);
-    console.log(this.selectedTab);
     this.router.navigate([route]);
   }
 
