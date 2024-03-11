@@ -17,13 +17,11 @@ import { professorGuard } from 'src/app/guards/professor.guard';
 import { studentGuard } from './guards/student.guard';
 import { RosterComponent } from './components/Professor/roster/roster.component';
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
-import { ProfessorEmailConfirmationComponent } from './components/Auth/professor-email-confirmation/professor-email-confirmation.component';
-import { StudentSetPasswordComponent } from './components/Auth/student-set-password/student-set-password.component';
-import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { AboutComponent } from './components/about/about.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
-import { ResetPasswordConfirmComponent } from './components/Auth/reset-password-confirm/reset-password-confirm.component';
+import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
+import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 
 const routes: Routes = [
   {
@@ -31,24 +29,20 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'confirmation',
-    component: ProfessorEmailConfirmationComponent,
+    path: 'register',
+    component: RegisterComponent,
   },
   {
-    path: 'reset-confirmation',
-    component: ResetPasswordConfirmComponent,
-  },
-  {
-    path: 'student-verification',
-    component: StudentSetPasswordComponent,
-  },
-  {
-    path: 'request-password-reset',
-    component: RequestPasswordResetComponent,
+    path: 'request-token',
+    component: RequestTokenComponent,
   },
   {
     path: 'reset-password',
     component: ResetPasswordComponent,
+  },
+  {
+    path: 'confirmation',
+    component: ConfirmationComponent,
   },
   {
     path: 'professor',
@@ -137,10 +131,6 @@ const routes: Routes = [
         component: AboutComponent,
       },
     ],
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
   },
   {
     path: '**',

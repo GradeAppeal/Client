@@ -18,50 +18,6 @@ $background: white;
   }
 }
 
-.chat-footer {
-  display: flex;
-  flex-direction: row;
-  padding: 16px;
-  background: $primary-blue;
-  border-radius: 6px;
-
-  #chat-textarea {
-    flex: 1;
-    margin: 0 8px;
-    border: 0px;
-    padding: 16px;
-    border-radius: 8px;
-  }
-
-  #send-button {
-    border: 1px solid white;
-    cursor: pointer;
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-    background: $primary-blue;
-    color: white;
-    padding: 0 8px;
-    border-radius: 8px;
-  }
-  .use-template-button {
-    margin-bottom: 5px;
-  }
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    button {
-      border: 1px solid white;
-      cursor: pointer;
-      box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-      background: $primary-blue;
-      color: white;
-      padding: 0 10px;
-      border-radius: 8px;
-    }
-  }
-}
-
 #clear-button {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -72,23 +28,6 @@ $background: white;
 }
 
 .inbox-item {
-  //  padding-top: 60px;
-  border-top: solid gray 1px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: rgb(233, 232, 232);
-    cursor: pointer;
-  }
-  .left-section {
-    // flex-grow: 1;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
-    // align-items: flex-start;
-  }
   .inbox-item-timestamp-dot-container {
     width: 30%;
     display: flex;
@@ -165,11 +104,51 @@ mat-nav-list {
   }
 }
 .grader-toggle-text {
-  color: white;
+  color: black;
   font-size: 10px;
 }
 .grader-header {
   margin-left: auto;
+}
+.custom-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  input {
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
 }
 
 .top-bar {

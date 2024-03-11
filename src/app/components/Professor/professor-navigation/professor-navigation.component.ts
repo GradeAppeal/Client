@@ -32,9 +32,13 @@ export class ProfessorNavigationComponent {
       .subscribe(() => {
         this.selectedTab =
           this.activatedRoute.snapshot.firstChild?.routeConfig?.path || '';
+        let segments = this.selectedTab.split('/');
+        this.title = segments[segments.length - 1].replace('-', ' ');
+        //capitalize each first letter of the word
+        this.title = this.title.replace(/\b\w/g, function (match) {
+          return match.toUpperCase();
+        });
       });
-    const students = await this.professorService.fetchStudents(1);
-    console.log(this.selectedTab);
   }
 
   logoutPopUp() {

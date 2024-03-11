@@ -54,9 +54,7 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl('/register');
   }
 
-  onResetPassword() {
-    this.router.navigateByUrl('/request-password-reset');
+  onRequestToken() {
+    this.router.navigateByUrl('/request-token');
   }
-
-  onSignup() {}
 }

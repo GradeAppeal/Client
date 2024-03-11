@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { passwordMatchValidator } from 'src/app/shared/functions/form.validator.util';
+import { RedirectSnackbarComponent } from '../../util-components/redirect-snackbar/redirect-snackbar.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,14 +14,26 @@ import { passwordMatchValidator } from 'src/app/shared/functions/form.validator.
 })
 export class ResetPasswordComponent {
   user: User | null = null;
-  tokenHash: string | null;
-  verified: boolean = false;
+  type: string;
   passwordForm: FormGroup;
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
+    // check for user
+    this.authService.getCurrentUser().subscribe((user) => {
+      if (user && typeof user !== 'boolean') {
+        this.user = user;
+      }
+      // navigate to home if auth session not initialized
+      else {
+        this.router.navigateByUrl('/');
+      }
+    });
+  }
+
+  async ngOnInit() {
     // initialize password form
     this.passwordForm = new FormGroup(
       {
@@ -42,18 +56,32 @@ export class ResetPasswordComponent {
   }
 
   async onResetPassword() {
-    if (this.user) {
-      const id = this.user.id;
-      const { newPassword } = this.passwordForm.value;
-      try {
-        await this.authService.updatePassword(newPassword as string);
+    const { newPassword } = this.passwordForm.value;
+    try {
+      await this.authService.updatePassword(newPassword as string);
+      const message = 'Update successful. Redirecting...';
+      const snackbarRef = this.snackBar.openFromComponent(
+        RedirectSnackbarComponent,
+        {
+          duration: 2000,
+          data: message,
+        }
+      );
+      snackbarRef.afterDismissed().subscribe(() => {
         this.router.navigateByUrl('/');
-      } catch (error) {
-        alert(error);
+      });
+    } catch (error) {
+      const message = `${error}. Redirecting...`;
+      const snackbarRef = this.snackBar.openFromComponent(
+        RedirectSnackbarComponent,
+        {
+          duration: 2000,
+          data: message,
+        }
+      );
+      snackbarRef.afterDismissed().subscribe(() => {
         this.router.navigateByUrl('/');
-      }
-    } else {
-      alert('user undefined');
+      });
     }
   }
 }

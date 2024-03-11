@@ -2,6 +2,13 @@
 
 $background: white;
 
+.message-image {
+  position: relative;
+  display: block;
+  height: 15vw;
+  padding: 10px;
+}
+
 .card {
   background: $background;
   height: 90vh;
@@ -18,39 +25,13 @@ $background: white;
   }
 }
 
-.chat-footer {
-  display: flex;
-  flex-direction: row;
-  padding: 16px;
-  background: $primary-blue;
-  border-radius: 6px;
+#image {
+  width: 100%;
+  color: transparent;
+}
 
-  #chat-textarea {
-    flex: 1;
-    margin: 0 8px;
-    border: 0px;
-    padding: 16px;
-    border-radius: 8px;
-  }
-
-  #send-button {
-    border: 1px solid white;
-    cursor: pointer;
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-    background: $primary-blue;
-    color: white;
-    padding: 0 8px;
-    border-radius: 8px;
-  }
-  .use-template-button {
-    border: 1px solid white;
-    cursor: pointer;
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-    background: $primary-blue;
-    color: white;
-    padding: 0 8px;
-    border-radius: 8px;
-  }
+.image-container {
+  width: 120px;
 }
 
 #clear-button {
@@ -62,39 +43,22 @@ $background: white;
   border-radius: 6px;
 }
 
-.inbox-item {
-  //  padding-top: 60px;
-  border-top: solid gray 1px;
-  float: left;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  height: 100px;
-
-  p {
-    font-size: 10px;
-    padding-left: 15px;
-  }
-}
-
 .container {
   display: flex;
   flex-direction: row;
   overflow: hidden;
+}
+.buttons {
+  button {
+    background-color: $primary-blue;
+    border-radius: 50%;
+  }
 }
 
 .right-pane {
   flex: 1; /* Let the right pane grow to take available space */
 
   margin: 10px;
-}
-
-.selected-appeal {
-  background-color: rgba(
-    167,
-    166,
-    166,
-    0.635
-  ); /* Set the background color to a darker shade */
 }
 
 .inbox-timestamp {

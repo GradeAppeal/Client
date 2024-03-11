@@ -21,7 +21,6 @@
             class="form-widget"
           >
             <div>
-              <label for="email">Email</label> <br />
               <input
                 matInput
                 id="email"
@@ -42,23 +41,29 @@
             </div>
             <div>
               <button
-                (click)="onSignup()"
+                (click)="onLogin()"
                 type="submit"
                 class="blue-button"
                 [disabled]="loading"
               >
-                {{ loading ? "Loading" : "Submit" }}
+                {{ loading ? "Loading" : "Log In" }}
               </button>
               <p class="register">
-                Not registered as an Instructor?
+                Not registered as an instructor?
                 <button class="register-button" (click)="onRegister()">
                   Sign Up
                 </button>
               </p>
               <p class="register">
                 Forgot your password?
-                <button class="register-button" (click)="onResetPassword()">
-                  reset
+                <button class="register-button" (click)="onRequestToken()">
+                  Reset Password
+                </button>
+              </p>
+              <p class="register">
+                Token Expired?
+                <button class="register-button" (click)="onRequestToken()">
+                  Request Token
                 </button>
               </p>
             </div>

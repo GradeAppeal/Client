@@ -1,22 +1,20 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { ProfessorService } from 'src/app/services/professor.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RequestPasswordResetSnackbarComponent } from './request-password-reset-snackbar/request-password-reset-snackbar.component';
 import { Router } from '@angular/router';
+import { RedirectSnackbarComponent } from '../../util-components/redirect-snackbar/redirect-snackbar.component';
 
 @Component({
-  selector: 'app-request-password-reset',
-  templateUrl: './request-password-reset.component.html',
-  styleUrls: ['./request-password-reset.component.scss'],
+  selector: 'app-request-token',
+  templateUrl: './request-token.component.html',
+  styleUrls: ['./request-token.component.scss'],
 })
-export class RequestPasswordResetComponent {
+export class RequestTokenComponent {
   passwordRequestForm: FormGroup;
   durationInSeconds: number = 2;
 
   constructor(
-    private professorService: ProfessorService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router
@@ -34,17 +32,10 @@ export class RequestPasswordResetComponent {
    */
   async onRequestPasswordReset() {
     const { email } = this.passwordRequestForm.value;
-    const authenticated = await this.professorService.isUser(email);
-    let message: string;
-    if (authenticated) {
-      console.log({ email });
-      await this.authService.sendPasswordResetLink(email);
-      message = `Reset link sent to ${email}. Redirecting...`;
-    } else {
-      message = `${email} is NOT an authenticated user. Redirecting...`;
-    }
+    await this.authService.sendPasswordResetVerification(email);
+    const message = `Reset link sent to ${email}. Redirecting...`;
     const snackbarRef = this.snackBar.openFromComponent(
-      RequestPasswordResetSnackbarComponent,
+      RedirectSnackbarComponent,
       {
         duration: this.durationInSeconds * 1000,
         data: message,

@@ -4,25 +4,21 @@
     <!-- Left Pane (List of Appeals) -->
     <div class="inbox" *ngIf="fetchedAppeals">
       <div class="search">
-        <input
-          type="text"
-          placeholder="Search for Appeal"
-          #filter
-          (keyup.enter)="filterResults(filter.value)"
-        />
-
-        <button
-          class="primary"
-          type="button"
-          (click)="filterResults(filter.value)"
-        >
+        <button type="button" (click)="filterResults(filter.value)">
           <mat-icon
-            class="header-avatar"
+            class="search-icon"
             aria-hidden="false"
             aria-label="Example home icon"
             fontIcon="search"
           ></mat-icon>
         </button>
+        <input
+          type="text"
+          placeholder="Search for Appeal"
+          #filter
+          (keyup.enter)="filterResults(filter.value)"
+          (input)="onInputChange(filter.value)"
+        />
       </div>
       <div
         class="inbox-item"
@@ -57,16 +53,18 @@
         <div *ngIf="fetchedAppeals" class="appeal-wrapper">
           <mat-card class="appeal">
             <h2 class="appeal-header">
-              <div>
+              <div class="appeal-inbox-header">
                 <mat-icon
                   class="header-avatar"
                   aria-hidden="false"
                   aria-label="Example home icon"
                   fontIcon="account_circle"
                 ></mat-icon>
-                {{ currentAppeal.student_first_name }}
-                {{ currentAppeal.student_last_name }} |
-                {{ currentAppeal.assignment_name }}
+                <div class="title">
+                  {{ currentAppeal.student_first_name }}
+                  {{ currentAppeal.student_last_name }} |
+                  {{ currentAppeal.assignment_name }}
+                </div>
               </div>
             </h2>
             <p>
