@@ -18,9 +18,9 @@
   border-radius: 15px;
   padding: 16px;
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  // ::-webkit-scrollbar {
+  //   display: none;
+  // }
 }
 
 .unread-dot {
@@ -50,14 +50,21 @@
 
   margin: 10px;
 }
+
 #image {
   width: 100%;
   color: transparent;
 }
-
+.buttons {
+  button {
+    background-color: $primary-blue;
+    border-radius: 50%;
+  }
+}
 .image-container {
   width: 120px;
 }
+
 .inbox-timestamp {
   float: right;
   font-size: 11px;

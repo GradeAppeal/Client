@@ -48,7 +48,7 @@ export class ProfessorService {
 
   /**
    * Writes new assignment to database
-   * @param pid professor id from auth
+    @param pid professor id from auth
     @param prefix course prefix
     @param code course code
     @param name course name
@@ -144,7 +144,6 @@ export class ProfessorService {
    * @returns courses the prof is teaching in JSON format
    */
   async fetchClosedProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
-    console.log(pid);
     const { data, error } = await this.supabase.rpc(
       'get_closed_professor_appeals',
       {
@@ -164,7 +163,6 @@ export class ProfessorService {
    * @returns courses the prof is teaching in JSON format
    */
   async fetchAllProfessorAppeals(pid: string): Promise<ProfessorAppeal[]> {
-    console.log(pid);
     const { data, error } = await this.supabase.rpc(
       'get_all_professor_appeals',
       {
@@ -220,7 +218,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('UpdateGrader');
     }
-    console.log({ data });
   }
 
   /**
@@ -325,7 +322,6 @@ export class ProfessorService {
    * @returns true if student has an account, false otherwise
    */
   async isUser(student_email: string): Promise<boolean> {
-    console.log({ student_email });
     const { data, error } = await this.supabase.rpc('is_student_user', {
       student_email,
     });
@@ -412,10 +408,6 @@ export class ProfessorService {
         data: { first_name, last_name },
       }
     );
-    // await this.supabase.auth.admin.inviteUserByEmail(email, {
-    //   redirectTo: 'https://gradeboost.us/student-verification',
-    //   data: { first_name, last_name },
-    // });
 
     // user fails to create: return null
     if (error) {
@@ -423,7 +415,6 @@ export class ProfessorService {
       return null;
     }
     // user created: return the User object
-    console.log({ data });
     return data.user;
   }
 
@@ -443,9 +434,7 @@ export class ProfessorService {
           return student;
         })
       );
-      console.log({ newStudents });
       const newStudentIds = await this.fetchStudentIds(newStudents);
-      console.log({ newStudentIds });
       return newStudentIds;
     } catch (err) {
       console.log(err);
@@ -462,7 +451,6 @@ export class ProfessorService {
     const { data, error } = await this.supabase.rpc('get_student_id', {
       student_email: email,
     });
-    console.log(data, error);
     if (error) {
       console.log({ error });
       return null;
@@ -483,7 +471,6 @@ export class ProfessorService {
         // create a user every non-registered student
         parsedStudents.map(async (student) => {
           const studentId = await this.fetchStudentId(student);
-          console.log({ studentId }, 'from fetchStudentIds');
           return studentId;
         })
       );
@@ -513,7 +500,6 @@ export class ProfessorService {
     if (error) {
       throw new Error(error.message);
     }
-    console.log({ data });
   }
   /**
    * Insert template to database
@@ -534,11 +520,9 @@ export class ProfessorService {
       tname,
       new_temp_text,
     });
-    console.log(new_temp_text, tname);
     if (error) {
       throw new Error(error.message);
     }
-    console.log({ data });
   }
 
   /**
@@ -553,7 +537,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error('deleteTemplate');
     }
-    console.log({ data });
   }
 
   /**
@@ -613,6 +596,11 @@ export class ProfessorService {
     return data;
   }
 
+  /**
+   * Deletes appeals from supabase
+   * @param aid appeal ID
+   * @returns The id of deleted appeal
+   */
   async deleteAppeal(aid: number): Promise<number> {
     const { data, error } = await this.supabase.rpc('delete_appeal', {
       aid,
@@ -621,7 +609,6 @@ export class ProfessorService {
       console.log(error);
       throw new Error(error.message);
     }
-    console.log(`appeal ${aid} deleted`);
     return aid;
   }
   /**
@@ -642,6 +629,33 @@ export class ProfessorService {
       console.log(error);
       throw new Error('updateUnassignAppealGrader');
     }
-    console.log({ data });
+  }
+
+  /**
+   * Professors can update students' passwords
+   * This is a backup method for when student's cannot receive emails from Supabase
+   * @param sid student id
+   * @param password student password
+   * @returns user information
+   */
+  async updateStudentPassword(
+    sid: string,
+    password: string
+  ): Promise<User | null> {
+    const {
+      data: { user },
+      error,
+    } = await this.supabase.auth.admin.updateUserById(sid, { password });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return user;
+  }
+
+  async verifyStudent(sid: string) {
+    const { data: user, error } = await this.supabase.auth.admin.updateUserById(
+      sid,
+      { email_confirm: true }
+    );
   }
 }

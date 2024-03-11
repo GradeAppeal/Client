@@ -1,27 +1,49 @@
-<div class="wrapper">
-  <h1 class="title">Select a Grader</h1>
-  <mat-form-field>
-    <mat-label>Grader</mat-label>
-    <mat-select
-      required="true"
-      (selectionChange)="onSelectGrader($event.value)"
-    >
-      <mat-option *ngFor="let grader of graders" [value]="grader">
-        {{ grader.student_name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <p>Message to grader:</p>
-  <input class="input" [(ngModel)]="message" />
-  <div class="button-div">
-    <button
-      mat-raised-button
-      class="assign"
-      (click)="onAssignGrader()"
-      [disabled]="!selectedGrader"
-    >
-      Assign
-    </button>
-    <button mat-raised-button (click)="onCancel()">Cancel</button>
+<ng-container *ngIf="graders.length > 0; else noGraders">
+  <div class="wrapper">
+    <h1 class="title">Select a Grader</h1>
+    <div class="form-wrapper">
+      <mat-form-field class="form">
+        <mat-label>Grader</mat-label>
+        <mat-select
+          required="true"
+          (selectionChange)="onSelectGrader($event.value)"
+        >
+          <mat-option *ngFor="let grader of graders" [value]="grader">
+            {{ grader.student_name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p>Message to grader:</p>
+      <input class="input" [(ngModel)]="message" />
+      <div class="button-div">
+        <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+        <button
+          mat-raised-button
+          class="assign"
+          (click)="onAssignGrader()"
+          [disabled]="!selectedGrader"
+        >
+          Assign
+        </button>
+        <button mat-raised-button (click)="onCancel()">Cancel</button>
+      </div>
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #noGraders>
+  <div class="no-graders">
+    <p>No graders for this class. Go to courses to add a grader</p>
+    <div class="buttons">
+      <button class="blue-button" [mat-dialog-close]="false">Cancel</button>
+      <button
+        [mat-dialog-close]="false"
+        class="blue-button"
+        [routerLink]="['/professor/courses']"
+        routerLinkActive="selected"
+      >
+        Courses
+      </button>
+    </div>
+  </div>
+</ng-template>

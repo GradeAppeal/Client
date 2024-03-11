@@ -26,6 +26,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
 
 /* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
@@ -36,7 +37,6 @@ import { EditTemplatesComponent } from './components/Professor/edit-templates/ed
 import { ProfessorAppealInboxComponent } from './components/Professor/professor-appeal-inbox/professor-appeal-inbox.component';
 import { StudentNavigationComponent } from './components/Student/student-navigation/student-navigation.component';
 import { NewAppealComponent } from './components/Student/new-appeal/new-appeal.component';
-import { EditStudentsPopUpComponent } from './components/Professor/roster/edit-students-pop-up/edit-students-pop-up.component';
 import { AssignmentsComponent } from './components/Professor/assignments/assignments.component';
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
@@ -63,10 +63,11 @@ import { AboutComponent } from './components/about/about.component';
 import { AddStudentPopupComponent } from './components/Professor/roster/add-student-popup/add-student-popup.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { LoadingSpinnerComponent } from './components/util-components/loading-spinner/loading-spinner.component';
-import { RequestPasswordResetComponent } from './components/Auth/request-password-reset/request-password-reset.component';
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
 import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
+import { DeleteStudentPopupComponent } from './components/Professor/roster/delete-student-popup/delete-student-popup.component';
+import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,6 @@ import { RedirectSnackbarComponent } from './components/util-components/redirect
     ProfessorAppealInboxComponent,
     StudentNavigationComponent,
     NewAppealComponent,
-    EditStudentsPopUpComponent,
     AssignmentsComponent,
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
@@ -109,10 +109,11 @@ import { RedirectSnackbarComponent } from './components/util-components/redirect
     AddStudentPopupComponent,
     GraderDashboardComponent,
     LoadingSpinnerComponent,
-    RequestTokenComponent,
     ConfirmationComponent,
-    RequestPasswordResetComponent,
+    RequestTokenComponent,
     RedirectSnackbarComponent,
+    DeleteStudentPopupComponent,
+    ResetStudentPasswordPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -138,6 +139,7 @@ import { RedirectSnackbarComponent } from './components/util-components/redirect
     MatSnackBarModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

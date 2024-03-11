@@ -3,7 +3,19 @@
 .template-name {
   font-size: large;
   font-weight: 500;
+  overflow-wrap: break-word;
+  max-width: 55vw;
 }
 .template-text {
   color: grey;
+  overflow-wrap: break-word;
+  max-width: 80vw;
+}
+
+.delete-icon {
+  color: $primary-blue;
+}
+.edit-icon {
+  color: $primary-blue;
+  margin-right: 5px;
 }

@@ -30,17 +30,26 @@
           {{ formatTimestamp(appeal.created_at).date }} <br />
           {{ formatTimestamp(appeal.created_at).time }}
         </p>
-        <p class="inbox-name" matLine>
+        <div class="inbox-name" matLine>
+          <div>
+            <b>
+              {{ appeal.student_first_name }}
+              {{ appeal.student_last_name }}
+            </b>
+          </div>
+          <p class="assignment-name">{{ appeal.assignment_name }}</p>
+          <p class="inbox-assignment-name">
+            {{ appeal.course_prefix }}{{ currentAppeal?.course_code }}
+            {{ appeal.course_section }}
+            {{ appeal.course_semester }}
+          </p>
           <span
             [ngClass]="{
               'green-dot': appeal.grader_id === null,
               'red-dot': appeal.grader_id !== null
             }"
           ></span>
-          {{ appeal.student_first_name }}
-          {{ appeal.student_last_name }}
-          {{ appeal.assignment_name }}
-        </p>
+        </div>
       </div>
     </div>
 

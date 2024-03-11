@@ -44,17 +44,18 @@ export class ProfessorInteractionHistoryComponent {
   messageLoaded = false;
   fromGrader = false;
   isUser: Boolean;
+  menu: any;
   messages!: Message[];
   professor: Professor;
   student: Student;
   grader: Student;
   talkingToGrader: Boolean = false;
   graderValue: Boolean = true;
+  showOptions: Boolean = false;
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
   imageMessages!: ImageMessage[];
-
   professorAppeals: ProfessorAppeal[];
   filteredAppeals: ProfessorAppeal[];
   professorTemplates!: ProfessorTemplate[];
@@ -146,10 +147,6 @@ export class ProfessorInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -189,7 +186,6 @@ export class ProfessorInteractionHistoryComponent {
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
         } else if (event === 'DELETE') {
-          console.log('delete', { record });
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -263,6 +259,9 @@ export class ProfessorInteractionHistoryComponent {
     this.selectedTemplate = template;
     this.chatInputMessage = template;
   }
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
@@ -271,7 +270,6 @@ export class ProfessorInteractionHistoryComponent {
 
   async selectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    console.log(this.currentAppeal);
     // update real-time filtering
     this.handleAppealNewMessages();
     //this.sender.id = this.currentAppeal.student_id;
@@ -298,6 +296,7 @@ export class ProfessorInteractionHistoryComponent {
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
     const hasImage = this.imageFile == null ? false : true;
+
     if (notification === true) {
       message = 'Notification: ' + message;
     }
@@ -308,13 +307,8 @@ export class ProfessorInteractionHistoryComponent {
     const recipient_name = this.talkingToGrader
       ? (this.currentAppeal.grader_name as string)
       : `${this.student.first_name} ${this.student.last_name}`;
-    // console.log(
-    //   'grader status: ',
-    //   this.currentAppeal.grader_id === recipient_id
-    // );
-    // console.log({ recipient_id }, { recipient_name });
     try {
-      await this.sharedService.insertMessage(
+      this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         sender_id, //sender id
         recipient_id, //student or grader id
@@ -330,7 +324,6 @@ export class ProfessorInteractionHistoryComponent {
         this.messages[this.messages.length - 1].created_at;
 
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(
@@ -338,11 +331,11 @@ export class ProfessorInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        window.location.reload();
       }
 
       // clear the file input
       (<HTMLInputElement>document.getElementById('image')).value = '';
-      console.log(this.messages);
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
@@ -408,7 +401,6 @@ export class ProfessorInteractionHistoryComponent {
       const graderName = this.currentAppeal.grader_name;
       const studentID = this.currentAppeal.student_id;
       const professorID = this.professor.id;
-      console.log(graderName);
       const appealID = this.currentAppeal.appeal_id;
       // open popup to assign grader
       const dialog = this.dialog.open(UnassignGraderPopupComponent, {
@@ -419,7 +411,6 @@ export class ProfessorInteractionHistoryComponent {
 
   talkToGrader() {
     this.talkingToGrader = !this.talkingToGrader;
-    console.log(this.talkingToGrader);
   }
 
   //This function makes sure that the messages appearing in interaction history only show if the dates are from a different day
@@ -448,7 +439,12 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   onFilechange(event: any) {
-    console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
+    let fileChosen = document.getElementById('file-chosen') as HTMLElement;
+    fileChosen.textContent = event.target.files[0].name;
+
+    if (this.chatInputMessage.trim() === '' && this.imageFile) {
+      this.chatInputMessage = event.target.files[0].name; // Set message to a space character
+    }
   }
 }

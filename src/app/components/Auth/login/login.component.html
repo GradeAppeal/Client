@@ -41,7 +41,7 @@
             </div>
             <div>
               <button
-                (click)="onSignup()"
+                (click)="onLogin()"
                 type="submit"
                 class="blue-button"
                 [disabled]="loading"
@@ -56,8 +56,14 @@
               </p>
               <p class="register">
                 Forgot your password?
-                <button class="register-button" (click)="onResetPassword()">
+                <button class="register-button" (click)="onRequestToken()">
                   Reset Password
+                </button>
+              </p>
+              <p class="register">
+                Token Expired?
+                <button class="register-button" (click)="onRequestToken()">
+                  Request Token
                 </button>
               </p>
             </div>

@@ -25,9 +25,7 @@ export class AuthService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl as string,
-      environment.serviceRoleKey as string,
-      {
-      }
+      environment.serviceRoleKey as string
     );
 
     // create auth user subscription
@@ -122,7 +120,6 @@ export class AuthService {
       console.log({ error });
       throw new Error('signUp');
     }
-    console.log({ data });
     return data;
   }
 
@@ -290,7 +287,6 @@ export class AuthService {
       console.log(error);
       throw new Error('insertUser');
     }
-    console.log({ data });
   }
 
   /**
@@ -301,7 +297,8 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: 'http://localhost:4200/confirmation',
+        redirectTo:
+          'https://gradeboost.cs.calvin.edu/confirmation?type=recovery',
       }
     );
 
@@ -309,7 +306,6 @@ export class AuthService {
       console.log({ error });
       throw new Error(error.message);
     }
-    console.log({ data });
   }
 
   /**

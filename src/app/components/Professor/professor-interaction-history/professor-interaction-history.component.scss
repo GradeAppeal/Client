@@ -13,9 +13,9 @@ $background: white;
   border-radius: 15px;
   padding: 16px;
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  // ::-webkit-scrollbar {
+  //   display: none;
+  // }
 }
 
 #clear-button {
@@ -28,6 +28,8 @@ $background: white;
 }
 
 .inbox-item {
+  display: flex;
+  flex-direction: row;
   .inbox-item-timestamp-dot-container {
     width: 30%;
     display: flex;
@@ -58,9 +60,15 @@ $background: white;
     margin-bottom: 5px; /* Remove the default margin to avoid spacing issues */
   }
   p.inbox-assignment-name {
-    padding-bottom: 5px;
     font-weight: 400;
   }
+}
+.right-side {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
 }
 .timestamp {
   color: gray;
@@ -110,6 +118,46 @@ mat-nav-list {
 .grader-header {
   margin-left: auto;
 }
+.custom-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  input {
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+}
 
 .top-bar {
   display: flex;
@@ -130,11 +178,4 @@ mat-nav-list {
 
 .header {
   font-size: 23px;
-}
-
-.message-image {
-  position: relative;
-  display: block;
-  height: 15vw;
-  padding: 10px;
 }
