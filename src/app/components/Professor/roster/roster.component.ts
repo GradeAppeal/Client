@@ -179,12 +179,37 @@ export class RosterComponent {
 
   async onAssignGrader(student: StudentCourseGraderInfo): Promise<void> {
     try {
-      console.log({ student });
       const { student_id, course_id } = student;
-      console.log(student_id, course_id);
       await this.professorService.updateGrader(student_id, course_id);
     } catch (err) {
       throw new Error('makeGrader');
+    }
+  }
+
+  async onVerifyAccount(student: StudentCourseGraderInfo): Promise<void> {
+    try {
+      const { student_id } = student;
+      const isConfirmed = await this.professorService.getStudentInfo(
+        student_id
+      );
+      if (isConfirmed) {
+        this.snackBar.open('Student is already verified', '', {
+          panelClass: ['blue-snackbar'],
+          duration: 1500,
+        });
+      } else {
+        await this.professorService.verifyStudent(student_id);
+        this.snackBar.open('Student verified', '', {
+          panelClass: ['green-snackbar'],
+          duration: 1500,
+        });
+      }
+      //await this.professorService.verifyStudent(student_id);
+    } catch (err) {
+      this.snackBar.open('Error verifying student', '', {
+        panelClass: ['error-snackbar'],
+        duration: 1500,
+      });
     }
   }
 

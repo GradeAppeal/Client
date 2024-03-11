@@ -7,45 +7,66 @@
 }
 
 .courses-container {
+  height: 90vh;
   display: flex;
+  // justify-content: flex-start;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  max-height: 300vh;
 }
 
 .course {
-  // padding: 10px;
+  width: calc(33.333% - 20px);
   margin: 10px;
+  min-width: 300px;
   height: 250px;
-  width: 400px;
-  min-width: 200px;
-  background-color: white;
   text-align: center;
-  flex-basis: calc(33.33% - 20px);
+  justify-content: center;
   box-sizing: border-box;
+  flex-direction: column;
+}
+
+.card-text {
+  // flex-grow: 1;
+  margin-top: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .course-name {
   flex-direction: row;
-  padding: 1vw;
   font-weight: bold;
 }
 
 .course-description {
   flex-direction: row;
-  padding: 1vw;
 }
 
 .course-professor {
   flex-direction: row;
-  padding: 1vw;
+
   margin-bottom: 1em;
 }
 
 .buttons {
-  display: flex;
-  justify-content: center;
-  // background-color: red;
+  // height: 100px;
+  width: 100%;
+  position: relative;
+  flex-grow: 1;
+
 }
 
 .blue-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.version-number {
+  color: $primary-blue;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 65px;
+  font-size: 14px;
 }

@@ -7,7 +7,7 @@
   <div class="top-bar">
     <div class="top-left-content">
       <span
-        (click)="navigateTo('student/course-dashboard')"
+        (click)="navigateTo('student/courses')"
         class="material-symbols-outlined rocket"
       >
         rocket_launch
@@ -45,7 +45,7 @@
         <div class="tab">
           <button
             class="tab-text sidenav-button"
-            [routerLink]="['/student/course-dashboard']"
+            [routerLink]="['/student/courses']"
             routerLinkActive="selected"
           >
             <mat-icon
@@ -75,18 +75,6 @@
           &ensp;Interaction History
         </button>
     </div>
-      <!-- <button
-      class="sidenav-button"
-      [routerLink]="['/student/about']"
-      routerLinkActive="selected"
-    >
-      <mat-icon
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="?"
-      ></mat-icon>
-      &ensp;About
-    </button> -->
       </div>
       <div class="grader-label" *ngIf="isGrader" (click)="showGrader = !showGrader; expandMoreG = !expandMoreG" >
         <mat-icon *ngIf="expandMoreG">expand_more</mat-icon>
@@ -97,7 +85,7 @@
           <div class="tab"> 
             <button
               class="tab-text sidenav-button"
-              [routerLink]="['/student/grader/course-dashboard']"
+              [routerLink]="['/student/grader/courses']"
               routerLinkActive="selected"
             >
               <mat-icon
@@ -106,7 +94,7 @@
                 aria-label="Example home icon"
                 fontIcon="dashboard"
               ></mat-icon>
-              &ensp;Grader Courses
+              &ensp;Courses
             </button>
         </div>
         <div class="tab">
@@ -119,9 +107,9 @@
             class="side-nav-icon"
               aria-hidden="false"
               aria-label="Example home icon"
-              fontIcon="grade"
+              fontIcon="chat"
             ></mat-icon>
-            &ensp;Grader Chat
+            &ensp;Interaction History
           </button>
         </div>
         </div>

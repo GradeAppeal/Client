@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       if (authUserRole === 'professor') {
         this.router.navigateByUrl('/professor/appeal-inbox');
       } else if (authUserRole === 'student') {
-        this.router.navigateByUrl('/student/course-dashboard');
+        this.router.navigateByUrl('/student/courses');
       }
     } catch (error) {
       console.log({ error });

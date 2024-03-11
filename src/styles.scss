@@ -148,8 +148,7 @@ $form-white: #f8f7f4;
     background-color: rgba(235, 232, 232);
     cursor: pointer;
   }
-  p.inbox-name {
-    font-weight: bold;
+  .inbox-name {
     float: left;
     width: 50%;
     font-size: 11px;
@@ -521,4 +520,14 @@ label {
 .blue-snackbar {
   --mdc-snackbar-container-color: #f8f7f4;
   --mdc-snackbar-supporting-text-color: #3a62d7;
+}
+
+.green-snackbar {
+  --mdc-snackbar-container-color: #f8f7f4;
+  --mdc-snackbar-supporting-text-color: #2ecc71;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #f8f7f4;
+  --mdc-snackbar-supporting-text-color: #f44336;
 }

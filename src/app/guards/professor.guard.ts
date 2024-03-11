@@ -24,7 +24,7 @@ export const professorGuard: CanActivateChildFn | CanActivateFn = async (
             // if student attempts to access professor view, redirect to student dashboard
             role === 'professor'
               ? resolve(true)
-              : resolve(router.createUrlTree(['/student/course-dashboard']));
+              : resolve(router.createUrlTree(['/student/courses']));
           } else {
             resolve(router.createUrlTree(['/']));
           }
