@@ -41,7 +41,6 @@ export class StudentDashboardComponent {
       this.studentCourses = await this.studentService.fetchStudentCourses(
         this.student.id
       );
-      console.log('studentCourses: ', this.studentCourses);
       this.handleCourseUpdates();
     } catch (err) {
       console.log({ err });
@@ -56,7 +55,6 @@ export class StudentDashboardComponent {
         `student_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
-        console.log({ update });
         const record = update.new?.course_id ? update.new : update.old;
         const event = update.eventType;
         if (!record) return;
@@ -107,7 +105,6 @@ export class StudentDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    console.log({ course });
     this.router.navigateByUrl(
       `student/grader/interaction-history/${course.course_id}`
     );
@@ -125,7 +122,6 @@ export class StudentDashboardComponent {
       course.course_section +
       ' - ' +
       course.professor_name;
-    console.log({ course });
     this.router.navigateByUrl(`/student/new-appeal/${course.course_id}`);
   }
 }
