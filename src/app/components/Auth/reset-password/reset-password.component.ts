@@ -47,14 +47,6 @@ export class ResetPasswordComponent {
     );
   }
 
-  async ngOnInit() {
-    this.authService.getCurrentUser().subscribe((user) => {
-      if (user && typeof user !== 'boolean') {
-        this.user = user;
-      }
-    });
-  }
-
   async onResetPassword() {
     const { newPassword } = this.passwordForm.value;
     try {
