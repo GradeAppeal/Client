@@ -297,7 +297,8 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: 'http://localhost:4200/confirmation',
+        redirectTo:
+          'https://gradeboost.cs.calvin.edu/confirmation?type=recovery',
       }
     );
 
