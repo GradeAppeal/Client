@@ -31,15 +31,47 @@ mat-icon {
   font-size: 40px;
   background-color: white;
   color: $primary-blue;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px;
 }
 
+
+.top-left-content {
+  display: flex;
+  align-items: center;
+}
+
+.rocket {
+  padding: 5px;
+  font-size: 26px;
+}
+
+.top-right-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0.5vw;
+}
+
+.material-symbols-outlined {
+  font-size: 32px;
+  // font-variation-settings: "FILL" 0, "wght" 800, "GRAD" 0, "opsz" 48;
+}
+
+.sign-out {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+
 .title {
   font-size: 32px;
+  font-weight: bold;
 }
 
 .side-nav-icon {
@@ -76,27 +108,26 @@ mat-icon {
   margin-top: -6px;
 }
 
-
-.sign-out-button {
-  height: 22px;
-  width:  68px;
+.sign-out {
+  height: 24px;
+  width:  74px;
+  font-size: 12px;
+  font-weight: 550;
   background-color: $primary-blue;
   color: white;
   border-radius: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  
 }
 
-.sign-out-button:hover {
+.sign-out:hover {
   cursor: pointer;
   background-color: $hover-blue;
 }
 
 .sidenav-container {
-  width: 180px; /* Set the width of the sidenav as needed */
+  width: 190px; /* Set the width of the sidenav as needed */
   height: 100%;
   float: left;
 }
@@ -115,12 +146,18 @@ mat-icon {
   font-weight: bold;
   padding: 4px;
   width: 100%;
-  font-size: 12px;
+  font-size: 16px;
   text-align: left;
   display: flex;
   align-items: center;
   .mat-icon {
+    margin: 0px;
     font-size: 12px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    align-items: center;
+    margin-top: 8px;
   }
 
 }
@@ -130,23 +167,8 @@ mat-icon {
   // background-color: darken(white, 10%);
 }
 
-.student-tab-container{
-  // order: 1;
-  // margin-bottom: auto;
-  // justify-content: normal;
-  // height: 100%;
-  // padding-left: 1em;
-}
 
 
-// .grader-divider {
-//   background-color: $secondary-blue;
-//   margin-bottom: 4px;
-//   height: 6px;
-//   width: 90%;
-//   align-items: center;
-//   border-radius: 1em;
-// }
 
 .grader-tab-container {
   // height: 100%;
@@ -161,7 +183,6 @@ mat-icon {
 }
 
 .grader-tabs {
-  // background-color: $secondary-blue;
   height: 100%;
   width: 100%;
 }
@@ -170,50 +191,21 @@ mat-icon {
   color: $primary-blue;
   padding: 4px;
   width: 100%;
-  font-size: 12px;
+  font-size: 16px;
   text-align: left;
   display: flex;
   align-items: center;
   padding-left: 1em;
-  // flex-direction: row;
   &:hover {
-    // background-color: darken(white, 10%);
   }
 }
-
 
 .selected {
   background-color: darken(white, 10%);
 }
 
 
-.top-left-content {
-  display: flex;
-  align-items: center;
-}
-.rocket {
-  padding: 5px;
-  font-size: 32px;
-}
 
-.top-right-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-left: auto;
-  margin-right: 0.5vw;
-}
-
-.material-symbols-outlined {
-  font-size: 32px;
-  // font-variation-settings: "FILL" 0, "wght" 800, "GRAD" 0, "opsz" 48;
-}
-
-.sign-out {
-  font-size: 12px;
-  font-weight: 500;
-}
 
 .app-container {
   height: 100vh;

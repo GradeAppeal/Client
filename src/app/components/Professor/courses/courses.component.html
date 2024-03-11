@@ -2,7 +2,7 @@
   class="course-wrapper scroll"
   *ngIf="professorCourses; else loadingSpinner"
 >
-  <mat-card class="courses" *ngFor="let course of professorCourses">
+  <mat-card class="course" *ngFor="let course of professorCourses">
     <div class="title-container">
       <mat-card-title class="course-wording"
         >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
@@ -20,7 +20,7 @@
       View Assignments
     </button>
     <button type="submit" (click)="onViewRoster(course)" class="blue-button">
-      View Roster
+      View Students
     </button>
   </mat-card>
   <div class="empty" *ngIf="noCourses">

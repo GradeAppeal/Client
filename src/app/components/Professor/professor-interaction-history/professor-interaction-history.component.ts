@@ -147,10 +147,6 @@ export class ProfessorInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -328,7 +324,6 @@ export class ProfessorInteractionHistoryComponent {
         this.messages[this.messages.length - 1].created_at;
 
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(
