@@ -4,6 +4,7 @@
     *ngIf="studentCourses; else loadingSpinner"
   >
     <mat-card class="course" *ngFor="let course of studentCourses">
+      <div class="card-text">
       <mat-card-title class="course-name">
         {{ course.course_prefix }}-{{ course.course_code }}-{{
           course.course_section
@@ -15,6 +16,7 @@
       <mat-card-subtitle class="course-professor">{{
         course.professor_name
       }}</mat-card-subtitle>
+      </div>
       <div class="buttons">
         <button
           *ngIf="course.is_grader"
@@ -24,7 +26,7 @@
           mat-button
         >
           View Appeals
-        </button>
+      </button>
         <!--*ngIf="course.is_grader" -->
         <button
           *ngIf="!course.is_grader"
@@ -36,7 +38,6 @@
           New Appeal
         </button>
       </div>
-      <p style="color: white">FallGuys2Memfis</p> <!-- jinrai -->
     </mat-card>
   </div>
   <ng-template #loadingSpinner>
