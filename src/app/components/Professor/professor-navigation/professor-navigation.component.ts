@@ -39,10 +39,6 @@ export class ProfessorNavigationComponent {
           return match.toUpperCase();
         });
       });
-
-    console.log(this.title);
-    const students = await this.professorService.fetchStudents(1);
-    console.log(this.selectedTab);
   }
 
   logoutPopUp() {

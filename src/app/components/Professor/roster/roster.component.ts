@@ -80,7 +80,6 @@ export class RosterComponent {
 
       // update addedStudentCSV string
       this.addedStudentsCSV = '';
-      console.log(this.courseStudents);
       this.addedStudentsCSV = this.addedStudentsCSV.concat(
         'First name\tLast name\tEmail address\n'
       );
