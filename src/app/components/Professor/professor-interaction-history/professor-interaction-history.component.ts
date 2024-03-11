@@ -147,10 +147,6 @@ export class ProfessorInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -314,11 +310,6 @@ export class ProfessorInteractionHistoryComponent {
     const recipient_name = this.talkingToGrader
       ? (this.currentAppeal.grader_name as string)
       : `${this.student.first_name} ${this.student.last_name}`;
-    // console.log(
-    //   'grader status: ',
-    //   this.currentAppeal.grader_id === recipient_id
-    // );
-    // console.log({ recipient_id }, { recipient_name });
     try {
       this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
@@ -336,7 +327,6 @@ export class ProfessorInteractionHistoryComponent {
         this.messages[this.messages.length - 1].created_at;
 
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(

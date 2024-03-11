@@ -1,5 +1,7 @@
 @import "src/styles.scss";
-
+.about-container {
+  padding: 30px;
+}
 p {
   color: #34495e;
 }
@@ -21,15 +23,3 @@ h1 {
   color: $primary-blue;
   font-weight: bold;
 }
-
-/* Team members list */
-// .team-list {
-//   display: flex;
-//   flex-wrap: wrap;
-// }
-
-// .team-member {
-//   flex-basis: calc(33.33% - 20px);
-//   margin-right: 20px;
-//   margin-bottom: 20px;
-// }
