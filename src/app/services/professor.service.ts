@@ -48,7 +48,7 @@ export class ProfessorService {
 
   /**
    * Writes new assignment to database
-   * @param pid professor id from auth
+    @param pid professor id from auth
     @param prefix course prefix
     @param code course code
     @param name course name
@@ -609,6 +609,11 @@ export class ProfessorService {
     return data;
   }
 
+  /**
+   * Deletes appeals from supabase
+   * @param aid appeal ID
+   * @returns The id of deleted appeal
+   */
   async deleteAppeal(aid: number): Promise<number> {
     const { data, error } = await this.supabase.rpc('delete_appeal', {
       aid,
@@ -641,6 +646,13 @@ export class ProfessorService {
     console.log({ data });
   }
 
+  /**
+   * Professors can update students' passwords
+   * This is a backup method for when student's cannot receive emails from Supabase
+   * @param sid student id
+   * @param password student password
+   * @returns user information
+   */
   async updateStudentPassword(
     sid: string,
     password: string
@@ -655,5 +667,12 @@ export class ProfessorService {
       throw new Error(error.message);
     }
     return user;
+  }
+
+  async verifyStudent(sid: string) {
+    const { data: user, error } = await this.supabase.auth.admin.updateUserById(
+      sid,
+      { email_confirm: true }
+    );
   }
 }
