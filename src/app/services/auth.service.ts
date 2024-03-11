@@ -27,10 +27,6 @@ export class AuthService {
       environment.supabaseUrl as string,
       environment.serviceRoleKey as string,
       {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
       }
     );
 

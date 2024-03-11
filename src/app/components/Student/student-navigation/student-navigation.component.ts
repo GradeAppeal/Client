@@ -65,7 +65,7 @@ export class StudentNavigationComponent {
 
   grader = false;
   email = 'sth6@calvin.edu';
-  selectedTab: string = '/student/course-dashboard';
+  selectedTab: string = '/student/courses';
   title: string = 'Courses';
   selectTab(tabName: string): void {
     this.selectedTab = tabName;

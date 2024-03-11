@@ -1,11 +1,6 @@
 @import "src/app/components/Professor/assignments/assignments.component.scss";
 @import "src/styles.scss";
 
-.component-wrapper {
-  height: 100%;
-  overflow-y: scroll;
-}
-
 .course-wrapper {
   height: 90vh;
   display: flex;
@@ -16,6 +11,7 @@
   justify-content: flex-start;
   max-height: 300vh;
 }
+
 .course-title {
   font-size: 2em;
   font-weight: bold;
@@ -35,13 +31,11 @@
   right: 10px;
 }
 
-.courses {
+.course {
   width: calc(33.333% - 20px);
   margin: 10px;
-  // width: 22vw;
   min-width: 300px;
-  min-height: 250px;
-  height: 35vh;
+  height: 250px;
   text-align: center;
   align-items: center;
   justify-content: center;

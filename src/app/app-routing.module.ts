@@ -100,7 +100,7 @@ const routes: Routes = [
     canActivateChild: [studentGuard],
     children: [
       {
-        path: 'course-dashboard',
+        path: 'courses',
         component: StudentDashboardComponent,
       },
       {
@@ -124,7 +124,7 @@ const routes: Routes = [
         component: GraderInteractionHistoryComponent,
       },
       {
-        path: 'grader/course-dashboard',
+        path: 'grader/courses',
         component: GraderDashboardComponent,
       },
       {
