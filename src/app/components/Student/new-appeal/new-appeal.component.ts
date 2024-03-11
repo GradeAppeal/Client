@@ -34,7 +34,6 @@ export class NewAppealComponent implements OnInit {
   imageFile: File | undefined;
 
   onFilechange(event: any) {
-    console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
   }
 
@@ -83,7 +82,6 @@ export class NewAppealComponent implements OnInit {
         this.courseId
       );
       const assignments = this.assignments;
-      console.log({ assignments });
       this.isAssignmentsFetched = true;
     } catch (err) {
       console.log(err);
@@ -111,17 +109,8 @@ export class NewAppealComponent implements OnInit {
    */
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
-    console.log(this.imageFile);
     try {
       const hasImage = this.imageFile == null ? false : true;
-      console.log(
-        this.selectedAssignmentId,
-        this.appeal,
-        this.courseId,
-        now,
-        this.student.id,
-        this.imageFile
-      );
       const professorID = await this.studentService.getCourseProfessor(
         this.course.id
       );

@@ -120,7 +120,6 @@ export class AuthService {
       console.log({ error });
       throw new Error('signUp');
     }
-    console.log({ data });
     return data;
   }
 
@@ -288,7 +287,6 @@ export class AuthService {
       console.log(error);
       throw new Error('insertUser');
     }
-    console.log({ data });
   }
 
   /**
@@ -307,7 +305,6 @@ export class AuthService {
       console.log({ error });
       throw new Error(error.message);
     }
-    console.log({ data });
   }
 
   /**

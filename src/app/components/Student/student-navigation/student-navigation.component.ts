@@ -22,7 +22,7 @@ export class StudentNavigationComponent {
   expandMoreS : boolean = true;
   expandMoreG : boolean = false;
 
-  
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -35,13 +35,11 @@ export class StudentNavigationComponent {
         this.user = user;
       }
     });
-    
+
   }
 
   navigateTo(route: string) {
     this.selectedTab = route;
-    console.log(route);
-    console.log(this.selectedTab);
     this.router.navigate([route]);
   }
 
@@ -58,7 +56,6 @@ export class StudentNavigationComponent {
           return match.toUpperCase();
         });
       });
-    console.log(this.selectedTab);
 
     this.isGrader = await this.graderService.isGrader(this.user.id);
   }

@@ -93,7 +93,6 @@ export class GraderInteractionHistoryComponent {
   }
 
   onFilechange(event: any) {
-    console.log(event.target.files[0]);
     this.imageFile = event.target.files[0];
     let fileChosen = document.getElementById('file-chosen') as HTMLElement;
     fileChosen.textContent = event.target.files[0].name;
@@ -163,7 +162,7 @@ export class GraderInteractionHistoryComponent {
         this.messages = [];
         this.noAppealsMessage = 'You have no appeals assigned to you';
       }
-      console.log(this.messages);
+
     }
   }
 
@@ -198,7 +197,6 @@ export class GraderInteractionHistoryComponent {
   }
 
   handleMessageUpdates() {
-    console.log('current appeal is: ', this.currentAppeal.appeal_id);
     this.sharedService
       .getTableChanges(
         'Messages',
@@ -206,7 +204,6 @@ export class GraderInteractionHistoryComponent {
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe((update: any) => {
-        console.log({ update });
         // if insert or update event, get new row
         // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
@@ -233,7 +230,6 @@ export class GraderInteractionHistoryComponent {
       this.currentAppeal = appeal;
       // change filter
       this.handleMessageUpdates();
-      console.log(this.currentAppeal.appeal_id);
       this.messages = await this.sharedService.fetchMessages(
         this.currentAppeal.appeal_id
       );
@@ -254,8 +250,6 @@ export class GraderInteractionHistoryComponent {
     if (notification === true) {
       message = 'Notification:' + message;
     }
-    console.log(this.grader, 'Grader');
-    console.log(this.professor, 'Prof');
     try {
       const hasImage = this.imageFile == null ? false : true;
       this.messageID = await this.sharedService.insertMessage(
@@ -288,7 +282,6 @@ export class GraderInteractionHistoryComponent {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
-    console.log(this.messages);
   }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {

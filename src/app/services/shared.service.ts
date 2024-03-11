@@ -90,7 +90,6 @@ export class SharedService {
    * @returns list of all interaction history
    */
   async fetchMessages(aid: number): Promise<Message[]> {
-    console.log(aid);
     const { data, error } = await this.supabase.rpc('get_all_messages', {
       aid,
     });
@@ -98,7 +97,6 @@ export class SharedService {
       console.log(error);
       throw new Error('Error in fetchMessages');
     }
-    // console.log({ data });
     return data;
   }
 
@@ -114,7 +112,6 @@ export class SharedService {
     sid: string,
     pid: string
   ): Promise<Message[]> {
-    console.log(aid);
     const { data, error } = await this.supabase.rpc('get_student_messages', {
       aid,
       sid,
