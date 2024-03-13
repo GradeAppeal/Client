@@ -11,6 +11,7 @@ import {
   ProfessorTemplate,
   ParsedStudent,
   StudentCourseGraderInfo,
+  Roster,
 } from 'src/app/shared/interfaces/professor.interface';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 
@@ -199,6 +200,16 @@ export class ProfessorService {
     if (error) {
       console.log(error);
       throw new Error('fetchCourseStudents');
+    }
+    return data;
+  }
+
+  async getCourseRoster(cid: number): Promise<Roster> {
+    const { data, error } = await this.supabase.rpc('get_course_roster', {
+      cid,
+    });
+    if (error) {
+      throw new Error(error.message);
     }
     return data;
   }

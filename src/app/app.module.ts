@@ -27,6 +27,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 /* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
@@ -140,6 +141,7 @@ import { ResetStudentPasswordPopupComponent } from './components/Professor/roste
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
