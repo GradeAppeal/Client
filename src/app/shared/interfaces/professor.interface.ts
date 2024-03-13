@@ -46,4 +46,21 @@ export interface StudentCourseGraderInfo {
   course_id: number;
   course: string;
   is_grader: boolean;
+  is_verified: boolean;
+}
+
+export interface Roster {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  course_id: number;
+  course_prefix: string;
+  course_code: number;
+  course_name: string;
+  course_section: string;
+  course_semester: string;
+  course_year: number;
+  is_grader: boolean;
+  is_verified: boolean;
 }
