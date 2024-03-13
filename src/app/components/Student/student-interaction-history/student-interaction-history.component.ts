@@ -117,6 +117,7 @@ export class StudentInteractionHistoryComponent {
     } else {
       this.loading = false;
     }
+    console.log(this.currentAppeal);
   }
 
   ngAfterViewChecked() {
