@@ -14,11 +14,11 @@ mat-card-content {
   justify-content: space-between;
   padding: 1rem 1rem;
   margin: 1rem;
+  overflow-wrap: break-word;
   .text-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-
     .info-label {
       font-weight: 600;
     }
@@ -47,4 +47,33 @@ mat-card-content {
   .fetch-message {
     margin-top: 2em;
   }
+}
+.appeal-info-container {
+  display: flex;
+  justify-content: center;
+}
+.appeal-info {
+  // background-color: whitesmoke;
+  min-width: 10rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  gap: 1rem;
+}
+
+.course-assignment {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+p.closed-time {
+  font-size: 11px;
+  color: gray;
+}
+.text {
+  overflow-wrap: break-word;
+  max-width: 60vw;
 }

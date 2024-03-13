@@ -1,96 +1,101 @@
-<button
-  mat-button
-  type="submit"
-  (click)="onBackButton()"
-  class="blue-button back-button"
->
-  Back
-</button>
-<p class="course-title" *ngIf="course; else loadingSpinner">
-  <b>{{ formatCourse(course) }}</b>
-</p>
-<div *ngIf="courseStudents; else loadingSpinner">
-  <div class="roster-wrapper scroll">
-    <div class="table-container">
-      <table mat-table [dataSource]="rosterDataSource">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>Email</th>
-          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-        </ng-container>
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef>Role</th>
-          <td mat-cell *matCellDef="let element">{{ element.role }}</td>
-        </ng-container>
-        <ng-container matColumnDef="options">
-          <th mat-header-cell *matHeaderCellDef>{{ "" }}</th>
-          <td mat-cell *matCellDef="let element; let i = index">
-            <button
-              mat-icon-button
-              [matMenuTriggerFor]="menu"
-              aria-label="Example icon-button with a menu"
-            >
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <!-- Toggle grader/student status -->
-              <button mat-menu-item (click)="onAssignGrader(courseStudents[i])">
-                <mat-icon>repeat</mat-icon>
-                <span>
-                  {{ element.role === "Grader" ? "Student" : "Grader" }}</span
+<div class="component-wrapper">
+  <button
+    mat-button
+    type="submit"
+    (click)="onBackButton()"
+    class="blue-button back-button"
+  >
+    Back
+  </button>
+  <p class="course-title" *ngIf="course; else loadingSpinner">
+    <b>{{ formatCourse(course) }}</b>
+  </p>
+  <div *ngIf="courseStudents; else loadingSpinner">
+    <div class="roster-wrapper scroll">
+      <div class="table-container">
+        <table mat-table [dataSource]="rosterDataSource">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+          </ng-container>
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+          </ng-container>
+          <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef>{{ "" }}</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <!-- Toggle grader/student status -->
+                <button
+                  mat-menu-item
+                  (click)="onAssignGrader(courseStudents[i])"
                 >
-              </button>
-              <!-- Verify Student -->
-              <button
-                mat-menu-item
-                (click)="onVerifyAccount(courseStudents[i])"
-              >
-                <mat-icon>check_circle</mat-icon>
-                <span> Verify Account</span>
-              </button>
-              <!-- Reset student's password -->
-              <button
-                mat-menu-item
-                (click)="onResetPassword(courseStudents[i])"
-              >
-                <mat-icon>lock</mat-icon>
-                <span>Reset password</span>
-              </button>
-              <!-- Delete student from course -->
-              <button
-                mat-menu-item
-                (click)="onDeleteStudent(courseStudents[i])"
-              >
-                <mat-icon>delete</mat-icon>
-                <span>Delete</span>
-              </button>
-            </mat-menu>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+                  <mat-icon>repeat</mat-icon>
+                  <span>
+                    {{ element.role === "Grader" ? "Student" : "Grader" }}</span
+                  >
+                </button>
+                <!-- Verify Student -->
+                <button
+                  mat-menu-item
+                  (click)="onVerifyAccount(courseStudents[i])"
+                >
+                  <mat-icon>check_circle</mat-icon>
+                  <span> Verify Account</span>
+                </button>
+                <!-- Reset student's password -->
+                <button
+                  mat-menu-item
+                  (click)="onResetPassword(courseStudents[i])"
+                >
+                  <mat-icon>lock</mat-icon>
+                  <span>Reset password</span>
+                </button>
+                <!-- Delete student from course -->
+                <button
+                  mat-menu-item
+                  (click)="onDeleteStudent(courseStudents[i])"
+                >
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <div *ngIf="courseStudents.length === 0" class="empty">
+        <h1>There are no students in this class.</h1>
+        <h2>Add students using the buttons below</h2>
+      </div>
     </div>
-    <div *ngIf="courseStudents.length === 0" class="empty">
-      <h1>There are no students in this class.</h1>
-      <h2>Add students using the buttons below</h2>
+    <div class="button-div">
+      <button
+        mat-icon-button
+        class="global-blue add-button"
+        (click)="addStudentPopUp()"
+      >
+        <mat-icon class="add-icon">add</mat-icon>
+      </button>
+      <label for="file-input" class="custom-file-input blue-button csv-button"
+        >Upload CSV</label
+      >
+      <input id="file-input" type="file" (change)="onFileChange($event)" />
     </div>
-  </div>
-  <div class="button-div">
-    <button
-      mat-icon-button
-      class="global-blue add-button"
-      (click)="addStudentPopUp()"
-    >
-      <mat-icon class="add-icon">add</mat-icon>
-    </button>
-    <label for="file-input" class="custom-file-input blue-button csv-button"
-      >Upload CSV</label
-    >
-    <input id="file-input" type="file" (change)="onFileChange($event)" />
   </div>
 </div>
 <ng-template #loadingSpinner>
