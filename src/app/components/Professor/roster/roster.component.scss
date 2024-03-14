@@ -9,8 +9,14 @@
   flex-direction: column;
   align-items: center;
   .table-container {
-    width: 96%;
+    width: 95%;
   }
+}
+.student-count-container {
+  width: 95%;
+  margin: 1.5em 0;
+  display: flex;
+  justify-content: end;
 }
 
 .back-button {
@@ -75,4 +81,28 @@ input[type="file"] {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.verified {
+  background-color: $primary-blue;
+  color: white !important;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
+}
+
+.pending {
+  background-color: whitesmoke;
+  color: black;
+  font-size: 1em;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-radius: 20px;
 }
