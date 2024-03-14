@@ -65,6 +65,7 @@
               {{ currentAppeal.professor_last_name }}<span>:</span>
               {{ currentAppeal.assignment_name }}
             </h1>
+            <h1 class="is-closed" *ngIf="!currentAppeal.is_open">Closed</h1>
           </mat-toolbar-row>
         </mat-toolbar>
         <div class="chat-list" #chatListContainer>

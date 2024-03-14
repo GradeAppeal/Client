@@ -1,9 +1,6 @@
 <!-- closed-appeals.component.html -->
 <div class="wrapper">
   <mat-card class="card" *ngIf="closedAppeals; else loadingSpinner">
-    <mat-card-header>
-      <mat-card-title>Closed Appeals</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
       <!-- Closed Appeals List -->
 
@@ -29,22 +26,19 @@
           </div>
           <div class="button-container">
             <button
-              mat-raised-button
-              class="option reopen-button"
+              class="blue-button option"
               (click)="onReopenAppeal(i)"
             >
               Reopen
             </button>
             <button
-              mat-raised-button
-              class="option view-button"
+              class="gray-button option"
               (click)="onViewAppeal(i)"
             >
               View
             </button>
             <button
-              mat-raised-button
-              class="option delete-button"
+              class="gray-button option"
               (click)="onDeleteAppeal(i)"
             >
               Delete

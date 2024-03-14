@@ -20,6 +20,7 @@ $primary-blue: #3a62d7;
 $secondary-blue: #c1d1ff;
 $hover-blue: #728edd;
 $form-white: #f8f7f4;
+$hover-gray: #bec0bf;
 
 .material-symbols-outlined {
   cursor: pointer;
@@ -64,7 +65,7 @@ $form-white: #f8f7f4;
 
 .gray-button {
   color: black;
-  background-color: whitesmoke;
+  background-color: #ececec;
   margin-left: 20px;
   font-family: Roboto;
   font-size: 1em;
@@ -78,6 +79,10 @@ $form-white: #f8f7f4;
 
 .blue-button:hover {
   background-color: $hover-blue;
+}
+
+.gray-button:hover {
+  background-color: $hover-gray;
 }
 
 .global-th {
