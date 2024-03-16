@@ -438,14 +438,19 @@ export class ProfessorService {
     parsedStudentstoInvite: ParsedStudent[]
   ): Promise<(string | null)[]> {
     try {
-      const newStudents = await Promise.all(
-        // create a user every non-registered student
-        parsedStudentstoInvite.map(async (student) => {
-          await this.inviteStudent(student);
-          return student;
-        })
-      );
-      const newStudentIds = await this.fetchStudentIds(newStudents);
+      const newStudentIds: (string | null)[] = [];
+      const maxInvitesPerSecond = 10;
+      const interval = 1000 / maxInvitesPerSecond;
+
+      parsedStudentstoInvite.forEach(async (student) => {
+        const newStudent = await this.inviteStudent(student);
+        if (newStudent) {
+          newStudentIds.push(newStudent.id);
+        }
+        // delay invite process
+        await new Promise((resolve) => setTimeout(resolve, interval));
+      });
+
       return newStudentIds;
     } catch (err) {
       console.log(err);
