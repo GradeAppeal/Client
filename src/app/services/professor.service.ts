@@ -447,7 +447,7 @@ export class ProfessorService {
         if (newStudent) {
           newStudentIds.push(newStudent.id);
         }
-        // delay invite process
+        // delay invite process by 100ms, only allowing 10 invites per second
         await new Promise((resolve) => setTimeout(resolve, interval));
       });
 
