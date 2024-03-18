@@ -57,6 +57,11 @@
       <h1>There are no Assignments in for this class.</h1>
       <h2>Add assignments using the button below</h2>
     </div>
+    </table>
+    <div *ngIf="assignments.length === 0" class="empty">
+      <h1>There are no Assignments in for this class.</h1>
+      <h2>Add assignments using the button below</h2>
+    </div>
   </div>
   <button
     mat-icon-button
@@ -66,6 +71,7 @@
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
+
 
 <ng-template #loadingSpinner>
   <app-loading-spinner
