@@ -135,6 +135,13 @@ $hover-gray: #bec0bf;
   padding-right: 4px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
+  .right-side {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+  }
 }
 
 .inbox-item {
@@ -277,6 +284,7 @@ $hover-gray: #bec0bf;
 .button-div {
   display: flex;
   justify-content: center;
+  gap: 1rem;
 }
 .search {
   margin-top: 5px;
@@ -341,7 +349,7 @@ $hover-gray: #bec0bf;
     display: flex;
     flex-direction: column;
 
-    justify-content: space-between;
+    justify-content: center;
     button {
       cursor: pointer;
       float: right;
@@ -539,4 +547,22 @@ label {
 
 .component-wrapper {
   padding-left: 10px;
+}
+.card {
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+}
+.left-content {
+  display: flex;
+  align-items: center;
+}
+.right-content {
+  text-align: right;
 }
