@@ -35,29 +35,10 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <!-- <table class="assignment-table" *ngIf="assignments.length !== 0">
-      <tr>
-        <th class="global-th">Assignment</th>
-      </tr>
-      <tr
-        *ngFor="let assignment of assignments; let i = index"
-        class="assignment-row"
-      >
-        <td class="assignment-name">{{ assignment.assignment_name }}</td>
-        <td class="icon-cell">
-          <mat-icon
-            class="delete-icon"
-            (click)="deleteAssignmentPopUp(assignment, course)"
-            >delete</mat-icon
-          >
-        </td>
-      </tr>
-    </table> -->
     <div *ngIf="assignments.length === 0" class="empty">
       <h1>There are no Assignments in for this class.</h1>
       <h2>Add assignments using the button below</h2>
     </div>
-    </table>
     <div *ngIf="assignments.length === 0" class="empty">
       <h1>There are no Assignments in for this class.</h1>
       <h2>Add assignments using the button below</h2>
@@ -71,7 +52,6 @@
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
-
 
 <ng-template #loadingSpinner>
   <app-loading-spinner
