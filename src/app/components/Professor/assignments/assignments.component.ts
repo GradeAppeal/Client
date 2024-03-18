@@ -20,6 +20,14 @@ export class AssignmentsComponent {
   selectedAssignmentId: number;
   editMode = false;
   newAssignment: string;
+  assignmentDataSource: { id: number; assignment: string }[] = [];
+  displayedColumns: string[] = ['assignment', 'options'];
+
+  // export interface Assignment {
+  //   id: number;
+  //   course_id: number;
+  //   assignment_name: string;
+  // }
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +47,7 @@ export class AssignmentsComponent {
         this.courseID
       );
 
+      this.setAssignments();
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedCourse = true;
 
@@ -48,6 +57,12 @@ export class AssignmentsComponent {
       console.log(err);
       throw new Error('Error while fetching course information for course');
     }
+  }
+
+  private setAssignments() {
+    this.assignmentDataSource = this.assignments.map((assignment) => {
+      return { id: assignment.id, assignment: assignment.assignment_name };
+    });
   }
 
   /**
@@ -83,6 +98,7 @@ export class AssignmentsComponent {
             (assignment) => assignment.id != id
           );
         }
+        this.setAssignments();
       });
   }
 
@@ -101,12 +117,9 @@ export class AssignmentsComponent {
   /**
    * Goes to DeleteAssignment pop up component
    */
-  async deleteAssignmentPopUp(
-    assignment: Assignment,
-    course: Course
-  ): Promise<void> {
+  async deleteAssignmentPopUp(aid: Assignment): Promise<void> {
     const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
-      data: { assignment: assignment, course: course },
+      data: { aid },
     });
   }
 
