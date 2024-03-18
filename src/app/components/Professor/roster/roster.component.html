@@ -120,9 +120,9 @@
       <input id="file-input" type="file" (change)="onFileChange($event)" />
     </div>
   </div>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner
+      [fetchMessage]="'Fetching Course Information...'"
+    ></app-loading-spinner>
+  </ng-template>
 </div>
-<ng-template #loadingSpinner>
-  <app-loading-spinner
-    [fetchMessage]="'Fetching Course Information...'"
-  ></app-loading-spinner>
-</ng-template>
