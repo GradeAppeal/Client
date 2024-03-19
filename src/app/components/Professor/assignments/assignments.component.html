@@ -9,10 +9,14 @@
     <table
       *ngIf="assignmentDataSource.length > 0"
       mat-table
+      matSort
+      (matSortChange)="sortTable($event)"
       [dataSource]="assignmentDataSource"
     >
       <ng-container matColumnDef="assignment">
-        <th mat-header-cell *matHeaderCellDef>Assignment</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="assignment">
+          Assignment
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element.assignment }}
         </td>

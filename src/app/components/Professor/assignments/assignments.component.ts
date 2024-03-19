@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { EditGraderComponent } from './edit-grader/edit-grader.component';
+import { Sort } from '@angular/material/sort';
 
 interface Element {
   id: number;
@@ -73,6 +74,9 @@ export class AssignmentsComponent {
         assignment: assignment.assignment_name,
       };
     });
+    this.assignmentDataSource.sort((a, b) =>
+      this.compare(a.assignment, b.assignment, true)
+    );
   }
 
   /**
@@ -174,5 +178,28 @@ export class AssignmentsComponent {
 
   onBackButton() {
     this.router.navigateByUrl('professor/courses');
+  }
+
+  sortTable(sort: Sort) {
+    const data = this.assignmentDataSource.map((data) => data);
+    if (!sort.active || sort.direction === '') {
+      this.assignmentDataSource = data;
+      return;
+    }
+
+    this.assignmentDataSource = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'assignment':
+          return this.compare(a.assignment, b.assignment, isAsc);
+
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
