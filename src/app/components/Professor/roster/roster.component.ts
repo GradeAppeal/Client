@@ -131,10 +131,11 @@ export class RosterComponent {
         if (event === 'INSERT') {
           // get new in
           const record = update.new;
-          const { student_id, course_id, is_verified } = record;
+          console.log({ update });
+          const { student_id, course_id } = record;
 
           // get student & course information
-          const { id, first_name, last_name, email } =
+          const { id, first_name, last_name, email, is_verified } =
             await this.sharedService.getStudent(student_id);
           const course = await this.sharedService.getCourse(course_id);
 
@@ -395,8 +396,6 @@ export class RosterComponent {
       const nonExistingUsers = parsedStudentsToAdd.filter(
         (_, i) => !userStatus[i]
       );
-      console.log({ nonExistingUsers });
-
       // get student ids of registered students & store in array
       const existingUserIds = await this.professorService.fetchStudentIds(
         existingUsers

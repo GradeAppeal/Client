@@ -32,6 +32,7 @@ export class StudentDashboardComponent {
           first_name: this.user.user_metadata['first_name'],
           last_name: this.user.user_metadata['last_name'],
           email: this.user.email as string,
+          is_verified: this.user.email_confirmed_at ? true : false,
         };
       }
     });
