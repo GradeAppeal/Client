@@ -77,3 +77,38 @@ $background: white;
     color: $primary-blue;
   }
 }
+.inbox-item {
+  display: flex;
+  flex-direction: row;
+  .inbox-item-timestamp-dot-container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .unread-dot {
+      width: 10px;
+      height: 10px;
+      background-color: $hover-blue;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  p.inbox-name,
+  p.inbox-assignment-name {
+    font-size: 11px;
+    padding-left: 5px;
+    margin: 0;
+    width: 100%;
+  }
+  p.inbox-timestamp {
+    font-size: 8px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px; /* Remove the default margin to avoid spacing issues */
+  }
+  p.inbox-assignment-name {
+    font-weight: 400;
+  }
+}

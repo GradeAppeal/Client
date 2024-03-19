@@ -1,0 +1,30 @@
+<h2 matDialogTitle>Edit Grader</h2>
+<mat-dialog-content
+  ><form #myForm="ngForm" class="form">
+    <mat-form-field>
+      <mat-label *ngIf="graders.length > 0; else noGradersLabel"
+        >Grader</mat-label
+      >
+      <ng-template #noGradersLabel>
+        <mat-label>No Graders Available</mat-label>
+      </ng-template>
+      <mat-select
+        name="grader"
+        [(value)]="assignedGrader"
+        [disabled]="graders.length === 0"
+      >
+        <mat-option *ngFor="let grader of graders" [value]="grader">{{
+          grader.student_name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div class="button-div">
+    <button mat-button class="blue-button" (click)="onEditGrader()">
+      Submit
+    </button>
+    <button mat-button class="gray-button" [mat-dialog-close]="false">
+      Cancel
+    </button>
+  </div></mat-dialog-content
+>

@@ -26,6 +26,7 @@ import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grad
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
 import { CloseAppealPopupComponent } from '../professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -67,6 +68,7 @@ export class ProfessorInteractionHistoryComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private professorService: ProfessorService,
@@ -91,6 +93,7 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
+    console.log(this.professorAppeals);
     this.filteredAppeals = this.professorAppeals;
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
@@ -247,6 +250,7 @@ export class ProfessorInteractionHistoryComponent {
         // update grader status
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
+          this.currentAppeal.grader_name = record.grader_name;
         } else if (event === 'DELETE') {
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
@@ -428,13 +432,14 @@ export class ProfessorInteractionHistoryComponent {
     });
     // update UI: get rid of closed appeal
     dialogRef.afterClosed().subscribe(async (result: number) => {
-      this.professorAppeals = this.professorAppeals.filter(
-        (appeal) => appeal.appeal_id !== result
-      );
-      this.currentAppeal = this.professorAppeals[0];
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
-      );
+      this.router.navigateByUrl('professor/appeal-inbox');
+      // this.professorAppeals = this.professorAppeals.filter(
+      //   (appeal) => appeal.appeal_id !== result
+      // );
+      // this.currentAppeal = this.professorAppeals[0];
+      // this.messages = await this.sharedService.fetchMessages(
+      //   this.currentAppeal.appeal_id
+      // ); //237, 238, 239 240
     });
   }
 

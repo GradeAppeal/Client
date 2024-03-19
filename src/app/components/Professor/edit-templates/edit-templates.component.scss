@@ -1,21 +1,22 @@
-@import "src/app/components/Professor/assignments/assignments.component.scss";
-
-.template-name {
-  font-size: large;
-  font-weight: 500;
-  overflow-wrap: break-word;
-  max-width: 55vw;
-}
-.template-text {
-  color: grey;
-  overflow-wrap: break-word;
-  max-width: 80vw;
+.edit-templates-container {
+  margin: 1em 2em;
 }
 
-.delete-icon {
-  color: $primary-blue;
+.mat-column-name {
+  width: 20%;
 }
-.edit-icon {
-  color: $primary-blue;
-  margin-right: 5px;
+
+.mat-column-text {
+  width: 75%;
+}
+
+.mat-column-options {
+  width: 5%;
+}
+
+td,
+th {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px;
 }

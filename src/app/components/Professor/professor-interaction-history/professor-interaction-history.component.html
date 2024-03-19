@@ -188,9 +188,16 @@
         <div class="chat-footer">
           <div class="buttons">
             <div class="circle-button">
-              <button mat-icon-button class="plus" (click)="toggleOptions()">
-                +
-              </button>
+              <div class="buttons">
+                <button mat-icon-button class="more" (click)="toggleOptions()">
+                  <mat-icon
+                    class="more-icon"
+                    aria-hidden="false"
+                    aria-label="Example home icon"
+                    fontIcon="more_vert"
+                  ></mat-icon>
+                </button>
+              </div>
             </div>
             <div *ngIf="showOptions" class="custom-popup">
               <div>
@@ -238,12 +245,12 @@
             </div>
           </div>
 
-          <input
+          <textarea
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
-          />
+          ></textarea>
           <div class="buttons">
             <button
               class="blue-button send"
