@@ -14,23 +14,27 @@
       <span class="title">{{ title }}</span>
     </span>
     <div class="top-right-content">
-      <button
-      [routerLink]="['/student/about']"
-      class="about-button"
-    >
-      <mat-icon
-        class="about-icon"
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="?"
-      ></mat-icon>
-      &ensp;
-    </button>
-    <div class="sign-out-button">
-      <span class="sign-out" (click)="logoutPopUp()">
-        Sign Out
-      </span>
-    </div>
+      <button [routerLink]="['/student/about']" class="about-button">
+        <mat-icon
+          class="about-icon"
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="?"
+        ></mat-icon>
+        &ensp;
+      </button>
+
+      <button [routerLink]="['/student/account']" class="account-button">
+        <mat-icon
+          class="account-icon"
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="account_circle"
+        ></mat-icon>
+      </button>
+      <div class="sign-out-button">
+        <span class="sign-out" (click)="logoutPopUp()"> Sign Out </span>
+      </div>
     </div>
   </div>
 
@@ -106,7 +110,7 @@
           &ensp;Edit Templates
         </button>
       </div>
-      <p class="version-number">v{{versionNumber}}</p>
+      <p class="version-number">v{{ versionNumber }}</p>
     </div>
   </div>
   <div class="content">

@@ -265,7 +265,7 @@ export class ProfessorInteractionHistoryComponent {
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
+    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'instant' });
   }
 
   async selectAppeal(appeal: any) {

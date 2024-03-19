@@ -68,6 +68,7 @@ import { ConfirmationComponent } from './components/Auth/confirmation/confirmati
 import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
 import { DeleteStudentPopupComponent } from './components/Professor/roster/delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
+import { AccountComponent } from './components/Professor/account/account.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { ResetStudentPasswordPopupComponent } from './components/Professor/roste
     RedirectSnackbarComponent,
     DeleteStudentPopupComponent,
     ResetStudentPasswordPopupComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
