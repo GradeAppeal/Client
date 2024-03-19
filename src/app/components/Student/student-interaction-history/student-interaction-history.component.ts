@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -74,6 +73,7 @@ export class StudentInteractionHistoryComponent {
           first_name: this.user.user_metadata['first_name'],
           last_name: this.user.user_metadata['last_name'],
           email: this.user.email as string,
+          is_verified: this.user.email_confirmed_at ? true : false,
         };
       }
     });

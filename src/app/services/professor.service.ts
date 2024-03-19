@@ -576,7 +576,6 @@ export class ProfessorService {
   }
 
   async updateAssignmentGrader(aid: number, gid: string, gname: string) {
-    console.log(aid, gid, gname);
     const { data, error } = await this.supabase.rpc(
       'update_assignment_grader',
       {

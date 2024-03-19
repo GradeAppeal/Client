@@ -103,7 +103,6 @@ export class AssignmentsComponent {
         // update to grader
         else if (event === 'UPDATE') {
           const { id } = record;
-          console.log({ record });
           this.assignments = this.assignments.map((assignment) => {
             return assignment.id === id ? record : assignment;
           });

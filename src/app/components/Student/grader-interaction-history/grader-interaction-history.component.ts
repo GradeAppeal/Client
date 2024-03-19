@@ -87,6 +87,7 @@ export class GraderInteractionHistoryComponent {
           first_name: this.user.user_metadata['first_name'],
           last_name: this.user.user_metadata['last_name'],
           email: this.user.email as string,
+          is_verified: this.user.email_confirmed_at ? true : false,
         };
       }
     });
@@ -162,7 +163,6 @@ export class GraderInteractionHistoryComponent {
         this.messages = [];
         this.noAppealsMessage = 'You have no appeals assigned to you';
       }
-
     }
   }
 
