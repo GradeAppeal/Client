@@ -127,6 +127,8 @@ export class StudentService {
     aid: number,
     sid: string,
     cid: number,
+    gid: string | null,
+    gname: string | null,
     created_at: Date,
     appeal_text: string,
     pid: string,
@@ -136,6 +138,8 @@ export class StudentService {
       aid,
       sid,
       cid,
+      gid,
+      gname,
       created_at,
       appeal_text,
       pid,
@@ -143,8 +147,8 @@ export class StudentService {
     });
 
     if (error) {
-      console.log(error);
-      throw new Error('insertNewAppeal');
+      console.log(error.hint);
+      throw new Error(error.message);
     }
     return data;
   }
