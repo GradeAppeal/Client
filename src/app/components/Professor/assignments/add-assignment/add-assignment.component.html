@@ -4,10 +4,40 @@
 >
 <form class="content" #myForm="ngForm">
   <mat-form-field class="input">
-    <input matInput [(ngModel)]="newAssignment" required name="assignment" #assignment="ngModel">
-    <p class="error-message" *ngIf="assignment.invalid && assignment.touched">Assignment name is required</p>
+    <input
+      matInput
+      [(ngModel)]="newAssignment"
+      required
+      name="assignment"
+      #assignment="ngModel"
+    />
+    <p class="error-message" *ngIf="assignment.invalid && assignment.touched">
+      Assignment name is required
+    </p>
   </mat-form-field>
-  <button mat-button class="blue-button" (click)="onAddAssignment()" [disabled]="myForm.invalid">
+  <mat-form-field class="input">
+    <mat-label *ngIf="graders.length > 0; else noGradersLabel"
+      >Grader</mat-label
+    >
+    <ng-template #noGradersLabel>
+      <mat-label>No Graders Available</mat-label>
+    </ng-template>
+    <mat-select
+      [(ngModel)]="assignedGrader"
+      name="grader"
+      [disabled]="graders.length === 0"
+    >
+      <mat-option *ngFor="let grader of graders" [value]="grader.student_id">{{
+        grader.student_name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button
+    mat-button
+    [class]="myForm.invalid ? 'gray-button' : 'blue-button'"
+    (click)="onAddAssignment()"
+    [disabled]="myForm.invalid"
+  >
     Submit
   </button>
   <div class="error-message">{{ errorMessage }}</div>

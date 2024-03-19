@@ -6,6 +6,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.interface';
+import { ProfessorService } from 'src/app/services/professor.service';
+import { EditGraderComponent } from './edit-grader/edit-grader.component';
+
+interface Element {
+  id: number;
+  grader_id?: string;
+  grader_name?: string;
+  assignment: string;
+}
 
 @Component({
   selector: 'app-assignments',
@@ -20,17 +30,12 @@ export class AssignmentsComponent {
   selectedAssignmentId: number;
   editMode = false;
   newAssignment: string;
-  assignmentDataSource: { id: number; assignment: string }[] = [];
-  displayedColumns: string[] = ['assignment', 'options'];
-
-  // export interface Assignment {
-  //   id: number;
-  //   course_id: number;
-  //   assignment_name: string;
-  // }
+  assignmentDataSource: Element[] = [];
+  displayedColumns: string[] = ['assignment', 'grader', 'options'];
 
   constructor(
     private route: ActivatedRoute,
+    private professorService: ProfessorService,
     private sharedService: SharedService,
     private dialog: MatDialog,
     private router: Router
@@ -61,7 +66,12 @@ export class AssignmentsComponent {
 
   private setAssignments() {
     this.assignmentDataSource = this.assignments.map((assignment) => {
-      return { id: assignment.id, assignment: assignment.assignment_name };
+      return {
+        id: assignment.id,
+        grader_id: assignment.grader_id,
+        grader_name: assignment.grader_name,
+        assignment: assignment.assignment_name,
+      };
     });
   }
 
@@ -90,6 +100,14 @@ export class AssignmentsComponent {
           // show new assignment
           this.assignments.push(newAssignment);
         }
+        // update to grader
+        else if (event === 'UPDATE') {
+          const { id } = record;
+          console.log({ record });
+          this.assignments = this.assignments.map((assignment) => {
+            return assignment.id === id ? record : assignment;
+          });
+        }
         // if assignment deleted
         else if (event === 'DELETE') {
           const { id } = record;
@@ -105,19 +123,32 @@ export class AssignmentsComponent {
   /**
    * Goes to AddAssignment pop up component
    */
-  async addAssignmentPopUp(
-    assignments: Assignment[],
-    course: Course
-  ): Promise<void> {
+  async addAssignmentPopUp(course: Course): Promise<void> {
+    const { id } = course;
+    const graders: StudentCourseGraderInfo[] =
+      await this.professorService.getGraders(id);
     const dialogRef = this.dialog.open(AddAssignmentComponent, {
-      data: { assignments: assignments, course: course },
+      data: { course, graders },
+    });
+  }
+
+  async editGraderPopUp(element: Element) {
+    const { id, grader_id } = element;
+
+    const graders: StudentCourseGraderInfo[] =
+      await this.professorService.getGraders(this.courseID);
+    const assignedGrader = graders.find(
+      (grader) => grader.student_id === grader_id
+    );
+    this.dialog.open(EditGraderComponent, {
+      data: { assignedGrader, graders, cid: this.courseID, aid: id },
     });
   }
 
   /**
    * Goes to DeleteAssignment pop up component
    */
-  async deleteAssignmentPopUp(aid: Assignment): Promise<void> {
+  deleteAssignmentPopUp(aid: Assignment): void {
     const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
       data: { aid },
     });

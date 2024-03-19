@@ -2,6 +2,8 @@ export interface Assignment {
   id: number;
   course_id: number;
   assignment_name: string;
+  grader_id?: string;
+  grader_name?: string;
 }
 
 export interface Course {

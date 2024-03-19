@@ -93,6 +93,7 @@ export class ProfessorInteractionHistoryComponent {
   async ngOnInit() {
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
+    console.log(this.professorAppeals);
     this.filteredAppeals = this.professorAppeals;
 
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
@@ -249,6 +250,7 @@ export class ProfessorInteractionHistoryComponent {
         // update grader status
         else if (event === 'UPDATE') {
           this.currentAppeal.grader_id = record.grader_id;
+          this.currentAppeal.grader_name = record.grader_name;
         } else if (event === 'DELETE') {
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
