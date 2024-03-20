@@ -188,7 +188,9 @@ export class ProfessorInteractionHistoryComponent {
         // is_read updates
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
-        } else if (event === 'DELETE') {
+        }
+        // deleted appeal
+        else if (event === 'DELETE') {
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );

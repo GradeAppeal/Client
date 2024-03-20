@@ -66,7 +66,7 @@ export class GraderInteractionHistoryComponent {
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
-  imageMessages!: ImageMessage[];
+  imageMessages: ImageMessage[];
 
   constructor(
     private route: ActivatedRoute,
@@ -143,24 +143,31 @@ export class GraderInteractionHistoryComponent {
           );
         } else {
           this.currentAppeal = this.graderAppeals[0];
+
           this.messages = await this.sharedService.fetchMessages(
             this.currentAppeal.appeal_id
           );
         }
 
-        this.imageMessages = this.messages;
-        await this.getImages();
-
-        const { sender_id, recipient_id } = this.messages[0];
-        const pid = sender_id === this.grader.id ? recipient_id : sender_id;
+        // the first message is an appeal in which:
+        //  sender == student
+        //  recipient == professor
+        // therefore, we use the recipient_id as the pid to get professor info
+        const { recipient_id } = this.messages[0];
+        const pid = recipient_id;
         this.professor = await this.sharedService.getProfessor(pid);
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
-        this.handleMessageUpdates();
+
+        this.imageMessages = this.messages;
+        await this.getImages();
+
+        this.handleAppealNewMessages();
       }
       // grader has no appeals
       else {
         this.messages = [];
+        this.imageMessages = [];
         this.noAppealsMessage = 'You have no appeals assigned to you';
       }
     }
@@ -181,10 +188,6 @@ export class GraderInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -196,11 +199,14 @@ export class GraderInteractionHistoryComponent {
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
-  handleMessageUpdates() {
+  /**
+   * Listen for new messages to update RIGHT pane
+   */
+  handleAppealNewMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `message-channel`,
+        `grader-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe((update: any) => {
@@ -210,12 +216,35 @@ export class GraderInteractionHistoryComponent {
         // INSERT or DELETE
         const event = update.eventType;
         if (!record) return;
-        // new student inserted
+        // new message inserted
         if (event === 'INSERT') {
-          // get new message
-          const record: Message = update.new;
           // show new message
           this.messages.push(record);
+        }
+      });
+  }
+
+  handleAllNewMessages() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `grader-all-messages-channel`,
+        `recipient_id=eq.${this.grader.id}`
+      )
+      .subscribe(async (update: any) => {
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT new message
+        const event = update.eventType;
+        if (!record) return;
+        if (event === 'INSERT') {
+          // get new message
+          const record = update.new;
+          // show new appeal/message on left pane
+          this.graderAppeals = this.graderAppeals.map((graderAppeals) =>
+            graderAppeals.appeal_id === record.appeal_id
+              ? { ...graderAppeals, is_read: false }
+              : { ...graderAppeals }
+          );
         }
       });
   }
@@ -229,12 +258,14 @@ export class GraderInteractionHistoryComponent {
     try {
       this.currentAppeal = appeal;
       // change filter
-      this.handleMessageUpdates();
+      this.handleAppealNewMessages();
       this.messages = await this.sharedService.fetchMessages(
         this.currentAppeal.appeal_id
       );
       this.imageMessages = this.messages;
       await this.getImages();
+      await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
+      console.log('selectAppeal');
     } catch (e) {
       console.log({ e });
     }
@@ -251,7 +282,18 @@ export class GraderInteractionHistoryComponent {
       message = 'Notification:' + message;
     }
     try {
-      const hasImage = this.imageFile == null ? false : true;
+      const hasImage = this.imageFile ? true : false;
+      console.log(
+        this.currentAppeal.appeal_id,
+        this.grader.id, //sender id: grader
+        this.professor.id, //recipientid : professor??
+        new Date(),
+        this.chatInputMessage,
+        this.fromGrader,
+        `${this.grader.first_name} ${this.grader.last_name}`,
+        `${this.professor.first_name} ${this.professor.last_name}`,
+        hasImage
+      );
       this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.grader.id, //sender id: grader
