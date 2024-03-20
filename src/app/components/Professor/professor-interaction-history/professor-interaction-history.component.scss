@@ -63,13 +63,7 @@ $background: white;
     font-weight: 400;
   }
 }
-.right-side {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 10px;
-}
+
 .timestamp {
   color: gray;
   font-size: 12px;
@@ -159,23 +153,15 @@ mat-nav-list {
   }
 }
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 10px;
-  font-weight: bold;
-}
-.left-content {
-  display: flex;
-  align-items: center;
-}
-.right-content {
-  text-align: right;
-}
-
 .header {
   font-size: 23px;
+}
+.more {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $primary-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

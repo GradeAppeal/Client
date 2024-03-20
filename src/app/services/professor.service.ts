@@ -11,6 +11,7 @@ import {
   ProfessorTemplate,
   ParsedStudent,
   StudentCourseGraderInfo,
+  Roster,
 } from 'src/app/shared/interfaces/professor.interface';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 
@@ -130,14 +131,6 @@ export class ProfessorService {
     return data;
   }
 
-  getOpenProfessorAppeals(pid: string): Observable<any> {
-    return from(
-      this.supabase.rpc('get_open_professor_appeals', {
-        pid,
-      })
-    );
-  }
-
   /**
    * fetch from supabase: CLOSED professor appeals
    * @param pid professor id (later replaced with auth.id)
@@ -199,6 +192,16 @@ export class ProfessorService {
     if (error) {
       console.log(error);
       throw new Error('fetchCourseStudents');
+    }
+    return data;
+  }
+
+  async getCourseRoster(cid: number): Promise<Roster> {
+    const { data, error } = await this.supabase.rpc('get_course_roster', {
+      cid,
+    });
+    if (error) {
+      throw new Error(error.message);
     }
     return data;
   }
@@ -566,6 +569,21 @@ export class ProfessorService {
     const { data, error } = await this.supabase.rpc('get_graders', {
       cid,
     });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
+  async updateAssignmentGrader(aid: number, gid: string, gname: string) {
+    const { data, error } = await this.supabase.rpc(
+      'update_assignment_grader',
+      {
+        aid,
+        gid,
+        gname,
+      }
+    );
     if (error) {
       throw new Error(error.message);
     }

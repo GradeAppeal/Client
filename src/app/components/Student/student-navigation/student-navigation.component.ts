@@ -15,27 +15,25 @@ import { GraderService } from 'src/app/services/grader.service';
   styleUrls: ['./student-navigation.component.scss'],
 })
 export class StudentNavigationComponent {
-  user : User;
-  isGrader : boolean;
-  showStudent : boolean = true;
-  showGrader : boolean = false;
-  expandMoreS : boolean = true;
-  expandMoreG : boolean = false;
-
+  user: User;
+  isGrader: boolean;
+  showStudent: boolean = true;
+  showGrader: boolean = false;
+  expandMoreS: boolean = true;
+  expandMoreG: boolean = false;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private dialog: MatDialog,
-    private graderService: GraderService,
+    private graderService: GraderService
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
         this.user = user;
       }
     });
-
   }
 
   navigateTo(route: string) {

@@ -6,6 +6,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.interface';
+import { ProfessorService } from 'src/app/services/professor.service';
+import { EditGraderComponent } from './edit-grader/edit-grader.component';
+import { Sort } from '@angular/material/sort';
+
+interface Element {
+  id: number;
+  grader_id?: string;
+  grader_name?: string;
+  assignment: string;
+}
 
 @Component({
   selector: 'app-assignments',
@@ -20,9 +31,12 @@ export class AssignmentsComponent {
   selectedAssignmentId: number;
   editMode = false;
   newAssignment: string;
+  assignmentDataSource: Element[] = [];
+  displayedColumns: string[] = ['assignment', 'grader', 'options'];
 
   constructor(
     private route: ActivatedRoute,
+    private professorService: ProfessorService,
     private sharedService: SharedService,
     private dialog: MatDialog,
     private router: Router
@@ -39,6 +53,7 @@ export class AssignmentsComponent {
         this.courseID
       );
 
+      this.setAssignments();
       this.course = await this.sharedService.getCourse(this.courseID);
       this.fetchedCourse = true;
 
@@ -48,6 +63,20 @@ export class AssignmentsComponent {
       console.log(err);
       throw new Error('Error while fetching course information for course');
     }
+  }
+
+  private setAssignments() {
+    this.assignmentDataSource = this.assignments.map((assignment) => {
+      return {
+        id: assignment.id,
+        grader_id: assignment.grader_id,
+        grader_name: assignment.grader_name,
+        assignment: assignment.assignment_name,
+      };
+    });
+    this.assignmentDataSource.sort((a, b) =>
+      this.compare(a.assignment, b.assignment, true)
+    );
   }
 
   /**
@@ -75,6 +104,13 @@ export class AssignmentsComponent {
           // show new assignment
           this.assignments.push(newAssignment);
         }
+        // update to grader
+        else if (event === 'UPDATE') {
+          const { id } = record;
+          this.assignments = this.assignments.map((assignment) => {
+            return assignment.id === id ? record : assignment;
+          });
+        }
         // if assignment deleted
         else if (event === 'DELETE') {
           const { id } = record;
@@ -83,30 +119,41 @@ export class AssignmentsComponent {
             (assignment) => assignment.id != id
           );
         }
+        this.setAssignments();
       });
   }
 
   /**
    * Goes to AddAssignment pop up component
    */
-  async addAssignmentPopUp(
-    assignments: Assignment[],
-    course: Course
-  ): Promise<void> {
+  async addAssignmentPopUp(course: Course): Promise<void> {
+    const { id } = course;
+    const graders: StudentCourseGraderInfo[] =
+      await this.professorService.getGraders(id);
     const dialogRef = this.dialog.open(AddAssignmentComponent, {
-      data: { assignments: assignments, course: course },
+      data: { course, graders },
+    });
+  }
+
+  async editGraderPopUp(element: Element) {
+    const { id, grader_id } = element;
+
+    const graders: StudentCourseGraderInfo[] =
+      await this.professorService.getGraders(this.courseID);
+    const assignedGrader = graders.find(
+      (grader) => grader.student_id === grader_id
+    );
+    this.dialog.open(EditGraderComponent, {
+      data: { assignedGrader, graders, cid: this.courseID, aid: id },
     });
   }
 
   /**
    * Goes to DeleteAssignment pop up component
    */
-  async deleteAssignmentPopUp(
-    assignment: Assignment,
-    course: Course
-  ): Promise<void> {
+  deleteAssignmentPopUp(aid: Assignment): void {
     const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
-      data: { assignment: assignment, course: course },
+      data: { aid },
     });
   }
 
@@ -131,5 +178,28 @@ export class AssignmentsComponent {
 
   onBackButton() {
     this.router.navigateByUrl('professor/courses');
+  }
+
+  sortTable(sort: Sort) {
+    const data = this.assignmentDataSource.map((data) => data);
+    if (!sort.active || sort.direction === '') {
+      this.assignmentDataSource = data;
+      return;
+    }
+
+    this.assignmentDataSource = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'assignment':
+          return this.compare(a.assignment, b.assignment, isAsc);
+
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

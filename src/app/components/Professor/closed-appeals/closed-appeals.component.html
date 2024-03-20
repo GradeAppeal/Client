@@ -1,9 +1,6 @@
 <!-- closed-appeals.component.html -->
 <div class="wrapper">
   <mat-card class="card" *ngIf="closedAppeals; else loadingSpinner">
-    <mat-card-header>
-      <mat-card-title>Closed Appeals</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
       <!-- Closed Appeals List -->
 
@@ -17,34 +14,39 @@
               <span class="info-label">Student: </span>
               {{ appeal.student_first_name }} {{ appeal.student_last_name }}
             </p>
-            <p class="course-name">
-              <span class="info-label">Course: </span>
-              {{ appeal.course_prefix }}-{{ appeal.course_code }} -
-              {{ appeal.course_name }}
-            </p>
+            <div class="course-assignment">
+              <p class="course-name">
+                <span class="info-label">Course: </span>
+                {{ appeal.course_prefix }}-{{ appeal.course_code }} -
+                {{ appeal.course_name }}
+              </p>
+              <p><b>Assignment:</b> {{ appeal.assignment_name }}</p>
+            </div>
+            <p class="text"><b>Text:</b> {{ appeal.appeal_text }}</p>
             <p class="closed-time">
-              <span class="info-label">Closed: </span>
-              {{ formatLocalTimestamp(appeal.last_modified) }}
+              Closed: {{ formatLocalTimestamp(appeal.last_modified) }}
             </p>
+          </div>
+          <div class="appeal-info-container">
+            <!-- <div class="appeal-info">
+              <p><b>Text:</b> {{ appeal.appeal_text }}</p>
+            </div> -->
           </div>
           <div class="button-container">
             <button
-              mat-raised-button
-              class="option reopen-button"
+              class="blue-button option"
               (click)="onReopenAppeal(i)"
             >
               Reopen
             </button>
             <button
-              mat-raised-button
-              class="option view-button"
+              class="gray-button option"
               (click)="onViewAppeal(i)"
             >
               View
             </button>
             <button
-              mat-raised-button
-              class="option delete-button"
+              class="gray-button option"
               (click)="onDeleteAppeal(i)"
             >
               Delete

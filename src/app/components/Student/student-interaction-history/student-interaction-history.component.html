@@ -29,44 +29,52 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <div class="inbox-left">
-          <p matLine>
+        <div class="left-section">
+          <p class="inbox-name">
             <b>
               {{ appeal?.professor_first_name }}
               {{ appeal?.professor_last_name }}
             </b>
           </p>
-          <p matLine>
+          <p class="inbox-name">
             <i>{{ appeal.course_name }}</i>
           </p>
-          <p matLine>{{ appeal?.assignment_name }}</p>
+          <p class="inbox-name">{{ appeal?.assignment_name }}</p>
         </div>
-        <div class="inbox-right">
-          <p class="inbox-timestamp">
-            {{ formatTimestamp(appeal.created_at).time }}
-          </p>
-          <div
-            [ngClass]="{
-              'unread-dot': appeal.is_read === false,
-              'no-dot': appeal.is_read !== false
-            }"
-          ></div>
+        <div class="right-side">
+          <div class="inbox-item-timestamp-dot-container">
+            <p class="inbox-timestamp">
+              {{ formatTimestamp(appeal.created_at).time }}
+            </p>
+            <div
+              [ngClass]="{
+                'unread-dot': appeal.is_read === false,
+                'no-dot': appeal.is_read !== false
+              }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
     <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
-        <mat-toolbar class="top-bar">
-          <mat-toolbar-row>
-            <img class="header-avatar" ngxGravatar [email]="student.email" />
+        <div class="top-bar">
+          <div class="left-content">
+            <mat-icon
+              class="header-avatar"
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="account_circle"
+            ></mat-icon>
             <h1>
               {{ currentAppeal.professor_first_name }}
               {{ currentAppeal.professor_last_name }}<span>:</span>
               {{ currentAppeal.assignment_name }}
             </h1>
-          </mat-toolbar-row>
-        </mat-toolbar>
+            <h1 class="is-closed" *ngIf="!currentAppeal.is_open">Closed</h1>
+          </div>
+        </div>
         <div class="chat-list" #chatListContainer>
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container

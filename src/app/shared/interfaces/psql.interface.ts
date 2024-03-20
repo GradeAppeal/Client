@@ -2,6 +2,8 @@ export interface Assignment {
   id: number;
   course_id: number;
   assignment_name: string;
+  grader_id?: string;
+  grader_name?: string;
 }
 
 export interface Course {
@@ -59,6 +61,7 @@ export interface Student {
   first_name: string;
   last_name: string;
   email: string;
+  is_verified: boolean;
 }
 
 export interface Grader extends Student {}
