@@ -39,11 +39,9 @@ export class StudentInteractionHistoryComponent {
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
   user: User;
-  loading: boolean = true;
   noAppeals: boolean = false;
   studentUserId: string;
   chatInputMessage: string = '';
-  messageCount: number = 0;
   fromGrader = false;
   isUser: Boolean;
   appealId: number;
@@ -57,7 +55,6 @@ export class StudentInteractionHistoryComponent {
 
   studentAppeals!: StudentAppeal[];
   filteredAppeals: StudentAppeal[];
-  loadStudentAppeals = false;
 
   constructor(
     private authService: AuthService,
@@ -94,9 +91,14 @@ export class StudentInteractionHistoryComponent {
       this.student.id
     );
     this.filteredAppeals = this.studentAppeals;
+    this.handleAllNewMessages();
+    this.handleAllNewMessages();
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
+      // start listening to changes in currentAppeal as soon as currentAppeal is set
+      this.handleCurrentAppealMessages();
+      // get the professor for the appeal
       this.professor = await this.sharedService.getProfessor(
         this.currentAppeal.professor_id
       );
@@ -106,19 +108,12 @@ export class StudentInteractionHistoryComponent {
         this.student.id,
         this.professor.id
       );
+      // set the currently displaying message as "read"
+      await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
+      // load images
       this.imageMessages = this.messages;
       await this.getImages();
-
-      this.loadStudentAppeals = true;
-      this.messageCount = this.messages.length;
-      this.loading = false;
-      this.handleAppealNewMessages();
-      this.handleAllNewMessages();
-      this.handleNewMessages();
-    } else {
-      this.loading = false;
     }
-    console.log(this.currentAppeal);
   }
 
   ngAfterViewChecked() {
@@ -141,10 +136,6 @@ export class StudentInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -156,11 +147,11 @@ export class StudentInteractionHistoryComponent {
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
-  handleNewMessages() {
+  handleCurrentAppealMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `grader-appeal-messages-channel`,
+        `student-current-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe((update: any) => {
@@ -174,44 +165,22 @@ export class StudentInteractionHistoryComponent {
         if (event === 'INSERT') {
           // show new message
           this.messages.push(record);
+          // If the appeal's interaction history is already showing on the right,
+          // no need to mark left pane with blue dot to indicate it has not been read
+          this.studentAppeals = this.studentAppeals.map((appeal) =>
+            // {record} is the new message in the currently-open interaction history
+            // {appeal} is the information for each tab in the left pane
+            // Since the professor is already viewing this.currentAppeal, we don't need to mark the left tab with a blue dot
+            record.appeal_id === appeal.appeal_id
+              ? { ...appeal, is_read: true }
+              : appeal
+          );
         }
       });
   }
 
   /**
-   * Listen for new messages to update RIGHT pane
-   */
-  handleAppealNewMessages() {
-    this.sharedService
-      .getTableChanges(
-        'Messages',
-        `student-appeal-messages-channel`,
-        `recipient_id=eq.${this.student.id}`
-      )
-      .subscribe(async (update: any) => {
-        // if insert or update event, get new row
-        // if delete event, get deleted row ID
-        const record = update.new?.id ? update.new : update.old;
-        // INSERT or DELETE
-        const event = update.eventType;
-        if (!record) return;
-        // new student inserted
-        if (event === 'INSERT') {
-          // get new message
-          const record: Message = update.new;
-          // show new message on screen
-          if (record.appeal_id === this.currentAppeal.appeal_id) {
-            this.messages.push(record);
-          }
-        } // is_read updates
-        else if (event === 'UPDATE') {
-          this.currentAppeal.is_read = record.is_read;
-        }
-      });
-  }
-
-  /**
-   * Listen for new messages to update LEFT pane
+   * Listen for all new messages sent to the student
    */
   handleAllNewMessages() {
     this.sharedService
@@ -221,24 +190,26 @@ export class StudentInteractionHistoryComponent {
         `recipient_id=eq.${this.student.id}`
       )
       .subscribe(async (update: any) => {
-        // get the new message
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
+
         if (!record) return;
-        // new student inserted
+
+        // if a professor sends a message
         if (event === 'INSERT') {
-          // update left pane
-          this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
-            studentAppeal.appeal_id === record.appeal_id
-              ? { ...studentAppeal, is_read: false }
-              : { ...studentAppeal }
-          );
-          this.studentAppeals = this.studentAppeals.map((studentAppeal) =>
-            studentAppeal.appeal_id === this.currentAppeal.appeal_id
-              ? { ...studentAppeal, is_read: true }
-              : { ...studentAppeal }
+          // If a professor sent a message on a different appeal (i.e. an appeal not showing on the right)
+          // mark left pane with blue dot to indicate it has not been read
+          this.studentAppeals = this.studentAppeals.map((appeal) =>
+            // the second condition makes sure that if the appeal's interaction history is already open to the right
+            // (i.e. this.currentAppeal), the left pane isn't marked with a blue dot
+            // necessary because this handler and handleCurrentAppealMessages both listen to the same table
+            record.appeal_id === appeal.appeal_id &&
+            record.appeal_id !== this.currentAppeal.appeal_id
+              ? { ...appeal, is_read: false }
+              : appeal
           );
         }
+        this.filteredAppeals = this.studentAppeals;
       });
   }
 
@@ -246,11 +217,10 @@ export class StudentInteractionHistoryComponent {
    * Select appeal from left
    * @param appeal
    */
-  async selectAppeal(appeal: any) {
-    // Copy the selected appeal's data into the form fields
+  async onSelectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-
-    //this.sender.id = this.currentAppeal.student_id;
+    // update listener to listen to current appeal
+    this.handleCurrentAppealMessages();
     this.messages = await this.sharedService.fetchStudentMessages(
       this.currentAppeal.appeal_id,
       this.student.id,

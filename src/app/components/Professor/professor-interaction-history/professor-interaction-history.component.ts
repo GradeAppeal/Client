@@ -92,8 +92,11 @@ export class ProfessorInteractionHistoryComponent {
     // populate left pane with all appeals to professor (latest appeal appears at the top)
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
-    this.filteredAppeals = this.professorAppeals; // for filter search
-    console.log(this.filteredAppeals);
+    // for filter search
+    this.filteredAppeals = this.professorAppeals;
+    // start listening to changes in all appeals as soon as all appeals are loaded
+    this.handleAllNewMessages();
+    this.handleAppealUpdates();
 
     // no appeals: show the no appeals message in HTML template
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
@@ -111,7 +114,8 @@ export class ProfessorInteractionHistoryComponent {
         this.professorAppeals.find(
           (appeal) => appeal.appeal_id === this.appealId
         ) || this.professorAppeals[0];
-
+      // start listening to changes in currentAppeal as soon as currentAppeal is set
+      this.handleCurrentAppealMessages();
       // get the student for appeal
       this.student = await this.sharedService.getStudent(
         this.currentAppeal.student_id
@@ -122,12 +126,9 @@ export class ProfessorInteractionHistoryComponent {
       );
       // set the currently displaying message as "read"
       await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
+      // load images
       this.imageMessages = this.messages;
       await this.getImages();
-
-      this.handleCurrentAppealMessages();
-      this.handleAppealUpdates();
-      this.handleAllNewMessages();
     }
   }
 
@@ -159,41 +160,37 @@ export class ProfessorInteractionHistoryComponent {
 
   /**
    * Listen for new messages in this.currentAppeal ONLY (what is showing on the right pane)
-   *
    */
   handleCurrentAppealMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
-        `professor-appeal-messages-channel`,
+        `professor-current-appeal-messages-channel`,
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
 
         const event = update.eventType;
         if (!record) return;
 
-        // if a student sends a message
+        // if a student or grader sends a message
         if (event === 'INSERT') {
           // show new message to right pane
           this.messages.push(record);
           // If the appeal's interaction history is already showing on the right,
           // no need to mark left pane with blue dot to indicate it has not been read
-          this.professorAppeals = this.professorAppeals.map((appeal) =>
+          await this.sharedService.updateMessageRead(record.appeal_id);
+          this.professorAppeals = this.professorAppeals.map((appeal) => {
             // {record} is the new message in the currently-open interaction history
             // {appeal} is the information for each tab in the left pane
             // Since the professor is already viewing this.currentAppeal, we don't need to mark the left tab with a blue dot
-            record.appeal_id === appeal.appeal_id
+            return record.appeal_id === appeal.appeal_id
               ? { ...appeal, is_read: true }
-              : appeal
-          );
-        }
-        // deleted appeal
-        else if (event === 'DELETE') {
-          this.professorAppeals = this.professorAppeals.filter(
-            (appeal) => appeal !== record.id
-          );
+              : appeal;
+          });
         }
         this.filteredAppeals = this.professorAppeals;
       });
@@ -215,7 +212,7 @@ export class ProfessorInteractionHistoryComponent {
 
         if (!record) return;
 
-        // if a student sends a message
+        // if a student or grader sends a message
         if (event === 'INSERT') {
           // If a student sent a message on a different appeal (i.e. an appeal not showing on the right)
           // mark left pane with blue dot to indicate it has not been read
@@ -284,7 +281,7 @@ export class ProfessorInteractionHistoryComponent {
 
   async onSelectAppeal(appeal: any) {
     this.currentAppeal = appeal;
-    // update real-time filtering
+    // update listener to listen to current appeal
     this.handleCurrentAppealMessages();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;

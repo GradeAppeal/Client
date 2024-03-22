@@ -31,7 +31,7 @@ export class GraderService {
    * @param gid student grader id
    * @returns All the appeals assigned to grader
    */
-  async fetchAllGraderAppeals(gid: string): Promise<GraderAppeal[]> {
+  async getAllGraderAppeals(gid: string): Promise<GraderAppeal[]> {
     const { data, error } = await this.supabase.rpc('get_all_grader_appeals', {
       gid,
     });
@@ -50,7 +50,7 @@ export class GraderService {
    * @param cid course id for grader
    * @returns All the appeals assigned to grader
    */
-  async fetchCourseGraderAppeals(
+  async getCourseGraderAppeals(
     gid: string,
     cid: number
   ): Promise<GraderAppeal[]> {

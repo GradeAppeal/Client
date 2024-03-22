@@ -26,7 +26,7 @@
       <div
         class="inbox-item"
         *ngFor="let appeal of filteredAppeals"
-        (click)="selectAppeal(appeal)"
+        (click)="onSelectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
         <div class="left-section">
