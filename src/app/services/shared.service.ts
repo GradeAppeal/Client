@@ -90,13 +90,13 @@ export class SharedService {
    * @param aid appeal id
    * @returns list of all interaction history
    */
-  async fetchMessages(aid: number): Promise<Message[]> {
+  async getMessages(aid: number): Promise<Message[]> {
     const { data, error } = await this.supabase.rpc('get_all_messages', {
       aid,
     });
     if (error) {
       console.log(error);
-      throw new Error('Error in fetchMessages');
+      throw new Error('Error in getMessages');
     }
     return data;
   }
@@ -160,36 +160,6 @@ export class SharedService {
     if (error) {
       console.log(error.hint);
       throw new Error(error.message);
-    }
-    return data;
-  }
-
-  /**
-   * Marks appeal.isread as true
-   * @param appid appeal id
-   */
-  async mark_appeal_as_read(aid: number): Promise<number> {
-    const { data, error } = await this.supabase.rpc('mark_appeal_as_read', {
-      aid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('mark_appeal_as_read');
-    }
-    return data;
-  }
-
-  /**
-   * Marks appeal.isread as false
-   * @param appid appeal id
-   */
-  async mark_appeal_as_unread(aid: number): Promise<number> {
-    const { data, error } = await this.supabase.rpc('mark_appeal_as_unread', {
-      aid,
-    });
-    if (error) {
-      console.log(error);
-      throw new Error('mark_appeal_as_read');
     }
     return data;
   }

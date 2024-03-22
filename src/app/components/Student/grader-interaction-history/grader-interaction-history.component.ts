@@ -138,13 +138,13 @@ export class GraderInteractionHistoryComponent {
           ) || this.graderAppeals[0];
 
         if (this.currentAppeal) {
-          this.messages = await this.sharedService.fetchMessages(
+          this.messages = await this.sharedService.getMessages(
             this.currentAppeal.appeal_id
           );
         } else {
           this.currentAppeal = this.graderAppeals[0];
 
-          this.messages = await this.sharedService.fetchMessages(
+          this.messages = await this.sharedService.getMessages(
             this.currentAppeal.appeal_id
           );
         }
@@ -259,7 +259,7 @@ export class GraderInteractionHistoryComponent {
       this.currentAppeal = appeal;
       // change filter
       this.handleAppealNewMessages();
-      this.messages = await this.sharedService.fetchMessages(
+      this.messages = await this.sharedService.getMessages(
         this.currentAppeal.appeal_id
       );
       this.imageMessages = this.messages;

@@ -26,19 +26,10 @@
       <div
         class="inbox-item"
         *ngFor="let appeal of filteredAppeals"
-        (click)="selectAppeal(appeal)"
+        (click)="onSelectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
         <div class="left-section">
-          <span
-            [ngClass]="{
-              'unread-dot': appeal.isread === false,
-              'no-dot': appeal.isread !== false
-            }"
-          ></span>
-          <!-- <div *ngIf="hasUnreadMessages(appeal)">
-            <div class="unread-dot"></div>
-          </div> -->
           <p matLine class="inbox-name">
             {{ appeal.student_first_name }} {{ appeal.student_last_name }}
           </p>
@@ -55,12 +46,7 @@
               {{ formatTimestamp(appeal.created_at).date }} <br />
               {{ formatTimestamp(appeal.created_at).time }}
             </p>
-            <div
-              [ngClass]="{
-                'unread-dot': appeal.is_read === false,
-                'no-dot': appeal.is_read !== false
-              }"
-            ></div>
+            <div [ngClass]="appeal.is_read ? 'no-dot' : 'unread-dot'"></div>
           </div>
         </div>
       </div>

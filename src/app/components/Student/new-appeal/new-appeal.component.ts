@@ -137,7 +137,7 @@ export class NewAppealComponent implements OnInit {
           hasImage
         );
 
-        const appealMessages = await this.sharedService.fetchMessages(appealID);
+        const appealMessages = await this.sharedService.getMessages(appealID);
         const messageID = appealMessages[0].message_id;
 
         const imageID = await this.sharedService.uploadFile(

@@ -41,8 +41,6 @@ export class ProfessorInteractionHistoryComponent {
   selectedRecipient: 'Student' | 'Grader' = 'Student'; // Student' by default
   appealId: number;
   chatInputMessage: string = '';
-  messageCount: number = 0;
-  messageLoaded = false;
   fromGrader = false;
   isUser: Boolean;
   menu: any;
@@ -91,48 +89,46 @@ export class ProfessorInteractionHistoryComponent {
     });
   }
   async ngOnInit() {
+    // populate left pane with all appeals to professor (latest appeal appears at the top)
     this.professorAppeals =
       await this.professorService.fetchOpenProfessorAppeals(this.professor.id);
-    console.log(this.professorAppeals);
-    this.filteredAppeals = this.professorAppeals;
+    this.filteredAppeals = this.professorAppeals; // for filter search
+    console.log(this.filteredAppeals);
 
+    // no appeals: show the no appeals message in HTML template
     this.noAppeals = this.professorAppeals.length === 0 ? true : false;
 
     // appeals exist
     if (!this.noAppeals) {
+      // get templates for professor
       this.professorTemplates =
         await this.professorService.fetchProfessorTemplates(this.professor.id);
-      // if navigated from appeal-inbox, get the specific appeal
-      // otherwise, set to the most current appeal
+
+      // Set current appeal to display interaction history
+      //  if navigated from appeal-inbox, get the specific appeal
+      //  otherwise, set to the latest appeal
       this.currentAppeal =
         this.professorAppeals.find(
           (appeal) => appeal.appeal_id === this.appealId
         ) || this.professorAppeals[0];
 
-      if (this.currentAppeal) {
-        // get current student
-        this.student = await this.sharedService.getStudent(
-          this.currentAppeal.student_id
-        );
-        //this.sender.id = this.currentAppeal.student_id;
-        this.messages = await this.sharedService.fetchMessages(
-          this.currentAppeal.appeal_id
-        );
-      } else {
-        this.currentAppeal = this.professorAppeals[0];
-        this.messages = await this.sharedService.fetchMessages(
-          this.currentAppeal.appeal_id
-        );
-      }
+      // get the student for appeal
+      this.student = await this.sharedService.getStudent(
+        this.currentAppeal.student_id
+      );
+      // get messages for the appeal
+      this.messages = await this.sharedService.getMessages(
+        this.currentAppeal.appeal_id
+      );
+      // set the currently displaying message as "read"
+      await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
       this.imageMessages = this.messages;
       await this.getImages();
-      this.messageLoaded = true;
-      this.messageCount = this.messages.length;
-      this.handleAppealNewMessages();
+
+      this.handleCurrentAppealMessages();
       this.handleAppealUpdates();
       this.handleAllNewMessages();
     }
-    // no appeals: show the no appeals message in HTML template
   }
 
   ngAfterViewChecked() {
@@ -162,9 +158,10 @@ export class ProfessorInteractionHistoryComponent {
   }
 
   /**
-   * Listen for new messages to update RIGHT pane
+   * Listen for new messages in this.currentAppeal ONLY (what is showing on the right pane)
+   *
    */
-  handleAppealNewMessages() {
+  handleCurrentAppealMessages() {
     this.sharedService
       .getTableChanges(
         'Messages',
@@ -172,22 +169,25 @@ export class ProfessorInteractionHistoryComponent {
         `appeal_id=eq.${this.currentAppeal.appeal_id}`
       )
       .subscribe(async (update: any) => {
-        // if insert or update event, get new row
-        // if delete event, get deleted row ID
         const record = update.new?.id ? update.new : update.old;
-        // INSERT or DELETE
+
         const event = update.eventType;
         if (!record) return;
-        // new student inserted
+
+        // if a student sends a message
         if (event === 'INSERT') {
-          // get new message
-          const record: Message = update.new;
-          // show new message
+          // show new message to right pane
           this.messages.push(record);
-        }
-        // is_read updates
-        else if (event === 'UPDATE') {
-          this.currentAppeal.is_read = record.is_read;
+          // If the appeal's interaction history is already showing on the right,
+          // no need to mark left pane with blue dot to indicate it has not been read
+          this.professorAppeals = this.professorAppeals.map((appeal) =>
+            // {record} is the new message in the currently-open interaction history
+            // {appeal} is the information for each tab in the left pane
+            // Since the professor is already viewing this.currentAppeal, we don't need to mark the left tab with a blue dot
+            record.appeal_id === appeal.appeal_id
+              ? { ...appeal, is_read: true }
+              : appeal
+          );
         }
         // deleted appeal
         else if (event === 'DELETE') {
@@ -195,11 +195,12 @@ export class ProfessorInteractionHistoryComponent {
             (appeal) => appeal !== record.id
           );
         }
+        this.filteredAppeals = this.professorAppeals;
       });
   }
 
   /**
-   * Listen for new appeals to update LEFT pane
+   * Listen for all new messages sent to the professor
    */
   handleAllNewMessages() {
     this.sharedService
@@ -210,19 +211,25 @@ export class ProfessorInteractionHistoryComponent {
       )
       .subscribe(async (update: any) => {
         const record = update.new?.id ? update.new : update.old;
-        // INSERT new message
         const event = update.eventType;
+
         if (!record) return;
+
+        // if a student sends a message
         if (event === 'INSERT') {
-          // get new message
-          const record = update.new;
-          // show new appeal/message on left pane
-          this.professorAppeals = this.professorAppeals.map((professorAppeal) =>
-            professorAppeal.appeal_id === record.appeal_id
-              ? { ...professorAppeal, is_read: false }
-              : { ...professorAppeal }
+          // If a student sent a message on a different appeal (i.e. an appeal not showing on the right)
+          // mark left pane with blue dot to indicate it has not been read
+          this.professorAppeals = this.professorAppeals.map((appeal) =>
+            // the second condition makes sure that if the appeal's interaction history is already open to the right
+            // (i.e. this.currentAppeal), the left pane isn't marked with a blue dot
+            // necessary because this handler and handleCurrentAppealMessages both listen to the same table
+            record.appeal_id === appeal.appeal_id &&
+            record.appeal_id !== this.currentAppeal.appeal_id
+              ? { ...appeal, is_read: false }
+              : appeal
           );
         }
+        this.filteredAppeals = this.professorAppeals;
       });
   }
 
@@ -258,6 +265,7 @@ export class ProfessorInteractionHistoryComponent {
             (appeal) => appeal !== record.id
           );
         }
+        this.filteredAppeals = this.professorAppeals;
       });
   }
 
@@ -274,15 +282,15 @@ export class ProfessorInteractionHistoryComponent {
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  async selectAppeal(appeal: any) {
+  async onSelectAppeal(appeal: any) {
     this.currentAppeal = appeal;
     // update real-time filtering
-    this.handleAppealNewMessages();
+    this.handleCurrentAppealMessages();
     //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
     // TODO: adjust get appeals function to get student email
     this.student = await this.sharedService.getStudent(student_id);
-    this.messages = await this.sharedService.fetchMessages(
+    this.messages = await this.sharedService.getMessages(
       this.currentAppeal.appeal_id
     );
     this.imageMessages = this.messages;
@@ -372,7 +380,7 @@ export class ProfessorInteractionHistoryComponent {
       );
     });
     this.currentAppeal = this.filteredAppeals[0];
-    this.messages = await this.sharedService.fetchMessages(
+    this.messages = await this.sharedService.getMessages(
       this.currentAppeal.appeal_id
     );
   }
@@ -439,7 +447,7 @@ export class ProfessorInteractionHistoryComponent {
       //   (appeal) => appeal.appeal_id !== result
       // );
       // this.currentAppeal = this.professorAppeals[0];
-      // this.messages = await this.sharedService.fetchMessages(
+      // this.messages = await this.sharedService.getMessages(
       //   this.currentAppeal.appeal_id
       // ); //237, 238, 239 240
     });
