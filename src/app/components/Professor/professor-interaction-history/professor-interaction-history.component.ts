@@ -182,11 +182,19 @@ export class ProfessorInteractionHistoryComponent {
           this.messages.push(record);
           // If the appeal's interaction history is already showing on the right,
           // no need to mark left pane with blue dot to indicate it has not been read
-          await this.sharedService.updateMessageRead(record.appeal_id);
           this.professorAppeals = this.professorAppeals.map((appeal) => {
             // {record} is the new message in the currently-open interaction history
             // {appeal} is the information for each tab in the left pane
             // Since the professor is already viewing this.currentAppeal, we don't need to mark the left tab with a blue dot
+            return record.appeal_id === appeal.appeal_id
+              ? { ...appeal, is_read: true }
+              : appeal;
+          });
+        }
+        // click to view an appeal that hasn't been viewed
+        // remove the blue "unread" dot
+        else if (event === 'UPDATE') {
+          this.professorAppeals = this.professorAppeals.map((appeal) => {
             return record.appeal_id === appeal.appeal_id
               ? { ...appeal, is_read: true }
               : appeal;
@@ -241,6 +249,7 @@ export class ProfessorInteractionHistoryComponent {
         `professor_id=eq.${this.professor.id}`
       )
       .subscribe(async (update: any) => {
+        console.log({ update });
         // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         if (!record) return;
@@ -283,9 +292,7 @@ export class ProfessorInteractionHistoryComponent {
     this.currentAppeal = appeal;
     // update listener to listen to current appeal
     this.handleCurrentAppealMessages();
-    //this.sender.id = this.currentAppeal.student_id;
     const { student_id } = this.currentAppeal;
-    // TODO: adjust get appeals function to get student email
     this.student = await this.sharedService.getStudent(student_id);
     this.messages = await this.sharedService.getMessages(
       this.currentAppeal.appeal_id
@@ -315,9 +322,12 @@ export class ProfessorInteractionHistoryComponent {
     const recipient_id = this.talkingToGrader
       ? (this.currentAppeal.grader_id as string)
       : this.student.id;
+
     const recipient_name = this.talkingToGrader
       ? (this.currentAppeal.grader_name as string)
       : `${this.student.first_name} ${this.student.last_name}`;
+
+    console.log(recipient_name, sender_id);
     try {
       this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,

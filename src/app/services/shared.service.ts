@@ -169,8 +169,8 @@ export class SharedService {
       sid,
     });
     if (error) {
-      console.log({ error });
-      throw new Error('getStudent');
+      console.log(error.hint);
+      throw new Error(error.message);
     }
     return data[0];
   }
@@ -180,8 +180,8 @@ export class SharedService {
       pid,
     });
     if (error) {
-      console.log({ error });
-      throw new Error('getProfessor');
+      console.log(error.hint);
+      throw new Error(error.message);
     }
 
     return data[0];

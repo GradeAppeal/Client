@@ -78,3 +78,15 @@ export interface StudentCourse {
   course_id: number;
   is_grader: boolean;
 }
+
+export interface Appeal {
+  id: number;
+  created_at: Date;
+  assignment_id: number;
+  appeal_text: string;
+  is_open: boolean;
+  grader_id: string | null;
+  grader_name: string | null;
+  last_modified: Date | null;
+  professor_id: string;
+}

@@ -23,10 +23,7 @@ import {
   Grader,
   ImageMessage,
 } from 'src/app/shared/interfaces/psql.interface';
-import {
-  GraderAppeal,
-  StudentAppeal,
-} from 'src/app/shared/interfaces/student.interface';
+import { GraderAppeal } from 'src/app/shared/interfaces/student.interface';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -41,6 +38,8 @@ export class GraderInteractionHistoryComponent {
   @ViewChild('chat-item') chatItem: ElementRef;
   @ViewChild('chatListContainer') list?: ElementRef<HTMLDivElement>;
 
+  fromCourseDashboard: boolean; // only viewing appeals for a single course
+
   session: Session;
   user: User;
   grader: Grader;
@@ -50,7 +49,7 @@ export class GraderInteractionHistoryComponent {
   noAppeals = true;
   isUser: Boolean;
   appealId: number;
-  courseId: number;
+  cid: number;
   messages: Message[];
   currentProfessor: string | null = '';
   currentCourse: Course | null;
@@ -61,7 +60,7 @@ export class GraderInteractionHistoryComponent {
   professorIds: [];
 
   imageFile: File | undefined;
-  messageID: number;
+  mid: number;
   image: Blob;
   imageMessages: ImageMessage[];
 
@@ -73,8 +72,10 @@ export class GraderInteractionHistoryComponent {
     private sanitizer: DomSanitizer
   ) {
     this.route.params.subscribe((params) => {
-      this.appealId = +params['id']; // Convert the parameter to a number
-      this.courseId = +params['id'];
+      this.appealId = +params['cid']; // Convert the parameter to a number
+      this.cid = +params['cid'];
+      // only viewing appeals for a single course
+      this.fromCourseDashboard = this.cid ? true : false;
     });
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -111,13 +112,13 @@ export class GraderInteractionHistoryComponent {
     // student is a grader
     else {
       // if navigated from course dashboard, only get the appeals for that course
-      if (this.courseId) {
+      if (this.fromCourseDashboard) {
         this.graderAppeals = await this.graderService.getCourseGraderAppeals(
           this.grader.id,
-          this.courseId
+          this.cid
         );
 
-        this.currentCourse = await this.sharedService.getCourse(this.courseId);
+        this.currentCourse = await this.sharedService.getCourse(this.cid);
       }
       // otherwise, get all assigned appeals from all courses the grader is grading
       else {
@@ -125,6 +126,7 @@ export class GraderInteractionHistoryComponent {
           this.grader.id
         );
       }
+      this.handleAllNewMessages();
 
       this.noAppeals = this.graderAppeals.length === 0 ? true : false;
       // grader has appeals
@@ -140,6 +142,7 @@ export class GraderInteractionHistoryComponent {
         const { professor_id } = this.currentAppeal;
         this.professor = await this.sharedService.getProfessor(professor_id);
 
+        // load images
         this.imageMessages = this.messages;
         await this.getImages();
       }
@@ -210,14 +213,21 @@ export class GraderInteractionHistoryComponent {
               : appeal
           );
         }
+        // click to view an appeal that hasn't been viewed
+        // remove the blue "unread" dot
+        else if (event === 'UPDATE') {
+          this.graderAppeals = this.graderAppeals.map((appeal) => {
+            return record.appeal_id === appeal.appeal_id
+              ? { ...appeal, is_read: true }
+              : appeal;
+          });
+        }
       });
   }
 
   /**
    * Listen for all new messages sent to the grader
    */
-  // TODO: change up for course appeals and for all appeals?
-  //    Ask prof Norman tomorrow
   handleAllNewMessages() {
     this.sharedService
       .getTableChanges(
@@ -230,7 +240,7 @@ export class GraderInteractionHistoryComponent {
         // INSERT new message
         const event = update.eventType;
         if (!record) return;
-        // if a student or grader sends a message
+
         if (event === 'INSERT') {
           // If a student sent a message on a different appeal (i.e. an appeal not showing on the right)
           // mark left pane with blue dot to indicate it has not been read
@@ -247,13 +257,15 @@ export class GraderInteractionHistoryComponent {
       });
   }
 
-  // TODO: filtering for graders?
+  /**
+   * new appeals for graders
+   */
   handleAppealUpdates(): void {
     this.sharedService
       .getTableChanges(
         'Appeals',
         'appeals-update-channel',
-        `professor_id=eq.${this.professor.id}`
+        `grader_id=eq.${this.grader.id}`
       )
       .subscribe(async (update: any) => {
         // get the newly updated row
@@ -261,12 +273,19 @@ export class GraderInteractionHistoryComponent {
         if (!record) return;
         const event = update.eventType;
 
-        // new appeal
+        // new appeal assigned to grader
         if (event === 'INSERT') {
-          const newAppeal = await this.graderService.getAllGraderAppeals(
-            record.id
-          );
+          // appeal id of appeal assigned to grader
+          const { id } = record;
+          const newAppeal = await this.graderService.getNewGraderAppeal(id);
+
           this.graderAppeals = newAppeal.concat(this.graderAppeals);
+        } else if (event === 'UPDATE') {
+          if (!record.grader_id) {
+            this.graderAppeals = this.graderAppeals.filter(
+              (graderAppeal) => graderAppeal.appeal_id !== record.id
+            );
+          }
         }
       });
   }
@@ -287,9 +306,8 @@ export class GraderInteractionHistoryComponent {
       this.imageMessages = this.messages;
       await this.getImages();
       await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
-      console.log('selectAppeal');
-    } catch (e) {
-      console.log({ e });
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -316,7 +334,7 @@ export class GraderInteractionHistoryComponent {
         `${this.professor.first_name} ${this.professor.last_name}`,
         hasImage
       );
-      this.messageID = await this.sharedService.insertMessage(
+      this.mid = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.grader.id, //sender id: grader
         this.professor.id, //recipientid : professor??
@@ -335,7 +353,7 @@ export class GraderInteractionHistoryComponent {
         const imageID = await this.sharedService.uploadFile(
           this.currentAppeal.appeal_id,
           this.imageFile!,
-          this.messageID
+          this.mid
         );
         window.location.reload();
       }

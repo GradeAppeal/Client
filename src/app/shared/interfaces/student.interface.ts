@@ -41,6 +41,7 @@ export interface GraderAppeal {
   professor_id: string;
   professor_first_name: string;
   professor_last_name: string;
+  course_id: number;
   course_prefix: string;
   course_code: number;
   course_name: string;

@@ -79,6 +79,7 @@ export class NewAppealComponent implements OnInit {
       this.course = await this.studentService.fetchCourseForNewAppeal(
         this.courseId
       );
+
       this.isCourseFetched = true;
       this.assignments = await this.studentService.fetchAssignmentsForNewAppeal(
         this.courseId
@@ -125,6 +126,7 @@ export class NewAppealComponent implements OnInit {
         const { id, grader_id, grader_name } = this.selectedAssignment;
         const gid = grader_id ? grader_id : null;
         const gname = grader_name ? grader_name : null;
+        console.log(gid, gname, 'grader');
         const appealID = await this.studentService.insertNewAppeal(
           id,
           this.student.id,

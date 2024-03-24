@@ -33,13 +33,17 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
+      const { student_id, student_name } = this
+        .assignedGrader as StudentCourseGraderInfo;
+
       const data = await this.professorService.insertNewAssignment(
         this.currentCourse.id,
-        this.newAssignment
+        this.newAssignment,
+        student_id,
+        student_name
       );
       /*   close pop-up */
       this.dialogRef.close();
-      console.log({ data });
     } catch (err) {
       console.log(err);
       this.errorMessage = 'Cannot add duplicate assignment.';

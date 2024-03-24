@@ -65,20 +65,6 @@ export class AssignmentsComponent {
     }
   }
 
-  private setAssignments() {
-    this.assignmentDataSource = this.assignments.map((assignment) => {
-      return {
-        id: assignment.id,
-        grader_id: assignment.grader_id,
-        grader_name: assignment.grader_name,
-        assignment: assignment.assignment_name,
-      };
-    });
-    this.assignmentDataSource.sort((a, b) =>
-      this.compare(a.assignment, b.assignment, true)
-    );
-  }
-
   /**
    * Receive database changes and update UI accordingly
    */
@@ -95,14 +81,8 @@ export class AssignmentsComponent {
         if (!record) return;
         // if new assignment inserted
         if (event === 'INSERT') {
-          const { assignment_name, course_id, id } = record;
-          const newAssignment = {
-            assignment_name,
-            course_id,
-            id,
-          };
           // show new assignment
-          this.assignments.push(newAssignment);
+          this.assignments.push(record);
         }
         // update to grader
         else if (event === 'UPDATE') {
@@ -119,8 +99,26 @@ export class AssignmentsComponent {
             (assignment) => assignment.id != id
           );
         }
+        // update UI to reflect DB
         this.setAssignments();
       });
+  }
+
+  /**
+   * Update UI to reflect DB
+   */
+  private setAssignments() {
+    this.assignmentDataSource = this.assignments.map((assignment) => {
+      return {
+        id: assignment.id,
+        grader_id: assignment.grader_id,
+        grader_name: assignment.grader_name,
+        assignment: assignment.assignment_name,
+      };
+    });
+    this.assignmentDataSource.sort((a, b) =>
+      this.compare(a.assignment, b.assignment, true)
+    );
   }
 
   /**
@@ -130,12 +128,12 @@ export class AssignmentsComponent {
     const { id } = course;
     const graders: StudentCourseGraderInfo[] =
       await this.professorService.getGraders(id);
-    const dialogRef = this.dialog.open(AddAssignmentComponent, {
+    this.dialog.open(AddAssignmentComponent, {
       data: { course, graders },
     });
   }
 
-  async editGraderPopUp(element: Element) {
+  async editGraderPopUp(element: Element): Promise<void> {
     const { id, grader_id } = element;
 
     const graders: StudentCourseGraderInfo[] =
@@ -152,7 +150,7 @@ export class AssignmentsComponent {
    * Goes to DeleteAssignment pop up component
    */
   deleteAssignmentPopUp(aid: Assignment): void {
-    const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
+    this.dialog.open(DeleteAssignmentComponent, {
       data: { aid },
     });
   }

@@ -21,6 +21,7 @@ export class StudentNavigationComponent {
   showGrader: boolean = false;
   expandMoreS: boolean = true;
   expandMoreG: boolean = false;
+  courseName: string;
 
   constructor(
     private router: Router,
@@ -47,8 +48,11 @@ export class StudentNavigationComponent {
       .subscribe(() => {
         this.selectedTab =
           this.activatedRoute.snapshot.firstChild?.routeConfig?.path || '';
+
         let segments = this.selectedTab.split('/');
-        this.title = segments[segments.length - 1].replace('-', ' ');
+
+        const pageIndexCut = segments.length > 2 ? 2 : 1;
+        this.title = segments[segments.length - pageIndexCut].replace('-', ' ');
         //capitalize each first letter of the word
         this.title = this.title.replace(/\b\w/g, function (match) {
           return match.toUpperCase();

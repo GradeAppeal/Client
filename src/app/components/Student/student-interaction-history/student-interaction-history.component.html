@@ -46,12 +46,7 @@
             <p class="inbox-timestamp">
               {{ formatTimestamp(appeal.created_at).time }}
             </p>
-            <div
-              [ngClass]="{
-                'unread-dot': appeal.is_read === false,
-                'no-dot': appeal.is_read !== false
-              }"
-            ></div>
+            <div [ngClass]="appeal.is_read ? 'no-dot' : 'unread-dot'"></div>
           </div>
         </div>
       </div>

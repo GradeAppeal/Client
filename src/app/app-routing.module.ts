@@ -115,7 +115,7 @@ const routes: Routes = [
         component: GraderInteractionHistoryComponent,
       },
       {
-        path: 'grader/interaction-history/:id',
+        path: 'grader/interaction-history/:cid',
         component: GraderInteractionHistoryComponent,
       },
       {

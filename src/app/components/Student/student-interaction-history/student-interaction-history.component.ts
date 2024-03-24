@@ -91,7 +91,7 @@ export class StudentInteractionHistoryComponent {
       this.student.id
     );
     this.filteredAppeals = this.studentAppeals;
-    this.handleAllNewMessages();
+    console.log(this.studentAppeals);
     this.handleAllNewMessages();
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
     if (!this.noAppeals) {
@@ -176,6 +176,16 @@ export class StudentInteractionHistoryComponent {
               : appeal
           );
         }
+        // click to view an appeal that hasn't been viewed
+        // remove the blue "unread" dot
+        else if (event === 'UPDATE') {
+          this.studentAppeals = this.studentAppeals.map((appeal) => {
+            return record.appeal_id === appeal.appeal_id
+              ? { ...appeal, is_read: true }
+              : appeal;
+          });
+        }
+        this.filteredAppeals = this.studentAppeals;
       });
   }
 
