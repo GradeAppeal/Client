@@ -13,7 +13,7 @@ import { filter } from 'rxjs/operators';
 export class ProfessorNavigationComponent {
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
-  versionNumber = '1.1.0'
+  versionNumber = '1.1.0';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -37,7 +37,16 @@ export class ProfessorNavigationComponent {
         this.title = this.title.replace(/\b\w/g, function (match) {
           return match.toUpperCase();
         });
+        console.log(this.selectedTab);
+        if (this.selectedTab.includes('roster')) {
+          this.title = 'Roster';
+        } else if (this.selectedTab.includes('assignments')) {
+          this.title = 'Assignments';
+        }
       });
+  }
+  openSettings() {
+    console.log('opening settings');
   }
 
   logoutPopUp() {

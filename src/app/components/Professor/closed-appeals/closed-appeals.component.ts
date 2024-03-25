@@ -41,7 +41,7 @@ export class ClosedAppealsComponent implements OnInit {
         await this.professorService.fetchClosedProfessorAppeals(
           this.professor.id
         );
-
+      console.log(this.closedAppeals);
       this.handleAppealDeletes();
     } catch (error) {
       console.log({ error });

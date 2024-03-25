@@ -29,28 +29,30 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <div class="inbox-left">
-          <p matLine>
+        <div class="left-section">
+          <p class="inbox-name">
             <b>
               {{ appeal?.professor_first_name }}
               {{ appeal?.professor_last_name }}
             </b>
           </p>
-          <p matLine>
-            <i>{{ appeal.course_name }}</i>
+          <p class="inbox-course-name">
+            {{ appeal.course_name }}
           </p>
-          <p matLine>{{ appeal?.assignment_name }}</p>
+          <p class="inbox-assignment-name">{{ appeal?.assignment_name }}</p>
         </div>
-        <div class="inbox-right">
-          <p class="inbox-timestamp">
-            {{ formatTimestamp(appeal.created_at).time }}
-          </p>
-          <div
-            [ngClass]="{
-              'unread-dot': appeal.is_read === false,
-              'no-dot': appeal.is_read !== false
-            }"
-          ></div>
+        <div class="right-side">
+          <div class="inbox-item-timestamp-dot-container">
+            <p class="inbox-timestamp">
+              {{ formatTimestamp(appeal.created_at).time }}
+            </p>
+            <div
+              [ngClass]="{
+                'unread-dot': appeal.is_read === false,
+                'no-dot': appeal.is_read !== false
+              }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -152,18 +154,19 @@
           <input
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
+            (input)="onTextAreaChange()"
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
-
-          <div class="buttons">
+          <div class="send-button-div"
+          [class.filled]="inputFilled"
+          >
             <button
-              class="send blue-button"
+              class="send-button"
               (click)="sendMessage(this.chatInputMessage)"
-              [disabled]="chatInputMessage === ''"
             >
               <mat-icon
-                class="search-icon"
+                class="send-icon"
                 aria-hidden="false"
                 aria-label="Example home icon"
                 fontIcon="send"

@@ -21,6 +21,13 @@ export class EditTemplatesComponent {
   professor: Professor;
   professorTemplates: ProfessorTemplate[];
   noTemplates: boolean;
+  TEMPLATE_DATA: {
+    id: number;
+    name: string;
+    text: string;
+  }[] = [];
+  templateDataSource = this.TEMPLATE_DATA;
+  displayedColumns: string[] = ['name', 'text', 'options'];
 
   constructor(
     private sharedService: SharedService,
@@ -46,6 +53,7 @@ export class EditTemplatesComponent {
       this.professorTemplates =
         await this.professorService.fetchProfessorTemplates(this.professor.id);
       this.noTemplates = this.professorTemplates.length === 0 ? true : false;
+      this.setTemplate();
       this.handleTemplateUpdates();
     } catch (err) {
       console.log(err);
@@ -86,7 +94,19 @@ export class EditTemplatesComponent {
             (template) => template.id !== record.id
           );
         }
+        this.setTemplate();
       });
+  }
+
+  private setTemplate() {
+    this.TEMPLATE_DATA = this.professorTemplates.map((template) => {
+      return {
+        id: template.id,
+        name: template.temp_name,
+        text: template.temp_text,
+      };
+    });
+    this.templateDataSource = this.TEMPLATE_DATA;
   }
 
   /**

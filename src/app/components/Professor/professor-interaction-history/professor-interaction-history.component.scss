@@ -71,13 +71,7 @@ $background: white;
     font-weight: 400;
   }
 }
-.right-side {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 10px;
-}
+
 .timestamp {
   color: gray;
   font-size: 12px;
@@ -286,4 +280,13 @@ mat-nav-list {
 
 .search-icon:hover {
   color: lighten($primary-blue, 20%);
+}
+.more {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $primary-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

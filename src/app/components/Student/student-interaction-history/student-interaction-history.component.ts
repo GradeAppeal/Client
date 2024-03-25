@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -75,6 +74,7 @@ export class StudentInteractionHistoryComponent {
           first_name: this.user.user_metadata['first_name'],
           last_name: this.user.user_metadata['last_name'],
           email: this.user.email as string,
+          is_verified: this.user.email_confirmed_at ? true : false,
         };
       }
     });
@@ -115,9 +115,11 @@ export class StudentInteractionHistoryComponent {
       this.loading = false;
       this.handleAppealNewMessages();
       this.handleAllNewMessages();
+      this.handleNewMessages();
     } else {
       this.loading = false;
     }
+    console.log(this.currentAppeal);
   }
 
   // ngAfterViewChecked() {
@@ -153,6 +155,28 @@ export class StudentInteractionHistoryComponent {
   displayImage(image: Blob | undefined): SafeUrl {
     const imageUrl = URL.createObjectURL(image as Blob);
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  handleNewMessages() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `grader-appeal-messages-channel`,
+        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe((update: any) => {
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new message inserted
+        if (event === 'INSERT') {
+          // show new message
+          this.messages.push(record);
+        }
+      });
   }
 
   /**
@@ -245,6 +269,7 @@ export class StudentInteractionHistoryComponent {
     message: string,
     notification: boolean = false
   ): Promise<void> {
+    this.inputFilled = false;
     const now = getTimestampTz(new Date());
     try {
       const professorID = this.professor.id;

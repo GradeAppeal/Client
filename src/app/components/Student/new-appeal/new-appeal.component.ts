@@ -27,7 +27,8 @@ export class NewAppealComponent implements OnInit {
   course: Course;
   isAssignmentsFetched = false;
   assignments: Assignment[];
-  selectedAssignmentId: number;
+  selectedAssignment: Assignment;
+  selectedAssignmentID: string;
   appeal: string;
   studentAppeals: StudentAppeal[];
   errorMessage: string;
@@ -39,7 +40,7 @@ export class NewAppealComponent implements OnInit {
 
   appealForm = this.formBuilder.group({
     selectedAssignmentId: '',
-    appeal: ''
+    appeal: '',
   });
 
   constructor(
@@ -58,6 +59,7 @@ export class NewAppealComponent implements OnInit {
           first_name: this.user.user_metadata['first_name'],
           last_name: this.user.user_metadata['last_name'],
           email: this.user.email as string,
+          is_verified: this.user.email_confirmed_at ? true : false,
         };
       }
     });
@@ -81,7 +83,7 @@ export class NewAppealComponent implements OnInit {
       this.assignments = await this.studentService.fetchAssignmentsForNewAppeal(
         this.courseId
       );
-      const assignments = this.assignments;
+
       this.isAssignmentsFetched = true;
     } catch (err) {
       console.log(err);
@@ -117,13 +119,18 @@ export class NewAppealComponent implements OnInit {
       const assignmentIds = this.studentAppeals.map(
         (appeal) => appeal.assignment_id
       );
-      if (assignmentIds.includes(this.selectedAssignmentId)) {
+      if (assignmentIds.includes(this.selectedAssignment.id)) {
         this.errorMessage = 'Already submitted an appeal for this assignment';
       } else {
+        const { id, grader_id, grader_name } = this.selectedAssignment;
+        const gid = grader_id ? grader_id : null;
+        const gname = grader_name ? grader_name : null;
         const appealID = await this.studentService.insertNewAppeal(
-          this.selectedAssignmentId,
+          id,
           this.student.id,
           this.courseId,
+          gid,
+          gname,
           now,
           this.appeal,
           professorID,
@@ -133,11 +140,13 @@ export class NewAppealComponent implements OnInit {
         const appealMessages = await this.sharedService.fetchMessages(appealID);
         const messageID = appealMessages[0].message_id;
 
-        const imageID = await this.sharedService.uploadFile(
-          appealID,
-          this.imageFile!,
-          messageID
-        );
+        if (hasImage) {
+          const imageID = await this.sharedService.uploadFile(
+            appealID,
+            this.imageFile!,
+            messageID
+          );
+        }
 
         this.router.navigateByUrl(`student/interaction-history/${appealID}`);
       }

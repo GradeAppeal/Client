@@ -63,8 +63,8 @@
             <div
               class="chat-item"
               [ngClass]="{
-                right: chat?.sender_id === user.id,
-                left: chat?.sender_id !== user.id,
+                right: chat?.sender_id === grader.id,
+                left: chat?.sender_id !== grader.id,
                 grader: chat?.from_grader === true,
                 lightblue: chat?.sender_id === professor.id,
                 notification: chat.message_text

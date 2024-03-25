@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
@@ -12,6 +12,7 @@ import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.
 import { DeleteStudentPopupComponent } from './delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './reset-student-password-popup/reset-student-password-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-roster',
@@ -30,6 +31,7 @@ export class RosterComponent {
   };
 
   courseStudents!: StudentCourseGraderInfo[];
+  studentIds: string[];
   fetchedStudents = false;
   fetchedCourse = false;
   addedStudents: string;
@@ -40,9 +42,20 @@ export class RosterComponent {
   splitStudent: string[];
   courseID: number;
   isNewStudent: boolean = false;
-  ROSTER_DATA: { name: string; email: string; role: string }[] = [];
+  ROSTER_DATA: {
+    name: string;
+    email: string;
+    role: string;
+    is_verified: boolean;
+  }[] = [];
   rosterDataSource = this.ROSTER_DATA;
-  displayedColumns: string[] = ['name', 'email', 'role', 'options'];
+  displayedColumns: string[] = [
+    'name',
+    'email',
+    'role',
+    'is_verified',
+    'options',
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -63,17 +76,14 @@ export class RosterComponent {
       this.courseStudents = await this.professorService.fetchCourseStudents(
         this.courseID
       );
+      this.studentIds = this.courseStudents.map(
+        (student) => student.student_id
+      );
 
       // sorts students by last name, then first name
-      this.courseStudents.sort((a, b) => {
-        const lastNameA = a.student_name.split(' ')[1];
-        const lastNameB = b.student_name.split(' ')[1];
-
-        const compareLastName = lastNameA.localeCompare(lastNameB);
-        return compareLastName === 0
-          ? a.student_name.localeCompare(b.student_name)
-          : compareLastName;
-      });
+      this.courseStudents.sort((a, b) =>
+        this.compare(a.student_name, b.student_name, true)
+      );
 
       // update material table
       this.setRoster();
@@ -97,6 +107,7 @@ export class RosterComponent {
       this.fetchedCourse = true;
       // listen for database changes
       this.handleStudentUpdates();
+      this.handleStudentVerificationUpdates();
     } catch (err) {
       console.log(err);
     }
@@ -120,10 +131,11 @@ export class RosterComponent {
         if (event === 'INSERT') {
           // get new in
           const record = update.new;
+          console.log({ update });
           const { student_id, course_id } = record;
 
           // get student & course information
-          const { id, first_name, last_name, email } =
+          const { id, first_name, last_name, email, is_verified } =
             await this.sharedService.getStudent(student_id);
           const course = await this.sharedService.getCourse(course_id);
 
@@ -140,6 +152,7 @@ export class RosterComponent {
               course_id: course.id,
               course: course.name,
               is_grader: false,
+              is_verified,
             });
           }
         }
@@ -147,7 +160,6 @@ export class RosterComponent {
         else if (event === 'UPDATE') {
           const { student_id } = record;
           // change student to grader
-          this.courseStudents;
           const courseStudent = this.courseStudents.find(
             (courseStudent) => courseStudent.student_id === student_id
           ) as StudentCourseGraderInfo;
@@ -164,17 +176,75 @@ export class RosterComponent {
       });
   }
 
+  handleStudentVerificationUpdates(): void {
+    this.sharedService
+      .getTableChanges(
+        'Students',
+        'student-verification-channel',
+        `id=in.(${[...this.studentIds]})`
+      )
+      .subscribe(async (update: any) => {
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        if (!record) return;
+
+        if (event === 'UPDATE') {
+          const { id, is_verified } = record;
+          const courseStudent = this.courseStudents.find(
+            (courseStudent) => courseStudent.student_id === id
+          ) as StudentCourseGraderInfo;
+
+          courseStudent.is_verified = is_verified;
+        }
+        this.setRoster();
+      });
+  }
+
   private setRoster() {
     this.ROSTER_DATA = this.courseStudents.map((student) => {
       return {
         name: student.student_name,
         email: student.email,
         role: student.is_grader ? 'Grader' : 'Student',
+        is_verified: student.is_verified,
         options: null,
       };
     });
 
     this.rosterDataSource = this.ROSTER_DATA;
+  }
+
+  sortTable(sort: Sort) {
+    const data = this.ROSTER_DATA.slice();
+    if (!sort.active || sort.direction === '') {
+      this.rosterDataSource = data;
+      return;
+    }
+
+    this.rosterDataSource = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name':
+          return this.compare(a.name, b.name, isAsc);
+        case 'email':
+          return this.compare(a.email, b.email, isAsc);
+        case 'role':
+          return this.compare(a.role, b.role, isAsc);
+        case 'is_verified':
+          return this.compare(
+            a.is_verified.toString(),
+            b.is_verified.toString(),
+            isAsc
+          );
+
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   async onAssignGrader(student: StudentCourseGraderInfo): Promise<void> {
@@ -326,8 +396,6 @@ export class RosterComponent {
       const nonExistingUsers = parsedStudentsToAdd.filter(
         (_, i) => !userStatus[i]
       );
-      console.log({ nonExistingUsers });
-
       // get student ids of registered students & store in array
       const existingUserIds = await this.professorService.fetchStudentIds(
         existingUsers

@@ -11,16 +11,14 @@ import { ProfessorService } from 'src/app/services/professor.service';
   styleUrls: ['./delete-assignment.component.scss'],
 })
 export class DeleteAssignmentComponent {
-  assignment: Assignment;
-  course: Course;
+  aid: number;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<DeleteAssignmentComponent>,
     private professorService: ProfessorService
   ) {
-    this.assignment = data.assignment;
-    this.course = data.course;
+    this.aid = data.aid;
   }
 
   /**
@@ -29,7 +27,7 @@ export class DeleteAssignmentComponent {
   async onDeleteAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
-      await this.professorService.deleteAssignment(this.assignment.id);
+      await this.professorService.deleteAssignment(this.aid);
     } catch (err) {
       console.log(err);
       throw new Error('onDeleteAssignment');

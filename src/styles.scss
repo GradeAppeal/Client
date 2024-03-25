@@ -20,6 +20,7 @@ $primary-blue: #3a62d7;
 $secondary-blue: #c1d1ff;
 $hover-blue: #728edd;
 $form-white: #f8f7f4;
+$hover-gray: #bec0bf;
 
 .material-symbols-outlined {
   cursor: pointer;
@@ -64,7 +65,7 @@ $form-white: #f8f7f4;
 
 .gray-button {
   color: black;
-  background-color: whitesmoke;
+  background-color: #ececec;
   margin-left: 20px;
   font-family: Roboto;
   font-size: 1em;
@@ -78,6 +79,10 @@ $form-white: #f8f7f4;
 
 .blue-button:hover {
   background-color: $hover-blue;
+}
+
+.gray-button:hover {
+  background-color: $hover-gray;
 }
 
 .global-th {
@@ -130,6 +135,13 @@ $form-white: #f8f7f4;
   padding-right: 4px;
   height: 90vh; /* 100% of the viewport height */
   overflow-y: auto; /* Hide overflow content */
+  .right-side {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+  }
 }
 
 .inbox-item {
@@ -272,6 +284,7 @@ $form-white: #f8f7f4;
 .button-div {
   display: flex;
   justify-content: center;
+  gap: 1rem;
 }
 .search {
   margin-top: 5px;
@@ -338,7 +351,7 @@ $form-white: #f8f7f4;
     display: flex;
     flex-direction: column;
 
-    justify-content: space-between;
+    justify-content: center;
     button {
       cursor: pointer;
       float: right;
@@ -534,4 +547,24 @@ label {
 .error-snackbar {
   --mdc-snackbar-container-color: #f8f7f4;
   --mdc-snackbar-supporting-text-color: #f44336;
+}
+
+.component-wrapper {
+  padding-left: 10px;
+}
+.card {
+  .top-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+}
+.left-content {
+  display: flex;
+  align-items: center;
+}
+.right-content {
+  text-align: right;
 }

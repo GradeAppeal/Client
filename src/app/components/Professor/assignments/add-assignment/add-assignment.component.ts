@@ -1,8 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.interface';
 
 @Component({
   selector: 'app-add-assignment',
@@ -11,17 +11,20 @@ import { ProfessorService } from 'src/app/services/professor.service';
 })
 export class AddAssignmentComponent {
   newAssignment: string;
-  assignments: Assignment[];
+
   currentCourse: Course;
   errorMessage: string;
+  graders: StudentCourseGraderInfo[];
+  assignedGrader: StudentCourseGraderInfo | null;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
     private professorService: ProfessorService
   ) {
-    this.assignments = data.assignment;
-    this.currentCourse = data.course;
+    const { course, graders } = data;
+    this.currentCourse = course;
+    this.graders = graders;
   }
 
   /**
@@ -30,10 +33,6 @@ export class AddAssignmentComponent {
   async onAddAssignment(): Promise<void> {
     /*  add assignment to database */
     try {
-      // if (this.newAssignment not in assignments){
-
-      // }
-      console.log(this.assignments);
       const data = await this.professorService.insertNewAssignment(
         this.currentCourse.id,
         this.newAssignment

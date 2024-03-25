@@ -27,6 +27,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 /* Components */
 import { ProfessorNavigationComponent } from './components/Professor/professor-navigation/professor-navigation.component';
@@ -68,6 +69,8 @@ import { ConfirmationComponent } from './components/Auth/confirmation/confirmati
 import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
 import { DeleteStudentPopupComponent } from './components/Professor/roster/delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
+import { EditGraderComponent } from './components/Professor/assignments/edit-grader/edit-grader.component';
+import { AccountComponent } from './components/Professor/account/account.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +117,8 @@ import { ResetStudentPasswordPopupComponent } from './components/Professor/roste
     RedirectSnackbarComponent,
     DeleteStudentPopupComponent,
     ResetStudentPasswordPopupComponent,
+    EditGraderComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -140,6 +145,7 @@ import { ResetStudentPasswordPopupComponent } from './components/Professor/roste
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
