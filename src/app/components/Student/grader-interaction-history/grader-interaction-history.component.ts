@@ -173,10 +173,6 @@ export class GraderInteractionHistoryComponent {
     }
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
   // get images associated with the appeal
   async getImages() {
     try {
@@ -249,11 +245,6 @@ export class GraderInteractionHistoryComponent {
       });
   }
 
-  scrollToBottom() {
-    const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
-  }
-
   async selectAppeal(appeal: GraderAppeal) {
     try {
       this.currentAppeal = appeal;
@@ -307,7 +298,6 @@ export class GraderInteractionHistoryComponent {
       );
 
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(
