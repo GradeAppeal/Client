@@ -1,1 +1,26 @@
-<p>account works!</p>
+<div class="container">
+  <div class="account-page">
+    <h2>Welcome, {{ professor.first_name }} {{ professor.last_name }}</h2>
+
+    <div class="change-password">
+      <h3>Change Password</h3>
+      <input
+        type="password"
+        placeholder="Enter New Password"
+        [(ngModel)]="newPassword"
+      />
+      <button (click)="changePassword()">Change Password</button>
+    </div>
+
+    <div class="email-preferences">
+      <h3>Email Preferences</h3>
+      <label for="frequency">Email Frequency:</label>
+      <select id="frequency" [(ngModel)]="emailFrequency">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+      <button (click)="saveEmailPreferences()">Save Preferences</button>
+    </div>
+  </div>
+</div>

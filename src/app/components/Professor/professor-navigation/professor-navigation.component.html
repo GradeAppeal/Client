@@ -14,7 +14,7 @@
       <span class="title">{{ title }}</span>
     </span>
     <div class="top-right-content">
-      <button [routerLink]="['/student/about']" class="about-button">
+      <button [routerLink]="['/professor/about']" class="about-button">
         <mat-icon
           class="about-icon"
           aria-hidden="false"
@@ -23,18 +23,43 @@
         ></mat-icon>
         &ensp;
       </button>
-
-      <button [routerLink]="['/student/account']" class="account-button">
+      <!--
+      <button  [routerLink]="['/professor/account']" class="account-button">
         <mat-icon
           class="account-icon"
           aria-hidden="false"
           aria-label="Example home icon"
           fontIcon="account_circle"
-        ></mat-icon>
+        >
+      </mat-icon>
+      </button> -->
+      <button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+        class="account-button"
+      >
+        <mat-icon
+          class="account-icon"
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="account_circle"
+        >
+        </mat-icon>
       </button>
-      <div class="sign-out-button">
-        <span class="sign-out" (click)="logoutPopUp()"> Sign Out </span>
-      </div>
+      <mat-menu #menu="matMenu">
+        <!-- Delete assignment -->
+        <div class="menu-container">
+          <button mat-menu-item [routerLink]="['/professor/account']">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          <button mat-menu-item (click)="logoutPopUp()">
+            <mat-icon>logout</mat-icon>
+            <span>Sign Out</span>
+          </button>
+          <!-- Edit assignment -->
+        </div>
+      </mat-menu>
     </div>
   </div>
 
