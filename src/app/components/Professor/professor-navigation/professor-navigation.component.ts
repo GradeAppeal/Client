@@ -45,6 +45,9 @@ export class ProfessorNavigationComponent {
         }
       });
   }
+  openSettings() {
+    console.log('opening settings');
+  }
 
   logoutPopUp() {
     this.dialog.open(SignoutComponent, {});

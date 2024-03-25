@@ -22,6 +22,7 @@ import { AboutComponent } from './components/about/about.component';
 import { GraderDashboardComponent } from './components/Student/grader-dashboard/grader-dashboard.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
+import { AccountComponent } from './components/Professor/account/account.component';
 
 const routes: Routes = [
   {
@@ -85,6 +86,10 @@ const routes: Routes = [
       {
         path: 'about',
         component: AboutComponent,
+      },
+      {
+        path: 'account',
+        component: AccountComponent,
       },
     ],
   },
