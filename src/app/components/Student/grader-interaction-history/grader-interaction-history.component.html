@@ -11,30 +11,39 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <p matLine class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
+        <div class="left-section">
+         <!-- <div *ngIf="hasUnreadMessages(appeal)">
+          <div class="unread-dot"></div>
+        </div> -->
+        <p matLine class="inbox-name">
+          {{ appeal.professor_first_name }} {{ appeal.professor_last_name }}
         </p>
-        <p matLine>
-          <b>
-            {{
-              appeal?.professor_first_name + " " + appeal?.professor_last_name
-            }}
-          </b>
+        <p class="inbox-assignment-name">
+          {{ appeal.course_prefix }}{{ currentAppeal.course_code }}
+          {{ appeal.course_section }}
+          {{ appeal.course_semester }}
         </p>
-
-        <p matLine>{{ appeal.course_name }}</p>
-        <p matLine>{{ appeal?.assignment_name }}</p>
+        <p class="inbox-assignment-name">{{ appeal.assignment_name }}</p>
+      </div>
+      <div class="right-side">
+        <div class="inbox-item-timestamp-dot-container">
+          <p matLine class="inbox-timestamp">
+            {{ formatTimestamp(appeal.created_at).date }} <br />
+            {{ formatTimestamp(appeal.created_at).time }}
+          </p>
+        </div>
+      </div>
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
     <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
         <mat-toolbar class="top-bar">
-          <mat-toolbar-row>
-            <h1>
-              {{ currentAppeal.assignment_name }}
-            </h1>
-          </mat-toolbar-row>
+            <span class="header student-name">
+              &nbsp;
+              {{ currentAppeal.professor_first_name + ' ' + currentAppeal.professor_last_name }}
+
+            </span><span class="header assignment-name"> {{currentAppeal.assignment_name}}</span>
         </mat-toolbar>
         <div class="chat-list" #chatListContainer>
           <ng-container *ngFor="let chat of imageMessages; let i = index">
@@ -127,17 +136,19 @@
             matInput
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
+            (input)="onTextAreaChange()"
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
-          <div class="buttons">
+          <div class="send-button-div"
+          [class.filled]="inputFilled"
+          >
             <button
-              class="send"
+              class="send-button"
               (click)="sendMessage(this.chatInputMessage)"
-              [disabled]="chatInputMessage === ''"
             >
               <mat-icon
-                class="search-icon"
+                class="send-icon"
                 aria-hidden="false"
                 aria-label="Example home icon"
                 fontIcon="send"

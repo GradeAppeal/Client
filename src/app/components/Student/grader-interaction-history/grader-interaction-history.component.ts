@@ -1,3 +1,4 @@
+// Grader Interaction History is based off of professor interaction history. Almost a "child" component.
 import {
   Component,
   ElementRef,
@@ -27,6 +28,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -67,13 +69,14 @@ export class GraderInteractionHistoryComponent {
   messageID: number;
   image: Blob;
   imageMessages!: ImageMessage[];
+  inputFilled : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private graderService: GraderService,
     private sharedService: SharedService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
@@ -166,11 +169,7 @@ export class GraderInteractionHistoryComponent {
     }
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  // get images associated with the appeal
+ /*  Get images associated with the appeal */
   async getImages() {
     try {
       this.imageMessages.forEach(async (message) => {
@@ -181,10 +180,6 @@ export class GraderInteractionHistoryComponent {
           );
           message.image = this.image;
         }
-        // const imageUrl = URL.createObjectURL(this.image);
-        // const imgElement = document.createElement('img');
-        // imgElement.src = imageUrl;
-        // document.getElementById("chat")!.appendChild(imgElement);
       });
     } catch {
       //do nothing
@@ -273,16 +268,22 @@ export class GraderInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        // clear the file input
+        (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
 
-      // clear the file input
-      (<HTMLInputElement>document.getElementById('image')).value = '';
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
   }
+    /**
+   * Check if input is filled for send button color
+   */
+    onTextAreaChange() {
+      this.inputFilled = this.chatInputMessage.trim().length > 0;
+    }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);

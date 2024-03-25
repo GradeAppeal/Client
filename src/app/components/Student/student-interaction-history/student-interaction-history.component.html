@@ -59,12 +59,12 @@
       <div class="card">
         <mat-toolbar class="top-bar">
           <mat-toolbar-row>
-            <img class="header-avatar" ngxGravatar [email]="student.email" />
-            <h1>
+            <span class="header student-name">
               {{ currentAppeal.professor_first_name }}
-              {{ currentAppeal.professor_last_name }}<span>:</span>
-              {{ currentAppeal.assignment_name }}
-            </h1>
+              {{ currentAppeal.professor_last_name }}
+              
+            </span>
+            <span class="header assignment-name">{{ currentAppeal.assignment_name }}</span>
           </mat-toolbar-row>
         </mat-toolbar>
         <div class="chat-list" #chatListContainer>
@@ -158,7 +158,7 @@
 
           <div class="buttons">
             <button
-              class="send"
+              class="send blue-button"
               (click)="sendMessage(this.chatInputMessage)"
               [disabled]="chatInputMessage === ''"
             >

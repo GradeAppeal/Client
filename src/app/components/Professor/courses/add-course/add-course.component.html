@@ -7,25 +7,25 @@
 
         <p class="description">Course Prefix (e.g. CS, ENGR)</p>
         <mat-form-field class="input-box">
-            <input matInput [(ngModel)]="course.prefix" required name="coursePrefix" #coursePrefix="ngModel">
+            <input matInput [(ngModel)]="course.prefix" required name="coursePrefix" #coursePrefix="ngModel" #input maxlength="10">
             <p class="error-message" *ngIf="coursePrefix.invalid && coursePrefix.touched">Course prefix is required</p>  
         </mat-form-field>
 
         <p class="description">Course Code (e.g. 108, 220)</p>
         <mat-form-field class="input-box">
-            <input matInput [(ngModel)]="codeString" (ngModelChange)="onEditCode($event)" required name="courseCode" #courseCode="ngModel">
+            <input matInput [(ngModel)]="codeString" (ngModelChange)="onEditCode($event)" required name="courseCode" #courseCode="ngModel" #input maxlength="10">
             <p class="error-message" *ngIf="courseCode.invalid && courseCode.touched">Course code is required</p>
         </mat-form-field>
 
         <p class="description">Course Name (e.g. Introduction to Data Structures)</p>
         <mat-form-field class="input-box">
-            <input matInput [(ngModel)]="course.name" required name="courseName" #courseName="ngModel">
+            <input matInput [(ngModel)]="course.name" required name="courseName" #courseName="ngModel" #input maxlength="50">
             <p class="error-message" *ngIf="courseName.invalid && courseName.touched">Course name is required</p>
         </mat-form-field>
 
         <p class="description">Course Section (e.g. A, B)</p>
         <mat-form-field class="input-box">
-            <input matInput [(ngModel)]="course.section" required name="courseSection" #courseSection="ngModel">
+            <input matInput [(ngModel)]="course.section" required name="courseSection" #courseSection="ngModel" #input maxlength="1">
             <p class="error-message" *ngIf="courseSection.invalid && courseSection.touched">Course Section is required</p>
         </mat-form-field>
 

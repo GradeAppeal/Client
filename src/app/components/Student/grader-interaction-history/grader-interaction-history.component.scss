@@ -1,79 +1,28 @@
 @import "src/styles.scss";
+@import "src/app/components/Professor/professor-interaction-history/professor-interaction-history.component.scss";
 
-$background: white;
+// Using professor interaction history scss
 
-.message-image {
-  position: relative;
-  display: block;
-  height: 15vw;
-  padding: 10px;
-}
-
-.card {
-  background: $background;
-  height: 90vh;
-  min-width: 20%;
-  max-width: 100%;
+.top-bar {
   display: flex;
-  flex-direction: column;
-  filter: drop-shadow(0px 0px 2px black);
-  border-radius: 15px;
-  padding: 16px;
-
-  // ::-webkit-scrollbar {
-  //   display: none;
-  // }
+  justify-content: start;
 }
 
-#image {
-  width: 100%;
-  color: transparent;
+// .assignment-name {
+//   font-size: 20px;
+//   color: black;
+// }
+
+.student-name {
+  font-size: 20px;
+  font-weight: 400;
 }
 
-.image-container {
-  width: 120px;
+.send-button-div {
+  margin-top: 8px;
 }
 
-#clear-button {
-  border: 0;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  background: $primary-blue;
-  border-radius: 6px;
-}
 
-.container {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-}
-.buttons {
-  button {
-    background-color: $primary-blue;
-    border-radius: 50%;
-  }
-}
-
-.right-pane {
-  flex: 1; /* Let the right pane grow to take available space */
-
-  margin: 10px;
-}
-
-.inbox-timestamp {
-  float: right;
-}
-
-.no-appeals {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  h1 {
-    font-size: 2vw;
-    text-align: center;
-    color: $primary-blue;
-  }
-}
+// .send-button {
+//   margin-bottom: 12px;
+// }
