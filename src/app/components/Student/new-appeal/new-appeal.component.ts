@@ -140,11 +140,13 @@ export class NewAppealComponent implements OnInit {
         const appealMessages = await this.sharedService.fetchMessages(appealID);
         const messageID = appealMessages[0].message_id;
 
-        const imageID = await this.sharedService.uploadFile(
-          appealID,
-          this.imageFile!,
-          messageID
-        );
+        if (hasImage) {
+          const imageID = await this.sharedService.uploadFile(
+            appealID,
+            this.imageFile!,
+            messageID
+          );
+        }
 
         this.router.navigateByUrl(`student/interaction-history/${appealID}`);
       }
