@@ -133,7 +133,7 @@ export class SharedService {
    * @param created_at timestamp
    * @param message_text text
    * @param from_grader boolean: grader or not
-   * @returns 1 if insert was successful, 0 otherwise
+   * @returns message ID
    */
   async insertMessage(
     appid: number,
@@ -158,8 +158,8 @@ export class SharedService {
       has_image,
     });
     if (error) {
-      console.log(error);
-      throw new Error('insert message');
+      console.log(error.hint);
+      throw new Error(error.message);
     }
     return data;
   }
@@ -205,6 +205,7 @@ export class SharedService {
     return data[0];
   }
   async getProfessor(pid: string): Promise<Professor> {
+    console.log({ pid });
     const { data, error } = await this.supabase.rpc('get_professor', {
       pid,
     });
@@ -212,6 +213,7 @@ export class SharedService {
       console.log({ error });
       throw new Error('getProfessor');
     }
+
     return data[0];
   }
 
