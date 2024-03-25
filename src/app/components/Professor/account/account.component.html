@@ -28,14 +28,16 @@
           }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button
-        mat-raised-button
-        [ngClass]="form.invalid ? 'gray-button' : 'blue-button'"
-        type="submit"
-        [disabled]="form.invalid"
-      >
-        Submit
-      </button>
+      <div class="button-container">
+        <button
+          mat-raised-button
+          [ngClass]="form.invalid ? 'gray-button' : 'blue-button'"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   </div>
 </div>

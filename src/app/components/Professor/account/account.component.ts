@@ -52,7 +52,7 @@ export class AccountComponent {
     // if user entered new password, update the password
     try {
       if (password) {
-        // await this.authService.updatePassword(password);
+        await this.authService.updatePassword(password);
         this.snackBar.open('Successfully Updated Password', '', {
           panelClass: ['blue-snackbar'],
           duration: 2000,
