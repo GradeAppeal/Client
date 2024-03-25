@@ -89,6 +89,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
         // get the newly updated row
         const record = update.new?.id ? update.new : update.old;
         const event = update.eventType;
+        console.log(record, event);
         if (!record) return;
         // insert new appeals by student
         if (event === 'INSERT') {
@@ -100,18 +101,19 @@ export class ProfessorAppealInboxComponent implements OnInit {
         }
         // update grader status
         else if (event === 'UPDATE') {
+          if (!record.is_open) {
+            this.professorAppeals = this.professorAppeals.filter(
+              (appeal) => appeal.appeal_id !== record.id
+            );
+            this.filteredAppeals = this.filteredAppeals.filter(
+              (appeal) => appeal.appeal_id !== record.id
+            );
+            this.currentAppeal =
+              this.currentAppeal.appeal_id !== record.id
+                ? this.currentAppeal
+                : this.filteredAppeals[0];
+          }
           this.currentAppeal.grader_id = record.grader_id;
-
-          this.professorAppeals = this.professorAppeals.filter(
-            (appeal) => appeal.appeal_id !== record.id
-          );
-          this.filteredAppeals = this.filteredAppeals.filter(
-            (appeal) => appeal.appeal_id !== record.id
-          );
-          this.currentAppeal =
-            this.currentAppeal.appeal_id !== record.id
-              ? this.currentAppeal
-              : this.filteredAppeals[0];
         }
         // safety delete check in case closed appeal not removed from appeal inbox
         else if (event === 'DELETE') {

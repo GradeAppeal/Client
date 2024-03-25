@@ -109,11 +109,11 @@
               (click)="onCloseAppeal($event)"
               class="close-appeal-interaction-history gray-button"
             >
-              <p clas="button-text">Close Appeal</p>
+              <p class="button-text">Close Appeal</p>
             </button>
           </div>
         </div>
-        <div class="chat-list" #chatListContainer>
+        <div class="chat-list" #chatListContainer #scrollMe [scrollTop]="scrollMe.scrollHeight">
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="
