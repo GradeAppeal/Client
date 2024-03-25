@@ -434,7 +434,6 @@ export class ProfessorInteractionHistoryComponent {
     });
     // update UI: get rid of closed appeal
     dialogRef.afterClosed().subscribe(async (result: number) => {
-      this.router.navigateByUrl('professor/appeal-inbox');
       // this.professorAppeals = this.professorAppeals.filter(
       //   (appeal) => appeal.appeal_id !== result
       // );
