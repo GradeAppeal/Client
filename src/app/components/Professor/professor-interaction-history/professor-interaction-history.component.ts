@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Session } from '@supabase/supabase-js';
@@ -65,6 +65,7 @@ export class ProfessorInteractionHistoryComponent {
   selectedTemplate: string = '';
   // snackbar duration
   durationInSeconds: number = 2;
+  inputFilled : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,7 +75,8 @@ export class ProfessorInteractionHistoryComponent {
     private professorService: ProfessorService,
     private sharedService: SharedService,
     private authService: AuthService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
@@ -290,6 +292,7 @@ export class ProfessorInteractionHistoryComponent {
     message: string,
     notification: boolean = false
   ): Promise<void> {
+    this.inputFilled = false;
     const now = getTimestampTz(new Date());
     const sender_id = this.professor.id;
     const hasImage = this.imageFile == null ? false : true;
@@ -328,22 +331,32 @@ export class ProfessorInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+       // clear the file input
+        (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
 
-      // clear the file input
-      (<HTMLInputElement>document.getElementById('image')).value = '';
+
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
     }
   }
 
+    /**
+   * Check if input is filled for send button color
+   */
+    onTextAreaChange() {
+    this.inputFilled = this.chatInputMessage.trim().length > 0;
+    this.cdr.detectChanges();
+  }
+
+
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
-  async filterResults(text: string) {
+  async  filterResults(text: string) {
     if (!text) {
       this.filteredAppeals = this.professorAppeals;
       return;
