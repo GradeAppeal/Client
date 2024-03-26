@@ -12,8 +12,8 @@ import { filter } from 'rxjs/operators';
 })
 export class ProfessorNavigationComponent {
   selectedTab: string = 'professor/appeal-inbox';
-  title: string;
-  versionNumber = '1.1.0';
+  title: string = 'Appeal Inbox';
+  versionNumber = '1.1.1';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
