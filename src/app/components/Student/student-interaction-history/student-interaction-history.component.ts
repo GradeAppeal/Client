@@ -122,16 +122,13 @@ export class StudentInteractionHistoryComponent {
     console.log(this.currentAppeal);
   }
 
-  // ngAfterViewChecked() {
-  //   this.scrollToBottom();
-  // }
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
     this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
-  // get images associated with the appeal
+  /* get images associated with the appeal*/
   async getImages() {
     try {
       this.imageMessages.forEach(async (message) => {
@@ -292,7 +289,6 @@ export class StudentInteractionHistoryComponent {
       //   this.currentAppeal.appeal_id
       // );
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(

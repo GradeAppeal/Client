@@ -15,7 +15,7 @@ Justin Voss
 Sam Hoogewind
 ### Our Mentor: Professor Victor Norman
 Professor Norman was not just our mentor, but our advocate and inspiration behind it! Tired of his overcrowded inbox, Professor Norman envisioned a solution that could help both students and professors. His passion for simplifying the grade appeal process fueled the development of GradeBoost.
-Our website is deployed on [gradeboost.us](https://gradeboost.us)
+Our website is deployed on [gradeboost.cs.calvin.edu](https://gradeboost.cs.calvin.edu)
 
 ### Tech Stack
 Angular/TypeScript: Frontend

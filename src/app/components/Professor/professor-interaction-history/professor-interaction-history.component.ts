@@ -137,7 +137,6 @@ export class ProfessorInteractionHistoryComponent {
     // no appeals: show the no appeals message in HTML template
   }
 
-
   // get images associated with the appeal
   async getImages() {
     try {
@@ -266,11 +265,6 @@ export class ProfessorInteractionHistoryComponent {
   }
   toggleOptions() {
     this.showOptions = !this.showOptions;
-  }
-
-  scrollToBottom() {
-    const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'instant' });
   }
 
   async selectAppeal(appeal: any) {

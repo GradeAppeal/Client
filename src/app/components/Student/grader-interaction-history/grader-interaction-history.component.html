@@ -45,7 +45,7 @@
 
             </span><span class="header assignment-name"> {{currentAppeal.assignment_name}}</span>
         </mat-toolbar>
-        <div class="chat-list" #chatListContainer>
+        <div class="chat-list" #chatListContainer #scrollMe [scrollTop]="scrollMe.scrollHeight">
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="
