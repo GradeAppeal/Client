@@ -327,7 +327,9 @@ $hover-gray: #bec0bf;
   border-radius: 6px;
 
   #chat-textarea {
-    flex: 1;
+    // flex: 1;
+    width: 100%;
+    height: 40px;
     margin: 0 8px;
     //padding: 16px;
     border-radius: 8px;
@@ -378,8 +380,10 @@ $hover-gray: #bec0bf;
     .custom-popup {
       position: absolute;
       // top: 30px; /* Adjust the top position as needed */
-      left: 20px;
-      bottom: 120px;
+      left: 30px;
+      bottom: 60px;
+      height: 150px;
+      width: 180px;
       background-color: whitesmoke;
       //border: 1px solid #ccc;
       border-radius: 20px;
@@ -387,7 +391,7 @@ $hover-gray: #bec0bf;
       z-index: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
     }
 
     .popup-button,
@@ -399,7 +403,7 @@ $hover-gray: #bec0bf;
       color: black;
       font-size: 15px;
       &:hover {
-        background-color: lightgray;
+        background-color: $primary-blue;
       }
     }
 
@@ -551,10 +555,8 @@ label {
 .card {
   .top-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border: 1px solid black;
     border-radius: 10px;
     font-weight: bold;
   }

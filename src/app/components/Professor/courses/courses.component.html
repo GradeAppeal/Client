@@ -7,9 +7,27 @@
       <mat-card-title class="course-wording"
         >{{ course.prefix }}-{{ course.code }}-{{ course.section }}
         {{ course.semester }}-{{ course.year }} </mat-card-title
-      ><mat-icon class="delete-icon" (click)="deleteCoursePopUp($event, course)"
-        >delete</mat-icon
       >
+      <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              aria-label="Example icon-button with a menu"
+              class="vert-button"
+            >
+              <mat-icon >more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+        mat-menu-item
+        (click)="deleteCoursePopUp($event, course)"
+      >
+        <mat-icon >delete-icon</mat-icon>
+        <span> Delete Course</span>
+      </button>
+      </mat-menu>
+      <!-- <mat-icon class="delete-icon" (click)="deleteCoursePopUp($event, course)"
+        >delete</mat-icon
+      > -->
     </div>
     <mat-card-subtitle class="course-name">{{ course.name }}</mat-card-subtitle>
     <button

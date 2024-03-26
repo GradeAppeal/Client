@@ -1,3 +1,4 @@
+// Grader Interaction History is based off of professor interaction history. Almost a "child" component.
 import {
   Component,
   ElementRef,
@@ -27,6 +28,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
@@ -66,6 +68,7 @@ export class GraderInteractionHistoryComponent {
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
+  inputFilled : boolean = false;
   imageMessages: ImageMessage[];
 
   constructor(
@@ -73,7 +76,7 @@ export class GraderInteractionHistoryComponent {
     private authService: AuthService,
     private graderService: GraderService,
     private sharedService: SharedService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
@@ -173,7 +176,7 @@ export class GraderInteractionHistoryComponent {
     }
   }
 
-  // get images associated with the appeal
+ /*  Get images associated with the appeal */
   async getImages() {
     try {
       this.imageMessages.forEach(async (message) => {
@@ -269,6 +272,7 @@ export class GraderInteractionHistoryComponent {
     message: string,
     notification: boolean = false
   ): Promise<void> {
+    this.inputFilled = false;
     if (notification === true) {
       message = 'Notification:' + message;
     }
@@ -305,16 +309,22 @@ export class GraderInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
+        // clear the file input
+        (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
 
-      // clear the file input
-      (<HTMLInputElement>document.getElementById('image')).value = '';
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
   }
+    /**
+   * Check if input is filled for send button color
+   */
+    onTextAreaChange() {
+      this.inputFilled = this.chatInputMessage.trim().length > 0;
+    }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);

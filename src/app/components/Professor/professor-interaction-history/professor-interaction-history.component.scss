@@ -2,20 +2,28 @@
 
 $background: white;
 
+.right-content {
+  overflow: hidden;
+}
 .card {
+  position: relative;
   background: $background;
   height: 90vh;
   min-width: 20%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  filter: drop-shadow(0px 0px 2px black);
+  filter: drop-shadow(0px 0px 2px grey);
   border-radius: 15px;
-  padding: 16px;
+
+  // padding: 16px;
 
   // ::-webkit-scrollbar {
   //   display: none;
   // }
+  z-index: 10;
+
+  overflow: auto;
 }
 
 #clear-button {
@@ -106,17 +114,18 @@ mat-nav-list {
   }
 }
 .grader-toggle-text {
-  color: black;
-  font-size: 10px;
+  color: grey;
+  font-size: 9px;
 }
 .grader-header {
   margin-left: auto;
 }
-.custom-toggle {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+
+.buttons mat-icon {
+  color: #bbb;
+}
+
+.custom-popup {
 
   input {
     display: none;
@@ -153,8 +162,124 @@ mat-nav-list {
   }
 }
 
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // text-align: center;
+  // padding: 10px;
+  background-color: whitesmoke;
+  // background-color: red;
+  // border: 1px solid black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  // font-weight: bold;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+}
+.right-content {
+  text-align: right;
+}
+
+.close-appeal {
+
+}
+
 .header {
-  font-size: 23px;
+  font-size: 20px;
+}
+
+.student-name {
+  padding-left: 10px;
+}
+
+.assignment-name {
+  padding-top: 2px;
+  padding-left: 25px;
+  color: $primary-blue;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.message-image {
+  z-index: -10;
+}
+
+.vert-button mat-icon {
+ margin-top: 4px;
+}
+
+.chat-form {
+  display: flex;
+  border-radius: 14px;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+.chat-form:focus-within { 
+  outline: 1px solid #bbb; 
+}
+
+.chat-textarea {
+  border: none;
+  border-radius: 14px;
+  padding-left: 8px;
+  flex-grow: 2;
+
+}
+
+.chat-textarea:focus {
+  box-shadow: none;
+}
+
+.grader-slider-whole {
+  padding-top: 4px;
+  padding-right:  8px;
+}
+
+.buttons mat-icon {
+  color: grey;
+  margin-left: 4px;
+  margin-top: 6px;
+}
+
+.vert-button {
+  color: grey;
+  margin-right: 5px;
+}
+
+
+.send-button-div {
+  margin-left: 4px;
+  margin-top: 12px;
+}
+
+
+.send-button-div {
+  &.filled {
+    color: $primary-blue;
+  }
+  &:not(.filled) {
+    color: grey;
+  }
+}
+
+.search-icon {
+  color: $primary-blue;
+  padding-left: 0.25px;
+  transform: scale(1.20);
+  border-radius: 10px;
+}
+
+.search-icon:hover {
+  color: lighten($primary-blue, 20%);
 }
 .more {
   width: 40px;

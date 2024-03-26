@@ -70,21 +70,15 @@
       <div class="card">
         <div class="top-bar">
           <div class="left-content">
-            <!-- <img class="header-avatar" ngxGravatar [email]="professor.email" /> -->
-            <mat-icon
-              class="header-avatar"
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="account_circle"
-            ></mat-icon>
-            <h1 class="header">
+
+            <span class="header student-name">
               &nbsp;
               {{
                 currentAppeal.student_first_name +
                   " " +
                   currentAppeal.student_last_name
-              }}<span> | </span>{{ currentAppeal.assignment_name }}
-            </h1>
+              }}
+            </span><span class="header assignment-name">{{ currentAppeal.assignment_name }}</span>
           </div>
           <div class="right-content">
             <span
@@ -109,7 +103,7 @@
               (click)="onCloseAppeal($event)"
               class="close-appeal-interaction-history gray-button"
             >
-              <p class="button-text">Close Appeal</p>
+              <p class="close-appeal">Close Appeal</p>
             </button>
           </div>
         </div>
@@ -192,18 +186,16 @@
         </div>
         <div class="chat-footer">
           <div class="buttons">
-            <div class="circle-button">
-              <div class="buttons">
-                <button mat-icon-button class="more" (click)="toggleOptions()">
-                  <mat-icon
-                    class="more-icon"
-                    aria-hidden="false"
-                    aria-label="Example home icon"
-                    fontIcon="more_vert"
-                  ></mat-icon>
-                </button>
-              </div>
-            </div>
+              <button
+              mat-icon-button
+              aria-label="Example icon-button with a menu"
+              
+              (click)="toggleOptions()"
+            >
+            <mat-icon class="vert-button">menu</mat-icon>
+            </button>
+            
+
             <div *ngIf="showOptions" class="custom-popup">
               <div>
                 <button class="popup-button" [matMenuTriggerFor]="menu">
@@ -249,45 +241,48 @@
               <div id="file-chosen">(No file chosen)</div>
             </div>
           </div>
-
-          <textarea
-            id="chat-textarea"
+          <form class="chat-form">
+          <input
+            class="chat-textarea"
+            name="chat-textarea"
             [(ngModel)]="chatInputMessage"
             required
+            (input)="onTextAreaChange()"
             (keydown.enter)="sendMessage(this.chatInputMessage)"
-          ></textarea>
-          <div class="buttons">
+          />
+          <div class="grader-slider-whole">
+          <mat-slide-toggle
+          *ngIf="currentAppeal.grader_id !== null"
+          disabled="false"
+          class="grader-toggle"
+          hideIcon="true"
+          (change)="talkToGrader()"
+        ></mat-slide-toggle>
+        <mat-slide-toggle
+          *ngIf="currentAppeal.grader_id === null"
+          disabled="true"
+          class="grader-toggle"
+          hideIcon="true"
+          (change)="talkToGrader()"
+        ></mat-slide-toggle>
+        <p class="grader-toggle-text">To Grader</p>
+        </div>
+      </form>
+      <div class="send-button-div"
+          [class.filled]="inputFilled"
+          >
             <button
-              class="blue-button send"
-              id="send-button"
+              class="send-button"
               (click)="sendMessage(this.chatInputMessage)"
-              [disabled]="chatInputMessage === ''"
             >
               <mat-icon
-                class="search-icon"
+                class="send-icon"
                 aria-hidden="false"
                 aria-label="Example home icon"
                 fontIcon="send"
               ></mat-icon>
             </button>
-            <mat-slide-toggle
-              *ngIf="currentAppeal.grader_id !== null"
-              disabled="false"
-              class="grader-toggle"
-              hideIcon="true"
-              (change)="talkToGrader()"
-            ></mat-slide-toggle>
-            <mat-slide-toggle
-              *ngIf="currentAppeal.grader_id === null"
-              disabled="true"
-              class="grader-toggle"
-              hideIcon="true"
-              (change)="talkToGrader()"
-            ></mat-slide-toggle>
-
-            <p class="grader-toggle-text">To Grader</p>
           </div>
-          <!-- checked="talkingToGrader" -->
         </div>
       </div>
     </div>
