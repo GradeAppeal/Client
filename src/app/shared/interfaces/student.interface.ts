@@ -38,6 +38,9 @@ export interface StudentAppeal {
 }
 
 export interface GraderAppeal {
+  student_id: string;
+  student_first_name: string;
+  student_last_name: string;
   professor_id: string;
   professor_first_name: string;
   professor_last_name: string;
