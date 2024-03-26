@@ -72,10 +72,10 @@
               {{ currentAppeal.professor_last_name }}<span>:</span>
               {{ currentAppeal.assignment_name }}
             </h1>
-            <h1 class="is-closed" *ngIf="!currentAppeal.is_open">Closed</h1>
           </div>
+          <h1 class="is-closed" *ngIf="!currentAppeal.is_open">Closed</h1>
         </div>
-        <div class="chat-list" #chatListContainer>
+        <div class="chat-list" #chatListContainer #scrollMe [scrollTop]="scrollMe.scrollHeight">
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="

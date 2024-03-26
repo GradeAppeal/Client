@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="account-page">
+    <h2>Welcome, {{ professor.first_name }} {{ professor.last_name }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSaveSettings()">
+      <h3>Change Password</h3>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          placeholder="Password"
+          formControlName="password"
+          type="password"
+        />
+        <mat-error
+          *ngIf="
+            form.get('password')?.invalid &&
+            (form.get('password')?.dirty || form.get('password')?.touched)
+          "
+        >
+          Password must be at least 6 characters long.
+        </mat-error>
+      </mat-form-field>
+      <h3>Email Notification Frequency</h3>
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="frequency">
+          <mat-option *ngFor="let freq of frequencies" [value]="freq">{{
+            freq
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="button-container">
+        <button
+          mat-raised-button
+          [ngClass]="form.invalid ? 'gray-button' : 'blue-button'"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

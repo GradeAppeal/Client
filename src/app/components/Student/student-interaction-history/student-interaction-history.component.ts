@@ -114,19 +114,11 @@ export class StudentInteractionHistoryComponent {
       this.loading = false;
       this.handleAppealNewMessages();
       this.handleAllNewMessages();
+      this.handleNewMessages();
     } else {
       this.loading = false;
     }
     console.log(this.currentAppeal);
-  }
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
   // get images associated with the appeal
@@ -153,6 +145,28 @@ export class StudentInteractionHistoryComponent {
   displayImage(image: Blob | undefined): SafeUrl {
     const imageUrl = URL.createObjectURL(image as Blob);
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  handleNewMessages() {
+    this.sharedService
+      .getTableChanges(
+        'Messages',
+        `grader-appeal-messages-channel`,
+        `appeal_id=eq.${this.currentAppeal.appeal_id}`
+      )
+      .subscribe((update: any) => {
+        // if insert or update event, get new row
+        // if delete event, get deleted row ID
+        const record = update.new?.id ? update.new : update.old;
+        // INSERT or DELETE
+        const event = update.eventType;
+        if (!record) return;
+        // new message inserted
+        if (event === 'INSERT') {
+          // show new message
+          this.messages.push(record);
+        }
+      });
   }
 
   /**
@@ -267,7 +281,6 @@ export class StudentInteractionHistoryComponent {
       //   this.currentAppeal.appeal_id
       // );
       this.chatInputMessage = '';
-      this.scrollToBottom();
 
       if (hasImage) {
         const imageID = await this.sharedService.uploadFile(

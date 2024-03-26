@@ -20,7 +20,8 @@ export class CloseAppealPopupComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: { currentAppeal: ProfessorAppeal },
     public dialogRef: MatDialogRef<CloseAppealPopupComponent>,
-    private professorService: ProfessorService
+    private professorService: ProfessorService,
+    private router: Router
   ) {
     this.appeal = data.currentAppeal;
   }
@@ -33,6 +34,7 @@ export class CloseAppealPopupComponent {
         this.appeal.appeal_id
       );
       this.dialogRef.close(closedAppealID);
+      this.router.navigateByUrl('professor/appeal-inbox');
     } catch (err) {
       console.log({ err });
       throw new Error('onCloseAppeal');

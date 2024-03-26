@@ -1,7 +1,5 @@
 @import "src/styles.scss";
 
-
-
 .material-symbols-outlined {
   color: white;
   font-size: 35px;
@@ -87,12 +85,28 @@ mat-icon {
 .about-button {
   margin-right: 4px;
   height: 22px;
-  width:  22px;
+  width: 22px;
   border: 1.6px solid white;
   border-radius: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.account-button {
+  // margin-right: 4px;
+  height: 32px;
+  width: 32px;
+  //border: 1.6px solid white;
+  //background-color: $primary-blue;
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .account-icon {
+    //padding-right: 10px;
+    //font-size: 15px;
+  }
 }
 
 .about-button:hover {
@@ -113,7 +127,7 @@ mat-icon {
 
 .sign-out {
   height: 24px;
-  width:  74px;
+  width: 74px;
   font-size: 12px;
   font-weight: 550;
   background-color: white;
@@ -124,12 +138,10 @@ mat-icon {
   align-items: center;
 }
 
-
 .sign-out:hover {
   cursor: pointer;
   background-color: darken(white, 10%);
 }
-
 
 .tab-list {
   background-color: $primary-blue;
@@ -178,3 +190,7 @@ mat-icon {
 //   overflow: auto;
 //   height: 100vh;
 // }
+.menu-container {
+  padding-left: 5px;
+  padding-right: 5px;
+}

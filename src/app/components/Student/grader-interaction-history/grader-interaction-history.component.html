@@ -11,19 +11,26 @@
         (click)="selectAppeal(appeal)"
         [class.selected-appeal]="appeal === currentAppeal"
       >
-        <p matLine class="inbox-timestamp">
-          {{ formatTimestamp(appeal.created_at).time }}
-        </p>
-        <p matLine>
-          <b>
-            {{
-              appeal?.professor_first_name + " " + appeal?.professor_last_name
-            }}
-          </b>
-        </p>
-
-        <p matLine>{{ appeal.course_name }}</p>
-        <p matLine>{{ appeal?.assignment_name }}</p>
+        <div class="left-section">
+          <p class="inbox-name">
+            <b>
+              {{ appeal?.professor_first_name }}
+              {{ appeal?.professor_last_name }}
+            </b>
+          </p>
+          <p class="inbox-name">
+            <i>{{ appeal.course_name }}</i>
+          </p>
+          <p class="inbox-name">{{ appeal?.assignment_name }}</p>
+        </div>
+        <div class="right-side">
+          <div class="inbox-item-timestamp-dot-container">
+            <p class="inbox-timestamp">
+              {{ formatTimestamp(appeal.created_at).time }}
+            </p>
+            <div [ngClass]="appeal.is_read ? 'no-dot' : 'unread-dot'"></div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Right Pane (Selected Appeal Details) -->
@@ -36,7 +43,7 @@
             </h1>
           </mat-toolbar-row>
         </mat-toolbar>
-        <div class="chat-list" #chatListContainer>
+        <div class="chat-list" #chatListContainer #scrollMe [scrollTop]="scrollMe.scrollHeight">
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="
@@ -54,8 +61,8 @@
             <div
               class="chat-item"
               [ngClass]="{
-                right: chat?.sender_id === user.id,
-                left: chat?.sender_id !== user.id,
+                right: chat?.sender_id === grader.id,
+                left: chat?.sender_id !== grader.id,
                 grader: chat?.from_grader === true,
                 lightblue: chat?.sender_id === professor.id,
                 notification: chat.message_text

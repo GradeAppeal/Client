@@ -1,0 +1,60 @@
+@import "src/styles.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+  mat-dialog-actions {
+    margin: auto;
+  }
+}
+.account-page {
+  min-width: 450px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+h3 {
+  margin-bottom: 10px;
+}
+
+mat-form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.blue-button {
+  background-color: $primary-blue !important;
+  color: white !important;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 0.5em 1em;
+  border-radius: 20px;
+}
+
+.gray-button {
+  color: black;
+  background-color: #ececec;
+  font-family: Roboto;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 0.5em 1em;
+  border-radius: 20px;
+}

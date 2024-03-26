@@ -135,10 +135,6 @@ export class ProfessorInteractionHistoryComponent {
     // no appeals: show the no appeals message in HTML template
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
   // get images associated with the appeal
   async getImages() {
     try {
@@ -188,7 +184,9 @@ export class ProfessorInteractionHistoryComponent {
         // is_read updates
         else if (event === 'UPDATE') {
           this.currentAppeal.is_read = record.is_read;
-        } else if (event === 'DELETE') {
+        }
+        // deleted appeal
+        else if (event === 'DELETE') {
           this.professorAppeals = this.professorAppeals.filter(
             (appeal) => appeal !== record.id
           );
@@ -265,11 +263,6 @@ export class ProfessorInteractionHistoryComponent {
   }
   toggleOptions() {
     this.showOptions = !this.showOptions;
-  }
-
-  scrollToBottom() {
-    const maxScroll = this.list?.nativeElement.scrollHeight;
-    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
   }
 
   async selectAppeal(appeal: any) {
@@ -432,7 +425,6 @@ export class ProfessorInteractionHistoryComponent {
     });
     // update UI: get rid of closed appeal
     dialogRef.afterClosed().subscribe(async (result: number) => {
-      this.router.navigateByUrl('professor/appeal-inbox');
       // this.professorAppeals = this.professorAppeals.filter(
       //   (appeal) => appeal.appeal_id !== result
       // );
