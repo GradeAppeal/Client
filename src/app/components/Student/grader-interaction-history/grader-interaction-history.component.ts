@@ -29,8 +29,6 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
-import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
-import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
