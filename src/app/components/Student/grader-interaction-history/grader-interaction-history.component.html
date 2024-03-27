@@ -42,12 +42,9 @@
           <span class="header student-name">
             &nbsp;
 
-            {{
-              currentAppeal.student_first_name +
-                " " +
-                currentAppeal.student_last_name
-            }} </span
-          ><span class="header assignment-name">
+            {{ student.first_name + " " + student.last_name }}
+          </span>
+          <span class="header assignment-name">
             {{ currentAppeal.assignment_name }}</span
           >
         </mat-toolbar>

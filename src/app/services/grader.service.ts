@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import { AuthService } from './auth.service';
 import { GraderAppeal } from '../shared/interfaces/student.interface';
-import { Professor } from 'src/app/shared/interfaces/psql.interface';
+import { Professor, Student } from 'src/app/shared/interfaces/psql.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -78,5 +78,18 @@ export class GraderService {
       throw new Error('Error in fetchProfessors');
     }
     return data;
+  }
+
+  async getAppealStudent(
+    appid: number
+  ): Promise<{ id: string; first_name: string; last_name: string }> {
+    const { data, error } = await this.supabase.rpc('get_appeal_student', {
+      appid,
+    });
+    if (error) {
+      console.log(error.hint);
+      throw new Error(error.message);
+    }
+    return data[0];
   }
 }

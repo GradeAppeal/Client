@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { navigate, setTitle } from 'src/app/shared/functions/general.util';
 import { AuthService } from 'src/app/services/auth.service';
 import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 import { filter } from 'rxjs/operators';
 import { User } from '@supabase/supabase-js';
-import { Grader, Student } from 'src/app/shared/interfaces/psql.interface';
 import { GraderService } from 'src/app/services/grader.service';
 
 @Component({
@@ -21,7 +19,7 @@ export class StudentNavigationComponent {
   showGrader: boolean = false;
   expandMoreS: boolean = true;
   expandMoreG: boolean = false;
-
+  versionNumber = '1.1.2';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
