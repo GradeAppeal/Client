@@ -23,11 +23,13 @@ import {
   Course,
   Grader,
   ImageMessage,
+  Student,
 } from 'src/app/shared/interfaces/psql.interface';
 import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
 import { ProfessorInteractionHistoryComponent } from '../../Professor/professor-interaction-history/professor-interaction-history.component';
 @Component({
   selector: 'app-grader-interaction-history',
@@ -46,6 +48,7 @@ export class GraderInteractionHistoryComponent {
   session: Session;
   user: User;
   grader: Grader;
+  student: { id: string; first_name: string; last_name: string };
   noAppealsMessage: string = '';
   chatInputMessage: string = '';
   messageCount: number = 0;
@@ -68,7 +71,7 @@ export class GraderInteractionHistoryComponent {
   imageFile: File | undefined;
   messageID: number;
   image: Blob;
-  inputFilled : boolean = false;
+  inputFilled: boolean = false;
   imageMessages: ImageMessage[];
 
   constructor(
@@ -76,7 +79,7 @@ export class GraderInteractionHistoryComponent {
     private authService: AuthService,
     private graderService: GraderService,
     private sharedService: SharedService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
@@ -131,6 +134,7 @@ export class GraderInteractionHistoryComponent {
           this.grader.id
         );
       }
+      console.log(this.graderAppeals);
 
       this.noAppeals = this.graderAppeals.length === 0 ? true : false;
       // grader has appeals
@@ -151,6 +155,9 @@ export class GraderInteractionHistoryComponent {
             this.currentAppeal.appeal_id
           );
         }
+        this.student = await this.graderService.getAppealStudent(
+          this.currentAppeal.appeal_id
+        );
 
         // the first message is an appeal in which:
         //  sender == student
@@ -176,7 +183,7 @@ export class GraderInteractionHistoryComponent {
     }
   }
 
- /*  Get images associated with the appeal */
+  /*  Get images associated with the appeal */
   async getImages() {
     try {
       this.imageMessages.forEach(async (message) => {
@@ -251,6 +258,10 @@ export class GraderInteractionHistoryComponent {
   async selectAppeal(appeal: GraderAppeal) {
     try {
       this.currentAppeal = appeal;
+      this.student = await this.graderService.getAppealStudent(
+        this.currentAppeal.appeal_id
+      );
+
       // change filter
       this.handleAppealNewMessages();
       this.messages = await this.sharedService.fetchMessages(
@@ -313,18 +324,17 @@ export class GraderInteractionHistoryComponent {
         (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
-
     } catch (err) {
       console.log(err);
       throw new Error('onSubmitAppeal');
     }
   }
-    /**
+  /**
    * Check if input is filled for send button color
    */
-    onTextAreaChange() {
-      this.inputFilled = this.chatInputMessage.trim().length > 0;
-    }
+  onTextAreaChange() {
+    this.inputFilled = this.chatInputMessage.trim().length > 0;
+  }
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
