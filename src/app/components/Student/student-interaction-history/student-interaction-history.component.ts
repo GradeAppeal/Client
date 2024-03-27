@@ -58,6 +58,7 @@ export class StudentInteractionHistoryComponent {
   studentAppeals!: StudentAppeal[];
   filteredAppeals: StudentAppeal[];
   loadStudentAppeals = false;
+  inputFilled : boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -121,7 +122,13 @@ export class StudentInteractionHistoryComponent {
     console.log(this.currentAppeal);
   }
 
-  // get images associated with the appeal
+
+  scrollToBottom() {
+    const maxScroll = this.list?.nativeElement.scrollHeight;
+    this.list?.nativeElement.scrollTo({ top: maxScroll, behavior: 'smooth' });
+  }
+
+  /* get images associated with the appeal*/
   async getImages() {
     try {
       this.imageMessages.forEach(async (message) => {
@@ -259,6 +266,7 @@ export class StudentInteractionHistoryComponent {
     message: string,
     notification: boolean = false
   ): Promise<void> {
+    this.inputFilled = false;
     const now = getTimestampTz(new Date());
     try {
       const professorID = this.professor.id;
@@ -288,16 +296,23 @@ export class StudentInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
-        location.reload();
+        // clear the file input
+        (<HTMLInputElement>document.getElementById('image')).value = '';
+        window.location.reload();
       }
 
-      // clear the file input
-      (<HTMLInputElement>document.getElementById('image')).value = '';
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
     }
   }
+
+    /**
+ * Check if input is filled for send button color
+ */
+    onTextAreaChange() {
+      this.inputFilled = this.chatInputMessage.trim().length > 0;
+    }
 
   //imported functions
   formatTimestamp(timestamp: Date): { date: string; time: string } {
