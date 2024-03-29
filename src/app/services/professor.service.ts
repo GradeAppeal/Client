@@ -699,4 +699,29 @@ export class ProfessorService {
     }
     return user;
   }
+
+  /**
+   * Get Professor's cron job
+   * @param pid professor ID
+   * @returns cron job in string format (e.g. "0 8 * * 1")
+   */
+  async getCron(pid: string): Promise<string> {
+    const { data, error } = await this.supabase.rpc('get_cron', {
+      pid,
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
+  async updateCron(pid: string, cron: string): Promise<void> {
+    const { data, error } = await this.supabase.rpc('update_cron', {
+      pid,
+      cron,
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
 }
