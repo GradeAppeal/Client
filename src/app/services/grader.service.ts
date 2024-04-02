@@ -78,17 +78,4 @@ export class GraderService {
     }
     return data[0];
   }
-
-  async getAppealStudent(
-    appid: number
-  ): Promise<{ id: string; first_name: string; last_name: string }> {
-    const { data, error } = await this.supabase.rpc('get_appeal_student', {
-      appid,
-    });
-    if (error) {
-      console.log(error.hint);
-      throw new Error(error.message);
-    }
-    return data[0];
-  }
 }
