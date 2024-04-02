@@ -27,6 +27,7 @@
     "dotenv": "^16.3.2",
     "git": "^0.1.5",
     "ngx-gravatar": "^13.0.0",
+    "ngx-mat-timepicker": "^16.2.0",
     "ngx-spinner": "^16.0.2",
     "papaparse": "^5.4.1",
     "pg": "^8.11.3",

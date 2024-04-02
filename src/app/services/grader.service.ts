@@ -66,18 +66,17 @@ export class GraderService {
     return data;
   }
 
-  /**
-   * Fetches the student's courses (both enrolled and grading)
-   * @param sid student id
-   * @returns
-   */
-  async fetchProfessors(): Promise<Professor[]> {
-    const { data, error } = await this.supabase.rpc('get_professors');
+  async getAppealStudent(
+    appid: number
+  ): Promise<{ id: string; first_name: string; last_name: string }> {
+    const { data, error } = await this.supabase.rpc('get_appeal_student', {
+      appid,
+    });
     if (error) {
-      console.log({ error });
-      throw new Error('Error in fetchProfessors');
+      console.log(error.hint);
+      throw new Error(error.message);
     }
-    return data;
+    return data[0];
   }
 
   async getAppealStudent(
