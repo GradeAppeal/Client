@@ -29,6 +29,7 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+
 @Component({
   selector: 'app-grader-interaction-history',
   templateUrl: './grader-interaction-history.component.html',
