@@ -39,7 +39,7 @@
           </div>
           <p class="assignment-name">{{ appeal.assignment_name }}</p>
           <p class="inbox-assignment-name">
-            {{ appeal.course_prefix }}{{ currentAppeal?.course_code }}
+            {{ appeal.course_prefix }}{{ appeal.course_code }}
             {{ appeal.course_section }}
             {{ appeal.course_semester }}
           </p>
@@ -99,7 +99,7 @@
                   *ngIf="currentAppeal.grader_id !== null"
                   class="assignment-status"
                 >
-                  Assigned to Grader
+                  Assigned to Grader: {{ currentAppeal.grader_name }}
                 </div>
                 <div
                   *ngIf="currentAppeal.grader_id === null"

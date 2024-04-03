@@ -319,7 +319,6 @@ export class AuthService {
     });
 
     if (error) {
-      console.log({ error });
       throw new Error(error.message);
     }
     return data;

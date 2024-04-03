@@ -36,10 +36,10 @@
               {{ appeal?.professor_last_name }}
             </b>
           </p>
-          <p class="inbox-name">
-            <i>{{ appeal.course_name }}</i>
+          <p class="inbox-course-name">
+            {{ appeal.course_name }}
           </p>
-          <p class="inbox-name">{{ appeal?.assignment_name }}</p>
+          <p class="inbox-assignment-name">{{ appeal?.assignment_name }}</p>
         </div>
         <div class="right-side">
           <div class="inbox-item-timestamp-dot-container">
@@ -59,22 +59,17 @@
     <!-- Right Pane (Selected Appeal Details) -->
     <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
-        <div class="top-bar">
-          <div class="left-content">
-            <mat-icon
-              class="header-avatar"
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="account_circle"
-            ></mat-icon>
-            <h1>
+        <mat-toolbar class="top-bar">
+          <mat-toolbar-row>
+            <span class="header student-name">
               {{ currentAppeal.professor_first_name }}
-              {{ currentAppeal.professor_last_name }}<span>:</span>
-              {{ currentAppeal.assignment_name }}
-            </h1>
-          </div>
-          <h1 class="is-closed" *ngIf="!currentAppeal.is_open">Closed</h1>
-        </div>
+              {{ currentAppeal.professor_last_name }}
+            </span>
+            <span class="header assignment-name">{{
+              currentAppeal.assignment_name
+            }}</span>
+          </mat-toolbar-row>
+        </mat-toolbar>
         <div class="chat-list" #chatListContainer>
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
@@ -160,18 +155,17 @@
           <input
             id="chat-textarea"
             [(ngModel)]="chatInputMessage"
+            (input)="onTextAreaChange()"
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
-
-          <div class="buttons">
+          <div class="send-button-div" [class.filled]="inputFilled">
             <button
-              class="send"
+              class="send-button"
               (click)="sendMessage(this.chatInputMessage)"
-              [disabled]="chatInputMessage === ''"
             >
               <mat-icon
-                class="search-icon"
+                class="send-icon"
                 aria-hidden="false"
                 aria-label="Example home icon"
                 fontIcon="send"
@@ -182,6 +176,7 @@
       </div>
     </div>
   </div>
+
   <ng-template #loadingSpinner>
     <app-loading-spinner
       [fetchMessage]="'Fetching Interaction History...'"

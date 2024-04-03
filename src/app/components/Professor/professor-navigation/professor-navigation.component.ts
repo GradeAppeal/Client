@@ -13,19 +13,13 @@ import { filter } from 'rxjs/operators';
 export class ProfessorNavigationComponent {
   selectedTab: string = 'professor/appeal-inbox';
   title: string = 'Appeal Inbox';
-  versionNumber = '1.1.0';
+  versionNumber = '1.1.2';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private professorService: ProfessorService
-  ) {}
-  navigateTo(route: string) {
-    this.selectedTab = route;
-    this.router.navigate([route]);
-  }
-
-  async ngOnInit() {
+  ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -37,14 +31,25 @@ export class ProfessorNavigationComponent {
         this.title = this.title.replace(/\b\w/g, function (match) {
           return match.toUpperCase();
         });
+        console.log(this.title);
         console.log(this.selectedTab);
         if (this.selectedTab.includes('roster')) {
           this.title = 'Roster';
         } else if (this.selectedTab.includes('assignments')) {
           this.title = 'Assignments';
+        } else if (this.selectedTab.includes('interaction-history')) {
+          this.title = 'Interaction History';
+        } else if (this.selectedTab.includes('edit-templates')) {
+          this.title = 'Edit Templates';
         }
       });
   }
+  navigateTo(route: string) {
+    this.selectedTab = route;
+    this.router.navigate([route]);
+  }
+
+  async ngOnInit() {}
   openSettings() {
     console.log('opening settings');
   }
