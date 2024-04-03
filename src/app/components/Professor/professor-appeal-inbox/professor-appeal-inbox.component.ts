@@ -13,6 +13,7 @@ import { GraderAssignedSnackbarComponent } from '../professor-interaction-histor
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/services/shared.service';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
 
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -37,6 +38,21 @@ export class ProfessorAppealInboxComponent implements OnInit {
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
   durationInSeconds: number = 2;
+
+  //popup properties
+  //close appeal
+  closeAppealPopupTitle: string = 'Close Appeal';
+  closeAppealPopupMessage: string =
+    'Are you sure you want to close this appeal?';
+  closeAppealActionButtonText: string = 'Close';
+  show: boolean = false;
+  //unassign grader
+  unassignGraderPopupTitle: string = 'Unassign Grader';
+  unassignGraderPopupMessage: string =
+    'Are you sure you want to unassign this grader?';
+  unassignGraderActionButtonText: string = 'Unassign';
+  showUnassignGraderPopup: boolean = false;
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -185,19 +201,19 @@ export class ProfessorAppealInboxComponent implements OnInit {
    * Close appeal event function
    * @param event
    */
-  async onCloseAppeal(event: MouseEvent) {
-    const currentAppeal = this.currentAppeal;
-    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      data: { currentAppeal },
-    });
-
-    // // update UI: get rid of closed appeal
-    // dialogRef.afterClosed().subscribe((result: number) => {
-    //   this.professorAppeals = this.professorAppeals.filter(
-    //     (appeal) => appeal.appeal_id !== result
-    //   );
-    //   this.currentAppeal = this.professorAppeals[0];
-    // });
+  async onCloseAppeal(): Promise<void> {
+    try {
+      const now = new Date();
+      console.log(this.currentAppeal.appeal_id);
+      const closedAppealID = await this.professorService.updateAppealOpenStatus(
+        this.currentAppeal.appeal_id
+      );
+      this.togglePopup();
+      this.router.navigateByUrl('professor/appeal-inbox');
+    } catch (err) {
+      console.log({ err });
+      throw new Error('onCloseAppeal');
+    }
   }
 
   async onAssignGrader(event: MouseEvent) {
@@ -220,17 +236,33 @@ export class ProfessorAppealInboxComponent implements OnInit {
     }
   }
 
-  async unassignGrader(event: MouseEvent) {
+  async unassignGrader() {
     if (this.currentAppeal.grader_id) {
-      const graderName = this.currentAppeal.grader_name;
-      const studentID = this.currentAppeal.student_id;
-      const professorID = this.professor.id;
-      console.log(graderName);
-      const appealID = this.currentAppeal.appeal_id;
-      // open popup to assign grader
-      const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        data: { graderName, appealID, studentID, professorID },
-      });
+      // // open popup to assign grader
+      await this.professorService.updateUnassignAppealGrader(
+        this.currentAppeal.appeal_id
+      );
+      const now = getTimestampTz(new Date());
+      const message = 'Notification: Grader Unassigned';
+
+      await this.sharedService.insertMessage(
+        this.currentAppeal.appeal_id,
+        this.professor.id,
+        this.currentAppeal.student_id,
+        now,
+        message,
+        false,
+        '',
+        '',
+        false
+      );
+      this.toggleUnassignGraderPopup();
     }
+  }
+  togglePopup() {
+    this.show = !this.show;
+  }
+  toggleUnassignGraderPopup(): void {
+    this.showUnassignGraderPopup = !this.showUnassignGraderPopup;
   }
 }

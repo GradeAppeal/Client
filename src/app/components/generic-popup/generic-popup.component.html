@@ -1,0 +1,18 @@
+<div class="overlay">
+  <div class="popup-container">
+    <div class="container">
+      <h1 class="title">{{ title }}</h1>
+      <p class="message">{{ message }}</p>
+      <div class="custom-content">
+        <!-- Content projection for custom content -->
+        <ng-content></ng-content>
+      </div>
+      <div class="button-div">
+        <button class="blue-button" (click)="confirmAction(true)">
+          {{ actionButtonText }}
+        </button>
+        <button class="cancel-button" (click)="closePopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -33,22 +33,22 @@
             </div> -->
           </div>
           <div class="button-container">
-            <button
-              class="blue-button option"
-              (click)="onReopenAppeal(i)"
-            >
+            <button class="blue-button option" (click)="toggleReopenPopup()">
               Reopen
             </button>
-            <button
-              class="gray-button option"
-              (click)="onViewAppeal(i)"
+            <app-generic-popup
+              *ngIf="showReopenPopup"
+              [title]="reopenPopupTitle"
+              [message]="reopenPopupMessage"
+              [actionButtonText]="reopenActionButtonText"
+              (actionConfirmed)="onReopenAppeal(i)"
+              (popupClosed)="toggleReopenPopup()"
             >
+            </app-generic-popup>
+            <button class="cancel-button option" (click)="onViewAppeal(i)">
               View
             </button>
-            <button
-              class="gray-button option"
-              (click)="onDeleteAppeal(i)"
-            >
+            <button class="cancel-button option" (click)="onDeleteAppeal(i)">
               Delete
             </button>
           </div>

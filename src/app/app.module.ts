@@ -71,6 +71,7 @@ import { DeleteStudentPopupComponent } from './components/Professor/roster/delet
 import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
 import { EditGraderComponent } from './components/Professor/assignments/edit-grader/edit-grader.component';
 import { AccountComponent } from './components/Professor/account/account.component';
+import { GenericPopupComponent } from './components/generic-popup/generic-popup.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { AccountComponent } from './components/Professor/account/account.compone
     ResetStudentPasswordPopupComponent,
     EditGraderComponent,
     AccountComponent,
+    GenericPopupComponent,
   ],
   imports: [
     BrowserModule,

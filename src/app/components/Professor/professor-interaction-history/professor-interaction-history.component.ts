@@ -66,6 +66,11 @@ export class ProfessorInteractionHistoryComponent {
   // snackbar duration
   durationInSeconds: number = 2;
 
+  //popup properties
+  popupTitle: string = 'Close Appeal';
+  popupMessage: string = 'Are you sure you want to close this appeal?';
+  actionButtonText: string = 'Close';
+  show: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -427,21 +432,21 @@ export class ProfessorInteractionHistoryComponent {
     return isSameDate(date1, date2);
   }
 
-  async onCloseAppeal(event: MouseEvent) {
-    const currentAppeal = this.currentAppeal;
-    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      data: { currentAppeal },
-    });
-    // update UI: get rid of closed appeal
-    dialogRef.afterClosed().subscribe(async (result: number) => {
-      // this.professorAppeals = this.professorAppeals.filter(
-      //   (appeal) => appeal.appeal_id !== result
-      // );
-      // this.currentAppeal = this.professorAppeals[0];
-      // this.messages = await this.sharedService.fetchMessages(
-      //   this.currentAppeal.appeal_id
-      // ); //237, 238, 239 240
-    });
+  async onCloseAppeal(): Promise<void> {
+    try {
+      const now = new Date();
+      console.log(this.currentAppeal.appeal_id);
+      const closedAppealID = await this.professorService.updateAppealOpenStatus(
+        this.currentAppeal.appeal_id
+      );
+      this.router.navigateByUrl('professor/appeal-inbox');
+    } catch (err) {
+      console.log({ err });
+      throw new Error('onCloseAppeal');
+    }
+  }
+  showPopup() {
+    this.show = !this.show;
   }
 
   onFilechange(event: any) {

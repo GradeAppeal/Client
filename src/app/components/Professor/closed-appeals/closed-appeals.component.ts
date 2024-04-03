@@ -15,6 +15,13 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./closed-appeals.component.scss'],
 })
 export class ClosedAppealsComponent implements OnInit {
+  showReopenPopup: boolean = false;
+  reopenPopupTitle: string = 'Reopen this appeal?';
+  reopenPopupMessage: string;
+  reopenActionButtonText: string = 'Reopen';
+  toggleReopenPopup() {
+    this.showReopenPopup = !this.showReopenPopup;
+  }
   professor: Professor;
   closedAppeals: ProfessorAppeal[];
   constructor(
@@ -71,16 +78,19 @@ export class ClosedAppealsComponent implements OnInit {
 
   async onReopenAppeal(i: number) {
     const reopenAppeal = this.closedAppeals[i];
-    const dialogRef = this.dialog.open(ReopenPopupComponent, {
-      data: { reopenAppeal },
-    });
-
+    // const dialogRef = this.dialog.open(ReopenPopupComponent, {
+    //   data: { reopenAppeal },
+    // });
+    const reopenedAppealID = await this.professorService.updateAppealOpenStatus(
+      this.closedAppeals[i].appeal_id
+    );
     // update UI: get rid of reopened appeal
-    dialogRef.afterClosed().subscribe((reopenAppealId: number) => {
-      this.closedAppeals = this.closedAppeals.filter(
-        (appeal) => appeal.appeal_id !== reopenAppealId
-      );
-    });
+    // dialogRef.afterClosed().subscribe((reopenAppealId: number) => {
+    //   this.closedAppeals = this.closedAppeals.filter(
+    //     (appeal) => appeal.appeal_id !== reopenAppealId
+    //   );
+    // });
+    this.toggleReopenPopup();
   }
 
   onViewAppeal(i: number) {
