@@ -18,9 +18,10 @@ export class StudentNavigationComponent {
   user: User;
   isGrader: boolean;
   showStudent: boolean = true;
-  showGrader: boolean = false;
+  showGrader: boolean;
   expandMoreS: boolean = true;
-  expandMoreG: boolean = false;
+  expandMoreG: boolean;
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -40,8 +41,12 @@ export class StudentNavigationComponent {
     this.selectedTab = route;
     this.router.navigate([route]);
   }
-
+  
+ /** 
+   *  Set up page on initialization, and load page after variables have been set
+   */
   async ngOnInit() {
+    console.log(this.loading);
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -55,7 +60,14 @@ export class StudentNavigationComponent {
         });
       });
 
+    /* Update tabs on refresh */
     this.isGrader = await this.graderService.isGrader(this.user.id);
+    const storedShowStudent = localStorage.getItem('showStudent');
+    this.showStudent = storedShowStudent ? JSON.parse(storedShowStudent) : false;
+    const storedShowGrader = localStorage.getItem('showGrader');
+    this.showGrader = storedShowGrader ? JSON.parse(storedShowGrader) : false;
+
+    this.loading = false;
   }
 
   grader = false;
@@ -66,7 +78,21 @@ export class StudentNavigationComponent {
     this.selectedTab = tabName;
   }
 
+
   logoutPopUp() {
     this.dialog.open(SignoutComponent, {});
+  }
+ /** 
+   *  Switch tabs to be hidden or seen and store in local storage
+   */
+  toggleTab(option : string) {
+    if (option == 'student'){
+      this.showStudent = !this.showStudent;
+      localStorage.setItem('showStudent', JSON.stringify(this.showStudent));
+    }
+    else {
+      this.showGrader = !this.showGrader;
+      localStorage.setItem('showGrader', JSON.stringify(this.showGrader));
+    }
   }
 }
