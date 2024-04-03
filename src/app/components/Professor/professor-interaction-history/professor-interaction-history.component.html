@@ -43,7 +43,7 @@
             {{ appeal.student_first_name }} {{ appeal.student_last_name }}
           </p>
           <p class="inbox-assignment-name">
-            {{ appeal.course_prefix }}{{ currentAppeal.course_code }}
+            {{ appeal.course_prefix }}{{ appeal.course_code }}
             {{ appeal.course_section }}
             {{ appeal.course_semester }}
           </p>
@@ -107,7 +107,12 @@
             </button>
           </div>
         </div>
-        <div class="chat-list" #chatListContainer #scrollMe [scrollTop]="scrollMe.scrollHeight">
+        <div
+          class="chat-list"
+          #chatListContainer
+          #scrollMe
+          [scrollTop]="scrollMe.scrollHeight"
+        >
           <ng-container *ngFor="let chat of imageMessages; let i = index">
             <ng-container
               *ngIf="

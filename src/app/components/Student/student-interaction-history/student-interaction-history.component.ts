@@ -58,7 +58,7 @@ export class StudentInteractionHistoryComponent {
   studentAppeals!: StudentAppeal[];
   filteredAppeals: StudentAppeal[];
   loadStudentAppeals = false;
-  inputFilled : boolean = false;
+  inputFilled: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -96,6 +96,7 @@ export class StudentInteractionHistoryComponent {
     );
     this.filteredAppeals = this.studentAppeals;
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
+    console.log(this.noAppeals);
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
       this.professor = await this.sharedService.getProfessor(
@@ -117,11 +118,12 @@ export class StudentInteractionHistoryComponent {
       this.handleAllNewMessages();
       this.handleNewMessages();
     } else {
+      this.studentAppeals = [];
+      this.imageMessages = [];
       this.loading = false;
     }
     console.log(this.currentAppeal);
   }
-
 
   scrollToBottom() {
     const maxScroll = this.list?.nativeElement.scrollHeight;
@@ -300,19 +302,18 @@ export class StudentInteractionHistoryComponent {
         (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
-
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
     }
   }
 
-    /**
- * Check if input is filled for send button color
- */
-    onTextAreaChange() {
-      this.inputFilled = this.chatInputMessage.trim().length > 0;
-    }
+  /**
+   * Check if input is filled for send button color
+   */
+  onTextAreaChange() {
+    this.inputFilled = this.chatInputMessage.trim().length > 0;
+  }
 
   //imported functions
   formatTimestamp(timestamp: Date): { date: string; time: string } {

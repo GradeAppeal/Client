@@ -15,23 +15,18 @@
       <span class="title">{{ title }}</span>
     </div>
     <div class="top-right-content">
-      <button
-      [routerLink]="['/student/about']"
-      class="about-button"
-    >
-      <mat-icon
-        class="about-icon"
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="?"
-      ></mat-icon>
-      &ensp;
-    </button>
-    <div class="sign-out-button">
-      <span class="sign-out" (click)="logoutPopUp()">
-        Sign Out
-      </span>
-    </div>
+      <button [routerLink]="['/student/about']" class="about-button">
+        <mat-icon
+          class="about-icon"
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="?"
+        ></mat-icon>
+        &ensp;
+      </button>
+      <div class="sign-out-button">
+        <span class="sign-out" (click)="logoutPopUp()"> Sign Out </span>
+      </div>
     </div>
   </div>
 
@@ -49,7 +44,7 @@
             routerLinkActive="selected"
           >
             <mat-icon
-            class="side-nav-icon"
+              class="side-nav-icon"
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="dashboard"
@@ -58,53 +53,16 @@
             <p>Courses</p>
           </button>
         </div>
-      
-      <div class="tab">
-        <button
-          class="sidenav-button"
-          [routerLink]="['/student/interaction-history']"
-          (click)="navigateTo('student/interaction-history')"
-          routerLinkActive="selected"
-        >
-          <mat-icon
-          class="side-nav-icon"
-            aria-hidden="false"
-            aria-label="Example home icon"
-            fontIcon="chat"
-          ></mat-icon>
-          &ensp;Interaction History
-        </button>
-    </div>
-      </div>
-      <div class="grader-label" *ngIf="isGrader" (click)="toggleTab('grader') ">
-        <mat-icon *ngIf="showGrader">expand_more</mat-icon>
-        <mat-icon *ngIf="!showGrader">chevron_right</mat-icon>
-        Grader</div>
-      <div class="grader-tab-container" *ngIf="showGrader && !loading">
-        <div class="grader-tabs">
-          <div class="tab"> 
-            <button
-              class="tab-text sidenav-button"
-              [routerLink]="['/student/grader/courses']"
-              routerLinkActive="selected"
-            >
-              <mat-icon
-              class="side-nav-icon"
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="dashboard"
-              ></mat-icon>
-              &ensp;Courses
-            </button>
-        </div>
+
         <div class="tab">
           <button
             class="sidenav-button"
-            [routerLink]="['/student/grader/interaction-history']"
+            [routerLink]="['/student/interaction-history']"
+            (click)="navigateTo('student/interaction-history')"
             routerLinkActive="selected"
           >
             <mat-icon
-            class="side-nav-icon"
+              class="side-nav-icon"
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="chat"
@@ -112,8 +70,46 @@
             &ensp;Interaction History
           </button>
         </div>
+      </div>
+      <div class="grader-label" *ngIf="isGrader" (click)="toggleTab('grader') ">
+        <mat-icon *ngIf="showGrader">expand_more</mat-icon>
+        <mat-icon *ngIf="!showGrader">chevron_right</mat-icon>
+        Grader</div>
+      <div class="grader-tab-container" *ngIf="showGrader && !loading">
+        <div class="grader-tabs">
+          <div class="tab">
+            <button
+              class="tab-text sidenav-button"
+              [routerLink]="['/student/grader/courses']"
+              routerLinkActive="selected"
+            >
+              <mat-icon
+                class="side-nav-icon"
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="dashboard"
+              ></mat-icon>
+              &ensp;Courses
+            </button>
+          </div>
+          <div class="tab">
+            <button
+              class="sidenav-button"
+              [routerLink]="['/student/grader/interaction-history']"
+              routerLinkActive="selected"
+            >
+              <mat-icon
+                class="side-nav-icon"
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="chat"
+              ></mat-icon>
+              &ensp;Interaction History
+            </button>
+          </div>
         </div>
       </div>
+      <p class="version-number">v{{ versionNumber }}</p>
     </div>
   </div>
 
