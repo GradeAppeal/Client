@@ -96,7 +96,7 @@ export class StudentInteractionHistoryComponent {
     );
     this.filteredAppeals = this.studentAppeals;
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
-    console.log(this.noAppeals);
+
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
       this.professor = await this.sharedService.getProfessor(

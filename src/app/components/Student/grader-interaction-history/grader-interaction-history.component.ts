@@ -133,37 +133,28 @@ export class GraderInteractionHistoryComponent {
           this.grader.id
         );
       }
-      console.log(this.graderAppeals);
 
       this.noAppeals = this.graderAppeals.length === 0 ? true : false;
       // grader has appeals
       if (!this.noAppeals) {
+        // get appeal with specific id
+        // otherwise set the latest appeal as the current appeal
         this.currentAppeal =
           this.graderAppeals.find(
             (appeal) => appeal.appeal_id === this.appealId
           ) || this.graderAppeals[0];
-
-        if (this.currentAppeal) {
-          this.messages = await this.sharedService.fetchMessages(
-            this.currentAppeal.appeal_id
-          );
-        } else {
-          this.currentAppeal = this.graderAppeals[0];
-
-          this.messages = await this.sharedService.fetchMessages(
-            this.currentAppeal.appeal_id
-          );
-        }
+        // get student info
         this.student = await this.graderService.getAppealStudent(
           this.currentAppeal.appeal_id
         );
 
-        // the first message is an appeal in which:
-        //  sender == student
-        //  recipient == professor
-        // therefore, we use the recipient_id as the pid to get professor info
-        const { recipient_id } = this.messages[0];
-        const pid = recipient_id;
+        this.messages = await this.sharedService.fetchStudentMessages(
+          this.currentAppeal.appeal_id,
+          this.grader.id,
+          this.currentAppeal.professor_id
+        );
+        // get professor information
+        const pid = this.currentAppeal.professor_id;
         this.professor = await this.sharedService.getProfessor(pid);
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
@@ -256,19 +247,24 @@ export class GraderInteractionHistoryComponent {
   async selectAppeal(appeal: GraderAppeal) {
     try {
       this.currentAppeal = appeal;
+      // get professor information from appeal
+      const pid = this.currentAppeal.professor_id;
+      this.professor = await this.sharedService.getProfessor(pid);
+      // get student information
       this.student = await this.graderService.getAppealStudent(
         this.currentAppeal.appeal_id
       );
 
       // change filter
       this.handleAppealNewMessages();
-      this.messages = await this.sharedService.fetchMessages(
-        this.currentAppeal.appeal_id
+      this.messages = await this.sharedService.fetchStudentMessages(
+        this.currentAppeal.appeal_id,
+        this.grader.id,
+        this.professor.id
       );
       this.imageMessages = this.messages;
       await this.getImages();
       await this.sharedService.updateMessageRead(this.currentAppeal.appeal_id);
-      console.log('selectAppeal');
     } catch (e) {
       console.log({ e });
     }
@@ -287,17 +283,7 @@ export class GraderInteractionHistoryComponent {
     }
     try {
       const hasImage = this.imageFile ? true : false;
-      console.log(
-        this.currentAppeal.appeal_id,
-        this.grader.id, //sender id: grader
-        this.professor.id, //recipientid : professor??
-        new Date(),
-        this.chatInputMessage,
-        this.fromGrader,
-        `${this.grader.first_name} ${this.grader.last_name}`,
-        `${this.professor.first_name} ${this.professor.last_name}`,
-        hasImage
-      );
+
       this.messageID = await this.sharedService.insertMessage(
         this.currentAppeal.appeal_id,
         this.grader.id, //sender id: grader
