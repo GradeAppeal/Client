@@ -9,10 +9,10 @@ import {
 import { SharedService } from 'src/app/services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddStudentPopupComponent } from './add-student-popup/add-student-popup.component';
-import { DeleteStudentPopupComponent } from './delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './reset-student-password-popup/reset-student-password-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-roster',
@@ -308,9 +308,21 @@ export class RosterComponent {
     });
   }
 
-  onDeleteStudent(student: StudentCourseGraderInfo): void {
-    this.dialog.open(DeleteStudentPopupComponent, {
-      data: { student },
+  toggleDeleteStudentPopup(student: StudentCourseGraderInfo) {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Delete Student?',
+        message: 'Are you sure you want to delete this student?',
+        actionButtonText: 'Close',
+        action: async () => {
+          const { student_id, course_id } = student;
+          await this.professorService.deleteStudentFromCourse(
+            student_id,
+            course_id
+          );
+          dialogRef.close();
+        },
+      },
     });
   }
 

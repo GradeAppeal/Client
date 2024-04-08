@@ -42,11 +42,9 @@ import { AssignmentsComponent } from './components/Professor/assignments/assignm
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
-import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
 import { AddCourseComponent } from './components/Professor/courses/add-course/add-course.component';
-import { DeleteCourseComponent } from './components/Professor/courses/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
 import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
@@ -63,7 +61,6 @@ import { LoadingSpinnerComponent } from './components/util-components/loading-sp
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
 import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
-import { DeleteStudentPopupComponent } from './components/Professor/roster/delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
 import { EditGraderComponent } from './components/Professor/assignments/edit-grader/edit-grader.component';
 import { AccountComponent } from './components/Professor/account/account.component';
@@ -87,11 +84,9 @@ import { GenericPopupComponent } from './components/generic-popup/generic-popup.
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
     RegisterComponent,
-    DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
     AddCourseComponent,
-    DeleteCourseComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
     AssignGraderPopupComponent,
@@ -108,7 +103,6 @@ import { GenericPopupComponent } from './components/generic-popup/generic-popup.
     ConfirmationComponent,
     RequestTokenComponent,
     RedirectSnackbarComponent,
-    DeleteStudentPopupComponent,
     ResetStudentPasswordPopupComponent,
     EditGraderComponent,
     AccountComponent,

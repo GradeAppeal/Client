@@ -39,7 +39,10 @@
           </button>
           <mat-menu #menu="matMenu">
             <!-- Delete assignment -->
-            <button mat-menu-item (click)="deleteAssignmentPopUp(element.id)">
+            <button
+              mat-menu-item
+              (click)="toggleDeleteAssignmentPopUp(element.id)"
+            >
               <mat-icon>delete</mat-icon>
               <span>Delete</span>
             </button>
