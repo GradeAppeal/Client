@@ -6,6 +6,7 @@ import { SignoutComponent } from 'src/app/components/Auth/signout/signout.compon
 import { filter } from 'rxjs/operators';
 import { User } from '@supabase/supabase-js';
 import { GraderService } from 'src/app/services/grader.service';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-student-navigation',
@@ -37,8 +38,8 @@ export class StudentNavigationComponent {
     this.selectedTab = route;
     this.router.navigate([route]);
   }
-  
- /** 
+
+  /**
    *  Set up page on initialization, and load page after variables have been set
    */
   async ngOnInit() {
@@ -59,7 +60,9 @@ export class StudentNavigationComponent {
     /* Update tabs on refresh */
     this.isGrader = await this.graderService.isGrader(this.user.id);
     const storedShowStudent = localStorage.getItem('showStudent');
-    this.showStudent = storedShowStudent ? JSON.parse(storedShowStudent) : false;
+    this.showStudent = storedShowStudent
+      ? JSON.parse(storedShowStudent)
+      : false;
     const storedShowGrader = localStorage.getItem('showGrader');
     this.showGrader = storedShowGrader ? JSON.parse(storedShowGrader) : false;
 
@@ -74,19 +77,32 @@ export class StudentNavigationComponent {
     this.selectedTab = tabName;
   }
 
-
-  logoutPopUp() {
-    this.dialog.open(SignoutComponent, {});
+  // logoutPopUp() {
+  //   this.dialog.open(SignoutComponent, {});
+  // }
+  toggleLogoutPopup() {
+    console.log('what');
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Sign Out?',
+        message: 'Are you sure want to Sign Out?',
+        actionButtonText: 'Sign Out',
+        action: async () => {
+          await this.authService.signOut();
+          this.router.navigateByUrl('login');
+          dialogRef.close();
+        },
+      },
+    });
   }
- /** 
+  /**
    *  Switch tabs to be hidden or seen and store in local storage
    */
-  toggleTab(option : string) {
-    if (option == 'student'){
+  toggleTab(option: string) {
+    if (option == 'student') {
       this.showStudent = !this.showStudent;
       localStorage.setItem('showStudent', JSON.stringify(this.showStudent));
-    }
-    else {
+    } else {
       this.showGrader = !this.showGrader;
       localStorage.setItem('showGrader', JSON.stringify(this.showGrader));
     }

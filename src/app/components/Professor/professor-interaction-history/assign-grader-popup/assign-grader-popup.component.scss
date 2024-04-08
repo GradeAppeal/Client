@@ -43,3 +43,17 @@
   gap: 1rem;
   flex-direction: row;
 }
+.title {
+  font-family: $font;
+  font-weight: bold;
+}
+
+body {
+  font-family: $font !important;
+}
+.cancel-button {
+  background-color: white;
+  color: black;
+  &:hover {
+  }
+}

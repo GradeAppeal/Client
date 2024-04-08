@@ -33,21 +33,18 @@
             </div> -->
           </div>
           <div class="button-container">
-            <button
-              class="blue-button option"
-              (click)="onReopenAppeal(i)"
-            >
+            <button class="blue-button option" (click)="toggleReopenPopup(i)">
               Reopen
             </button>
             <button
-              class="gray-button option"
-              (click)="onViewAppeal(i)"
+              class="cancel-button option"
+              (click)="toggleViewAppealPopup(i)"
             >
               View
             </button>
             <button
-              class="gray-button option"
-              (click)="onDeleteAppeal(i)"
+              class="cancel-button option"
+              (click)="toggleDeleteAppealPopup(i)"
             >
               Delete
             </button>

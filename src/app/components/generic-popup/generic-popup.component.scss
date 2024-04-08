@@ -1,0 +1,37 @@
+@import "src/styles.scss";
+
+.popup-container {
+  padding: 20px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center text */
+}
+.button-div {
+  margin-top: 20px;
+}
+.blue-button {
+  background-color: $primary-blue;
+  padding: 0.5rem 1rem;
+  background-color: $primary-blue;
+  color: white;
+}
+
+.cancel-button {
+  background-color: white;
+  color: black;
+  &:hover {
+  }
+}
+.message {
+  color: gray;
+  font-size: 12px;
+  font-weight: 300;
+}
+.title {
+  font-weight: bold;
+  font-size: 15px;
+}

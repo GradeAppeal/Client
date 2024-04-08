@@ -1,4 +1,9 @@
-import { Component, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Session } from '@supabase/supabase-js';
@@ -24,9 +29,9 @@ import { AssignGraderPopupComponent } from './assign-grader-popup/assign-grader-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GraderAssignedSnackbarComponent } from './grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
-import { CloseAppealPopupComponent } from '../professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-professor-interaction-history',
@@ -65,8 +70,13 @@ export class ProfessorInteractionHistoryComponent {
   selectedTemplate: string = '';
   // snackbar duration
   durationInSeconds: number = 2;
-  inputFilled : boolean = false;
+  inputFilled: boolean = false;
 
+  //popup properties
+  // popupTitle: string = 'Close Appeal';
+  //popupMessage: string = 'Are you sure you want to close this appeal?';
+  //actionButtonText: string = 'Close';
+  show: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -76,7 +86,7 @@ export class ProfessorInteractionHistoryComponent {
     private sharedService: SharedService,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Get appeal id from url
@@ -331,32 +341,29 @@ export class ProfessorInteractionHistoryComponent {
           this.imageFile!,
           this.messageID
         );
-       // clear the file input
+        // clear the file input
         (<HTMLInputElement>document.getElementById('image')).value = '';
         window.location.reload();
       }
-
-
     } catch (err) {
       console.log(err);
       throw new Error('sendMessage');
     }
   }
 
-    /**
+  /**
    * Check if input is filled for send button color
    */
-    onTextAreaChange() {
+  onTextAreaChange() {
     this.inputFilled = this.chatInputMessage.trim().length > 0;
     this.cdr.detectChanges();
   }
-
 
   formatTimestamp(timestamp: Date): { date: string; time: string } {
     return formatTimestamp(timestamp);
   }
 
-  async  filterResults(text: string) {
+  async filterResults(text: string) {
     if (!text) {
       this.filteredAppeals = this.professorAppeals;
       return;
@@ -431,21 +438,21 @@ export class ProfessorInteractionHistoryComponent {
     return isSameDate(date1, date2);
   }
 
-  async onCloseAppeal(event: MouseEvent) {
-    const currentAppeal = this.currentAppeal;
-    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      data: { currentAppeal },
-    });
-    // update UI: get rid of closed appeal
-    dialogRef.afterClosed().subscribe(async (result: number) => {
-      // this.professorAppeals = this.professorAppeals.filter(
-      //   (appeal) => appeal.appeal_id !== result
-      // );
-      // this.currentAppeal = this.professorAppeals[0];
-      // this.messages = await this.sharedService.fetchMessages(
-      //   this.currentAppeal.appeal_id
-      // ); //237, 238, 239 240
-    });
+  async onCloseAppeal(): Promise<void> {
+    try {
+      const now = new Date();
+      console.log(this.currentAppeal.appeal_id);
+      const closedAppealID = await this.professorService.updateAppealOpenStatus(
+        this.currentAppeal.appeal_id
+      );
+      this.router.navigateByUrl('professor/appeal-inbox');
+    } catch (err) {
+      console.log({ err });
+      throw new Error('onCloseAppeal');
+    }
+  }
+  showPopup() {
+    this.show = !this.show;
   }
 
   onFilechange(event: any) {
@@ -456,5 +463,28 @@ export class ProfessorInteractionHistoryComponent {
     if (this.chatInputMessage.trim() === '' && this.imageFile) {
       this.chatInputMessage = event.target.files[0].name; // Set message to a space character
     }
+  }
+  toggleCloseAppealPopup() {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Close Appeal?',
+        message: 'Are you sure you want to close this appeal?',
+        actionButtonText: 'Close',
+        action: async () => {
+          const closedAppealID =
+            await this.professorService.updateAppealOpenStatus(
+              this.currentAppeal.appeal_id
+            );
+
+          dialogRef.close(closedAppealID);
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((closedAppealId: number) => {
+      this.filteredAppeals = this.filteredAppeals.filter(
+        (appeal) => appeal.appeal_id !== closedAppealId
+      );
+    });
   }
 }

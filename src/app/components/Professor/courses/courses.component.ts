@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { DeleteCourseComponent } from './delete-course/delete-course.component';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Session, User } from '@supabase/supabase-js';
 import { SharedService } from 'src/app/services/shared.service';
 import { Router } from '@angular/router';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-courses',
@@ -117,18 +117,24 @@ export class CoursesComponent {
       width: '80%',
       height: '100%',
     });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
-  /**
-   * Goes to DeleteCourse pop up component
-   */
-  async deleteCoursePopUp(event: Event, course: Course): Promise<void> {
-    /* prevent navigation to different view */
+  toggleDeleteCoursePopup(event: Event, course: Course) {
     event.stopPropagation();
-    const dialogRef = this.dialog.open(DeleteCourseComponent, {
-      data: { cid: course.id, pid: this.professor.id },
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Close Appeal?',
+        message: 'Are you sure you want to close this appeal?',
+        actionButtonText: 'Close',
+        action: async () => {
+          await this.professorService.deleteCourse(
+            course.id,
+            this.professor.id
+          );
+          dialogRef.close();
+        },
+      },
     });
   }
 }

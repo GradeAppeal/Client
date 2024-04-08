@@ -126,10 +126,10 @@
                 <p class="button-text">Reply/View History</p>
               </button>
               <button
-                (click)="onCloseAppeal($event)"
+                (click)="toggleCloseAppealPopup()"
                 class="close-appeal blue-button"
               >
-                <p clas="button-text">Close Appeal</p>
+                <p class="button-text">Close Appeal</p>
               </button>
 
               <button
@@ -142,7 +142,7 @@
               <button
                 *ngIf="currentAppeal.grader_id !== null"
                 class="grader-button blue-button"
-                (click)="unassignGrader($event)"
+                (click)="toggleUnassignGraderPopup()"
               >
                 Unassign Grader
               </button>

@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { SignoutComponent } from 'src/app/components/Auth/signout/signout.component';
 import { filter } from 'rxjs/operators';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-professor-navigation',
@@ -18,7 +20,8 @@ export class ProfessorNavigationComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
-    private professorService: ProfessorService
+    private professorService: ProfessorService,
+    private authService: AuthService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -56,5 +59,20 @@ export class ProfessorNavigationComponent {
 
   logoutPopUp() {
     this.dialog.open(SignoutComponent, {});
+  }
+  toggleLogoutPopup() {
+    console.log('what');
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Sign Out?',
+        message: 'Are you sure want to Sign Out?',
+        actionButtonText: 'Sign Out',
+        action: async () => {
+          await this.authService.signOut();
+          this.router.navigateByUrl('login');
+          dialogRef.close();
+        },
+      },
+    });
   }
 }

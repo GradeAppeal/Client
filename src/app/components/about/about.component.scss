@@ -1,6 +1,13 @@
 @import "src/styles.scss";
 .about-container {
-  margin: 30px;
+  max-width: 800px;
+  margin: auto;
+  margin-bottom: 40px;
+  padding: 20px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 p {
   color: #34495e;
@@ -22,4 +29,10 @@ h1 {
   font-size: 30px;
   color: $primary-blue;
   font-weight: bold;
+}
+img {
+  width: 10rem; /* Adjust as needed */
+  height: auto; /* This maintains the aspect ratio */
+  border-radius: 8px; /* Example border-radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box-shadow */
 }

@@ -4,12 +4,12 @@ import { Assignment } from 'src/app/shared/interfaces/psql.interface';
 import { Course } from 'src/app/shared/interfaces/psql.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
-import { DeleteAssignmentComponent } from './delete-assignment/delete-assignment.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentCourseGraderInfo } from 'src/app/shared/interfaces/professor.interface';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { EditGraderComponent } from './edit-grader/edit-grader.component';
 import { Sort } from '@angular/material/sort';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 interface Element {
   id: number;
@@ -148,12 +148,18 @@ export class AssignmentsComponent {
     });
   }
 
-  /**
-   * Goes to DeleteAssignment pop up component
-   */
-  deleteAssignmentPopUp(aid: Assignment): void {
-    const dialogRef = this.dialog.open(DeleteAssignmentComponent, {
-      data: { aid },
+  toggleDeleteAssignmentPopUp(aid: number) {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Delete Assignment?',
+        message: 'Are you sure you want to delete this assignment?',
+        actionButtonText: 'Delete',
+        action: async () => {
+          await this.professorService.deleteAssignment(aid);
+
+          dialogRef.close();
+        },
+      },
     });
   }
 
