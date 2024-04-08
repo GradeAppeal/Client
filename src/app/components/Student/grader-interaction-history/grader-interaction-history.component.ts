@@ -167,7 +167,6 @@ export class GraderInteractionHistoryComponent {
         this.professor = await this.sharedService.getProfessor(pid);
         this.messageLoaded = true;
         this.messageCount = this.messages.length;
-
         this.imageMessages = this.messages;
         await this.getImages();
 
