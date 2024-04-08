@@ -33,6 +33,8 @@ export class AccountComponent {
   hours: number[] = Array.from({ length: 24 }, (_, index) => index);
   minutes: number[] = Array.from({ length: 60 }, (_, index) => index);
   hide: boolean = true;
+  // pg_cron schedule is based on UTC time
+  offset = new Date().getTimezoneOffset() / 60;
 
   dayOfMonth: (number | string)[] = Array.from(
     { length: 31 },
@@ -89,12 +91,18 @@ export class AccountComponent {
       frequency = '';
     }
 
+    // convert UTC time in DB to local time
+    const localHour =
+      Number(cronHour) - this.offset > 0
+        ? Number(cronHour) - this.offset
+        : Number(cronHour) - this.offset + 24;
+
     // initialize cronForm
     this.cronForm = this.fb.group({
       frequency: [frequency, Validators.required],
       week: [Number(cronWeek) ? Number(cronWeek) : null],
       month: [Number(cronMonthDay) ? Number(cronMonthDay) : null],
-      hour: [Number(cronHour), Validators.required],
+      hour: [localHour, Validators.required],
       minute: [Number(cronMinute), Validators.required],
     });
 
@@ -142,31 +150,27 @@ export class AccountComponent {
     }
   }
 
-  async onSaveSettings() {
-    const { password, frequency } = this.cronForm.value;
-    // if user entered new password, update the password
+  async onSaveSchedule() {
     try {
       const { week, month, hour, minute } = this.cronForm.value;
-      console.log(`week: ${week}`);
-      console.log(`month: ${month}`);
-      console.log(`hour: ${hour}`);
-      console.log(`minute: ${minute}`);
-      const cron = `${minute} ${hour} ${month ? month : '*'} * ${
+
+      // modify the hour so the job runs according to local time
+      // e.g. 8:00 EDT == 12:00 UTC
+      const UTCHour = (hour + this.offset) % 24;
+      const cron = `${minute} ${UTCHour} ${month ? month : '*'} * ${
         week ? week : '*'
       }`;
       // update cron schedule
       await this.professorService.updateCron(this.professor.id, cron);
-      await this.authService.updatePassword(password);
       this.snackBar.open('Successfully Updated Emailing Schedule', '', {
         panelClass: ['blue-snackbar'],
         duration: 2000,
       });
     } catch (error) {
       this.snackBar.open(`${error}`, '', {
-        panelClass: ['red-snackbar'],
+        panelClass: ['error-snackbar'],
         duration: 3000,
       });
     }
-    // TODO: configure frequency after figuring out edge functions
   }
 }
