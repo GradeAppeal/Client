@@ -5,6 +5,7 @@
       <mat-form-field class="form">
         <mat-label>Grader</mat-label>
         <mat-select
+          panelClass="example-panel-red"
           required="true"
           (selectionChange)="onSelectGrader($event.value)"
         >
@@ -17,13 +18,15 @@
       <input class="input" [(ngModel)]="message" />
       <div class="button-div">
         <div class="buttons">
-          <button class="blue-button" [mat-dialog-close]="false">Cancel</button>
           <button
             class="blue-button"
             (click)="onAssignGrader()"
             [disabled]="!selectedGrader"
           >
             Assign
+          </button>
+          <button class="cancel-button" [mat-dialog-close]="false">
+            Cancel
           </button>
         </div>
       </div>
@@ -35,7 +38,7 @@
   <div class="no-graders">
     <p>No graders for this class. Go to courses to add a grader</p>
     <div class="buttons">
-      <button class="blue-button" [mat-dialog-close]="false">Cancel</button>
+      <button class="cancel-button" [mat-dialog-close]="false">Cancel</button>
       <button
         [mat-dialog-close]="false"
         class="blue-button"

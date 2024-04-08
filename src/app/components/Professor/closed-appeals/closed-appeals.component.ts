@@ -3,11 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
-import { ReopenPopupComponent } from './reopen-popup/reopen-popup.component';
-import { ViewClosedAppealPopupComponent } from './view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { Professor } from 'src/app/shared/interfaces/psql.interface';
-import { DeleteAppealPopupComponent } from './delete-appeal-popup/delete-appeal-popup.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-closed-appeals',
@@ -15,13 +13,16 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./closed-appeals.component.scss'],
 })
 export class ClosedAppealsComponent implements OnInit {
+  //reopen popup
   showReopenPopup: boolean = false;
-  reopenPopupTitle: string = 'Reopen this appeal?';
-  reopenPopupMessage: string;
-  reopenActionButtonText: string = 'Reopen';
-  toggleReopenPopup() {
-    this.showReopenPopup = !this.showReopenPopup;
-  }
+  //delete popup
+  showDeletePopup: boolean;
+  deletePopupTitle: string = 'Delete this appeal?';
+  deletePopupMessage: string = 'This action is irreversible!';
+  deleteActionButtonText: string = 'Delete';
+  // toggleReopenPopup() {
+  //   this.showReopenPopup = !this.showReopenPopup;
+  // }
   professor: Professor;
   closedAppeals: ProfessorAppeal[];
   constructor(
@@ -75,40 +76,64 @@ export class ClosedAppealsComponent implements OnInit {
     const newTime = new Date(last_modified as string);
     return newTime.toLocaleString();
   }
-
-  async onReopenAppeal(i: number) {
+  toggleReopenPopup(i: number) {
     const reopenAppeal = this.closedAppeals[i];
-    // const dialogRef = this.dialog.open(ReopenPopupComponent, {
-    //   data: { reopenAppeal },
-    // });
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Reopen Appeal?',
+        actionButtonText: 'Reopen',
+        action: async () => {
+          const reopenedAppealID =
+            await this.professorService.updateAppealOpenStatus(
+              this.closedAppeals[i].appeal_id
+            );
+          dialogRef.close(reopenedAppealID);
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((reopenAppealId: number) => {
+      this.closedAppeals = this.closedAppeals.filter(
+        (appeal) => appeal.appeal_id !== reopenAppealId
+      );
+    });
+  }
+  async onReopenAppeal(i: number) {
     const reopenedAppealID = await this.professorService.updateAppealOpenStatus(
       this.closedAppeals[i].appeal_id
     );
-    // update UI: get rid of reopened appeal
-    // dialogRef.afterClosed().subscribe((reopenAppealId: number) => {
-    //   this.closedAppeals = this.closedAppeals.filter(
-    //     (appeal) => appeal.appeal_id !== reopenAppealId
-    //   );
-    // });
-    this.toggleReopenPopup();
   }
 
-  onViewAppeal(i: number) {
-    const closedAppeal = this.closedAppeals[i];
-    const dialogRef = this.dialog.open(ViewClosedAppealPopupComponent, {
-      data: { closedAppeal },
+  toggleDeleteAppealPopup(i: number) {
+    console.log('what');
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Delete Appeal?',
+        actionButtonText: 'Delete',
+        action: async () => {
+          const deletedAppealID = await this.professorService.deleteAppeal(
+            this.closedAppeals[i].appeal_id
+          );
+          dialogRef.close(deletedAppealID);
+        },
+      },
     });
-  }
 
-  onDeleteAppeal(i: number) {
-    const appealToDelete = this.closedAppeals[i];
-    const dialogRef = this.dialog.open(DeleteAppealPopupComponent, {
-      data: { appealToDelete },
-    });
     dialogRef.afterClosed().subscribe((deletedAppealId: number) => {
       this.closedAppeals = this.closedAppeals.filter(
         (appeal) => appeal.appeal_id !== deletedAppealId
       );
+    });
+  }
+
+  toggleViewAppealPopup(i: number) {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: this.closedAppeals[i].assignment_name,
+        message: this.closedAppeals[i].appeal_text,
+        actionButtonText: 'Done',
+        action: () => dialogRef.close(),
+      },
     });
   }
 }

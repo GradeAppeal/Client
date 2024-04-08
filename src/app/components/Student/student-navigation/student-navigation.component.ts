@@ -6,6 +6,7 @@ import { SignoutComponent } from 'src/app/components/Auth/signout/signout.compon
 import { filter } from 'rxjs/operators';
 import { User } from '@supabase/supabase-js';
 import { GraderService } from 'src/app/services/grader.service';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-student-navigation',
@@ -64,7 +65,22 @@ export class StudentNavigationComponent {
     this.selectedTab = tabName;
   }
 
-  logoutPopUp() {
-    this.dialog.open(SignoutComponent, {});
+  // logoutPopUp() {
+  //   this.dialog.open(SignoutComponent, {});
+  // }
+  toggleLogoutPopup() {
+    console.log('what');
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Sign Out?',
+        message: 'Are you sure want to Sign Out?',
+        actionButtonText: 'Sign Out',
+        action: async () => {
+          await this.authService.signOut();
+          this.router.navigateByUrl('login');
+          dialogRef.close();
+        },
+      },
+    });
   }
 }

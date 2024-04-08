@@ -107,19 +107,12 @@
               <p class="button-text">Close Appeal</p>
             </button> -->
             <button
-              (click)="showPopup()"
+              (click)="toggleCloseAppealPopup()"
               class="close-appeal-interaction-history cancel-button"
             >
               <p class="button-text">Close Appeal</p>
             </button>
-            -->
-            <button
-              (click)="showPopup()"
-              class="close-appeal-interaction-history cancel-button"
-            >
-              <p class="close-appeal">Close Appeal</p>
-            </button>
-            <app-generic-popup
+            <!-- <app-generic-popup
               *ngIf="show"
               [title]="popupTitle"
               [message]="popupMessage"
@@ -127,7 +120,7 @@
               (actionConfirmed)="onCloseAppeal()"
               (popupClosed)="showPopup()"
             >
-            </app-generic-popup>
+            </app-generic-popup> -->
           </div>
         </div>
         <div

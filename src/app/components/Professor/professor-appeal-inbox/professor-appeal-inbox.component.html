@@ -125,18 +125,12 @@
               >
                 <p class="button-text">Reply/View History</p>
               </button>
-              <button (click)="togglePopup()" class="close-appeal blue-button">
+              <button
+                (click)="toggleCloseAppealPopup()"
+                class="close-appeal blue-button"
+              >
                 <p class="button-text">Close Appeal</p>
               </button>
-              <app-generic-popup
-                *ngIf="show"
-                [title]="closeAppealPopupTitle"
-                [message]="closeAppealPopupMessage"
-                [actionButtonText]="closeAppealActionButtonText"
-                (actionConfirmed)="onCloseAppeal()"
-                (popupClosed)="togglePopup()"
-              >
-              </app-generic-popup>
 
               <button
                 *ngIf="currentAppeal.grader_id === null"
@@ -152,15 +146,6 @@
               >
                 Unassign Grader
               </button>
-              <app-generic-popup
-                *ngIf="showUnassignGraderPopup"
-                [title]="unassignGraderPopupTitle"
-                [message]="unassignGraderPopupMessage"
-                [actionButtonText]="unassignGraderActionButtonText"
-                (actionConfirmed)="unassignGrader()"
-                (popupClosed)="toggleUnassignGraderPopup()"
-              >
-              </app-generic-popup>
             </div>
           </mat-card>
         </div>

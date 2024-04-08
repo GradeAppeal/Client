@@ -49,14 +49,10 @@ import { AddCourseComponent } from './components/Professor/courses/add-course/ad
 import { DeleteCourseComponent } from './components/Professor/courses/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
-import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
-import { ReopenPopupComponent } from './components/Professor/closed-appeals/reopen-popup/reopen-popup.component';
 import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { RosterComponent } from './components/Professor/roster/roster.component';
 import { GraderAssignedSnackbarComponent } from './components/Professor/professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
-import { ViewClosedAppealPopupComponent } from './components/Professor/closed-appeals/view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { UnassignGraderPopupComponent } from './components/Professor/unassign-grader-popup/unassign-grader-popup.component';
-import { DeleteAppealPopupComponent } from './components/Professor/closed-appeals/delete-appeal-popup/delete-appeal-popup.component';
 import { RegisterConfirmationPopupComponent } from './components/Auth/register/register-confirmation-popup/register-confirmation-popup.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
@@ -98,14 +94,10 @@ import { GenericPopupComponent } from './components/generic-popup/generic-popup.
     DeleteCourseComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
-    CloseAppealPopupComponent,
-    ReopenPopupComponent,
     AssignGraderPopupComponent,
     RosterComponent,
     GraderAssignedSnackbarComponent,
-    ViewClosedAppealPopupComponent,
     UnassignGraderPopupComponent,
-    DeleteAppealPopupComponent,
     RegisterConfirmationPopupComponent,
     UpdateTemplateComponent,
     AboutComponent,
