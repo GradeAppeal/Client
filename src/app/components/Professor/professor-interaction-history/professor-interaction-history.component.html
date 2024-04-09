@@ -70,15 +70,16 @@
       <div class="card">
         <div class="top-bar">
           <div class="left-content">
-
             <span class="header student-name">
               &nbsp;
               {{
                 currentAppeal.student_first_name +
                   " " +
                   currentAppeal.student_last_name
-              }}
-            </span><span class="header assignment-name">{{ currentAppeal.assignment_name }}</span>
+              }} </span
+            ><span class="header assignment-name">{{
+              currentAppeal.assignment_name
+            }}</span>
           </div>
           <div class="right-content">
             <span
@@ -99,12 +100,27 @@
             >
               Grader: Unassigned
             </span>
-            <button
+            <!-- <button
               (click)="onCloseAppeal($event)"
               class="close-appeal-interaction-history gray-button"
             >
-              <p class="close-appeal">Close Appeal</p>
+              <p class="button-text">Close Appeal</p>
+            </button> -->
+            <button
+              (click)="toggleCloseAppealPopup()"
+              class="close-appeal-interaction-history cancel-button"
+            >
+              <p class="button-text">Close Appeal</p>
             </button>
+            <!-- <app-generic-popup
+              *ngIf="show"
+              [title]="popupTitle"
+              [message]="popupMessage"
+              [actionButtonText]="actionButtonText"
+              (actionConfirmed)="onCloseAppeal()"
+              (popupClosed)="showPopup()"
+            >
+            </app-generic-popup> -->
           </div>
         </div>
         <div
@@ -186,15 +202,13 @@
         </div>
         <div class="chat-footer">
           <div class="buttons">
-              <button
+            <button
               mat-icon-button
               aria-label="Example icon-button with a menu"
-              
               (click)="toggleOptions()"
             >
-            <mat-icon class="vert-button">menu</mat-icon>
+              <mat-icon class="vert-button">menu</mat-icon>
             </button>
-            
 
             <div *ngIf="showOptions" class="custom-popup">
               <div>
@@ -242,35 +256,33 @@
             </div>
           </div>
           <form class="chat-form">
-          <input
-            class="chat-textarea"
-            name="chat-textarea"
-            [(ngModel)]="chatInputMessage"
-            required
-            (input)="onTextAreaChange()"
-            (keydown.enter)="sendMessage(this.chatInputMessage)"
-          />
-          <div class="grader-slider-whole">
-          <mat-slide-toggle
-          *ngIf="currentAppeal.grader_id !== null"
-          disabled="false"
-          class="grader-toggle"
-          hideIcon="true"
-          (change)="talkToGrader()"
-        ></mat-slide-toggle>
-        <mat-slide-toggle
-          *ngIf="currentAppeal.grader_id === null"
-          disabled="true"
-          class="grader-toggle"
-          hideIcon="true"
-          (change)="talkToGrader()"
-        ></mat-slide-toggle>
-        <p class="grader-toggle-text">To Grader</p>
-        </div>
-      </form>
-      <div class="send-button-div"
-          [class.filled]="inputFilled"
-          >
+            <input
+              class="chat-textarea"
+              name="chat-textarea"
+              [(ngModel)]="chatInputMessage"
+              required
+              (input)="onTextAreaChange()"
+              (keydown.enter)="sendMessage(this.chatInputMessage)"
+            />
+            <div class="grader-slider-whole">
+              <mat-slide-toggle
+                *ngIf="currentAppeal.grader_id !== null"
+                disabled="false"
+                class="grader-toggle"
+                hideIcon="true"
+                (change)="talkToGrader()"
+              ></mat-slide-toggle>
+              <mat-slide-toggle
+                *ngIf="currentAppeal.grader_id === null"
+                disabled="true"
+                class="grader-toggle"
+                hideIcon="true"
+                (change)="talkToGrader()"
+              ></mat-slide-toggle>
+              <p class="grader-toggle-text">To Grader</p>
+            </div>
+          </form>
+          <div class="send-button-div" [class.filled]="inputFilled">
             <button
               class="send-button"
               (click)="sendMessage(this.chatInputMessage)"

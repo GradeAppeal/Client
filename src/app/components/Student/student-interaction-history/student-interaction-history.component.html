@@ -64,9 +64,10 @@
             <span class="header student-name">
               {{ currentAppeal.professor_first_name }}
               {{ currentAppeal.professor_last_name }}
-              
             </span>
-            <span class="header assignment-name">{{ currentAppeal.assignment_name }}</span>
+            <span class="header assignment-name">{{
+              currentAppeal.assignment_name
+            }}</span>
           </mat-toolbar-row>
         </mat-toolbar>
         <div class="chat-list" #chatListContainer>
@@ -158,9 +159,7 @@
             required
             (keydown.enter)="sendMessage(this.chatInputMessage)"
           />
-          <div class="send-button-div"
-          [class.filled]="inputFilled"
-          >
+          <div class="send-button-div" [class.filled]="inputFilled">
             <button
               class="send-button"
               (click)="sendMessage(this.chatInputMessage)"
@@ -177,6 +176,7 @@
       </div>
     </div>
   </div>
+
   <ng-template #loadingSpinner>
     <app-loading-spinner
       [fetchMessage]="'Fetching Interaction History...'"

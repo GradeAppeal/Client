@@ -96,6 +96,7 @@ export class StudentInteractionHistoryComponent {
     );
     this.filteredAppeals = this.studentAppeals;
     this.noAppeals = this.studentAppeals.length === 0 ? true : false;
+
     if (!this.noAppeals) {
       this.currentAppeal = this.studentAppeals[0];
       this.professor = await this.sharedService.getProfessor(
@@ -117,6 +118,8 @@ export class StudentInteractionHistoryComponent {
       this.handleAllNewMessages();
       this.handleNewMessages();
     } else {
+      this.studentAppeals = [];
+      this.imageMessages = [];
       this.loading = false;
     }
     console.log(this.currentAppeal);

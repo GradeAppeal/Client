@@ -21,7 +21,7 @@ $secondary-blue: #c1d1ff;
 $hover-blue: #728edd;
 $form-white: #f8f7f4;
 $hover-gray: #bec0bf;
-
+$font: "Rubik", Times, serif, "Helvetica Neue", sans-serif;
 .material-symbols-outlined {
   cursor: pointer;
   color: $primary-blue;
@@ -63,7 +63,7 @@ $hover-gray: #bec0bf;
   border-radius: 20px;
 }
 
-.gray-button {
+.cancel-button {
   color: black;
   background-color: #ececec;
   margin-left: 20px;
@@ -81,7 +81,7 @@ $hover-gray: #bec0bf;
   background-color: $hover-blue;
 }
 
-.gray-button:hover {
+.cancel-button:hover {
   background-color: $hover-gray;
 }
 
@@ -567,4 +567,7 @@ label {
 }
 .right-content {
   text-align: right;
+}
+.mat-mdc-menu-item {
+  padding: 10px;
 }

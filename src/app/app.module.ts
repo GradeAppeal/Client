@@ -42,21 +42,15 @@ import { AssignmentsComponent } from './components/Professor/assignments/assignm
 import { AddAssignmentComponent } from './components/Professor/assignments/add-assignment/add-assignment.component';
 import { StudentInteractionHistoryComponent } from './components/Student/student-interaction-history/student-interaction-history.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
-import { DeleteAssignmentComponent } from './components/Professor/assignments/delete-assignment/delete-assignment.component';
 import { AddTemplateComponent } from './components/Professor/edit-templates/add-template/add-template.component';
 import { DeleteTemplateComponent } from './components/Professor/edit-templates/delete-template/delete-template.component';
 import { AddCourseComponent } from './components/Professor/courses/add-course/add-course.component';
-import { DeleteCourseComponent } from './components/Professor/courses/delete-course/delete-course.component';
 import { GraderInteractionHistoryComponent } from './components/Student/grader-interaction-history/grader-interaction-history.component';
 import { SignoutComponent } from './components/Auth/signout/signout.component';
-import { CloseAppealPopupComponent } from './components/Professor/professor-appeal-inbox/close-appeal-popup/close-appeal-popup.component';
-import { ReopenPopupComponent } from './components/Professor/closed-appeals/reopen-popup/reopen-popup.component';
 import { AssignGraderPopupComponent } from './components/Professor/professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { RosterComponent } from './components/Professor/roster/roster.component';
 import { GraderAssignedSnackbarComponent } from './components/Professor/professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
-import { ViewClosedAppealPopupComponent } from './components/Professor/closed-appeals/view-closed-appeal-popup/view-closed-appeal-popup.component';
 import { UnassignGraderPopupComponent } from './components/Professor/unassign-grader-popup/unassign-grader-popup.component';
-import { DeleteAppealPopupComponent } from './components/Professor/closed-appeals/delete-appeal-popup/delete-appeal-popup.component';
 import { RegisterConfirmationPopupComponent } from './components/Auth/register/register-confirmation-popup/register-confirmation-popup.component';
 import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 import { UpdateTemplateComponent } from './components/Professor/edit-templates/update-template/update-template.component';
@@ -67,10 +61,10 @@ import { LoadingSpinnerComponent } from './components/util-components/loading-sp
 import { RequestTokenComponent } from './components/Auth/request-token/request-token.component';
 import { ConfirmationComponent } from './components/Auth/confirmation/confirmation.component';
 import { RedirectSnackbarComponent } from './components/util-components/redirect-snackbar/redirect-snackbar.component';
-import { DeleteStudentPopupComponent } from './components/Professor/roster/delete-student-popup/delete-student-popup.component';
 import { ResetStudentPasswordPopupComponent } from './components/Professor/roster/reset-student-password-popup/reset-student-password-popup.component';
 import { EditGraderComponent } from './components/Professor/assignments/edit-grader/edit-grader.component';
 import { AccountComponent } from './components/Professor/account/account.component';
+import { GenericPopupComponent } from './components/generic-popup/generic-popup.component';
 
 @NgModule({
   declarations: [
@@ -90,21 +84,15 @@ import { AccountComponent } from './components/Professor/account/account.compone
     AddAssignmentComponent,
     StudentInteractionHistoryComponent,
     RegisterComponent,
-    DeleteAssignmentComponent,
     AddTemplateComponent,
     DeleteTemplateComponent,
     AddCourseComponent,
-    DeleteCourseComponent,
     GraderInteractionHistoryComponent,
     SignoutComponent,
-    CloseAppealPopupComponent,
-    ReopenPopupComponent,
     AssignGraderPopupComponent,
     RosterComponent,
     GraderAssignedSnackbarComponent,
-    ViewClosedAppealPopupComponent,
     UnassignGraderPopupComponent,
-    DeleteAppealPopupComponent,
     RegisterConfirmationPopupComponent,
     UpdateTemplateComponent,
     AboutComponent,
@@ -115,10 +103,10 @@ import { AccountComponent } from './components/Professor/account/account.compone
     ConfirmationComponent,
     RequestTokenComponent,
     RedirectSnackbarComponent,
-    DeleteStudentPopupComponent,
     ResetStudentPasswordPopupComponent,
     EditGraderComponent,
     AccountComponent,
+    GenericPopupComponent,
   ],
   imports: [
     BrowserModule,

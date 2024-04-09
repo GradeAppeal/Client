@@ -7,12 +7,14 @@ import { ProfessorAppeal } from 'src/app/shared/interfaces/professor.interface';
 import { Course, Professor } from 'src/app/shared/interfaces/psql.interface';
 import { formatTimestamp } from 'src/app/shared/functions/general.util';
 import { Session, User } from '@supabase/supabase-js';
-import { CloseAppealPopupComponent } from './close-appeal-popup/close-appeal-popup.component';
+
 import { AssignGraderPopupComponent } from '../professor-interaction-history/assign-grader-popup/assign-grader-popup.component';
 import { GraderAssignedSnackbarComponent } from '../professor-interaction-history/grader-assigned-snackbar/grader-assigned-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/services/shared.service';
 import { UnassignGraderPopupComponent } from '../unassign-grader-popup/unassign-grader-popup.component';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-professor-appeal-inbox',
@@ -37,6 +39,7 @@ export class ProfessorAppealInboxComponent implements OnInit {
   currentAppeal: ProfessorAppeal;
   fetchedAppeals = false;
   durationInSeconds: number = 2;
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -135,11 +138,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
     return formatTimestamp(timestamp);
   }
 
-  closeAppeal() {
-    this.dialog.open(CloseAppealPopupComponent);
-    //this.navigateTo('professor/closed-appeals/');
-  }
-
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
@@ -181,25 +179,6 @@ export class ProfessorAppealInboxComponent implements OnInit {
     }
   }
 
-  /**
-   * Close appeal event function
-   * @param event
-   */
-  async onCloseAppeal(event: MouseEvent) {
-    const currentAppeal = this.currentAppeal;
-    const dialogRef = this.dialog.open(CloseAppealPopupComponent, {
-      data: { currentAppeal },
-    });
-
-    // // update UI: get rid of closed appeal
-    // dialogRef.afterClosed().subscribe((result: number) => {
-    //   this.professorAppeals = this.professorAppeals.filter(
-    //     (appeal) => appeal.appeal_id !== result
-    //   );
-    //   this.currentAppeal = this.professorAppeals[0];
-    // });
-  }
-
   async onAssignGrader(event: MouseEvent) {
     const currentAppeal = this.currentAppeal;
     if (!this.currentAppeal.grader_id) {
@@ -220,17 +199,90 @@ export class ProfessorAppealInboxComponent implements OnInit {
     }
   }
 
-  async unassignGrader(event: MouseEvent) {
+  async unassignGrader() {
     if (this.currentAppeal.grader_id) {
-      const graderName = this.currentAppeal.grader_name;
-      const studentID = this.currentAppeal.student_id;
-      const professorID = this.professor.id;
-      console.log(graderName);
-      const appealID = this.currentAppeal.appeal_id;
-      // open popup to assign grader
-      const dialog = this.dialog.open(UnassignGraderPopupComponent, {
-        data: { graderName, appealID, studentID, professorID },
-      });
+      // // open popup to assign grader
+      await this.professorService.updateUnassignAppealGrader(
+        this.currentAppeal.appeal_id
+      );
+      const now = getTimestampTz(new Date());
+      const message = 'Notification: Grader Unassigned';
+
+      await this.sharedService.insertMessage(
+        this.currentAppeal.appeal_id,
+        this.professor.id,
+        this.currentAppeal.student_id,
+        now,
+        message,
+        false,
+        '',
+        '',
+        false
+      );
     }
+  }
+
+  toggleCloseAppealPopup() {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Close Appeal?',
+        message: 'Are you sure you want to close this appeal?',
+        actionButtonText: 'Close',
+        action: async () => {
+          const closedAppealID =
+            await this.professorService.updateAppealOpenStatus(
+              this.currentAppeal.appeal_id
+            );
+
+          dialogRef.close(closedAppealID);
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((closedAppealId: number) => {
+      this.filteredAppeals = this.filteredAppeals.filter(
+        (appeal) => appeal.appeal_id !== closedAppealId
+      );
+    });
+  }
+  toggleUnassignGraderPopup(): void {
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Unassign Appeal?',
+        message:
+          'Are you sure you want to unassign the grader for this appeal?',
+        actionButtonText: 'Unassign',
+        action: async () => {
+          if (this.currentAppeal.grader_id) {
+            // // open popup to assign grader
+            await this.professorService.updateUnassignAppealGrader(
+              this.currentAppeal.appeal_id
+            );
+            const now = getTimestampTz(new Date());
+            const message = 'Notification: Grader Unassigned';
+
+            await this.sharedService.insertMessage(
+              this.currentAppeal.appeal_id,
+              this.professor.id,
+              this.currentAppeal.student_id,
+              now,
+              message,
+              false,
+              '',
+              '',
+              false
+            );
+          }
+
+          dialogRef.close();
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((closedAppealId: number) => {
+      this.filteredAppeals = this.filteredAppeals.filter(
+        (appeal) => appeal.appeal_id !== closedAppealId
+      );
+    });
   }
 }
