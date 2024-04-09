@@ -31,11 +31,17 @@ export class AddAssignmentComponent {
    * Add new assignment to course
    */
   async onAddAssignment(): Promise<void> {
+    console.log(this.assignedGrader, 'graderassigned');
+    const { student_id, student_name } = this
+      .assignedGrader as StudentCourseGraderInfo;
+
     /*  add assignment to database */
     try {
       const data = await this.professorService.insertNewAssignment(
         this.currentCourse.id,
-        this.newAssignment
+        this.newAssignment,
+        student_id,
+        student_name
       );
       /*   close pop-up */
       this.dialogRef.close();

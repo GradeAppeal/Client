@@ -249,14 +249,20 @@ export class ProfessorService {
    * Writes new assignment to database
    * @param cid course id from UI
    * @param assignment_name name of assignment
+   * @param gid grader ID
+   * @param gname grader name
    */
   async insertNewAssignment(
     cid: number,
-    assignment_name: string
+    assignment_name: string,
+    gid: string,
+    gname: string
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('insert_assignment', {
       cid,
       assignment_name,
+      gid,
+      gname,
     });
     if (error) {
       console.log(error);
