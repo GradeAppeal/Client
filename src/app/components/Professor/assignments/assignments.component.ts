@@ -95,11 +95,14 @@ export class AssignmentsComponent {
         if (!record) return;
         // if new assignment inserted
         if (event === 'INSERT') {
-          const { assignment_name, course_id, id } = record;
+          const { assignment_name, course_id, id, grader_id, grader_name } =
+            record;
           const newAssignment = {
             assignment_name,
             course_id,
             id,
+            grader_id,
+            grader_name,
           };
           // show new assignment
           this.assignments.push(newAssignment);

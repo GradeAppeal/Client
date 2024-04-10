@@ -27,7 +27,7 @@
       name="grader"
       [disabled]="graders.length === 0"
     >
-      <mat-option *ngFor="let grader of graders" [value]="grader.student_id">{{
+      <mat-option *ngFor="let grader of graders" [value]="grader">{{
         grader.student_name
       }}</mat-option>
     </mat-select>
