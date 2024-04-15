@@ -20,6 +20,9 @@
             {{ assignment.assignment_name }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="appealExistsForAssignment"
+          >You already submitted an appeal for this assignment</mat-error
+        >
       </mat-form-field>
       <p class="description">Enter your reason for appeal:</p>
       <mat-form-field class="input-box">

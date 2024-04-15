@@ -255,9 +255,10 @@ export class ProfessorService {
   async insertNewAssignment(
     cid: number,
     assignment_name: string,
-    gid: string,
-    gname: string
+    gid: string | null,
+    gname: string | null
   ): Promise<void> {
+    console.log({ gid }, { gname });
     const { data, error } = await this.supabase.rpc('insert_assignment', {
       cid,
       assignment_name,

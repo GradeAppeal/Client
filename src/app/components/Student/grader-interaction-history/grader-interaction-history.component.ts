@@ -193,6 +193,7 @@ export class GraderInteractionHistoryComponent {
     const imageUrl = URL.createObjectURL(image as Blob);
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
+  sendToProfessor() {}
 
   /**
    * Listen for new messages to update RIGHT pane

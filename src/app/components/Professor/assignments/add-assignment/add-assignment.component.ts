@@ -32,8 +32,12 @@ export class AddAssignmentComponent {
    */
   async onAddAssignment(): Promise<void> {
     console.log(this.assignedGrader, 'graderassigned');
-    const { student_id, student_name } = this
-      .assignedGrader as StudentCourseGraderInfo;
+    const student_id = this.assignedGrader
+      ? this.assignedGrader.student_id
+      : null;
+    const student_name = this.assignedGrader
+      ? this.assignedGrader.student_name
+      : null;
 
     /*  add assignment to database */
     try {
