@@ -115,7 +115,7 @@ export class NewAppealComponent implements OnInit {
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      const hasImage = this.imageFile === null ? false : true;
+      const hasImage = this.imageFile === undefined ? false : true;
       const professorID = await this.studentService.getCourseProfessor(
         this.course.id
       );
