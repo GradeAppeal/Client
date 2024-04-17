@@ -78,4 +78,14 @@ export class GraderService {
     }
     return data[0];
   }
+  async getNewGraderAppeal(appid: number): Promise<GraderAppeal> {
+    const { data, error } = await this.supabase.rpc('get_new_grader_appeal', {
+      appid,
+    });
+    if (error) {
+      console.log(error.hint);
+      throw new Error(error.message);
+    }
+    return data;
+  }
 }

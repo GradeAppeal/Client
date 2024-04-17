@@ -13,6 +13,7 @@ import { Session, User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { GraderService } from 'src/app/services/grader.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ProfessorService } from 'src/app/services/professor.service';
 import {
   formatTimestamp,
   isSameDate,
@@ -29,6 +30,9 @@ import {
   GraderAppeal,
   StudentAppeal,
 } from 'src/app/shared/interfaces/student.interface';
+import { getTimestampTz } from 'src/app/shared/functions/time.util';
+import { MatDialog } from '@angular/material/dialog';
+import { GenericPopupComponent } from '../../generic-popup/generic-popup.component';
 
 @Component({
   selector: 'app-grader-interaction-history',
@@ -78,7 +82,9 @@ export class GraderInteractionHistoryComponent {
     private authService: AuthService,
     private graderService: GraderService,
     private sharedService: SharedService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
+    private professorService: ProfessorService
   ) {
     this.route.params.subscribe((params) => {
       this.appealId = +params['id']; // Convert the parameter to a number
@@ -162,6 +168,7 @@ export class GraderInteractionHistoryComponent {
         await this.getImages();
 
         this.handleAppealNewMessages();
+        this.handleAppealUpdates();
       }
       // grader has no appeals
       else {
@@ -193,8 +200,27 @@ export class GraderInteractionHistoryComponent {
     const imageUrl = URL.createObjectURL(image as Blob);
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
-  sendToProfessor() {}
-
+  handleAppealUpdates(): void {
+    this.sharedService
+      .getTableChanges('Appeals', 'grader-appeals-update-channel')
+      .subscribe(async (update: any) => {
+        // get the newly updated row
+        const record = update.new?.id ? update.new : update.old;
+        const event = update.eventType;
+        console.log(record, event);
+        if (!record) return;
+        // update grader status
+        if (event === 'UPDATE') {
+          console.log(record);
+          this.graderAppeals = this.courseId
+            ? await this.graderService.fetchCourseGraderAppeals(
+                this.grader.id,
+                this.courseId
+              )
+            : await this.graderService.fetchAllGraderAppeals(this.grader.id);
+        }
+      });
+  }
   /**
    * Listen for new messages to update RIGHT pane
    */
@@ -330,5 +356,47 @@ export class GraderInteractionHistoryComponent {
     date2: Date | string | undefined
   ): boolean {
     return isSameDate(date1, date2);
+  }
+  toggleSendToProfessorPopup() {
+    console.log(this.grader.id);
+    console.log(this.student.id);
+    const dialogRef = this.dialog.open(GenericPopupComponent, {
+      data: {
+        title: 'Send to Professor?',
+        message:
+          'Are you sure you want to send this appeal to the professor and unassign yourself from this appeal?',
+        actionButtonText: 'Send',
+        action: async () => {
+          if (this.grader.id) {
+            const message =
+              'Notification: Grader has assigned appeal back to professor';
+            await this.sharedService.insertMessage(
+              this.currentAppeal.appeal_id,
+              this.grader.id, //sender id: grader
+              this.professor.id, //recipientid : professor??
+              new Date(),
+              message,
+              this.fromGrader,
+              `${this.grader.first_name} ${this.grader.last_name}`,
+              `${this.professor.first_name} ${this.professor.last_name}`,
+              false
+            );
+            // // open popup to assign grader
+            await this.professorService.updateUnassignAppealGrader(
+              this.currentAppeal.appeal_id
+            );
+            const now = getTimestampTz(new Date());
+          }
+
+          dialogRef.close();
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((closedAppealId: number) => {
+      this.graderAppeals = this.graderAppeals.filter(
+        (appeal) => appeal.appeal_id !== closedAppealId
+      );
+    });
   }
 }
