@@ -39,14 +39,23 @@
     <div class="right-pane" *ngIf="imageMessages.length > 0">
       <div class="card">
         <mat-toolbar class="top-bar">
-          <span class="header student-name">
-            &nbsp;
+          <div class="left-content">
+            <span class="header student-name">
+              &nbsp;
 
-            {{ student.first_name + " " + student.last_name }}
-          </span>
-          <span class="header assignment-name">
-            {{ currentAppeal.assignment_name }}</span
+              {{ student.first_name + " " + student.last_name }}
+            </span>
+            <span class="header assignment-name">
+              {{ currentAppeal.assignment_name }}</span
+            >
+          </div>
+
+          <button
+            (click)="toggleSendToProfessorPopup()"
+            class="cancel-button send-to-professor"
           >
+            <p class="button-text">Send To Professor</p>
+          </button>
         </mat-toolbar>
         <div
           class="chat-list"

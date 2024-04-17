@@ -116,7 +116,18 @@ export class ProfessorAppealInboxComponent implements OnInit {
                 ? this.currentAppeal
                 : this.filteredAppeals[0];
           }
-          this.currentAppeal.grader_id = record.grader_id;
+          console.log({ record });
+          this.professorAppeals = this.professorAppeals.map((appeal) => {
+            if (appeal.appeal_id === record.id) {
+              return { ...appeal, grader_id: record.grader_id };
+            } else {
+              return appeal;
+            }
+          });
+          this.filteredAppeals = this.professorAppeals;
+          if (record.id === this.currentAppeal.appeal_id) {
+            this.currentAppeal.grader_id = record.grader_id;
+          }
         }
         // safety delete check in case closed appeal not removed from appeal inbox
         else if (event === 'DELETE') {
