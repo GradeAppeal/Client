@@ -13,6 +13,7 @@ import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import { StudentAppeal } from 'src/app/shared/interfaces/student.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-new-appeal',
@@ -33,6 +34,7 @@ export class NewAppealComponent implements OnInit {
   studentAppeals: StudentAppeal[];
   errorMessage: string;
   imageFile: File | undefined;
+  appealExistsForAssignment = false;
 
   onFilechange(event: any) {
     this.imageFile = event.target.files[0];
@@ -49,7 +51,8 @@ export class NewAppealComponent implements OnInit {
     private authService: AuthService,
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private snackBar: MatSnackBar
   ) {
     this.authService.getCurrentUser().subscribe((user) => {
       if (user && typeof user !== 'boolean') {
@@ -112,19 +115,26 @@ export class NewAppealComponent implements OnInit {
   async onSubmitAppeal(): Promise<void> {
     const now = getTimestampTz(new Date());
     try {
-      const hasImage = this.imageFile == null ? false : true;
+      const hasImage = this.imageFile === undefined ? false : true;
       const professorID = await this.studentService.getCourseProfessor(
         this.course.id
       );
       const assignmentIds = this.studentAppeals.map(
         (appeal) => appeal.assignment_id
       );
+
       if (assignmentIds.includes(this.selectedAssignment.id)) {
-        this.errorMessage = 'Already submitted an appeal for this assignment';
+        this.appealExistsForAssignment = true;
+        this.snackBar.open(
+          'You Already submitted an appeal for this assignment',
+          '',
+          { panelClass: ['error-snackbar'], duration: 2000 }
+        );
       } else {
         const { id, grader_id, grader_name } = this.selectedAssignment;
         const gid = grader_id ? grader_id : null;
         const gname = grader_name ? grader_name : null;
+        console.log('before insert new appeal');
         const appealID = await this.studentService.insertNewAppeal(
           id,
           this.student.id,
@@ -136,7 +146,7 @@ export class NewAppealComponent implements OnInit {
           professorID,
           hasImage
         );
-
+        console.log('insertAppeal success');
         const appealMessages = await this.sharedService.fetchMessages(appealID);
         const messageID = appealMessages[0].message_id;
 

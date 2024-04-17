@@ -55,6 +55,11 @@ export class StudentNavigationComponent {
         this.title = this.title.replace(/\b\w/g, function (match) {
           return match.toUpperCase();
         });
+        if (this.selectedTab.includes('new-appeal')) {
+          this.title = 'New Appeal';
+        } else if (this.selectedTab.includes('interaction-history')) {
+          this.title = 'Interaction History';
+        }
       });
 
     /* Update tabs on refresh */
