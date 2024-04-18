@@ -1,7 +1,15 @@
 <div class="scroll">
+  <button (click)="goBack()" class="back-button">
+    <mat-icon
+      class="back-icon"
+      aria-hidden="false"
+      aria-label="Back icon"
+      fontIcon="arrow_back"
+    ></mat-icon>
+  </button>
   <div class="about-container">
-    <h1 class="card-entry">Introducing GradeBoost:</h1>
-    <h1 class="card-entry">Revolutionizing the Grade Appeal Process!</h1>
+    <h1 class="card-entry">Introducing GradeBoost</h1>
+    <h2 class="card-entry">Revolutionizing the Grade Appeal Process!</h2>
     <p class="card-entry">
       Are you tired of the traditional hassles associated with appealing grades?
       Look no further!
@@ -47,24 +55,86 @@
   <div class="about-container">
     <h1 class="card-entry">Meet the Team</h1>
     <ul class="team-list card-entry">
-      <li class="team-member">Ael Lee</li>
-      <li class="team-member">Tyler Voss</li>
-      <li class="team-member">Justin Voss</li>
-      <li class="team-member">Sam Hoogewind</li>
+      <li class="team-member">
+        <img
+          src="https://media.licdn.com/dms/image/D5603AQF063MBsGMeyA/profile-displayphoto-shrink_200_200/0/1683854987533?e=2147483647&v=beta&t=QHhvuwGLhNX7yWG5xlOmGitlPPZ9KQW8OyujN4CbJlQ"
+          alt="Ael Lee"
+        />
+        <p>Ael Lee</p>
+        <p class="card-entry">MVP!</p>
+      </li>
+      <li (click)="toggleImage()" class="team-member tyler">
+        <img
+          src="https://media.licdn.com/dms/image/D5603AQEYV57jifTnDQ/profile-displayphoto-shrink_800_800/0/1688588693933?e=2147483647&v=beta&t=_zH0BtesXwEXar1vDLdmH5xi8qub6fB2jjzVM_RwfZ4"
+          alt="Tyler Voss"
+        />
+        <p>Tyler Voss</p>
+        <p class="card-entry">Tyler is a</p>
+      </li>
+      <li class="team-member">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp_IQ6t3vYy9NgAZHeRrsSDgl53YPPmU4GoQu5-kl3FA&s"
+          alt="Justin Voss"
+        />
+        <p>Justin Voss</p>
+        <p class="card-entry">Justin is a ____</p>
+      </li>
+      <li class="team-member">
+        <img
+          src="https://media.licdn.com/dms/image/D5603AQHUKEn6Hz_hpw/profile-displayphoto-shrink_800_800/0/1707168455568?e=2147483647&v=beta&t=1MRJwCumdFV-y9_HGm0QnFoGGmSqtsrnF5Wz-XStLk4"
+          alt="Sam Hoogewind"
+        />
+        <p>Sam Hoogewind</p>
+        <p class="card-entry">
+          Sam is a CSS enthusiast! He loves styling things so much! He also
+          loves Clojure as a language.
+        </p>
+      </li>
+      <li class="team-member">
+        <img
+          src="https://calvin.edu/contentAsset/image/14f2023d-4a40-45f0-8eef-1163563deb01/binaryimage/filter/Resize,Jpeg/resize_w/660/jpeg_q/75"
+          alt="Victor Norman"
+        />
+        <p>Victor Norman</p>
+      </li>
+      <p class="card-entry">
+        Professor Norman was not just our mentor, but our advocate and
+        inspiration behind it! Tired of his overcrowded inbox, Professor Norman
+        envisioned a solution that could help both students and professors. His
+        passion for simplifying the grade appeal process fueled the development
+        of GradeBoost.
+      </p>
+      <div class="images" *ngIf="showImage">
+        <img
+          src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/blogs/10482/images/ILRyT1LOTZWfm2N8v9SJ_How_are_you_building_and_retaining_trust.png"
+          alt="Image"
+        /><img
+          src="https://i.pinimg.com/564x/e4/23/30/e42330c1286d263c13b92485b68178e1.jpg"
+        />
+        <img
+          src="https://akhilviz.com/wp-content/uploads/2016/08/smiley-face-clip-art-thumbs-up-free-clipart-images-2.png"
+        />
+        <img
+          src="https://i.pinimg.com/564x/39/45/85/39458595e2fbf45da64340a0c7ef4f4e.jpg"
+        />
+      </div>
     </ul>
+  </div>
+  <div class="about-container">
+    <h1 class="card-entry">Materials</h1>
+    <a href="https://computing.calvin.edu"
+      ><u><h2 class="card-entry">Department Website</h2></u></a
+    >
 
-    <b class="card-entry">Our Mentor: Professor Victor Norman</b>
-    <div>
-      <img
-        src="https://calvin.edu/contentAsset/image/14f2023d-4a40-45f0-8eef-1163563deb01/binaryimage/filter/Resize,Jpeg/resize_w/660/jpeg_q/75"
-        alt="Victor Norman"
-      />
-    </div>
-    <p class="card-entry">
-      Professor Norman was not just our mentor, but our advocate and inspiration
-      behind it! Tired of his overcrowded inbox, Professor Norman envisioned a
-      solution that could help both students and professors. His passion for
-      simplifying the grade appeal process fueled the development of GradeBoost.
-    </p>
+    <a
+      href="https://docs.google.com/presentation/d/1TPiblBBga7VOUVidDPZHIeyhASeNVhaE5EWtAr0Ti4A/edit?usp=sharing"
+      ><u><h2 class="card-entry">Presentation</h2></u></a
+    >
+    <a href="https://github.com/GradeAppeal/Client"
+      ><u><h2 class="card-entry">GitHub Client</h2></u></a
+    >
+    <a href="https://github.com/GradeAppeal/Service"
+      ><u><h2 class="card-entry">GitHub Service</h2></u></a
+    >
   </div>
 </div>
