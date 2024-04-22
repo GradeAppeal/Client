@@ -7,12 +7,27 @@
       fontIcon="arrow_back"
     ></mat-icon>
   </button>
+
   <div class="about-container">
     <h1 class="card-entry">Introducing GradeBoost</h1>
     <h2 class="card-entry">Revolutionizing the Grade Appeal Process!</h2>
     <p class="card-entry">
       Are you tired of the traditional hassles associated with appealing grades?
       Look no further!
+    </p>
+  </div>
+  <div class="about-container">
+    <h1 class="card-entry">Vision Statement</h1>
+
+    <p class="card-entry">
+      GradeBoost started with Professor Victor Norman’s request for a
+      centralized platform for managing students’ grade appeals. Before
+      GradeBoost, it took a lot of effort to keep track of grade appeals via
+      email, as the conversations were scattered throughout Professor Norman’s
+      email inbox. With GradeBoost, we aimed to solve this problem by developing
+      a service for students to submit, track, and resolve grade appeals without
+      them getting lost in Professors’ inboxes, and for Professors to more
+      easily manage and keep track of their students’ appeals.
     </p>
   </div>
   <div class="about-container">
@@ -61,15 +76,53 @@
           alt="Ael Lee"
         />
         <p>Ael Lee</p>
-        <p class="card-entry">MVP!</p>
+        <p class="card-entry">
+          Ael is out backend dev who works on everything PostgreSQL,
+          authentication, and serverless edge functions.
+        </p>
+        <a href="https://www.linkedin.com/in/aellee/" class="link">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2em"
+            height="2em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
+            />
+          </svg>
+        </a>
       </li>
-      <li (click)="toggleImage()" class="team-member tyler">
+      <li class="team-member tyler">
         <img
+          (click)="toggleImage()"
           src="https://media.licdn.com/dms/image/D5603AQEYV57jifTnDQ/profile-displayphoto-shrink_800_800/0/1688588693933?e=2147483647&v=beta&t=_zH0BtesXwEXar1vDLdmH5xi8qub6fB2jjzVM_RwfZ4"
           alt="Tyler Voss"
         />
         <p>Tyler Voss</p>
-        <p class="card-entry">Tyler is a</p>
+        <p class="card-entry">
+          Tyler is full-stack developer with an attention to detail, bridging
+          the gap between frontend and backend development for GradeBoost. He
+          handles tasks such as polishing the UI, creating new front end
+          features, and helping Ael with the backend.
+        </p>
+        <a
+          href="https://www.linkedin.com/in/tyler-voss-57238119b/"
+          class="link"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2em"
+            height="2em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
+            />
+          </svg>
+        </a>
       </li>
       <li class="team-member">
         <img
@@ -77,7 +130,28 @@
           alt="Justin Voss"
         />
         <p>Justin Voss</p>
-        <p class="card-entry">Justin is a ____</p>
+        <p class="card-entry">
+          Justin Voss is an enthusiast for both front and backend development.
+          Whether it is designing beautiful and interactive websites, or
+          tinkering with embedded devices, he enjoys the aspect of designing
+          something new.
+        </p>
+        <a
+          href="https://www.linkedin.com/in/justin-voss-348aa8205/"
+          class="link"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2em"
+            height="2em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
+            />
+          </svg>
+        </a>
       </li>
       <li class="team-member">
         <img
@@ -89,6 +163,22 @@
           Sam is a CSS enthusiast! He loves styling things so much! He also
           loves Clojure as a language.
         </p>
+        <a
+          href="https://www.linkedin.com/in/sam-hoogewind-2bb264271/"
+          class="link"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2em"
+            height="2em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
+            />
+          </svg>
+        </a>
       </li>
       <li class="team-member">
         <img
@@ -124,6 +214,10 @@
     <h1 class="card-entry">Materials</h1>
     <a href="https://computing.calvin.edu"
       ><u><h2 class="card-entry">Department Website</h2></u></a
+    >
+    <a
+      href="https://docs.google.com/document/d/14L4LPjbzxx1iAMEcuFR5gjYsD7XIxzwOoXU5Va40CcY/edit?usp=sharing"
+      ><u><h2 class="card-entry">Report</h2></u></a
     >
 
     <a
