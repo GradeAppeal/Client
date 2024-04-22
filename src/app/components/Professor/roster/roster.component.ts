@@ -123,15 +123,16 @@ export class RosterComponent {
       .subscribe(async (update: any) => {
         // if insert or update event, get new row
         // if delete event, get deleted row ID
-        const record = update.new?.id ? update.new : update.old;
+        const record =
+          update.new?.course_id && update.new?.student_id
+            ? update.new
+            : update.old;
         // INSERT or DELETE
         const event = update.eventType;
         if (!record) return;
         // new student inserted
         if (event === 'INSERT') {
-          // get new in
-          const record = update.new;
-          console.log({ update });
+          // get new student
           const { student_id, course_id } = record;
 
           // get student & course information
