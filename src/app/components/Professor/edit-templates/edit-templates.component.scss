@@ -1,3 +1,5 @@
+@import "src/styles.scss";
+
 .edit-templates-container {
   margin: 1em 2em;
 }
@@ -19,4 +21,25 @@ th {
   white-space: normal;
   word-wrap: break-word;
   max-width: 200px;
+}
+
+.add-button {
+  position: fixed;
+  // margin-top: 24px;
+  margin-left: 20px;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-button-template {
+  margin-left: 20px;
+  // position: fixed;
+  // margin-top: 24px;
+  // margin-left: 20px;
 }
