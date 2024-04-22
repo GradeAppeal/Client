@@ -1,7 +1,6 @@
 FROM node:20.11.0-alpine 
 
 # Make directories for our app, and copy npm package/angular information in
-# Make directories for our app, and copy npm package/angular information in
 RUN mkdir -p /usr/src/app/
 COPY package*.json /usr/src/app/
 COPY angular.json /usr/src/app/
@@ -35,7 +34,6 @@ COPY src /usr/src/app/src/
 # The dist directory is our compiled code
 RUN mkdir -p /usr/src/app/dist
 
-# Set default run environment, expose services
 # Set default run environment, expose services
 WORKDIR /usr/src/app
 EXPOSE 4200/tcp
