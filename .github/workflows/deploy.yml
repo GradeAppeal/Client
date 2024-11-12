@@ -57,13 +57,13 @@ jobs:
           resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
-      - name: Run Helm Deploy
-        run: |
-          helm upgrade \
-            --install \
-            --create-namespace \
-            --atomic \
-            --wait \
-            --namespace production \
-            gradeboost \
-            ./kubernetes/gradeboost
+#      - name: Run Helm Deploy
+#       run: |
+#          helm upgrade \
+#            --install \
+#            --create-namespace \
+#            --atomic \
+#            --wait \
+#            --namespace production \
+#            gradeboost \
+#            ./kubernetes/gradeboost
